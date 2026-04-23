@@ -81,7 +81,7 @@ A dynamic display board CMS optimized for vertical 43-inch indoor screens, featu
 
 ### 📊 GitHub Stats
 <p align="center">
-  <img src="https://github-readme-stats.vercel.app/api?username=SamSunny4&show_icons=true&theme=radinthium" alt="Sam's GitHub Stats" />
+  <img src="https://github-readme-stats.vercel.app/api?username=SamSunny4&show_icons=true&theme=radical&count_private=true" alt="Sam's GitHub Stats" />
 </p>
 
 ---
