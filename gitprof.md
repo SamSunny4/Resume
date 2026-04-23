@@ -65,7 +65,7 @@ A full-featured desktop application designed for key duplicator shops, actively 
 > **AI Developmental Screening Platform** *(Next.js, MediaPipe, Flask, ML)*  
 An AI-powered web platform for early identification of learning disabilities in children. Integrates MediaPipe for in-browser gesture recognition and pose estimation, leveraging a Flask ML backend for multi-modal behavioral risk scoring. 
 
-### 🔹 Blockchain Transaction Graph Explorer
+### 🔹 [DBMS](https://github.com/SamSunny4/DBMS)
 > **Fraud Detection Platform** *(Next.js, Fastify, Neo4j, Three.js)*  
 A full-stack blockchain monitoring tool utilizing a Neo4j graph database and a Fastify REST API. Features an interactive Graph Explorer with 2D and 3D visualizations for identifying transaction chains, computing risk profiles, and tracing multi-hop fraud patterns.
 
