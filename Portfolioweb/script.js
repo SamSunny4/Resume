@@ -233,6 +233,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function openMobileNav() {
     if (!mobileNavPanel || !mobileToggle) return;
+    mobileNavPanel.style.display = 'block';
     mobileNavPanel.classList.add('active');
     mobileNavPanel.setAttribute('aria-hidden', 'false');
     mobileToggle.classList.add('active');
@@ -243,6 +244,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!mobileNavPanel || !mobileToggle) return;
     mobileNavPanel.classList.remove('active');
     mobileNavPanel.setAttribute('aria-hidden', 'true');
+    mobileNavPanel.style.display = 'none';
     mobileToggle.classList.remove('active');
     mobileToggle.setAttribute('aria-expanded', 'false');
   }

@@ -97,24 +97,32 @@ body {
   left: 0;
   right: 0;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
   z-index: 100;
   pointer-events: none;
 }
 
 .floating-dock {
   pointer-events: auto;
-  display: flex;
+  display: inline-flex;
   align-items: center;
+  align-self: center;
   gap: 0.5rem;
+  background: #0a0a0d;
   background: rgba(10, 10, 13, 0.88);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   border: 1px solid var(--border-card);
   padding: 0.35rem 0.5rem;
+  height: 42px;
+  max-height: 42px;
+  box-sizing: border-box;
   border-radius: var(--radius-full);
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.7);
   transition: border-color 0.15s ease;
+  flex-shrink: 0;
 }
 
 .floating-dock:hover {
@@ -239,12 +247,14 @@ body {
 
 /* Mobile Dropdown Navigation Panel */
 .mobile-nav-panel {
+  display: none;
   position: absolute;
   top: calc(100% + 0.5rem);
   left: 1rem;
   right: 1rem;
   max-width: 360px;
   margin-inline: auto;
+  background: #0a0a0d;
   background: rgba(10, 10, 13, 0.96);
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
@@ -252,19 +262,25 @@ body {
   border-radius: var(--radius-lg);
   padding: 1.25rem 1rem;
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.9), 0 0 0 1px rgba(255, 255, 255, 0.05);
-  opacity: 0;
-  visibility: hidden;
   pointer-events: none;
-  transform: translateY(-10px) scale(0.98);
-  transition: opacity 0.2s var(--ease-fast), transform 0.2s var(--ease-fast), visibility 0.2s;
   z-index: 99;
 }
 
 .mobile-nav-panel.active {
-  opacity: 1;
-  visibility: visible;
+  display: block !important;
   pointer-events: auto;
-  transform: translateY(0) scale(1);
+  animation: panelFadeIn 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes panelFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-8px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
 }
 
 .mobile-nav-header {
