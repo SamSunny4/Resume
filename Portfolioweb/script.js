@@ -1,0 +1,211 @@
+/**
+ * Sam Sunny Portfolio - Minimalist Black Interactions
+ * Inspired by 21st.dev & Magic UI:
+ * - Floating dock scroll tracking & active section spy
+ * - Category filter chips with seamless display toggling
+ * - Clean Certificate inspection modal with metadata
+ * - In-place clipboard copy with instant checkmark feedback
+ */
+
+document.addEventListener('DOMContentLoaded', () => {
+
+  // 1. Certificate Data for Inspection Lightbox
+  const certificates = {
+    'national-hackathon': {
+      title: 'National Level 2nd Prize — AI SAMASYA Hackathon',
+      tag: 'ICGAIFE 3.0 • Govt. of Kerala',
+      image: 'assets/certificates/nationalhackathon.jpg',
+      description: 'Awarded 2nd Prize and ₹30,000 cash prize among 30 national finalist teams in a 24-hour hackathon organized by IHRD and the Dept. of Higher Education, Kerala. Led Team "Beyond Vision" to build Leadis, an AI-assisted developmental screening platform for early identification of learning disabilities.',
+      specs: {
+        'Award': 'National 2nd Prize (₹30,000)',
+        'Event': 'AI SAMASYA / ICGAIFE 3.0',
+        'Date': 'January 16–17, 2026',
+        'Role': 'Team Lead (Beyond Vision)'
+      }
+    },
+    'isro-hackathon': {
+      title: 'Bharatiya Antariksh Hackathon 2025 (ISRO)',
+      tag: 'ISRO × Hack2Skill',
+      image: 'assets/certificates/isrohackathon.png',
+      description: 'Official Certificate of Acknowledgement for submitting an innovative software architecture addressing space operations and technology challenges.',
+      specs: {
+        'Organizer': 'ISRO & Hack2Skill (H2S)',
+        'Certificate Code': '2025H2S06BAH25–P05177',
+        'Year': '2025',
+        'Domain': 'Applied Space Tech'
+      }
+    },
+    'nptel-python': {
+      title: 'Python for Data Science — Elite Certificate',
+      tag: 'NPTEL • IIT Madras',
+      image: 'assets/certificates/nptel.png',
+      description: 'Completed 12-week national certification with an Elite grade (73%). Curriculum covered NumPy, Pandas, statistical modeling, data handling, and scientific visualization.',
+      specs: {
+        'Grade': 'Elite (73%)',
+        'Institution': 'IIT Madras / NPTEL',
+        'Duration': '12 Weeks',
+        'Year': '2025'
+      }
+    },
+    'program-rep': {
+      title: 'Program Representative (UG) — CSE (AI)',
+      tag: 'MITS College Union & Principal',
+      image: 'assets/certificates/programrep.jpg',
+      description: 'Awarded Certificate of Appreciation by the Principal and Dean of Student Affairs for serving as elected Program Representative in the MITS College Union for the academic year 2025–2026.',
+      specs: {
+        'Body': 'MITS College Union',
+        'Academic Year': '2025–2026',
+        'Department': 'Computer Science (AI)',
+        'Signatories': 'Principal & Dean'
+      }
+    },
+    'mern-stack': {
+      title: 'Full Stack MERN Web Development',
+      tag: 'Web Architecture Certification',
+      image: 'assets/certificates/mernstack.jpg',
+      description: 'Certification in full-stack JavaScript architecture covering React SPA principles, Express/Node.js REST microservices, and MongoDB schema design.',
+      specs: {
+        'Stack': 'MongoDB, Express, React, Node.js',
+        'Focus': 'REST APIs, State, Production Deployment',
+        'Year': '2025'
+      }
+    },
+    'enerya-hackathon': {
+      title: 'Enerya Hackathon Achievement',
+      tag: 'Enerya Tech Conclave',
+      image: 'assets/certificates/Eneryahackathon.png',
+      description: 'Participation and achievement in a 24-hour rapid development sprint building functional software solutions.',
+      specs: {
+        'Event': 'Enerya Hackathon',
+        'Format': 'Rapid Software Sprint',
+        'Year': '2025'
+      }
+    }
+  };
+
+  // 2. Lightbox Modal Handling
+  const modal = document.getElementById('certModal');
+  const modalClose = document.getElementById('modalClose');
+  const modalImg = document.getElementById('modalImg');
+  const modalTag = document.getElementById('modalTag');
+  const modalTitle = document.getElementById('modalTitle');
+  const modalDesc = document.getElementById('modalDesc');
+  const modalSpecs = document.getElementById('modalSpecs');
+
+  function openModal(key) {
+    const data = certificates[key];
+    if (!data) return;
+
+    modalImg.src = data.image;
+    modalImg.alt = data.title;
+    modalTag.textContent = data.tag;
+    modalTitle.textContent = data.title;
+    modalDesc.textContent = data.description;
+
+    modalSpecs.innerHTML = '';
+    for (const [k, v] of Object.entries(data.specs)) {
+      const cell = document.createElement('div');
+      cell.className = 'spec-cell';
+      cell.innerHTML = `<strong>${k}</strong><span>${v}</span>`;
+      modalSpecs.appendChild(cell);
+    }
+
+    modal.classList.add('active');
+    modal.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeModal() {
+    modal.classList.remove('active');
+    modal.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+  }
+
+  document.querySelectorAll('[data-cert]').forEach(trigger => {
+    trigger.addEventListener('click', () => {
+      const key = trigger.getAttribute('data-cert');
+      openModal(key);
+    });
+  });
+
+  if (modalClose) modalClose.addEventListener('click', closeModal);
+  if (modal) {
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) closeModal();
+    });
+  }
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && modal.classList.contains('active')) {
+      closeModal();
+    }
+  });
+
+  // 3. Project Filter Chips
+  const filterChips = document.querySelectorAll('.filter-chip');
+  const projectCards = document.querySelectorAll('.project-card-clean');
+
+  filterChips.forEach(chip => {
+    chip.addEventListener('click', () => {
+      filterChips.forEach(c => c.classList.remove('active'));
+      chip.classList.add('active');
+
+      const filter = chip.getAttribute('data-filter');
+
+      projectCards.forEach(card => {
+        const cat = card.getAttribute('data-category') || '';
+        if (filter === 'all' || cat.includes(filter)) {
+          card.style.display = 'flex';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    });
+  });
+
+  // 4. In-Place Clipboard Copy with Instant Feedback
+  document.querySelectorAll('.copy-btn-trigger').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      const textToCopy = btn.getAttribute('data-copy');
+      const textEl = btn.querySelector('.btn-text');
+      const originalText = textEl ? textEl.textContent : '';
+
+      if (textToCopy) {
+        navigator.clipboard.writeText(textToCopy).then(() => {
+          if (textEl) {
+            textEl.textContent = 'Copied!';
+            btn.style.borderColor = 'rgba(255, 255, 255, 0.4)';
+            setTimeout(() => {
+              textEl.textContent = originalText;
+              btn.style.borderColor = '';
+            }, 2000);
+          }
+        });
+      }
+    });
+  });
+
+  // 5. Dock Active Section Spy
+  const sections = document.querySelectorAll('header[id], section[id]');
+  const dockLinks = document.querySelectorAll('.dock-link');
+
+  window.addEventListener('scroll', () => {
+    let current = '';
+    const scrollPos = window.scrollY + 140;
+
+    sections.forEach(sec => {
+      if (scrollPos >= sec.offsetTop) {
+        current = sec.getAttribute('id');
+      }
+    });
+
+    dockLinks.forEach(link => {
+      link.classList.remove('active');
+      if (link.getAttribute('href') === `#${current}`) {
+        link.classList.add('active');
+      }
+    });
+  });
+
+});
