@@ -41,7 +41,7 @@
         <span>sam.dev</span>
       </a>
 
-      <div class="dock-divider"></div>
+      <div class="dock-divider desktop-only-divider"></div>
 
       <ul class="dock-links">
         <li><a href="#work" class="dock-link">Work</a></li>
@@ -57,7 +57,36 @@
         <span>Email</span>
         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
       </a>
+
+      <!-- Mobile Menu Hamburger Button -->
+      <button type="button" class="dock-mobile-toggle" id="dockMobileToggle" aria-label="Toggle Navigation Menu" aria-expanded="false">
+        <span class="hamburger-bar"></span>
+        <span class="hamburger-bar"></span>
+        <span class="hamburger-bar"></span>
+      </button>
     </nav>
+
+    <!-- Mobile Navigation Drawer Panel -->
+    <div class="mobile-nav-panel" id="mobileNavPanel" aria-hidden="true">
+      <div class="mobile-nav-header">
+        <span class="mobile-nav-label">NAVIGATION</span>
+        <span class="mobile-nav-status"><span class="dot-pulse"></span> Available for hire</span>
+      </div>
+      <ul class="mobile-nav-list">
+        <li><a href="#home" class="mobile-nav-item"><span>00</span> Home</a></li>
+        <li><a href="#work" class="mobile-nav-item"><span>01</span> Selected Work</a></li>
+        <li><a href="#experience" class="mobile-nav-item"><span>02</span> Experience</a></li>
+        <li><a href="#stack" class="mobile-nav-item"><span>03</span> Tech Stack</a></li>
+        <li><a href="#credentials" class="mobile-nav-item"><span>04</span> Credentials</a></li>
+        <li><a href="#contact" class="mobile-nav-item"><span>05</span> Contact</a></li>
+      </ul>
+      <div class="mobile-nav-footer">
+        <a href="mailto:samsunnymodern12@gmail.com" class="mobile-nav-direct">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+          <span>samsunnymodern12@gmail.com</span>
+        </a>
+      </div>
+    </div>
   </div>
 
   <!-- 2. Hero Section (Reduced Height, Focused Flow) -->

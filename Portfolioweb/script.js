@@ -197,6 +197,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // 5. Dock Active Section Spy
   const sections = document.querySelectorAll('header[id], section[id]');
   const dockLinks = document.querySelectorAll('.dock-link');
+  const mobileNavItems = document.querySelectorAll('.mobile-nav-item');
 
   window.addEventListener('scroll', () => {
     let current = '';
@@ -214,6 +215,71 @@ document.addEventListener('DOMContentLoaded', () => {
         link.classList.add('active');
       }
     });
+
+    mobileNavItems.forEach(link => {
+      if (link.getAttribute('href') === `#${current}`) {
+        link.style.color = 'var(--text-primary)';
+        link.style.backgroundColor = 'rgba(255, 255, 255, 0.08)';
+      } else {
+        link.style.color = '';
+        link.style.backgroundColor = '';
+      }
+    });
+  });
+
+  // 6. Mobile Navigation Drawer Controller
+  const mobileToggle = document.getElementById('dockMobileToggle');
+  const mobileNavPanel = document.getElementById('mobileNavPanel');
+
+  function openMobileNav() {
+    if (!mobileNavPanel || !mobileToggle) return;
+    mobileNavPanel.classList.add('active');
+    mobileNavPanel.setAttribute('aria-hidden', 'false');
+    mobileToggle.classList.add('active');
+    mobileToggle.setAttribute('aria-expanded', 'true');
+  }
+
+  function closeMobileNav() {
+    if (!mobileNavPanel || !mobileToggle) return;
+    mobileNavPanel.classList.remove('active');
+    mobileNavPanel.setAttribute('aria-hidden', 'true');
+    mobileToggle.classList.remove('active');
+    mobileToggle.setAttribute('aria-expanded', 'false');
+  }
+
+  if (mobileToggle) {
+    mobileToggle.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const isActive = mobileNavPanel.classList.contains('active');
+      if (isActive) {
+        closeMobileNav();
+      } else {
+        openMobileNav();
+      }
+    });
+  }
+
+  // Close mobile nav when tapping any link
+  document.querySelectorAll('.mobile-nav-item, .mobile-nav-direct').forEach(link => {
+    link.addEventListener('click', () => {
+      closeMobileNav();
+    });
+  });
+
+  // Close when clicking outside the panel
+  document.addEventListener('click', (e) => {
+    if (mobileNavPanel && mobileNavPanel.classList.contains('active')) {
+      if (!mobileNavPanel.contains(e.target) && !mobileToggle.contains(e.target)) {
+        closeMobileNav();
+      }
+    }
+  });
+
+  // Close on Escape key
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && mobileNavPanel && mobileNavPanel.classList.contains('active')) {
+      closeMobileNav();
+    }
   });
 
 });
