@@ -3,7 +3,7 @@
  * Inspired by 21st.dev & Magic UI:
  * - Floating dock scroll tracking & active section spy
  * - Category filter chips with seamless display toggling
- * - Clean Certificate inspection modal with metadata
+ * - Clean Certificate inspection modal (certificates only display when clicked)
  * - In-place clipboard copy with instant checkmark feedback
  */
 
@@ -83,7 +83,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   };
 
-  // 2. Lightbox Modal Handling
+  // 2. Lightbox Modal Handling (Certificates only display when clicked)
   const modal = document.getElementById('certModal');
   const modalClose = document.getElementById('modalClose');
   const modalImg = document.getElementById('modalImg');
@@ -125,6 +125,14 @@ document.addEventListener('DOMContentLoaded', () => {
     trigger.addEventListener('click', () => {
       const key = trigger.getAttribute('data-cert');
       openModal(key);
+    });
+
+    trigger.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        const key = trigger.getAttribute('data-cert');
+        openModal(key);
+      }
     });
   });
 

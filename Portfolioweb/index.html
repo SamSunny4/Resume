@@ -72,7 +72,7 @@
         <div class="hero-text-col">
           <div class="status-indicator">
             <span class="dot-pulse"></span>
-            <span>Available for high-impact roles & projects</span>
+            <span>Available for high-impact software & AI roles</span>
           </div>
 
           <h1 class="hero-name">Sam Sunny</h1>
@@ -84,7 +84,7 @@
 
           <div class="hero-actions-row">
             <a href="#projects" class="btn-solid">
-              <span>View Projects</span>
+              <span>View Selected Work</span>
               <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
             </a>
             <a href="#credentials" class="btn-outline">
@@ -406,7 +406,7 @@
     </div>
   </section>
 
-  <!-- Verified Credentials & Certificates (Minimal Gallery & Lightbox) -->
+  <!-- Verified Credentials & Certificates (Minimal List with Click-to-View Modal) -->
   <section class="section" id="credentials">
     <div class="container">
       
@@ -414,116 +414,179 @@
         <div>
           <h2 class="section-title">Verified Credentials</h2>
         </div>
-        <span class="section-counter">02 / 06</span>
+        <span class="section-counter">Click any credential to inspect certificate</span>
       </div>
 
-      <div class="certs-list-clean">
+      <!-- Clean List: No images displayed directly on page until clicked -->
+      <div class="credentials-list-minimal">
         
         <!-- Credential 1: AI Samasya -->
-        <div class="cert-item-clean" data-cert="national-hackathon">
-          <div>
-            <div class="cert-thumb-box">
-              <img src="assets/certificates/nationalhackathon.jpg" alt="AI Samasya National Hackathon Certificate" class="cert-thumb-img" loading="lazy">
+        <div class="credential-row-clean" data-cert="national-hackathon" role="button" tabindex="0" aria-label="Inspect National 2nd Prize Certificate">
+          <div class="cred-left">
+            <div class="cred-icon-box">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="8" r="7"></circle>
+                <polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline>
+              </svg>
             </div>
-            <div class="cert-meta-tag">Govt. of Kerala &bull; Jan 2026</div>
-            <h3 class="cert-title-clean">National 2nd Prize — AI SAMASYA Hackathon</h3>
-            <p class="cert-info-clean">
-              Awarded ₹30,000 cash prize among 30 national finalist teams (ICGAIFE 3.0) for Leadis AI developmental screening platform.
-            </p>
+            <div class="cred-info">
+              <div class="cred-meta-line">
+                <span class="cred-issuer">Govt. of Kerala (Dept. of Higher Education & IHRD)</span>
+                <span class="cred-sep">&bull;</span>
+                <span class="cred-date">January 2026</span>
+              </div>
+              <h3 class="cred-title">National Level 2nd Prize — AI SAMASYA Hackathon</h3>
+              <p class="cred-desc">Won 2nd Place and ₹30,000 cash prize among 30 national finalist teams (ICGAIFE 3.0) for Leadis AI developmental screening platform.</p>
+            </div>
           </div>
-          <div class="cert-bottom-row">
-            <span>Verified Award</span>
-            <span class="cert-inspect-label">Inspect &rarr;</span>
+          <div class="cred-right">
+            <span class="cred-badge badge-gold">🏆 ₹30,000 Award</span>
+            <span class="cred-action-btn">
+              <span>Inspect Certificate</span>
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17l10-10M7 7h10v10"/></svg>
+            </span>
           </div>
         </div>
 
         <!-- Credential 2: ISRO -->
-        <div class="cert-item-clean" data-cert="isro-hackathon">
-          <div>
-            <div class="cert-thumb-box">
-              <img src="assets/certificates/isrohackathon.png" alt="ISRO Bharatiya Antariksh Hackathon Certificate" class="cert-thumb-img" loading="lazy">
+        <div class="credential-row-clean" data-cert="isro-hackathon" role="button" tabindex="0" aria-label="Inspect ISRO Bharatiya Antariksh Hackathon Certificate">
+          <div class="cred-left">
+            <div class="cred-icon-box">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+              </svg>
             </div>
-            <div class="cert-meta-tag">ISRO × Hack2Skill &bull; 2025</div>
-            <h3 class="cert-title-clean">Bharatiya Antariksh Hackathon 2025</h3>
-            <p class="cert-info-clean">
-              Official Certificate of Acknowledgement for innovative software addressing real-world space and technology challenges (Code: 2025H2S06BAH25–P05177).
-            </p>
+            <div class="cred-info">
+              <div class="cred-meta-line">
+                <span class="cred-issuer">ISRO &bull; Hack2Skill</span>
+                <span class="cred-sep">&bull;</span>
+                <span class="cred-date">2025</span>
+              </div>
+              <h3 class="cred-title">Bharatiya Antariksh Hackathon 2025</h3>
+              <p class="cred-desc">Official Certificate of Acknowledgement for innovative software addressing real-world space and technology challenges (Code: 2025H2S06BAH25–P05177).</p>
+            </div>
           </div>
-          <div class="cert-bottom-row">
-            <span>ISRO Recognized</span>
-            <span class="cert-inspect-label">Inspect &rarr;</span>
+          <div class="cred-right">
+            <span class="cred-badge">🚀 ISRO Acknowledged</span>
+            <span class="cred-action-btn">
+              <span>Inspect Certificate</span>
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17l10-10M7 7h10v10"/></svg>
+            </span>
           </div>
         </div>
 
         <!-- Credential 3: NPTEL -->
-        <div class="cert-item-clean" data-cert="nptel-python">
-          <div>
-            <div class="cert-thumb-box">
-              <img src="assets/certificates/nptel.png" alt="NPTEL Python for Data Science Certificate" class="cert-thumb-img" loading="lazy">
+        <div class="credential-row-clean" data-cert="nptel-python" role="button" tabindex="0" aria-label="Inspect NPTEL Elite Python Certificate">
+          <div class="cred-left">
+            <div class="cred-icon-box">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M22 10v6M2 10l10-5 10 5-10 5z"></path>
+                <path d="M6 12v5c3 3 9 3 12 0v-5"></path>
+              </svg>
             </div>
-            <div class="cert-meta-tag">NPTEL & IIT Madras &bull; 2025</div>
-            <h3 class="cert-title-clean">Python for Data Science — Elite Certificate</h3>
-            <p class="cert-info-clean">
-              12-week intensive certification completed with an Elite distinction (73%), covering NumPy, Pandas, statistical modeling, and data visualization.
-            </p>
+            <div class="cred-info">
+              <div class="cred-meta-line">
+                <span class="cred-issuer">NPTEL &bull; IIT Madras</span>
+                <span class="cred-sep">&bull;</span>
+                <span class="cred-date">2025</span>
+              </div>
+              <h3 class="cred-title">Python for Data Science — Elite Certificate</h3>
+              <p class="cred-desc">12-week national certification completed with an Elite distinction (73%), covering NumPy, Pandas, data handling, and scientific visualization.</p>
+            </div>
           </div>
-          <div class="cert-bottom-row">
-            <span>Elite (73%)</span>
-            <span class="cert-inspect-label">Inspect &rarr;</span>
+          <div class="cred-right">
+            <span class="cred-badge badge-elite">🎓 Elite (73%)</span>
+            <span class="cred-action-btn">
+              <span>Inspect Certificate</span>
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17l10-10M7 7h10v10"/></svg>
+            </span>
           </div>
         </div>
 
         <!-- Credential 4: Program Representative -->
-        <div class="cert-item-clean" data-cert="program-rep">
-          <div>
-            <div class="cert-thumb-box">
-              <img src="assets/certificates/programrep.jpg" alt="Program Representative Certificate" class="cert-thumb-img" loading="lazy">
+        <div class="credential-row-clean" data-cert="program-rep" role="button" tabindex="0" aria-label="Inspect Program Representative Certificate">
+          <div class="cred-left">
+            <div class="cred-icon-box">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                <circle cx="9" cy="7" r="4"></circle>
+                <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+              </svg>
             </div>
-            <div class="cert-meta-tag">MITS College Union &bull; 2025–2026</div>
-            <h3 class="cert-title-clean">Program Representative (UG) — CSE (AI)</h3>
-            <p class="cert-info-clean">
-              Certificate of Appreciation awarded by the Principal for institutional leadership representing the AI department in the College Union.
-            </p>
+            <div class="cred-info">
+              <div class="cred-meta-line">
+                <span class="cred-issuer">MITS College Union &bull; Principal</span>
+                <span class="cred-sep">&bull;</span>
+                <span class="cred-date">2025–2026</span>
+              </div>
+              <h3 class="cred-title">Program Representative (UG) — CSE (AI)</h3>
+              <p class="cred-desc">Certificate of Appreciation awarded by the Principal for institutional leadership representing the AI department in the College Union.</p>
+            </div>
           </div>
-          <div class="cert-bottom-row">
-            <span>Union Leadership</span>
-            <span class="cert-inspect-label">Inspect &rarr;</span>
+          <div class="cred-right">
+            <span class="cred-badge">🎖️ Union Leadership</span>
+            <span class="cred-action-btn">
+              <span>Inspect Certificate</span>
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17l10-10M7 7h10v10"/></svg>
+            </span>
           </div>
         </div>
 
         <!-- Credential 5: MERN Stack -->
-        <div class="cert-item-clean" data-cert="mern-stack">
-          <div>
-            <div class="cert-thumb-box">
-              <img src="assets/certificates/mernstack.jpg" alt="MERN Stack Certificate" class="cert-thumb-img" loading="lazy">
+        <div class="credential-row-clean" data-cert="mern-stack" role="button" tabindex="0" aria-label="Inspect MERN Stack Certificate">
+          <div class="cred-left">
+            <div class="cred-icon-box">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="16 18 22 12 16 6"></polyline>
+                <polyline points="8 6 2 12 8 18"></polyline>
+              </svg>
             </div>
-            <div class="cert-meta-tag">Full-Stack Certification &bull; 2025</div>
-            <h3 class="cert-title-clean">Full Stack MERN Web Development</h3>
-            <p class="cert-info-clean">
-              Production web engineering covering React SPA architecture, Node.js/Express REST microservices, and MongoDB schema design.
-            </p>
+            <div class="cred-info">
+              <div class="cred-meta-line">
+                <span class="cred-issuer">Web Architecture Certification</span>
+                <span class="cred-sep">&bull;</span>
+                <span class="cred-date">2025</span>
+              </div>
+              <h3 class="cred-title">Full Stack MERN Web Development</h3>
+              <p class="cred-desc">Production web engineering covering React SPA architecture, Node.js/Express REST microservices, and MongoDB schema design.</p>
+            </div>
           </div>
-          <div class="cert-bottom-row">
-            <span>Web Architecture</span>
-            <span class="cert-inspect-label">Inspect &rarr;</span>
+          <div class="cred-right">
+            <span class="cred-badge">⚡ Full Stack Architecture</span>
+            <span class="cred-action-btn">
+              <span>Inspect Certificate</span>
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17l10-10M7 7h10v10"/></svg>
+            </span>
           </div>
         </div>
 
         <!-- Credential 6: Enerya -->
-        <div class="cert-item-clean" data-cert="enerya-hackathon">
-          <div>
-            <div class="cert-thumb-box">
-              <img src="assets/certificates/Eneryahackathon.png" alt="Enerya Hackathon Certificate" class="cert-thumb-img" loading="lazy">
+        <div class="credential-row-clean" data-cert="enerya-hackathon" role="button" tabindex="0" aria-label="Inspect Enerya Hackathon Certificate">
+          <div class="cred-left">
+            <div class="cred-icon-box">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="18" y1="20" x2="18" y2="10"></line>
+                <line x1="12" y1="20" x2="12" y2="4"></line>
+                <line x1="6" y1="20" x2="6" y2="14"></line>
+              </svg>
             </div>
-            <div class="cert-meta-tag">Enerya Tech &bull; 2025</div>
-            <h3 class="cert-title-clean">Enerya Hackathon Achievement</h3>
-            <p class="cert-info-clean">
-              Sprint hackathon engineering functional software applications under time-constrained sprint conditions.
-            </p>
+            <div class="cred-info">
+              <div class="cred-meta-line">
+                <span class="cred-issuer">Enerya Tech Conclave</span>
+                <span class="cred-sep">&bull;</span>
+                <span class="cred-date">2025</span>
+              </div>
+              <h3 class="cred-title">Enerya Hackathon Achievement</h3>
+              <p class="cred-desc">Sprint hackathon achievement engineering functional software applications under time-constrained sprint conditions.</p>
+            </div>
           </div>
-          <div class="cert-bottom-row">
-            <span>Hackathon</span>
-            <span class="cert-inspect-label">Inspect &rarr;</span>
+          <div class="cred-right">
+            <span class="cred-badge">💡 Rapid Sprint</span>
+            <span class="cred-action-btn">
+              <span>Inspect Certificate</span>
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17l10-10M7 7h10v10"/></svg>
+            </span>
           </div>
         </div>
 
@@ -640,7 +703,7 @@
     </div>
   </section>
 
-  <!-- Lightbox Modal for Certificate Inspection -->
+  <!-- Lightbox Modal for Certificate Inspection (Only rendered when clicked) -->
   <div class="modal-overlay" id="certModal" role="dialog" aria-modal="true" aria-hidden="true">
     <div class="modal-content-box">
       <button class="modal-close-minimal" id="modalClose" aria-label="Close modal">&times;</button>
