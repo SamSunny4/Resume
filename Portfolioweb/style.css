@@ -89,6 +89,50 @@ body {
 }
 
 /* ==========================================================================
+   0. Scroll Progress Bar & Reveal Animations
+   ========================================================================== */
+.scroll-progress-track {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2.5px;
+  background: transparent;
+  z-index: 1000;
+  pointer-events: none;
+}
+
+.scroll-progress-bar {
+  height: 100%;
+  width: 100%;
+  transform-origin: left;
+  transform: scaleX(0);
+  background: linear-gradient(90deg, #22c55e, #38bdf8, #a855f7, #ffffff);
+  box-shadow: 0 0 10px rgba(56, 189, 248, 0.7);
+  will-change: transform;
+}
+
+/* Scroll-Triggered Fluid Reveal Animations */
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1), transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+
+.reveal.revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.stagger-group > .reveal:nth-child(1) { transition-delay: 0.04s; }
+.stagger-group > .reveal:nth-child(2) { transition-delay: 0.10s; }
+.stagger-group > .reveal:nth-child(3) { transition-delay: 0.16s; }
+.stagger-group > .reveal:nth-child(4) { transition-delay: 0.22s; }
+.stagger-group > .reveal:nth-child(5) { transition-delay: 0.28s; }
+.stagger-group > .reveal:nth-child(6) { transition-delay: 0.34s; }
+
+/* ==========================================================================
    1. Minimalist Floating Pill Dock Navigation
    ========================================================================== */
 .floating-dock-wrap {
@@ -403,11 +447,56 @@ body {
 }
 
 .dot-pulse {
-  width: 6px;
-  height: 6px;
+  position: relative;
+  width: 7px;
+  height: 7px;
   border-radius: 50%;
   background-color: var(--accent-green);
-  box-shadow: 0 0 6px rgba(34, 197, 94, 0.7);
+  box-shadow: 0 0 8px rgba(34, 197, 94, 0.8);
+  flex-shrink: 0;
+}
+
+.dot-pulse::after {
+  content: '';
+  position: absolute;
+  inset: -3px;
+  border-radius: 50%;
+  border: 1px solid var(--accent-green);
+  animation: pulseRing 2.4s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
+}
+
+@keyframes pulseRing {
+  0% {
+    transform: scale(0.6);
+    opacity: 0.9;
+  }
+  70% {
+    transform: scale(2.4);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(2.4);
+    opacity: 0;
+  }
+}
+
+@keyframes heroFadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.hero-text-col {
+  animation: heroFadeUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.hero-portrait-col {
+  animation: heroFadeUp 0.8s 0.15s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
 .hero-name-tech {
@@ -456,11 +545,17 @@ body {
   padding: 0.65rem 1.35rem;
   border-radius: var(--radius-sm);
   text-decoration: none;
-  transition: opacity 0.15s ease;
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s ease, opacity 0.2s ease;
 }
 
 .btn-primary-tech:hover {
-  opacity: 0.88;
+  opacity: 0.92;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(255, 255, 255, 0.16);
+}
+
+.btn-primary-tech:active {
+  transform: scale(0.97);
 }
 
 .btn-secondary-tech {
@@ -475,12 +570,18 @@ body {
   padding: 0.65rem 1.25rem;
   border-radius: var(--radius-sm);
   text-decoration: none;
-  transition: border-color 0.15s ease, background-color 0.15s ease;
+  transition: border-color 0.2s ease, background-color 0.2s ease, transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s ease;
 }
 
 .btn-secondary-tech:hover {
   border-color: var(--border-hover);
-  background-color: rgba(255, 255, 255, 0.04);
+  background-color: rgba(255, 255, 255, 0.06);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
+}
+
+.btn-secondary-tech:active {
+  transform: scale(0.97);
 }
 
 .hero-sublinks {
@@ -640,12 +741,50 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  transition: border-color 0.15s ease, background-color 0.15s ease;
+  position: relative;
+  overflow: hidden;
+  transition: border-color 0.25s ease, background-color 0.25s ease, transform 0.28s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.28s ease;
 }
 
 .case-card:hover {
-  border-color: var(--border-hover);
+  border-color: rgba(255, 255, 255, 0.2);
   background-color: var(--bg-card-hover);
+  transform: translateY(-4px);
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 255, 255, 0.08);
+}
+
+/* Spotlight Cursor Glow on Interactive Cards */
+.case-card::before,
+.stack-group::before,
+.credential-row-clean::before,
+.timeline-row::before,
+.contact-card-box::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(450px circle at var(--mouse-x, -999px) var(--mouse-y, -999px), rgba(255, 255, 255, 0.065), transparent 75%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+  border-radius: inherit;
+  z-index: 1;
+}
+
+.case-card:hover::before,
+.stack-group:hover::before,
+.credential-row-clean:hover::before,
+.timeline-row:hover::before,
+.contact-card-box:hover::before {
+  opacity: 1;
+}
+
+.case-card > *,
+.stack-group > *,
+.credential-row-clean > *,
+.timeline-row > *,
+.contact-card-box > * {
+  position: relative;
+  z-index: 2;
 }
 
 .col-12 { grid-column: span 12; }
@@ -792,6 +931,15 @@ body {
   justify-content: space-between;
   align-items: flex-start;
   gap: 1.5rem;
+  position: relative;
+  overflow: hidden;
+  transition: border-color 0.2s ease, background-color 0.2s ease, transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s ease;
+}
+
+.timeline-row:hover {
+  border-color: rgba(255, 255, 255, 0.2);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
 }
 
 .timeline-info h3 {
@@ -892,13 +1040,16 @@ body {
   border-radius: var(--radius-md);
   padding: 1.25rem 1.6rem;
   cursor: pointer;
-  transition: border-color 0.15s ease, background-color 0.15s ease, transform 0.15s var(--ease-fast);
+  position: relative;
+  overflow: hidden;
+  transition: border-color 0.2s ease, background-color 0.2s ease, transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s ease;
 }
 
 .credential-row-clean:hover {
-  border-color: var(--border-hover);
+  border-color: rgba(255, 255, 255, 0.22);
   background-color: var(--bg-card-hover);
-  transform: translateX(2px);
+  transform: translateX(4px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
 }
 
 .cred-left {
@@ -997,9 +1148,9 @@ body {
 .modal-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.94);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  background: rgba(0, 0, 0, 0.9);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
   z-index: 1000;
   display: flex;
   align-items: center;
@@ -1007,12 +1158,27 @@ body {
   padding: 1.5rem;
   opacity: 0;
   visibility: hidden;
-  transition: opacity 0.2s ease, visibility 0.2s ease;
+  transition: opacity 0.28s var(--ease-fast), visibility 0.28s;
 }
 
 .modal-overlay.active {
   opacity: 1;
   visibility: visible;
+}
+
+.modal-overlay.active .modal-content-box {
+  animation: modalPopIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes modalPopIn {
+  from {
+    opacity: 0;
+    transform: scale(0.93) translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
 }
 
 .modal-content-box {
@@ -1621,4 +1787,19 @@ body {
     grid-template-columns: 1fr;
   }
 }
+
+/* Accessibility: Respect Reduced Motion Preferences */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .reveal {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+
 

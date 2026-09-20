@@ -26,9 +26,14 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
 
-  <link rel="stylesheet" href="style.css?v=2.2">
+  <link rel="stylesheet" href="style.css?v=2.3">
 </head>
 <body>
+
+  <!-- Top Scroll Progress Bar -->
+  <div class="scroll-progress-track" aria-hidden="true">
+    <div class="scroll-progress-bar" id="scrollProgressBar"></div>
+  </div>
 
   <!-- Subtle Technical Dot Matrix Background -->
   <div class="bg-dots" aria-hidden="true"></div>
@@ -150,22 +155,22 @@
   </header>
 
   <!-- 3. Proof Strip (Numbers Visually Dominant, Strong Dividers) -->
-  <section class="proof-strip">
+  <section class="proof-strip reveal">
     <div class="container">
-      <div class="proof-grid">
-        <div class="proof-item">
+      <div class="proof-grid stagger-group">
+        <div class="proof-item reveal">
           <div class="proof-number">₹30K</div>
           <div class="proof-label">AI Samasya &bull; 2nd Prize</div>
         </div>
-        <div class="proof-item">
+        <div class="proof-item reveal">
           <div class="proof-number">KeyBase v4</div>
           <div class="proof-label">Commercially deployed</div>
         </div>
-        <div class="proof-item">
+        <div class="proof-item reveal">
           <div class="proof-number">29+</div>
           <div class="proof-label">Public repositories</div>
         </div>
-        <div class="proof-item">
+        <div class="proof-item reveal">
           <div class="proof-number">3331</div>
           <div class="proof-label">KEAM State Rank</div>
         </div>
@@ -177,15 +182,15 @@
   <section class="section" id="work">
     <div class="container">
       
-      <div class="section-head-clean">
+      <div class="section-head-clean reveal">
         <h2 class="section-title-clean">Selected Work</h2>
         <span class="section-tag-subtle">01 / 06 &bull; Architecture & Deployment</span>
       </div>
 
-      <div class="projects-study-grid">
+      <div class="projects-study-grid stagger-group">
         
         <!-- Case 1: KeyBase -->
-        <article class="case-card col-8">
+        <article class="case-card col-8 reveal">
           <div class="case-card-header">
             <div class="case-top-row">
               <h3 class="case-name">KEYBASE</h3>
@@ -219,7 +224,7 @@
         </article>
 
         <!-- Case 2: GenBreed AI -->
-        <article class="case-card col-4">
+        <article class="case-card col-4 reveal">
           <div class="case-card-header">
             <div class="case-top-row">
               <h3 class="case-name">GENBREED AI</h3>
@@ -247,7 +252,7 @@
         </article>
 
         <!-- Case 3: Leadis (AI Samasya) -->
-        <article class="case-card col-6">
+        <article class="case-card col-6 reveal">
           <div class="case-card-header">
             <div class="case-top-row">
               <h3 class="case-name">LEADIS</h3>
@@ -279,7 +284,7 @@
         </article>
 
         <!-- Case 4: ShareDash -->
-        <article class="case-card col-6">
+        <article class="case-card col-6 reveal">
           <div class="case-card-header">
             <div class="case-top-row">
               <h3 class="case-name">SHAREDASH</h3>
@@ -311,7 +316,7 @@
         </article>
 
         <!-- Case 5: Blockchain Graph Explorer -->
-        <article class="case-card col-6">
+        <article class="case-card col-6 reveal">
           <div class="case-card-header">
             <div class="case-top-row">
               <h3 class="case-name">BLOCKCHAIN GRAPH EXPLORER</h3>
@@ -343,7 +348,7 @@
         </article>
 
         <!-- Case 6: InfoGrid -->
-        <article class="case-card col-6">
+        <article class="case-card col-6 reveal">
           <div class="case-card-header">
             <div class="case-top-row">
               <h3 class="case-name">INFOGRID</h3>
@@ -381,14 +386,14 @@
   <section class="section" id="experience">
     <div class="container">
       
-      <div class="section-head-clean">
+      <div class="section-head-clean reveal">
         <h2 class="section-title-clean">Experience & Leadership</h2>
         <span class="section-tag-subtle">Institutional & Technical Roles</span>
       </div>
 
-      <div class="timeline-clean">
+      <div class="timeline-clean stagger-group">
         
-        <div class="timeline-row">
+        <div class="timeline-row reveal">
           <div class="timeline-info">
             <h3>B.Tech in Computer Science & Engineering (Artificial Intelligence)</h3>
             <div class="timeline-org">Muthoot Institute of Technology and Science (MITS), Kochi</div>
@@ -397,7 +402,7 @@
           <span class="timeline-period">2024 — Present</span>
         </div>
 
-        <div class="timeline-row">
+        <div class="timeline-row reveal">
           <div class="timeline-info">
             <h3>Program Representative (UG) — CSE (AI)</h3>
             <div class="timeline-org">MITS College Union</div>
@@ -406,7 +411,7 @@
           <span class="timeline-period">2025 — 2026</span>
         </div>
 
-        <div class="timeline-row">
+        <div class="timeline-row reveal">
           <div class="timeline-info">
             <h3>Organizer — "Synergia" AI Hackathon</h3>
             <div class="timeline-org">MITS Technical Conclave</div>
@@ -415,7 +420,7 @@
           <span class="timeline-period">2026</span>
         </div>
 
-        <div class="timeline-row">
+        <div class="timeline-row reveal">
           <div class="timeline-info">
             <h3>Academic Foundation & State Rank</h3>
             <div class="timeline-org">Kerala Engineering Entrance (KEAM) &bull; CBSE</div>
@@ -432,13 +437,13 @@
   <section class="section" id="stack">
     <div class="container">
       
-      <div class="section-head-clean">
+      <div class="section-head-clean reveal">
         <h2 class="section-title-clean">Technical Stack</h2>
         <span class="section-tag-subtle">Languages &bull; Frameworks &bull; Systems</span>
       </div>
 
-      <div class="stack-matrix-clean">
-        <div class="stack-group">
+      <div class="stack-matrix-clean stagger-group">
+        <div class="stack-group reveal">
           <h3>Languages</h3>
           <div class="stack-chips-flex">
             <span class="stack-chip">Java</span>
@@ -452,7 +457,7 @@
           </div>
         </div>
 
-        <div class="stack-group">
+        <div class="stack-group reveal">
           <h3>Frameworks & Web</h3>
           <div class="stack-chips-flex">
             <span class="stack-chip">Next.js</span>
@@ -465,7 +470,7 @@
           </div>
         </div>
 
-        <div class="stack-group">
+        <div class="stack-group reveal">
           <h3>Systems & Databases</h3>
           <div class="stack-chips-flex">
             <span class="stack-chip">Neo4j Graph DB</span>
@@ -477,7 +482,7 @@
           </div>
         </div>
 
-        <div class="stack-group">
+        <div class="stack-group reveal">
           <h3>Core Domains</h3>
           <div class="stack-chips-flex">
             <span class="stack-chip">Computer Vision (MediaPipe)</span>
@@ -495,15 +500,15 @@
   <section class="section" id="credentials">
     <div class="container">
       
-      <div class="section-head-clean">
+      <div class="section-head-clean reveal">
         <h2 class="section-title-clean">Verified Credentials</h2>
         <span class="section-tag-subtle">Click any credential to inspect certificate</span>
       </div>
 
-      <div class="credentials-list-clean">
+      <div class="credentials-list-clean stagger-group">
         
         <!-- Credential 1: AI Samasya -->
-        <div class="credential-row-clean" data-cert="national-hackathon" role="button" tabindex="0" aria-label="Inspect AI Samasya 2nd Prize Certificate">
+        <div class="credential-row-clean reveal" data-cert="national-hackathon" role="button" tabindex="0" aria-label="Inspect AI Samasya 2nd Prize Certificate">
           <div class="cred-left">
             <div class="cred-icon-box">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="7"></circle><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline></svg>
@@ -528,7 +533,7 @@
         </div>
 
         <!-- Credential 2: ISRO -->
-        <div class="credential-row-clean" data-cert="isro-hackathon" role="button" tabindex="0" aria-label="Inspect ISRO Hackathon Certificate">
+        <div class="credential-row-clean reveal" data-cert="isro-hackathon" role="button" tabindex="0" aria-label="Inspect ISRO Hackathon Certificate">
           <div class="cred-left">
             <div class="cred-icon-box">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
@@ -553,7 +558,7 @@
         </div>
 
         <!-- Credential 3: NPTEL -->
-        <div class="credential-row-clean" data-cert="nptel-python" role="button" tabindex="0" aria-label="Inspect NPTEL Elite Certificate">
+        <div class="credential-row-clean reveal" data-cert="nptel-python" role="button" tabindex="0" aria-label="Inspect NPTEL Elite Certificate">
           <div class="cred-left">
             <div class="cred-icon-box">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"></path><path d="M6 12v5c3 3 9 3 12 0v-5"></path></svg>
@@ -578,7 +583,7 @@
         </div>
 
         <!-- Credential 4: Program Representative -->
-        <div class="credential-row-clean" data-cert="program-rep" role="button" tabindex="0" aria-label="Inspect Program Representative Certificate">
+        <div class="credential-row-clean reveal" data-cert="program-rep" role="button" tabindex="0" aria-label="Inspect Program Representative Certificate">
           <div class="cred-left">
             <div class="cred-icon-box">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
@@ -603,7 +608,7 @@
         </div>
 
         <!-- Credential 5: MERN Stack -->
-        <div class="credential-row-clean" data-cert="mern-stack" role="button" tabindex="0" aria-label="Inspect MERN Stack Certificate">
+        <div class="credential-row-clean reveal" data-cert="mern-stack" role="button" tabindex="0" aria-label="Inspect MERN Stack Certificate">
           <div class="cred-left">
             <div class="cred-icon-box">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
@@ -628,7 +633,7 @@
         </div>
 
         <!-- Credential 6: Enerya -->
-        <div class="credential-row-clean" data-cert="enerya-hackathon" role="button" tabindex="0" aria-label="Inspect Enerya Hackathon Certificate">
+        <div class="credential-row-clean reveal" data-cert="enerya-hackathon" role="button" tabindex="0" aria-label="Inspect Enerya Hackathon Certificate">
           <div class="cred-left">
             <div class="cred-icon-box">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
@@ -660,7 +665,7 @@
   <section class="section" id="contact">
     <div class="container">
       
-      <div class="contact-card-box">
+      <div class="contact-card-box reveal">
         <div class="contact-layout">
           <div>
             <h2 class="contact-title-tech">Let's Connect</h2>
@@ -740,6 +745,6 @@
     </div>
   </footer>
 
-  <script src="script.js?v=2.2"></script>
+  <script src="script.js?v=2.3"></script>
 </body>
 </html>

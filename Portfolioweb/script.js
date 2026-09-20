@@ -194,14 +194,37 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // 5. Dock Active Section Spy
+  // 5. Scroll Progress Bar & Dock Dynamics
+  const progressBar = document.getElementById('scrollProgressBar');
+  const floatingDock = document.querySelector('.floating-dock');
   const sections = document.querySelectorAll('header[id], section[id]');
   const dockLinks = document.querySelectorAll('.dock-link');
   const mobileNavItems = document.querySelectorAll('.mobile-nav-item');
 
-  window.addEventListener('scroll', () => {
+  let ticking = false;
+
+  function onScroll() {
+    const scrollY = window.scrollY || document.documentElement.scrollTop;
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    const progress = docHeight > 0 ? (scrollY / docHeight) : 0;
+
+    // A. Update hairline progress bar
+    if (progressBar) {
+      progressBar.style.transform = `scaleX(${progress})`;
+    }
+
+    // B. Dock scrolled elevation
+    if (floatingDock) {
+      if (scrollY > 30) {
+        floatingDock.classList.add('scrolled');
+      } else {
+        floatingDock.classList.remove('scrolled');
+      }
+    }
+
+    // C. Dock Active Section Spy
     let current = '';
-    const scrollPos = window.scrollY + 140;
+    const scrollPos = scrollY + 140;
 
     sections.forEach(sec => {
       if (scrollPos >= sec.offsetTop) {
@@ -225,9 +248,57 @@ document.addEventListener('DOMContentLoaded', () => {
         link.style.backgroundColor = '';
       }
     });
-  });
 
-  // 6. Mobile Navigation Drawer Controller
+    ticking = false;
+  }
+
+  window.addEventListener('scroll', () => {
+    if (!ticking) {
+      window.requestAnimationFrame(onScroll);
+      ticking = true;
+    }
+  }, { passive: true });
+
+  // Initial calculation
+  onScroll();
+
+  // 6. IntersectionObserver for Fluid Scroll Reveals
+  const revealElements = document.querySelectorAll('.reveal');
+  if ('IntersectionObserver' in window) {
+    const revealObserver = new IntersectionObserver((entries, observer) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('revealed');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, {
+      root: null,
+      threshold: 0.08,
+      rootMargin: '0px 0px -40px 0px'
+    });
+
+    revealElements.forEach(el => revealObserver.observe(el));
+  } else {
+    // Fallback for older browsers
+    revealElements.forEach(el => el.classList.add('revealed'));
+  }
+
+  // 7. Interactive Spotlight Cursor Glow on Cards (Desktop/Mouse)
+  if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+    const spotlightCards = document.querySelectorAll('.case-card, .stack-group, .credential-row-clean, .timeline-row, .contact-card-box');
+    spotlightCards.forEach(card => {
+      card.addEventListener('pointermove', (e) => {
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        card.style.setProperty('--mouse-x', `${x}px`);
+        card.style.setProperty('--mouse-y', `${y}px`);
+      });
+    });
+  }
+
+  // 8. Mobile Navigation Drawer Controller
   const mobileToggle = document.getElementById('dockMobileToggle');
   const mobileNavPanel = document.getElementById('mobileNavPanel');
 
