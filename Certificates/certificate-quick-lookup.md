@@ -30,3 +30,15 @@
 - **Organizer:** H2S (Hack2Skill), ISRO
 
 ---
+
+## 4. Certificate of Completion – End to End Project Lifecycle using MERN Stack
+- **Recipient:** Sam Sunny
+- **Issuer / Organization:** Zero Pixels Technologies Pvt Ltd
+- **Course:** End to End Project Lifecycle using MERN stack
+- **Key Technologies & Competencies:** JavaScript, ReactJS, MongoDB, NodeJS, Git concepts & collaborative version control
+- **Date of Completion:** July 10th, 2026
+- **Signatory:** Managing Director, Zero Pixels Technologies Pvt Ltd
+- **Reference File:** `Certificates/mernstack.jpg`
+
+---
+

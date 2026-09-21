@@ -1,0 +1,256 @@
+%-------------------------
+% ATS-Friendly Resume in LaTeX
+% Based on: Jake Gutierrez's template (github.com/jakegut/resume)
+% Adapted for: Sam Sunny
+% Version: v2
+%-------------------------
+
+\documentclass[a4paper,10pt]{article}
+
+\usepackage{latexsym}
+\usepackage[empty]{fullpage}
+\usepackage{titlesec}
+\usepackage{marvosym}
+\usepackage[usenames,dvipsnames]{color}
+\usepackage{verbatim}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+\usepackage{fancyhdr}
+\usepackage[english]{babel}
+\usepackage{tabularx}
+\input{glyphtounicode}
+
+% Font — clean sans-serif for readability
+\usepackage[sfdefault]{roboto}
+\usepackage[T1]{fontenc}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyfoot{}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+
+% Margins — tight but ATS-safe
+\addtolength{\oddsidemargin}{-0.5in}
+\addtolength{\evensidemargin}{-0.5in}
+\addtolength{\textwidth}{1in}
+\addtolength{\topmargin}{-0.6in}
+\addtolength{\textheight}{1.2in}
+
+\urlstyle{same}
+\raggedbottom
+\raggedright
+\setlength{\footskip}{4.08003pt}
+\setlength{\tabcolsep}{0in}
+
+% Section formatting
+\titleformat{\section}{
+  \vspace{-6pt}\scshape\raggedright\large\bfseries
+}{}{0em}{}[\color{black}\titlerule \vspace{-5pt}]
+
+% Ensure machine-readable / ATS-parsable PDF
+\pdfgentounicode=1
+
+%-------------------------
+% Custom commands
+%-------------------------
+\newcommand{\resumeItem}[1]{
+  \item\small{
+    {#1 \vspace{-2pt}}
+  }
+}
+
+\newcommand{\resumeSubheading}[4]{
+  \vspace{-2pt}\item
+    \begin{tabular*}{0.97\textwidth}[t]{l@{\extracolsep{\fill}}r}
+      \textbf{#1} & #2 \\
+      \textit{\small#3} & \textit{\small #4} \\
+    \end{tabular*}\vspace{-7pt}
+}
+
+\newcommand{\resumeSubSubheading}[2]{
+    \item
+    \begin{tabular*}{0.97\textwidth}{l@{\extracolsep{\fill}}r}
+      \textit{\small#1} & \textit{\small #2} \\
+    \end{tabular*}\vspace{-7pt}
+}
+
+\newcommand{\resumeProjectHeading}[2]{
+    \item
+    \begin{tabular*}{0.97\textwidth}{l@{\extracolsep{\fill}}r}
+      \small#1 & #2 \\
+    \end{tabular*}\vspace{-7pt}
+}
+
+\newcommand{\resumeSubItem}[1]{\resumeItem{#1}\vspace{-4pt}}
+
+\renewcommand\labelitemii{$\vcenter{\hbox{\tiny$\bullet$}}$}
+
+\newcommand{\resumeSubHeadingListStart}{\begin{itemize}[leftmargin=0.15in, label={}]}
+\newcommand{\resumeSubHeadingListEnd}{\end{itemize}}
+\newcommand{\resumeItemListStart}{\begin{itemize}}
+\newcommand{\resumeItemListEnd}{\end{itemize}\vspace{-5pt}}
+
+%-------------------------------------------
+%%%%%  RESUME STARTS HERE  %%%%%%%%%%%%%%%%%
+%-------------------------------------------
+
+\begin{document}
+
+%----------HEADING----------
+\begin{center}
+    \textbf{\Huge \scshape Sam Sunny} \\ \vspace{4pt}
+    \small \textbf{AI \& Software Developer} \\ \vspace{3pt}
+    \small
+    +91-8078748831 $|$
+    \href{mailto:samsunnymodern12@gmail.com}{\underline{samsunnymodern12@gmail.com}} $|$
+    \href{https://www.linkedin.com/in/sam-sunny-36b4772bb/}{\underline{linkedin.com/in/sam-sunny}} $|$
+    \href{https://github.com/SamSunny4}{\underline{github.com/SamSunny4}} $|$
+    Kerala, India
+\end{center}
+
+
+%-----------SUMMARY-----------
+\section{Summary}
+  \small{
+    AI-focused Computer Science undergraduate with strong academics (KEAM Rank 3331, CBSE XII 95\%, CBSE X 94\%), national hackathon recognition (2nd Place --- ICGAIFE 3.0), and hands-on experience building production-grade desktop applications, full-stack web platforms, blockchain analytics tools, and AI-driven screening systems.
+  }
+
+
+%-----------EDUCATION-----------
+\section{Education}
+  \resumeSubHeadingListStart
+    \resumeSubheading
+      {Muthoot Institute of Technology and Science (MITS)}{Kochi, Kerala}
+      {B.Tech in Computer Science and Engineering (Artificial Intelligence)}{2024 -- 2028}
+    \resumeSubheading
+      {Higher Secondary Education (CBSE XII)}{Kerala, India}
+      {Science Stream --- 95\%}{2024}
+    \resumeSubheading
+      {Secondary Education (CBSE X)}{Kerala, India}
+      {General --- 94\%}{2022}
+  \resumeSubHeadingListEnd
+
+
+%-----------PROJECTS-----------
+\section{Projects}
+    \resumeSubHeadingListStart
+
+      \resumeProjectHeading
+          {\textbf{KeyBase --- Key Management System} $|$ \emph{Java, Swing, H2 Database, ZXing}}{v4.0 --- Active}
+          \resumeItemListStart
+            \resumeItem{Built and \textbf{commercially sold} a full-featured desktop application for key duplicator shops, now actively deployed in a business firm; manages customer records, key tracking, and webcam-captured photos with an embedded H2 database --- zero server setup required.}
+            \resumeItem{Implemented multi-criteria search, date-range filtering, payment-mode (Cash/UPI) filtering, and CSV export for streamlined record management.}
+            \resumeItem{Developed a Sales Analytics Dashboard with interactive charts (daily, monthly, yearly) showing total sales, key-type distribution, and quantity metrics.}
+            \resumeItem{Engineered keyboard navigation (Ctrl+S/P/F/E shortcuts), context menus, print support with formatted reports, and a portable installer bundling a JRE for end users.}
+          \resumeItemListEnd
+
+      \resumeProjectHeading
+          {\textbf{Blockchain Transaction Graph Explorer} $|$ \emph{Next.js, Fastify, Neo4j, Three.js, JWT}}{}
+          \resumeItemListStart
+            \resumeItem{Architected a full-stack blockchain transaction monitoring and fraud detection platform with Neo4j graph database, Next.js App Router frontend, and Fastify REST API.}
+            \resumeItem{Implemented JWT-based authentication, CSV/JSON data ingestion, and suspicious-activity detection algorithms computing wallet-level risk scores.}
+            \resumeItem{Built an interactive Graph Explorer with 2D (Cytoscape.js) and 3D (Three.js) visualizations, shortest-path analysis, and live wallet tooltips; project forked by 3 GitHub users.}
+            \resumeItem{Designed a Wallet Inspector for risk profiling, fraud-pattern tagging, and cluster membership analysis across multi-hop transaction chains.}
+          \resumeItemListEnd
+
+      \resumeProjectHeading
+          {\textbf{ShareDash --- High-Speed Multipath File Transfer Engine} $|$ \emph{Rust, Kotlin, Android, WinRT, Wi-Fi Direct, BLE}}{Aug 2026}
+          \resumeItemListStart
+            \resumeItem{Architected an open-source, zero-cloud multipath file transfer system bridging Windows and Android, concurrently aggregating physical USB 3.x cable (ADB/RNDIS) and Wi-Fi Direct into a unified pipeline achieving 78--100+ MB/s.}
+            \resumeItem{Engineered an out-of-band device discovery and pairing protocol using Bluetooth Low Energy (BLE GATT) for autonomous SoftAP orchestration and 3-way handshake with zero manual configuration.}
+            \resumeItem{Developed an adaptive chunking engine (2\,MB--64\,MB) with dynamic work-stealing scheduling across heterogeneous channels and parallel in-flight streaming workers for maximum throughput.}
+            \resumeItem{Implemented multi-layer data integrity and security featuring CRC32 frame checksums, cryptographic SHA-256/BLAKE3 hashing, AES-256-GCM encryption, and concurrent direct-offset disk writes via FileChannel.}
+          \resumeItemListEnd
+
+      \resumeProjectHeading
+          {\textbf{Leadis --- AI Developmental Screening Platform} $|$ \emph{Next.js, MediaPipe, Flask, ML}}{2025}
+          \resumeItemListStart
+            \resumeItem{Developed a web platform for early identification of learning disabilities in children through multimodal behavioral analysis --- speech, gesture, and gamified assessments.}
+            \resumeItem{Integrated MediaPipe gesture recognition in-browser with a Flask ML backend for server-side inference and risk scoring.}
+            \resumeItem{Built schema-driven dynamic forms with ML-encoded field mapping for lead scoring and adaptive screening paths.}
+            \resumeItem{Won \textbf{2nd Place} at the ICGAIFE 3.0 ``AI Samasya'' national hackathon (24-hour, 30 finalist teams, INR 30,000 prize).}
+          \resumeItemListEnd
+
+    \resumeSubHeadingListEnd
+
+
+%-----------ACHIEVEMENTS-----------
+\section{Achievements}
+  \resumeSubHeadingListStart
+    \resumeProjectHeading{\textbf{KeyBase --- Commercial Sale \& Live Business Deployment}}{2025}
+    \resumeItemListStart
+      \resumeItem{Designed, developed, and \textbf{commercially sold} KeyBase v4.0 --- a desktop key-shop management system --- which is now \textbf{actively deployed and running in a business firm}, handling real customer records and daily operations.}
+      \resumeItem{Demonstrates end-to-end product ownership: requirements gathering, iterative development across 4 major versions, packaging with a portable JRE installer, and successful handoff to a paying client.}
+    \resumeItemListEnd
+    \resumeProjectHeading{\textbf{National Level 2nd Prize --- AI Samasya Hackathon (ICGAIFE 3.0)}}{Jan 2026}
+    \resumeItemListStart
+      \resumeItem{Won 2nd Place among 30 finalist teams in a 24-hour national hackathon organized by the Dept. of Higher Education and IHRD, Government of Kerala; awarded \textbf{INR 30,000}.}
+      \resumeItem{Led Team ``Beyond Vision'' to build an AI-assisted multimodal developmental screening platform for children.}
+    \resumeItemListEnd
+    \resumeProjectHeading{\textbf{Bharatiya Antariksh Hackathon 2025 (ISRO)}}{2025}
+    \resumeItemListStart
+      \resumeItem{Received Certificate of Acknowledgement from ISRO/Hack2Skill for successfully submitting an innovative idea addressing real-world space and technology challenges.}
+    \resumeItemListEnd
+    \resumeProjectHeading{\textbf{KEAM Entrance Examination}}{2024}
+    \resumeItemListStart
+      \resumeItem{Secured \textbf{State Rank 3331} in the Kerala Engineering Architecture Medical entrance examination.}
+    \resumeItemListEnd
+  \resumeSubHeadingListEnd
+
+
+%-----------CERTIFICATIONS-----------
+\section{Certifications}
+  \resumeSubHeadingListStart
+    \resumeProjectHeading{\textbf{Python for Data Science} $|$ \emph{NPTEL, IIT Madras}}{Elite Certificate}
+    \resumeItemListStart
+      \resumeItem{Completed a 12-week certification with an Elite grade (73\%), covering Python programming, data handling, NumPy, Pandas, and data visualization.}
+    \resumeItemListEnd
+    \resumeProjectHeading{\textbf{MERN Stack --- End-to-End Project Lifecycle} $|$ \emph{Zero Pixels Technologies}}{July 2026}
+    \resumeItemListStart
+      \resumeItem{Completed comprehensive certification covering full-stack web application development across React, Node.js, Express.js, MongoDB, JavaScript, and Git-based development lifecycles.}
+    \resumeItemListEnd
+    \resumeProjectHeading{\textbf{B2 English Proficiency} $|$ \emph{Cambridge Linguaskill}}{Score: 175}
+    \resumeItemListStart
+      \resumeItem{Achieved CEFR B2 level certification in English language proficiency, assessed across reading, writing, listening, and speaking.}
+    \resumeItemListEnd
+  \resumeSubHeadingListEnd
+
+
+%-----------LEADERSHIP & ACTIVITIES-----------
+\section{Leadership \& Activities}
+  \resumeSubHeadingListStart
+    \resumeProjectHeading{\textbf{Program Representative (UG) --- CSE (AI), College Union}}{2025 -- 2026}
+    \resumeItemListStart
+      \resumeItem{Represented the CSE(AI) program in the MITS College Union; received a Certificate of Appreciation from the Principal for leadership and institutional contributions.}
+    \resumeItemListEnd
+    \resumeProjectHeading{\textbf{Class Representative (S3 \& S4)}}{2025 -- 2026}
+    \resumeItemListStart
+      \resumeItem{Served as the liaison between students and faculty, coordinating academic communication and class-level concerns.}
+    \resumeItemListEnd
+    \resumeProjectHeading{\textbf{Organizer --- ``Synergia'' Hackathon}}{2026}
+    \resumeItemListStart
+      \resumeItem{Co-organized a class-level AI hackathon; managed participant registration, team coordination, judging logistics, and end-to-end event flow, fostering hands-on problem solving among peers.}
+    \resumeItemListEnd
+    \resumeProjectHeading{\textbf{Industrial Visit Coordinator --- MITS, Kochi}}{2025}
+    \resumeItemListStart
+      \resumeItem{Co-coordinated a 3-day college industrial visit, managing student logistics, scheduling, and on-ground coordination to ensure smooth execution of the entire program.}
+    \resumeItemListEnd
+  \resumeSubHeadingListEnd
+
+
+%-----------TECHNICAL SKILLS-----------
+\section{Technical Skills}
+ \begin{itemize}[leftmargin=0.15in, label={}]
+    \small{\item{
+     \textbf{Languages}{: Rust, Kotlin, Java, C\#, Python, JavaScript, TypeScript, C, SQL, HTML/CSS} \\
+     \textbf{Frameworks \& Libraries}{: Next.js, React, Node.js, Express.js, Jetpack Compose, Flask, Fastify, Tailwind CSS, MediaPipe, Three.js} \\
+     \textbf{Databases}{: Neo4j, MongoDB, H2 (embedded), SQLite, PostgreSQL} \\
+     \textbf{Developer Tools \& Protocols}{: Git, GitHub, VS Code, Docker, Wi-Fi Direct, BLE, Vercel, Cloudflare R2, Linux, Windows} \\
+     \textbf{Core Areas}{: Artificial Intelligence, Full-Stack Web Development, Data Analytics, System Design, Prompt Engineering}
+    }}
+ \end{itemize}
+
+
+%-------------------------------------------
+\end{document}
