@@ -38,6 +38,16 @@
   <!-- Subtle Technical Dot Matrix Background -->
   <div class="bg-dots" aria-hidden="true"></div>
 
+  <!-- Ambient Glowing Gradient Blur Elements -->
+  <div class="ambient-blur-container" aria-hidden="true">
+    <div class="ambient-blur-orb orb-hero-blue"></div>
+    <div class="ambient-blur-orb orb-hero-cyan"></div>
+    <div class="ambient-blur-orb orb-work-cyan"></div>
+    <div class="ambient-blur-orb orb-work-indigo"></div>
+    <div class="ambient-blur-orb orb-work-amber"></div>
+    <div class="ambient-blur-orb orb-stack-aurora"></div>
+  </div>
+
   <!-- 1. Floating Pill Dock Navigation -->
   <div class="floating-dock-wrap">
     <nav class="floating-dock" aria-label="Main Navigation">
@@ -178,207 +188,287 @@
     </div>
   </section>
 
-  <!-- 4. Selected Work (Immediately Below Proof Strip) -->
+  <!-- 4. Selected Work: Flagship 3 Projects Showcase -->
   <section class="section" id="work">
     <div class="container">
       
       <div class="section-head-clean reveal">
         <h2 class="section-title-clean">Selected Work</h2>
-        <span class="section-tag-subtle">01 / 06 &bull; Architecture & Deployment</span>
+        <span class="section-tag-subtle">01 / 03 &bull; Flagship Engineering Systems</span>
       </div>
 
-      <div class="projects-study-grid stagger-group">
+      <div class="flagship-showcase-list">
         
-        <!-- Case 1: KeyBase -->
-        <article class="case-card col-8 reveal">
-          <div class="case-card-header">
-            <div class="case-top-row">
-              <h3 class="case-name">KEYBASE</h3>
-              <span class="case-status-badge highlight">Commercial deployment &bull; v4</span>
-            </div>
-            
-            <p class="case-oneliner">Desktop CRM for locksmith businesses.</p>
-            <div class="case-stack-line">Java &bull; Swing &bull; SQLite / H2 Database &bull; ZXing</div>
-
-            <ul class="case-bullets">
-              <li>Engineered and commercially sold a full-featured desktop application for key duplication shops, actively deployed and managing daily customer operations.</li>
-              <li>Built with an embedded local database—completely offline with zero server setup or external dependencies required.</li>
-              <li>Integrated live webcam customer photo capture and barcode generation for physical key tags.</li>
-              <li>Developed sales analytics module with daily, monthly, and yearly revenue metrics and charts.</li>
-              <li>Packaged with an embedded portable JRE for single-click installation on retail workstations.</li>
-            </ul>
-          </div>
-
-          <div class="case-footer">
-            <div class="case-tags-wrap">
-              <span class="case-tag">Desktop System</span>
-              <span class="case-tag">Local SQL</span>
-              <span class="case-tag">Hardware I/O</span>
-              <span class="case-tag">Commercial v4</span>
-            </div>
-            <a href="https://github.com/SamSunny4/KeyBase" target="_blank" rel="noopener noreferrer" class="case-action-link">
-              <span>GitHub</span>
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17l10-10M7 7h10v10"/></svg>
-            </a>
-          </div>
-        </article>
-
-        <!-- Case 2: GenBreed AI -->
-        <article class="case-card col-4 reveal">
-          <div class="case-card-header">
-            <div class="case-top-row">
-              <h3 class="case-name">GENBREED AI</h3>
-              <span class="case-status-badge">Active development &bull; Research prototype</span>
+        <!-- Flagship 1: ShareDash -->
+        <article class="flagship-card" data-project="sharedash">
+          <div class="card-ambient-glow glow-cyan"></div>
+          
+          <div class="flagship-card-inner">
+            <!-- Stage 1: Logo & Title (starts with this) -->
+            <div class="project-stage-header">
+              <div class="project-logo-frame">
+                <div class="logo-blur-halo halo-cyan"></div>
+                <img src="assets/sharedash-logo.svg" alt="ShareDash Logo" class="project-brand-logo">
+              </div>
+              <div class="project-title-block">
+                <div class="project-badge-row">
+                  <span class="project-index">01 / 03</span>
+                  <span class="case-status-badge highlight-cyan">Multipath Engine &bull; 78+ MB/s Zero-LAN</span>
+                </div>
+                <h3 class="flagship-title">SHAREDASH</h3>
+                <p class="flagship-tagline">Next-Generation Zero-LAN / Zero-Internet Multipath File Transfer Engine</p>
+              </div>
             </div>
 
-            <p class="case-oneliner">AI system for genetic sequence analysis and trait optimization.</p>
-            <div class="case-stack-line">Python &bull; PyTorch &bull; FastAPI &bull; React</div>
-
-            <ul class="case-bullets">
-              <li>Computational pipeline applying machine learning to genomic sequence data for phenotypic trait prediction.</li>
-              <li>High-throughput inference microservice built with FastAPI delivering low-latency sequence evaluations.</li>
-              <li>Modular data extraction layer designed for reproducible biological data pipelines.</li>
-            </ul>
-          </div>
-
-          <div class="case-footer">
-            <div class="case-tags-wrap">
-              <span class="case-tag">Bioinformatics</span>
-              <span class="case-tag">PyTorch</span>
-              <span class="case-tag">FastAPI</span>
-            </div>
-            <span class="case-tag" style="color: var(--text-muted);">In Development</span>
-          </div>
-        </article>
-
-        <!-- Case 3: Leadis (AI Samasya) -->
-        <article class="case-card col-6 reveal">
-          <div class="case-card-header">
-            <div class="case-top-row">
-              <h3 class="case-name">LEADIS</h3>
-              <span class="case-status-badge highlight">AI Samasya &bull; 2nd Prize (₹30,000)</span>
+            <!-- Stage 2: Description (appears on scroll) -->
+            <div class="project-stage-desc">
+              <p class="flagship-lead">
+                Concurrently aggregates physical USB 3.x cable fast-path and dedicated 5 GHz / 6 GHz mobile hotspots into an ultra-high-throughput unified transmission pipeline—delivering 78+ MB/s real-world transfer speeds with zero internet, zero cloud servers, and zero configuration.
+              </p>
+              <ul class="flagship-bullets">
+                <li><strong>Simultaneous Multipath Aggregation:</strong> Bypasses single-NIC throughput bottlenecks by multiplexing file byte chunks concurrently across disparate physical interfaces (USB + Wi-Fi Direct).</li>
+                <li><strong>Autonomous BLE Radar Discovery:</strong> Out-of-band Bluetooth Low Energy beaconing protocol for instant peer device discovery and zero-click IP negotiation.</li>
+                <li><strong>Work-Stealing Dynamic Scheduler:</strong> Adaptive chunk-level load balancing prioritizing low-latency cable packets while concurrently saturating high-bandwidth wireless channels.</li>
+                <li><strong>Cryptographic Verification:</strong> End-to-end SHA-256 chunk hashing and corruption-recovery guaranteeing data integrity with zero cloud intermediaries.</li>
+              </ul>
             </div>
 
-            <p class="case-oneliner">AI-assisted developmental screening platform for learning difficulty indicators.</p>
-            <div class="case-stack-line">Next.js &bull; MediaPipe &bull; Flask &bull; ML</div>
-
-            <ul class="case-bullets">
-              <li>Browser-based computer vision integrating MediaPipe to evaluate gesture and pose indicators in real time.</li>
-              <li>Flask backend executing server-side multimodal behavioral risk assessment and scoring.</li>
-              <li>Won 2nd Place and ₹30,000 award among 30 finalist teams in a national 24-hour hackathon (ICGAIFE 3.0 / Govt. of Kerala).</li>
-            </ul>
-          </div>
-
-          <div class="case-footer">
-            <div class="case-tags-wrap">
-              <span class="case-tag">Computer Vision</span>
-              <span class="case-tag">MediaPipe</span>
-              <span class="case-tag">Next.js</span>
-              <span class="case-tag">National 2nd Prize</span>
+            <!-- Stage 3: Tech Stack with Logos (appears on scroll) -->
+            <div class="project-stage-stack">
+              <span class="stage-stack-label">ENGINEERED WITH:</span>
+              <div class="project-tech-badges">
+                <div class="tech-pill">
+                  <img src="assets/tech-icons/rust.svg" alt="Rust" class="tech-pill-icon">
+                  <span>Rust (Engine Core)</span>
+                </div>
+                <div class="tech-pill">
+                  <img src="assets/tech-icons/kotlin.svg" alt="Kotlin" class="tech-pill-icon">
+                  <span>Kotlin (Android)</span>
+                </div>
+                <div class="tech-pill">
+                  <img src="assets/tech-icons/android.svg" alt="Android" class="tech-pill-icon">
+                  <span>Android 8.0+</span>
+                </div>
+                <div class="tech-pill">
+                  <img src="assets/tech-icons/windows.svg" alt="Windows" class="tech-pill-icon">
+                  <span>WinRT / Windows 11</span>
+                </div>
+                <div class="tech-pill">
+                  <img src="assets/tech-icons/wifi.svg" alt="Wi-Fi Direct" class="tech-pill-icon">
+                  <span>Wi-Fi Direct</span>
+                </div>
+                <div class="tech-pill">
+                  <img src="assets/tech-icons/ble.svg" alt="BLE" class="tech-pill-icon">
+                  <span>BLE Beaconing</span>
+                </div>
+              </div>
             </div>
-            <a href="https://github.com/SamSunny4/Leadis" target="_blank" rel="noopener noreferrer" class="case-action-link">
-              <span>GitHub</span>
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17l10-10M7 7h10v10"/></svg>
-            </a>
+
+            <!-- Footer Action -->
+            <div class="flagship-footer">
+              <a href="https://github.com/SamSunny4/ShareDash" target="_blank" rel="noopener noreferrer" class="btn-flagship-repo">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
+                <span>View ShareDash on GitHub</span>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
+              </a>
+              <span class="flagship-meta-stat">⚡ 78+ MB/s Multipath Throughput</span>
+            </div>
           </div>
         </article>
 
-        <!-- Case 4: ShareDash -->
-        <article class="case-card col-6 reveal">
-          <div class="case-card-header">
-            <div class="case-top-row">
-              <h3 class="case-name">SHAREDASH</h3>
-              <span class="case-status-badge">Open source &bull; Zero cloud dependency</span>
+        <!-- Flagship 2: KeyBase -->
+        <article class="flagship-card" data-project="keybase">
+          <div class="card-ambient-glow glow-blue"></div>
+          
+          <div class="flagship-card-inner">
+            <!-- Stage 1: Logo & Title (starts with this) -->
+            <div class="project-stage-header">
+              <div class="project-logo-frame">
+                <div class="logo-blur-halo halo-blue"></div>
+                <img src="assets/keybase-splash.png" alt="KeyBase Logo" class="project-brand-logo">
+              </div>
+              <div class="project-title-block">
+                <div class="project-badge-row">
+                  <span class="project-index">02 / 03</span>
+                  <span class="case-status-badge highlight">Commercial Workstation &bull; v4.0 Active Production</span>
+                </div>
+                <h3 class="flagship-title">KEYBASE</h3>
+                <p class="flagship-tagline">Commercial Key Duplication CRM & Hardware-Integrated Desktop Workstation</p>
+              </div>
             </div>
 
-            <p class="case-oneliner">High-speed multipath file transfer protocol bridging Windows and Android.</p>
-            <div class="case-stack-line">Kotlin &bull; Rust &bull; Wi-Fi Direct &bull; BLE</div>
-
-            <ul class="case-bullets">
-              <li>Concurrently aggregates throughput across physical USB cable and Wi-Fi Direct into a unified pipeline.</li>
-              <li>BLE Quick Share radar discovery with dynamic work-stealing scheduling across heterogeneous channels.</li>
-              <li>Cryptographic SHA-256 chunk verification ensuring transfer integrity without cloud intermediaries.</li>
-            </ul>
-          </div>
-
-          <div class="case-footer">
-            <div class="case-tags-wrap">
-              <span class="case-tag">Multipath Networking</span>
-              <span class="case-tag">Rust</span>
-              <span class="case-tag">Kotlin</span>
-              <span class="case-tag">Wi-Fi Direct</span>
+            <!-- Stage 2: Description (appears on scroll) -->
+            <div class="project-stage-desc">
+              <p class="flagship-lead">
+                Full-featured commercial desktop application engineered for locksmith and key duplication shops—commercially sold, actively deployed, and running daily customer transactions in retail firms with zero cloud dependencies.
+              </p>
+              <ul class="flagship-bullets">
+                <li><strong>Commercial Deployment:</strong> Actively deployed and managing daily retail operations in key duplication stores, recording customer IDs, vehicle details, key types, and payments.</li>
+                <li><strong>Embedded Local Database:</strong> Built on local H2 embedded SQL storage—100% offline, zero server installation or external maintenance required on workstations.</li>
+                <li><strong>Hardware & Webcam I/O:</strong> Direct webcam integration via Sarxos for instantaneous photo capture of customers and duplicated keys, paired with ZXing barcode generation for physical tag indexing.</li>
+                <li><strong>Financial Sales Analytics:</strong> Interactive revenue dashboard featuring daily, monthly, and yearly charts, CSV batch export, and instant thermal printing.</li>
+                <li><strong>Bundled Portable JRE:</strong> Engineered zero-dependency installer bundling a portable 64-bit Java runtime for seamless 1-click execution on vanilla Windows PCs.</li>
+              </ul>
             </div>
-            <a href="https://github.com/SamSunny4/ShareDash" target="_blank" rel="noopener noreferrer" class="case-action-link">
-              <span>GitHub</span>
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17l10-10M7 7h10v10"/></svg>
-            </a>
+
+            <!-- Stage 3: Tech Stack with Logos (appears on scroll) -->
+            <div class="project-stage-stack">
+              <span class="stage-stack-label">ENGINEERED WITH:</span>
+              <div class="project-tech-badges">
+                <div class="tech-pill">
+                  <img src="assets/tech-icons/java.svg" alt="Java" class="tech-pill-icon">
+                  <span>Java 17 (LTS)</span>
+                </div>
+                <div class="tech-pill">
+                  <img src="assets/tech-icons/swing.svg" alt="Swing" class="tech-pill-icon">
+                  <span>Java Swing UI</span>
+                </div>
+                <div class="tech-pill">
+                  <img src="assets/tech-icons/sqlite.svg" alt="H2 Database" class="tech-pill-icon">
+                  <span>H2 Embedded Database</span>
+                </div>
+                <div class="tech-pill">
+                  <!-- Webcam icon -->
+                  <svg class="tech-pill-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+                  <span>Sarxos Webcam I/O</span>
+                </div>
+                <div class="tech-pill">
+                  <!-- Barcode / QR icon -->
+                  <svg class="tech-pill-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+                  <span>ZXing Barcode Engine</span>
+                </div>
+                <div class="tech-pill">
+                  <img src="assets/tech-icons/windows.svg" alt="Windows" class="tech-pill-icon">
+                  <span>Inno Setup / Portable JRE</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Footer Action -->
+            <div class="flagship-footer">
+              <a href="https://github.com/SamSunny4/KeyBase" target="_blank" rel="noopener noreferrer" class="btn-flagship-repo">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
+                <span>View KeyBase on GitHub</span>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
+              </a>
+              <span class="flagship-meta-stat">💼 Commercially Sold & Active in Retail</span>
+            </div>
           </div>
         </article>
 
-        <!-- Case 5: Blockchain Graph Explorer -->
-        <article class="case-card col-6 reveal">
-          <div class="case-card-header">
-            <div class="case-top-row">
-              <h3 class="case-name">BLOCKCHAIN GRAPH EXPLORER</h3>
-              <span class="case-status-badge">Open source &bull; DBMS</span>
+        <!-- Flagship 3: Leadis -->
+        <article class="flagship-card" data-project="leadis">
+          <div class="card-ambient-glow glow-amber"></div>
+          
+          <div class="flagship-card-inner">
+            <!-- Stage 1: Logo & Title (starts with this) -->
+            <div class="project-stage-header">
+              <div class="project-logo-frame">
+                <div class="logo-blur-halo halo-amber"></div>
+                <img src="assets/leadis-ferret.png" alt="Leadis Mascot Logo" class="project-brand-logo">
+              </div>
+              <div class="project-title-block">
+                <div class="project-badge-row">
+                  <span class="project-index">03 / 03</span>
+                  <span class="case-status-badge highlight-gold">🏆 National 2nd Prize &bull; AI Samasya (₹30,000 Award)</span>
+                </div>
+                <h3 class="flagship-title">LEADIS</h3>
+                <p class="flagship-tagline">AI-Assisted Developmental Screening & Real-Time Gesture Recognition Platform</p>
+              </div>
             </div>
 
-            <p class="case-oneliner">Graph-based AML transaction monitoring and suspicious wallet clustering engine.</p>
-            <div class="case-stack-line">Neo4j &bull; Next.js &bull; Fastify &bull; Three.js &bull; Cytoscape</div>
-
-            <ul class="case-bullets">
-              <li>Neo4j graph database implementation for dense multi-hop transaction traversal and fraud tagging.</li>
-              <li>Shortest-path heuristic algorithms to detect cyclical mixing and laundering patterns.</li>
-              <li>Interactive 2D (Cytoscape.js) and 3D (Three.js) graph visualizers rendering wallet risk metrics.</li>
-            </ul>
-          </div>
-
-          <div class="case-footer">
-            <div class="case-tags-wrap">
-              <span class="case-tag">Neo4j</span>
-              <span class="case-tag">Graph Heuristics</span>
-              <span class="case-tag">Three.js</span>
-              <span class="case-tag">Fastify</span>
-            </div>
-            <a href="https://github.com/SamSunny4/DBMS" target="_blank" rel="noopener noreferrer" class="case-action-link">
-              <span>GitHub</span>
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17l10-10M7 7h10v10"/></svg>
-            </a>
-          </div>
-        </article>
-
-        <!-- Case 6: InfoGrid -->
-        <article class="case-card col-6 reveal">
-          <div class="case-card-header">
-            <div class="case-top-row">
-              <h3 class="case-name">INFOGRID</h3>
-              <span class="case-status-badge">Active deployment &bull; Digital signage</span>
+            <!-- Stage 2: Description (appears on scroll) -->
+            <div class="project-stage-desc">
+              <p class="flagship-lead">
+                AI-assisted developmental screening platform combining browser-based computer vision with machine learning models for early identification of learning difficulties (ICGAIFE 3.0 / Govt. of Kerala).
+              </p>
+              <ul class="flagship-bullets">
+                <li><strong>National 2nd Prize Winner:</strong> Awarded 2nd Prize and ₹30,000 cash prize among 30 national finalist teams in a 24-hour hackathon organized by IHRD and Kerala Higher Education.</li>
+                <li><strong>Real-Time Client-Side Computer Vision:</strong> Integrated Google MediaPipe for sub-millisecond in-browser hand gesture and pose tracking directly via webcam.</li>
+                <li><strong>Multimodal ML Scoring Microservice:</strong> High-throughput Python Flask backend executing machine learning inference to score and classify developmental risk markers.</li>
+                <li><strong>Dynamic Schema-Driven Architecture:</strong> Adaptive assessment UI driven dynamically by JSON schemas with automated feature encoding and state persistence.</li>
+              </ul>
             </div>
 
-            <p class="case-oneliner">Digital signage content management system for 43-inch vertical campus displays.</p>
-            <div class="case-stack-line">Next.js &bull; TypeScript &bull; MongoDB &bull; Cloudflare R2</div>
-
-            <ul class="case-bullets">
-              <li>Dynamic content scheduling and automated feed rotation tailored for 43-inch vertical orientation screens.</li>
-              <li>Integrated QR code generation for interactive mobile student engagement.</li>
-              <li>Administrative dashboard backed by Cloudflare R2 cloud object storage.</li>
-            </ul>
-          </div>
-
-          <div class="case-footer">
-            <div class="case-tags-wrap">
-              <span class="case-tag">CMS Architecture</span>
-              <span class="case-tag">Cloudflare R2</span>
-              <span class="case-tag">MongoDB</span>
+            <!-- Stage 3: Tech Stack with Logos (appears on scroll) -->
+            <div class="project-stage-stack">
+              <span class="stage-stack-label">ENGINEERED WITH:</span>
+              <div class="project-tech-badges">
+                <div class="tech-pill">
+                  <img src="assets/tech-icons/nextjs.svg" alt="Next.js" class="tech-pill-icon">
+                  <span>Next.js (App Router)</span>
+                </div>
+                <div class="tech-pill">
+                  <img src="assets/tech-icons/python.svg" alt="Python" class="tech-pill-icon">
+                  <span>Python</span>
+                </div>
+                <div class="tech-pill">
+                  <img src="assets/tech-icons/flask.svg" alt="Flask" class="tech-pill-icon">
+                  <span>Flask ML Backend</span>
+                </div>
+                <div class="tech-pill">
+                  <img src="assets/tech-icons/mediapipe.svg" alt="MediaPipe" class="tech-pill-icon">
+                  <span>MediaPipe CV</span>
+                </div>
+                <div class="tech-pill">
+                  <img src="assets/tech-icons/typescript.svg" alt="TypeScript" class="tech-pill-icon">
+                  <span>TypeScript</span>
+                </div>
+                <div class="tech-pill">
+                  <img src="assets/tech-icons/tailwind.svg" alt="Tailwind CSS" class="tech-pill-icon">
+                  <span>Tailwind CSS</span>
+                </div>
+              </div>
             </div>
-            <a href="https://github.com/SamSunny4/InfoGrid" target="_blank" rel="noopener noreferrer" class="case-action-link">
-              <span>GitHub</span>
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17l10-10M7 7h10v10"/></svg>
-            </a>
+
+            <!-- Footer Action -->
+            <div class="flagship-footer">
+              <a href="https://github.com/SamSunny4/Leadis" target="_blank" rel="noopener noreferrer" class="btn-flagship-repo">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
+                <span>View Leadis on GitHub</span>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
+              </a>
+              <span class="flagship-meta-stat">🥈 2nd Place of 30 Finalist Teams Nationally</span>
+            </div>
           </div>
         </article>
 
       </div>
+
+      <!-- "Then see all projects go to GitHub" Banner -->
+      <div class="see-all-github-banner reveal">
+        <div class="banner-blur-backdrop"></div>
+        <div class="banner-content">
+          <div class="banner-icon-col">
+            <div class="github-octo-bubble">
+              <svg width="34" height="34" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
+            </div>
+          </div>
+          <div class="banner-text-col">
+            <div class="banner-tag">COMPLETE REPOSITORY ECOSYSTEM</div>
+            <h3 class="banner-title">Explore 29+ Repositories on GitHub</h3>
+            <p class="banner-desc">
+              Beyond the flagship trio, explore specialized systems including the <strong>Blockchain Graph Explorer (Neo4j / Three.js)</strong>, campus digital signage <strong>InfoGrid (Cloudflare R2)</strong>, algorithmic trading pipelines, and AI research prototypes.
+            </p>
+            <div class="banner-repo-tags">
+              <span class="mini-repo-tag">Neo4j Graph Explorer</span>
+              <span class="mini-repo-tag">InfoGrid Signage</span>
+              <span class="mini-repo-tag">Fitman Engine</span>
+              <span class="mini-repo-tag">AiSam Vision</span>
+              <span class="mini-repo-tag">Rainiest</span>
+              <span class="mini-repo-tag">+24 More Repositories</span>
+            </div>
+          </div>
+          <div class="banner-action-col">
+            <a href="https://github.com/SamSunny4?tab=repositories" target="_blank" rel="noopener noreferrer" class="btn-github-large">
+              <span>See All Projects on GitHub</span>
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
+            </a>
+            <span class="banner-subtext">github.com/SamSunny4 &bull; Open Source</span>
+          </div>
+        </div>
+      </div>
+
     </div>
   </section>
 
@@ -446,49 +536,52 @@
         <div class="stack-group reveal">
           <h3>Languages</h3>
           <div class="stack-chips-flex">
-            <span class="stack-chip">Java</span>
-            <span class="stack-chip">Python</span>
-            <span class="stack-chip">C#</span>
-            <span class="stack-chip">TypeScript</span>
-            <span class="stack-chip">JavaScript</span>
-            <span class="stack-chip">Kotlin</span>
-            <span class="stack-chip">C</span>
-            <span class="stack-chip">SQL</span>
+            <span class="stack-chip"><img src="assets/tech-icons/java.svg" alt="Java" class="stack-chip-icon">Java</span>
+            <span class="stack-chip"><img src="assets/tech-icons/python.svg" alt="Python" class="stack-chip-icon">Python</span>
+            <span class="stack-chip"><img src="assets/tech-icons/rust.svg" alt="Rust" class="stack-chip-icon">Rust</span>
+            <span class="stack-chip"><img src="assets/tech-icons/cs.svg" alt="C#" class="stack-chip-icon">C#</span>
+            <span class="stack-chip"><img src="assets/tech-icons/typescript.svg" alt="TypeScript" class="stack-chip-icon">TypeScript</span>
+            <span class="stack-chip"><img src="assets/tech-icons/javascript.svg" alt="JavaScript" class="stack-chip-icon">JavaScript</span>
+            <span class="stack-chip"><img src="assets/tech-icons/kotlin.svg" alt="Kotlin" class="stack-chip-icon">Kotlin</span>
+            <span class="stack-chip"><img src="assets/tech-icons/c.svg" alt="C" class="stack-chip-icon">C</span>
+            <span class="stack-chip"><img src="assets/tech-icons/postgres.svg" alt="SQL" class="stack-chip-icon">SQL</span>
           </div>
         </div>
 
         <div class="stack-group reveal">
           <h3>Frameworks & Web</h3>
           <div class="stack-chips-flex">
-            <span class="stack-chip">Next.js</span>
-            <span class="stack-chip">React</span>
-            <span class="stack-chip">.NET MAUI</span>
-            <span class="stack-chip">Flask</span>
-            <span class="stack-chip">Fastify</span>
-            <span class="stack-chip">Tailwind CSS</span>
-            <span class="stack-chip">Swing</span>
+            <span class="stack-chip"><img src="assets/tech-icons/nextjs.svg" alt="Next.js" class="stack-chip-icon">Next.js</span>
+            <span class="stack-chip"><img src="assets/tech-icons/react.svg" alt="React" class="stack-chip-icon">React</span>
+            <span class="stack-chip"><img src="assets/tech-icons/dotnet.svg" alt=".NET MAUI" class="stack-chip-icon">.NET MAUI</span>
+            <span class="stack-chip"><img src="assets/tech-icons/flask.svg" alt="Flask" class="stack-chip-icon">Flask</span>
+            <span class="stack-chip"><img src="assets/tech-icons/fastapi.svg" alt="Fastify" class="stack-chip-icon">Fastify</span>
+            <span class="stack-chip"><img src="assets/tech-icons/tailwind.svg" alt="Tailwind CSS" class="stack-chip-icon">Tailwind CSS</span>
+            <span class="stack-chip"><img src="assets/tech-icons/swing.svg" alt="Swing" class="stack-chip-icon">Swing UI</span>
           </div>
         </div>
 
         <div class="stack-group reveal">
           <h3>Systems & Databases</h3>
           <div class="stack-chips-flex">
-            <span class="stack-chip">Neo4j Graph DB</span>
-            <span class="stack-chip">MongoDB</span>
-            <span class="stack-chip">PostgreSQL</span>
-            <span class="stack-chip">SQLite / H2</span>
-            <span class="stack-chip">Cloudflare R2</span>
-            <span class="stack-chip">Docker</span>
+            <span class="stack-chip"><img src="assets/tech-icons/neo4j.svg" alt="Neo4j" class="stack-chip-icon">Neo4j Graph DB</span>
+            <span class="stack-chip"><img src="assets/tech-icons/mongodb.svg" alt="MongoDB" class="stack-chip-icon">MongoDB</span>
+            <span class="stack-chip"><img src="assets/tech-icons/postgres.svg" alt="PostgreSQL" class="stack-chip-icon">PostgreSQL</span>
+            <span class="stack-chip"><img src="assets/tech-icons/sqlite.svg" alt="SQLite / H2" class="stack-chip-icon">SQLite / H2</span>
+            <span class="stack-chip"><img src="assets/tech-icons/cloudflare.svg" alt="Cloudflare" class="stack-chip-icon">Cloudflare R2</span>
+            <span class="stack-chip"><img src="assets/tech-icons/docker.svg" alt="Docker" class="stack-chip-icon">Docker</span>
           </div>
         </div>
 
         <div class="stack-group reveal">
-          <h3>Core Domains</h3>
+          <h3>Core Domains & Tools</h3>
           <div class="stack-chips-flex">
-            <span class="stack-chip">Computer Vision (MediaPipe)</span>
-            <span class="stack-chip">Graph Analytics & Heuristics</span>
-            <span class="stack-chip">Multipath Networking</span>
-            <span class="stack-chip">Desktop Systems Packaging</span>
+            <span class="stack-chip"><img src="assets/tech-icons/mediapipe.svg" alt="MediaPipe" class="stack-chip-icon">MediaPipe (Vision)</span>
+            <span class="stack-chip"><img src="assets/tech-icons/neo4j.svg" alt="Graph Analytics" class="stack-chip-icon">Graph Analytics</span>
+            <span class="stack-chip"><img src="assets/tech-icons/wifi.svg" alt="Multipath Networking" class="stack-chip-icon">Multipath Networking</span>
+            <span class="stack-chip"><img src="assets/tech-icons/windows.svg" alt="Desktop Systems" class="stack-chip-icon">Desktop Packaging</span>
+            <span class="stack-chip"><img src="assets/tech-icons/git.svg" alt="Git" class="stack-chip-icon">Git</span>
+            <span class="stack-chip"><img src="assets/tech-icons/linux.svg" alt="Linux" class="stack-chip-icon">Linux / Shell</span>
           </div>
         </div>
       </div>

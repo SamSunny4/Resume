@@ -79,6 +79,95 @@ body {
   -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 25%, #000 40%, transparent 100%);
 }
 
+/* ==========================================================================
+   Ambient Blur Elements & Glowing Gradient Halos
+   ========================================================================== */
+.ambient-blur-container {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.ambient-blur-orb {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  filter: blur(100px);
+  -webkit-filter: blur(100px);
+  opacity: 0.42;
+  will-change: transform, opacity;
+  animation: floatAmbient 18s ease-in-out infinite alternate;
+}
+
+@keyframes floatAmbient {
+  0% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(24px, -30px) scale(1.08); }
+  100% { transform: translate(-20px, 20px) scale(0.95); }
+}
+
+.orb-hero-blue {
+  top: 60px;
+  right: -60px;
+  width: 480px;
+  height: 480px;
+  background: radial-gradient(circle, rgba(59, 130, 246, 0.3) 0%, rgba(147, 51, 234, 0.18) 50%, transparent 75%);
+  animation-duration: 20s;
+}
+
+.orb-hero-cyan {
+  top: 220px;
+  left: -80px;
+  width: 380px;
+  height: 380px;
+  background: radial-gradient(circle, rgba(6, 182, 212, 0.22) 0%, rgba(59, 130, 246, 0.12) 60%, transparent 75%);
+  animation-duration: 18s;
+  animation-delay: -5s;
+}
+
+.orb-work-cyan {
+  top: 920px;
+  left: -100px;
+  width: 550px;
+  height: 550px;
+  background: radial-gradient(circle, rgba(6, 182, 212, 0.26) 0%, rgba(16, 185, 129, 0.15) 50%, transparent 75%);
+  filter: blur(120px);
+  animation-duration: 22s;
+}
+
+.orb-work-indigo {
+  top: 1550px;
+  right: -100px;
+  width: 580px;
+  height: 580px;
+  background: radial-gradient(circle, rgba(99, 102, 241, 0.28) 0%, rgba(59, 130, 246, 0.18) 50%, transparent 75%);
+  filter: blur(120px);
+  animation-duration: 24s;
+  animation-delay: -8s;
+}
+
+.orb-work-amber {
+  top: 2250px;
+  left: -100px;
+  width: 540px;
+  height: 540px;
+  background: radial-gradient(circle, rgba(245, 158, 11, 0.22) 0%, rgba(168, 85, 247, 0.16) 55%, transparent 75%);
+  filter: blur(120px);
+  animation-duration: 20s;
+  animation-delay: -3s;
+}
+
+.orb-stack-aurora {
+  top: 3000px;
+  right: 5%;
+  width: 620px;
+  height: 480px;
+  background: radial-gradient(circle, rgba(168, 85, 247, 0.24) 0%, rgba(6, 182, 212, 0.18) 50%, transparent 75%);
+  filter: blur(130px);
+  animation-duration: 25s;
+}
+
 .container {
   width: 100%;
   max-width: var(--max-w);
@@ -727,6 +816,481 @@ body {
   color: var(--text-muted);
 }
 
+/* ==========================================================================
+   4. Flagship 3 Projects Showcase Layout & Progressive Scroll Stages
+   ========================================================================== */
+.flagship-showcase-list {
+  display: flex;
+  flex-direction: column;
+  gap: 2.25rem;
+}
+
+.flagship-card {
+  position: relative;
+  background: rgba(12, 12, 16, 0.78);
+  backdrop-filter: blur(28px) saturate(190%);
+  -webkit-backdrop-filter: blur(28px) saturate(190%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-lg);
+  padding: 2.25rem 2.5rem;
+  overflow: hidden;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.65), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  transition: border-color 0.3s ease, transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease;
+}
+
+.flagship-card:hover {
+  border-color: rgba(255, 255, 255, 0.2);
+  transform: translateY(-4px);
+  box-shadow: 0 28px 60px rgba(0, 0, 0, 0.8), 0 0 30px rgba(255, 255, 255, 0.04);
+}
+
+/* Card Internal Ambient Glow */
+.card-ambient-glow {
+  position: absolute;
+  top: -80px;
+  right: -80px;
+  width: 340px;
+  height: 340px;
+  border-radius: 50%;
+  filter: blur(80px);
+  -webkit-filter: blur(80px);
+  opacity: 0.35;
+  pointer-events: none;
+  z-index: 1;
+  transition: opacity 0.4s ease;
+}
+
+.flagship-card:hover .card-ambient-glow {
+  opacity: 0.6;
+}
+
+.glow-cyan {
+  background: radial-gradient(circle, #06b6d4 0%, #3b82f6 60%, transparent 80%);
+}
+
+.glow-blue {
+  background: radial-gradient(circle, #3b82f6 0%, #6366f1 60%, transparent 80%);
+}
+
+.glow-amber {
+  background: radial-gradient(circle, #f59e0b 0%, #10b981 60%, transparent 80%);
+}
+
+.flagship-card-inner {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* Progressive Scroll Stages */
+/* Stage 1: Logo & Title (Starts with this) */
+.project-stage-header {
+  display: flex;
+  align-items: center;
+  gap: 1.75rem;
+  opacity: 0;
+  transform: translateY(22px);
+  transition: opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1) 0.06s, transform 0.65s cubic-bezier(0.16, 1, 0.3, 1) 0.06s;
+}
+
+.flagship-card.revealed .project-stage-header {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.project-logo-frame {
+  position: relative;
+  width: 76px;
+  height: 76px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-md);
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 8px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+}
+
+.project-brand-logo {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  position: relative;
+  z-index: 2;
+  filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.5));
+}
+
+.logo-blur-halo {
+  position: absolute;
+  inset: -14px;
+  border-radius: 50%;
+  filter: blur(22px);
+  -webkit-filter: blur(22px);
+  opacity: 0.65;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.halo-cyan {
+  background: radial-gradient(circle, rgba(6, 182, 212, 0.75) 0%, rgba(59, 130, 246, 0.35) 60%, transparent 80%);
+}
+
+.halo-blue {
+  background: radial-gradient(circle, rgba(59, 130, 246, 0.75) 0%, rgba(99, 102, 241, 0.35) 60%, transparent 80%);
+}
+
+.halo-amber {
+  background: radial-gradient(circle, rgba(245, 158, 11, 0.75) 0%, rgba(16, 185, 129, 0.35) 60%, transparent 80%);
+}
+
+.project-title-block {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.project-badge-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.15rem;
+}
+
+.project-index {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  letter-spacing: 0.06em;
+}
+
+.case-status-badge.highlight-cyan {
+  background: rgba(6, 182, 212, 0.12);
+  color: #38bdf8;
+  border-color: rgba(6, 182, 212, 0.35);
+  font-weight: 600;
+}
+
+.case-status-badge.highlight-gold {
+  background: rgba(245, 158, 11, 0.12);
+  color: #fbbf24;
+  border-color: rgba(245, 158, 11, 0.35);
+  font-weight: 600;
+}
+
+.flagship-title {
+  font-family: var(--font-display);
+  font-size: 1.85rem;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  color: var(--text-primary);
+  line-height: 1.15;
+}
+
+.flagship-tagline {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  font-weight: 500;
+  line-height: 1.45;
+}
+
+/* Stage 2: Description (Appears on scroll) */
+.project-stage-desc {
+  opacity: 0;
+  transform: translateY(22px);
+  transition: opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1) 0.22s, transform 0.65s cubic-bezier(0.16, 1, 0.3, 1) 0.22s;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  padding-top: 1.35rem;
+}
+
+.flagship-card.revealed .project-stage-desc {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.flagship-lead {
+  font-size: 0.98rem;
+  color: var(--text-body);
+  line-height: 1.65;
+  margin-bottom: 1.15rem;
+}
+
+.flagship-bullets {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+
+.flagship-bullets li {
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+  line-height: 1.55;
+  padding-left: 1.5rem;
+  position: relative;
+}
+
+.flagship-bullets li::before {
+  content: '▹';
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: var(--accent-green);
+  font-family: var(--font-mono);
+  font-size: 0.95rem;
+}
+
+.flagship-bullets li strong {
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+/* Stage 3: Tech Stack with Logos (Appears on scroll) */
+.project-stage-stack {
+  opacity: 0;
+  transform: translateY(22px);
+  transition: opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1) 0.38s, transform 0.65s cubic-bezier(0.16, 1, 0.3, 1) 0.38s;
+  background: rgba(255, 255, 255, 0.025);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: var(--radius-md);
+  padding: 1.1rem 1.35rem;
+}
+
+.flagship-card.revealed .project-stage-stack {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.stage-stack-label {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  margin-bottom: 0.85rem;
+}
+
+.project-tech-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+}
+
+.tech-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  background: rgba(18, 18, 24, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: var(--radius-full);
+  padding: 0.35rem 0.85rem;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: var(--text-body);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.tech-pill-icon {
+  width: 17px;
+  height: 17px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+.tech-pill:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.25);
+  color: var(--text-primary);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+/* Footer Action */
+.flagship-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 0.5rem;
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1) 0.52s, transform 0.65s cubic-bezier(0.16, 1, 0.3, 1) 0.52s;
+}
+
+.flagship-card.revealed .flagship-footer {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.btn-flagship-repo {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: var(--text-primary);
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-decoration: none;
+  padding: 0.65rem 1.35rem;
+  border-radius: var(--radius-sm);
+  transition: all 0.2s ease;
+}
+
+.btn-flagship-repo:hover {
+  background: rgba(255, 255, 255, 0.14);
+  border-color: rgba(255, 255, 255, 0.3);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
+}
+
+.flagship-meta-stat {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: var(--text-muted);
+}
+
+/* ==========================================================================
+   "See All Projects on GitHub" Banner
+   ========================================================================== */
+.see-all-github-banner {
+  margin-top: 2.75rem;
+  position: relative;
+  background: rgba(14, 14, 18, 0.82);
+  backdrop-filter: blur(28px) saturate(190%);
+  -webkit-backdrop-filter: blur(28px) saturate(190%);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-lg);
+  padding: 2.5rem;
+  overflow: hidden;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7);
+  transition: border-color 0.3s ease, transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.see-all-github-banner:hover {
+  border-color: rgba(255, 255, 255, 0.25);
+  transform: translateY(-3px);
+}
+
+.banner-blur-backdrop {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 520px;
+  height: 260px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(59, 130, 246, 0.2) 0%, rgba(168, 85, 247, 0.15) 50%, transparent 75%);
+  filter: blur(80px);
+  -webkit-filter: blur(80px);
+  pointer-events: none;
+}
+
+.banner-content {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 2rem;
+}
+
+.github-octo-bubble {
+  width: 64px;
+  height: 64px;
+  border-radius: var(--radius-md);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-primary);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+}
+
+.banner-tag {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--accent-green);
+  margin-bottom: 0.35rem;
+}
+
+.banner-title {
+  font-family: var(--font-display);
+  font-size: 1.45rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin-bottom: 0.5rem;
+}
+
+.banner-desc {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  line-height: 1.55;
+  max-width: 600px;
+  margin-bottom: 0.85rem;
+}
+
+.banner-repo-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.mini-repo-tag {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  padding: 0.2rem 0.55rem;
+  border-radius: var(--radius-sm);
+}
+
+.banner-action-col {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.5rem;
+  flex-shrink: 0;
+}
+
+.btn-github-large {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+  background: var(--text-primary);
+  color: var(--text-inverse);
+  font-size: 0.9rem;
+  font-weight: 700;
+  text-decoration: none;
+  padding: 0.75rem 1.4rem;
+  border-radius: var(--radius-sm);
+  box-shadow: 0 8px 24px rgba(255, 255, 255, 0.15);
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.btn-github-large:hover {
+  background: #ffffff;
+  transform: translateY(-2px);
+  box-shadow: 0 12px 30px rgba(255, 255, 255, 0.25);
+}
+
+.banner-subtext {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--text-muted);
+}
+
 .projects-study-grid {
   display: grid;
   grid-template-columns: repeat(12, 1fr);
@@ -754,6 +1318,8 @@ body {
 }
 
 /* Spotlight Cursor Glow on Interactive Cards */
+.flagship-card::before,
+.see-all-github-banner::before,
 .case-card::before,
 .stack-group::before,
 .credential-row-clean::before,
@@ -1003,23 +1569,43 @@ body {
 .stack-chips-flex {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.4rem;
+  gap: 0.55rem;
 }
 
 .stack-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
   font-family: var(--font-mono);
   font-size: 0.8rem;
-  color: var(--text-secondary);
-  background: #08080b;
-  border: 1px solid var(--border-card);
-  padding: 0.3rem 0.65rem;
+  color: var(--text-body);
+  background: rgba(255, 255, 255, 0.035);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 0.35rem 0.75rem;
   border-radius: var(--radius-sm);
-  transition: all 0.15s ease;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.stack-chip-icon {
+  width: 18px;
+  height: 18px;
+  object-fit: contain;
+  flex-shrink: 0;
+  transition: transform 0.2s ease;
 }
 
 .stack-chip:hover {
-  border-color: var(--border-hover);
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.22);
   color: var(--text-primary);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+}
+
+.stack-chip:hover .stack-chip-icon {
+  transform: scale(1.15);
 }
 
 /* ==========================================================================
@@ -1604,6 +2190,57 @@ body {
     justify-content: center;
     min-height: 42px;
     touch-action: manipulation;
+  }
+
+  /* Flagship Projects Mobile */
+  .flagship-card {
+    padding: 1.5rem 1.25rem;
+  }
+
+  .project-stage-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .project-logo-frame {
+    width: 60px;
+    height: 60px;
+  }
+
+  .flagship-title {
+    font-size: 1.45rem;
+  }
+
+  .flagship-footer {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.85rem;
+  }
+
+  .btn-flagship-repo {
+    width: 100%;
+    justify-content: center;
+  }
+
+  /* GitHub Banner Mobile */
+  .see-all-github-banner {
+    padding: 1.75rem 1.25rem;
+  }
+
+  .banner-content {
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+
+  .banner-action-col {
+    align-items: stretch;
+    width: 100%;
+  }
+
+  .btn-github-large {
+    width: 100%;
+    justify-content: center;
   }
 
   /* Experience Timeline */

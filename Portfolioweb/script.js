@@ -263,7 +263,7 @@ document.addEventListener('DOMContentLoaded', () => {
   onScroll();
 
   // 6. IntersectionObserver for Fluid Scroll Reveals
-  const revealElements = document.querySelectorAll('.reveal');
+  const revealElements = document.querySelectorAll('.reveal, .flagship-card');
   if ('IntersectionObserver' in window) {
     const revealObserver = new IntersectionObserver((entries, observer) => {
       entries.forEach(entry => {
@@ -286,7 +286,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // 7. Interactive Spotlight Cursor Glow on Cards (Desktop/Mouse)
   if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
-    const spotlightCards = document.querySelectorAll('.case-card, .stack-group, .credential-row-clean, .timeline-row, .contact-card-box');
+    const spotlightCards = document.querySelectorAll('.flagship-card, .see-all-github-banner, .case-card, .stack-group, .credential-row-clean, .timeline-row, .contact-card-box');
     spotlightCards.forEach(card => {
       card.addEventListener('pointermove', (e) => {
         const rect = card.getBoundingClientRect();
