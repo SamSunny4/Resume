@@ -188,70 +188,109 @@
     </div>
   </section>
 
-  <!-- 4. Selected Work: Flagship 3 Projects Showcase -->
-  <section class="section" id="work">
-    <div class="container">
+  <!-- 4. Cinematic Interactive Projects Runway -->
+  <section class="cinematic-work-section" id="work">
+    
+    <!-- Sticky Fullscreen Viewport (Pins on scroll, cinematic negative space) -->
+    <div class="cinematic-viewport" id="cinematicViewport">
       
-      <div class="section-head-clean reveal">
-        <h2 class="section-title-clean">Selected Work</h2>
-        <span class="section-tag-subtle">01 / 03 &bull; Flagship Engineering Systems</span>
-      </div>
+      <!-- Dynamic Ambient Radial Glow Aura (Changes color per scene) -->
+      <div class="cinema-ambient-aura aura-scene-0" id="cinemaAmbientAura" aria-hidden="true"></div>
 
-      <div class="flagship-showcase-list">
+      <!-- Subtle Film Vignette Overlay -->
+      <div class="cinema-vignette-overlay" aria-hidden="true"></div>
+
+      <!-- Cinematic HUD Scrubber / Track Navigation -->
+      <nav class="cinema-hud-nav" aria-label="Project Scenes Navigation">
+        <button type="button" class="cinema-hud-dot active" data-scene-target="0" aria-label="Intro: My Projects">
+          <span class="hud-dot-circle"></span>
+          <span class="hud-dot-label">MY PROJECTS</span>
+        </button>
+        <button type="button" class="cinema-hud-dot" data-scene-target="1" aria-label="Project 1: ShareDash">
+          <span class="hud-dot-circle"></span>
+          <span class="hud-dot-label">SHAREDASH</span>
+        </button>
+        <button type="button" class="cinema-hud-dot" data-scene-target="2" aria-label="Project 2: KeyBase">
+          <span class="hud-dot-circle"></span>
+          <span class="hud-dot-label">KEYBASE</span>
+        </button>
+        <button type="button" class="cinema-hud-dot" data-scene-target="3" aria-label="Project 3: Leadis">
+          <span class="hud-dot-circle"></span>
+          <span class="hud-dot-label">LEADIS</span>
+        </button>
+        <button type="button" class="cinema-hud-dot" data-scene-target="4" aria-label="Finale: GitHub Ecosystem">
+          <span class="hud-dot-circle"></span>
+          <span class="hud-dot-label">GITHUB</span>
+        </button>
+      </nav>
+
+      <!-- Stage Container (Laser-focused, vast empty screen around content) -->
+      <div class="cinema-stage-container">
         
-        <!-- Flagship 1: ShareDash -->
-        <article class="flagship-card" data-project="sharedash">
-          <div class="card-ambient-glow glow-cyan"></div>
-          
-          <div class="flagship-card-inner">
-            <!-- Stage 1: Logo & Title (starts with this) -->
-            <div class="project-stage-header">
-              <div class="project-logo-frame">
-                <div class="logo-blur-halo halo-cyan"></div>
-                <img src="assets/sharedash-logo.svg" alt="ShareDash Logo" class="project-brand-logo">
+        <!-- SCENE 0: Title Card "MY PROJECTS" -->
+        <div class="cinema-scene scene-intro active" id="cinemaScene0">
+          <div class="cinema-focal-card text-center">
+            <div class="cinema-pre-tag">[ 01 // SELECTED ARCHITECTURE ]</div>
+            <h2 class="cinema-title-grand">MY PROJECTS</h2>
+            <p class="cinema-subtitle-grand">
+              Three flagship systems engineered for extreme speed, offline reliability, and clinical AI.
+            </p>
+            <div class="cinema-scroll-prompt">
+              <span>Scroll to enter showcase</span>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M7 13l5 5 5-5M7 6l5 5 5-5"/></svg>
+            </div>
+          </div>
+        </div>
+
+        <!-- SCENE 1: SHAREDASH -->
+        <div class="cinema-scene scene-project" id="cinemaScene1">
+          <div class="cinema-focal-card">
+            
+            <!-- Beat 1: Logo and Title -->
+            <div class="cinema-beat cinema-beat-header">
+              <div class="cinema-logo-frame">
+                <div class="cinema-logo-halo halo-cyan"></div>
+                <img src="assets/sharedash-logo.svg" alt="ShareDash Logo" class="cinema-logo-asset">
               </div>
-              <div class="project-title-block">
-                <div class="project-badge-row">
-                  <span class="project-index">01 / 03</span>
-                  <span class="case-status-badge highlight-cyan">Multipath Engine &bull; 78+ MB/s Zero-LAN</span>
+              <div class="cinema-title-info">
+                <div class="cinema-meta-badge-row">
+                  <span class="cinema-index-num">01 / 03</span>
+                  <span class="cinema-badge badge-cyan">MULTIPATH ENGINE</span>
                 </div>
-                <h3 class="flagship-title">SHAREDASH</h3>
-                <p class="flagship-tagline">Next-Generation Zero-LAN / Zero-Internet Multipath File Transfer Engine</p>
+                <h3 class="cinema-project-title">SHAREDASH</h3>
               </div>
             </div>
 
-            <!-- Stage 2: Description (appears on scroll) -->
-            <div class="project-stage-desc">
-              <p class="flagship-lead">
-                Concurrently aggregates physical USB 3.x cable fast-path and dedicated 5 GHz / 6 GHz mobile hotspots into an ultra-high-throughput unified transmission pipeline—delivering 78+ MB/s real-world transfer speeds with zero internet, zero cloud servers, and zero configuration.
+            <!-- Beat 2: Marketing Punchlines -->
+            <div class="cinema-beat cinema-beat-desc">
+              <p class="cinema-punch-lead">
+                Zero cables needed. Zero internet required.
               </p>
-              <ul class="flagship-bullets">
-                <li><strong>Simultaneous Multipath Aggregation:</strong> Bypasses single-NIC throughput bottlenecks by multiplexing file byte chunks concurrently across disparate physical interfaces (USB + Wi-Fi Direct).</li>
-                <li><strong>Autonomous BLE Radar Discovery:</strong> Out-of-band Bluetooth Low Energy beaconing protocol for instant peer device discovery and zero-click IP negotiation.</li>
-                <li><strong>Work-Stealing Dynamic Scheduler:</strong> Adaptive chunk-level load balancing prioritizing low-latency cable packets while concurrently saturating high-bandwidth wireless channels.</li>
-                <li><strong>Cryptographic Verification:</strong> End-to-end SHA-256 chunk hashing and corruption-recovery guaranteeing data integrity with zero cloud intermediaries.</li>
-              </ul>
+              <p class="cinema-punch-body">
+                Aggregates USB 3.x and 5 GHz Wi-Fi Direct into one unified <strong>78+ MB/s pipeline</strong>.
+                Windows & Android seamlessly bridged with out-of-band BLE radar discovery and cryptographic chunk integrity.
+              </p>
             </div>
 
-            <!-- Stage 3: Tech Stack with Logos (appears on scroll) -->
-            <div class="project-stage-stack">
-              <span class="stage-stack-label">ENGINEERED WITH:</span>
-              <div class="project-tech-badges">
+            <!-- Beat 3: Tech Stack with Logos -->
+            <div class="cinema-beat cinema-beat-stack">
+              <span class="cinema-stack-kicker">ENGINEERED WITH</span>
+              <div class="cinema-tech-grid">
                 <div class="tech-pill">
                   <img src="assets/tech-icons/rust.svg" alt="Rust" class="tech-pill-icon">
-                  <span>Rust (Engine Core)</span>
+                  <span>Rust Core</span>
                 </div>
                 <div class="tech-pill">
                   <img src="assets/tech-icons/kotlin.svg" alt="Kotlin" class="tech-pill-icon">
-                  <span>Kotlin (Android)</span>
+                  <span>Kotlin</span>
                 </div>
                 <div class="tech-pill">
                   <img src="assets/tech-icons/android.svg" alt="Android" class="tech-pill-icon">
-                  <span>Android 8.0+</span>
+                  <span>Android 8+</span>
                 </div>
                 <div class="tech-pill">
-                  <img src="assets/tech-icons/windows.svg" alt="Windows" class="tech-pill-icon">
-                  <span>WinRT / Windows 11</span>
+                  <img src="assets/tech-icons/windows.svg" alt="WinRT" class="tech-pill-icon">
+                  <span>WinRT</span>
                 </div>
                 <div class="tech-pill">
                   <img src="assets/tech-icons/wifi.svg" alt="Wi-Fi Direct" class="tech-pill-icon">
@@ -259,144 +298,133 @@
                 </div>
                 <div class="tech-pill">
                   <img src="assets/tech-icons/ble.svg" alt="BLE" class="tech-pill-icon">
-                  <span>BLE Beaconing</span>
+                  <span>BLE Radar</span>
                 </div>
+              </div>
+
+              <!-- Action Link -->
+              <div class="cinema-action-bar">
+                <a href="https://github.com/SamSunny4/ShareDash" target="_blank" rel="noopener noreferrer" class="cinema-action-btn">
+                  <span>View ShareDash on GitHub</span>
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M7 17l10-10M7 7h10v10"/></svg>
+                </a>
+                <span class="cinema-pill-tag">⚡ 78+ MB/s Multipath Pipeline</span>
               </div>
             </div>
 
-            <!-- Footer Action -->
-            <div class="flagship-footer">
-              <a href="https://github.com/SamSunny4/ShareDash" target="_blank" rel="noopener noreferrer" class="btn-flagship-repo">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
-                <span>View ShareDash on GitHub</span>
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
-              </a>
-              <span class="flagship-meta-stat">⚡ 78+ MB/s Multipath Throughput</span>
-            </div>
           </div>
-        </article>
+        </div>
 
-        <!-- Flagship 2: KeyBase -->
-        <article class="flagship-card" data-project="keybase">
-          <div class="card-ambient-glow glow-blue"></div>
-          
-          <div class="flagship-card-inner">
-            <!-- Stage 1: Logo & Title (starts with this) -->
-            <div class="project-stage-header">
-              <div class="project-logo-frame">
-                <div class="logo-blur-halo halo-blue"></div>
-                <img src="assets/keybase-splash.png" alt="KeyBase Logo" class="project-brand-logo">
+        <!-- SCENE 2: KEYBASE -->
+        <div class="cinema-scene scene-project" id="cinemaScene2">
+          <div class="cinema-focal-card">
+            
+            <!-- Beat 1: Logo and Title -->
+            <div class="cinema-beat cinema-beat-header">
+              <div class="cinema-logo-frame">
+                <div class="cinema-logo-halo halo-blue"></div>
+                <img src="assets/keybase-splash.png" alt="KeyBase Logo" class="cinema-logo-asset">
               </div>
-              <div class="project-title-block">
-                <div class="project-badge-row">
-                  <span class="project-index">02 / 03</span>
-                  <span class="case-status-badge highlight">Commercial Workstation &bull; v4.0 Active Production</span>
+              <div class="cinema-title-info">
+                <div class="cinema-meta-badge-row">
+                  <span class="cinema-index-num">02 / 03</span>
+                  <span class="cinema-badge badge-blue">COMMERCIAL WORKSTATION</span>
                 </div>
-                <h3 class="flagship-title">KEYBASE</h3>
-                <p class="flagship-tagline">Commercial Key Duplication CRM & Hardware-Integrated Desktop Workstation</p>
+                <h3 class="cinema-project-title">KEYBASE</h3>
               </div>
             </div>
 
-            <!-- Stage 2: Description (appears on scroll) -->
-            <div class="project-stage-desc">
-              <p class="flagship-lead">
-                Full-featured commercial desktop application engineered for locksmith and key duplication shops—commercially sold, actively deployed, and running daily customer transactions in retail firms with zero cloud dependencies.
+            <!-- Beat 2: Marketing Punchlines -->
+            <div class="cinema-beat cinema-beat-desc">
+              <p class="cinema-punch-lead">
+                Built for the real world. Sold and running in production firms.
               </p>
-              <ul class="flagship-bullets">
-                <li><strong>Commercial Deployment:</strong> Actively deployed and managing daily retail operations in key duplication stores, recording customer IDs, vehicle details, key types, and payments.</li>
-                <li><strong>Embedded Local Database:</strong> Built on local H2 embedded SQL storage—100% offline, zero server installation or external maintenance required on workstations.</li>
-                <li><strong>Hardware & Webcam I/O:</strong> Direct webcam integration via Sarxos for instantaneous photo capture of customers and duplicated keys, paired with ZXing barcode generation for physical tag indexing.</li>
-                <li><strong>Financial Sales Analytics:</strong> Interactive revenue dashboard featuring daily, monthly, and yearly charts, CSV batch export, and instant thermal printing.</li>
-                <li><strong>Bundled Portable JRE:</strong> Engineered zero-dependency installer bundling a portable 64-bit Java runtime for seamless 1-click execution on vanilla Windows PCs.</li>
-              </ul>
+              <p class="cinema-punch-body">
+                Full-featured desktop CRM with 100% offline embedded database and live webcam customer capture.
+                Zero server overhead. Bundled portable JRE for single-click deployment on retail workstations.
+              </p>
             </div>
 
-            <!-- Stage 3: Tech Stack with Logos (appears on scroll) -->
-            <div class="project-stage-stack">
-              <span class="stage-stack-label">ENGINEERED WITH:</span>
-              <div class="project-tech-badges">
+            <!-- Beat 3: Tech Stack with Logos -->
+            <div class="cinema-beat cinema-beat-stack">
+              <span class="cinema-stack-kicker">ENGINEERED WITH</span>
+              <div class="cinema-tech-grid">
                 <div class="tech-pill">
                   <img src="assets/tech-icons/java.svg" alt="Java" class="tech-pill-icon">
                   <span>Java 17 (LTS)</span>
                 </div>
                 <div class="tech-pill">
                   <img src="assets/tech-icons/swing.svg" alt="Swing" class="tech-pill-icon">
-                  <span>Java Swing UI</span>
+                  <span>Swing UI</span>
                 </div>
                 <div class="tech-pill">
-                  <img src="assets/tech-icons/sqlite.svg" alt="H2 Database" class="tech-pill-icon">
-                  <span>H2 Embedded Database</span>
+                  <img src="assets/tech-icons/sqlite.svg" alt="H2" class="tech-pill-icon">
+                  <span>H2 Database</span>
                 </div>
                 <div class="tech-pill">
-                  <!-- Webcam icon -->
                   <svg class="tech-pill-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
-                  <span>Sarxos Webcam I/O</span>
+                  <span>Sarxos Webcam</span>
                 </div>
                 <div class="tech-pill">
-                  <!-- Barcode / QR icon -->
                   <svg class="tech-pill-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
-                  <span>ZXing Barcode Engine</span>
+                  <span>ZXing Barcode</span>
                 </div>
                 <div class="tech-pill">
                   <img src="assets/tech-icons/windows.svg" alt="Windows" class="tech-pill-icon">
-                  <span>Inno Setup / Portable JRE</span>
+                  <span>Inno Setup</span>
                 </div>
+              </div>
+
+              <!-- Action Link -->
+              <div class="cinema-action-bar">
+                <a href="https://github.com/SamSunny4/KeyBase" target="_blank" rel="noopener noreferrer" class="cinema-action-btn">
+                  <span>View KeyBase on GitHub</span>
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M7 17l10-10M7 7h10v10"/></svg>
+                </a>
+                <span class="cinema-pill-tag">💼 Commercially Sold & Active in Retail</span>
               </div>
             </div>
 
-            <!-- Footer Action -->
-            <div class="flagship-footer">
-              <a href="https://github.com/SamSunny4/KeyBase" target="_blank" rel="noopener noreferrer" class="btn-flagship-repo">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
-                <span>View KeyBase on GitHub</span>
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
-              </a>
-              <span class="flagship-meta-stat">💼 Commercially Sold & Active in Retail</span>
-            </div>
           </div>
-        </article>
+        </div>
 
-        <!-- Flagship 3: Leadis -->
-        <article class="flagship-card" data-project="leadis">
-          <div class="card-ambient-glow glow-amber"></div>
-          
-          <div class="flagship-card-inner">
-            <!-- Stage 1: Logo & Title (starts with this) -->
-            <div class="project-stage-header">
-              <div class="project-logo-frame">
-                <div class="logo-blur-halo halo-amber"></div>
-                <img src="assets/leadis-ferret.png" alt="Leadis Mascot Logo" class="project-brand-logo">
+        <!-- SCENE 3: LEADIS -->
+        <div class="cinema-scene scene-project" id="cinemaScene3">
+          <div class="cinema-focal-card">
+            
+            <!-- Beat 1: Logo and Title -->
+            <div class="cinema-beat cinema-beat-header">
+              <div class="cinema-logo-frame">
+                <div class="cinema-logo-halo halo-amber"></div>
+                <img src="assets/leadis-ferret.png" alt="Leadis Logo" class="cinema-logo-asset">
               </div>
-              <div class="project-title-block">
-                <div class="project-badge-row">
-                  <span class="project-index">03 / 03</span>
-                  <span class="case-status-badge highlight-gold">🏆 National 2nd Prize &bull; AI Samasya (₹30,000 Award)</span>
+              <div class="cinema-title-info">
+                <div class="cinema-meta-badge-row">
+                  <span class="cinema-index-num">03 / 03</span>
+                  <span class="cinema-badge badge-gold">🏆 NATIONAL 2ND PRIZE (₹30K)</span>
                 </div>
-                <h3 class="flagship-title">LEADIS</h3>
-                <p class="flagship-tagline">AI-Assisted Developmental Screening & Real-Time Gesture Recognition Platform</p>
+                <h3 class="cinema-project-title">LEADIS</h3>
               </div>
             </div>
 
-            <!-- Stage 2: Description (appears on scroll) -->
-            <div class="project-stage-desc">
-              <p class="flagship-lead">
-                AI-assisted developmental screening platform combining browser-based computer vision with machine learning models for early identification of learning difficulties (ICGAIFE 3.0 / Govt. of Kerala).
+            <!-- Beat 2: Marketing Punchlines -->
+            <div class="cinema-beat cinema-beat-desc">
+              <p class="cinema-punch-lead">
+                Early developmental screening powered by browser computer vision.
               </p>
-              <ul class="flagship-bullets">
-                <li><strong>National 2nd Prize Winner:</strong> Awarded 2nd Prize and ₹30,000 cash prize among 30 national finalist teams in a 24-hour hackathon organized by IHRD and Kerala Higher Education.</li>
-                <li><strong>Real-Time Client-Side Computer Vision:</strong> Integrated Google MediaPipe for sub-millisecond in-browser hand gesture and pose tracking directly via webcam.</li>
-                <li><strong>Multimodal ML Scoring Microservice:</strong> High-throughput Python Flask backend executing machine learning inference to score and classify developmental risk markers.</li>
-                <li><strong>Dynamic Schema-Driven Architecture:</strong> Adaptive assessment UI driven dynamically by JSON schemas with automated feature encoding and state persistence.</li>
-              </ul>
+              <p class="cinema-punch-body">
+                Sub-millisecond hand gesture tracking with MediaPipe and Python ML risk scoring.
+                Won <strong>National 2nd Prize</strong> among 30 finalist teams across India (ICGAIFE 3.0 / Govt. of Kerala).
+              </p>
             </div>
 
-            <!-- Stage 3: Tech Stack with Logos (appears on scroll) -->
-            <div class="project-stage-stack">
-              <span class="stage-stack-label">ENGINEERED WITH:</span>
-              <div class="project-tech-badges">
+            <!-- Beat 3: Tech Stack with Logos -->
+            <div class="cinema-beat cinema-beat-stack">
+              <span class="cinema-stack-kicker">ENGINEERED WITH</span>
+              <div class="cinema-tech-grid">
                 <div class="tech-pill">
                   <img src="assets/tech-icons/nextjs.svg" alt="Next.js" class="tech-pill-icon">
-                  <span>Next.js (App Router)</span>
+                  <span>Next.js</span>
                 </div>
                 <div class="tech-pill">
                   <img src="assets/tech-icons/python.svg" alt="Python" class="tech-pill-icon">
@@ -404,7 +432,7 @@
                 </div>
                 <div class="tech-pill">
                   <img src="assets/tech-icons/flask.svg" alt="Flask" class="tech-pill-icon">
-                  <span>Flask ML Backend</span>
+                  <span>Flask ML</span>
                 </div>
                 <div class="tech-pill">
                   <img src="assets/tech-icons/mediapipe.svg" alt="MediaPipe" class="tech-pill-icon">
@@ -416,59 +444,52 @@
                 </div>
                 <div class="tech-pill">
                   <img src="assets/tech-icons/tailwind.svg" alt="Tailwind CSS" class="tech-pill-icon">
-                  <span>Tailwind CSS</span>
+                  <span>Tailwind</span>
                 </div>
+              </div>
+
+              <!-- Action Link -->
+              <div class="cinema-action-bar">
+                <a href="https://github.com/SamSunny4/Leadis" target="_blank" rel="noopener noreferrer" class="cinema-action-btn">
+                  <span>View Leadis on GitHub</span>
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M7 17l10-10M7 7h10v10"/></svg>
+                </a>
+                <span class="cinema-pill-tag">🥈 2nd Place of 30 Finalist Teams</span>
               </div>
             </div>
 
-            <!-- Footer Action -->
-            <div class="flagship-footer">
-              <a href="https://github.com/SamSunny4/Leadis" target="_blank" rel="noopener noreferrer" class="btn-flagship-repo">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
-                <span>View Leadis on GitHub</span>
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
-              </a>
-              <span class="flagship-meta-stat">🥈 2nd Place of 30 Finalist Teams Nationally</span>
-            </div>
-          </div>
-        </article>
-
-      </div>
-
-      <!-- "Then see all projects go to GitHub" Banner -->
-      <div class="see-all-github-banner reveal">
-        <div class="banner-blur-backdrop"></div>
-        <div class="banner-content">
-          <div class="banner-icon-col">
-            <div class="github-octo-bubble">
-              <svg width="34" height="34" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
-            </div>
-          </div>
-          <div class="banner-text-col">
-            <div class="banner-tag">COMPLETE REPOSITORY ECOSYSTEM</div>
-            <h3 class="banner-title">Explore 29+ Repositories on GitHub</h3>
-            <p class="banner-desc">
-              Beyond the flagship trio, explore specialized systems including the <strong>Blockchain Graph Explorer (Neo4j / Three.js)</strong>, campus digital signage <strong>InfoGrid (Cloudflare R2)</strong>, algorithmic trading pipelines, and AI research prototypes.
-            </p>
-            <div class="banner-repo-tags">
-              <span class="mini-repo-tag">Neo4j Graph Explorer</span>
-              <span class="mini-repo-tag">InfoGrid Signage</span>
-              <span class="mini-repo-tag">Fitman Engine</span>
-              <span class="mini-repo-tag">AiSam Vision</span>
-              <span class="mini-repo-tag">Rainiest</span>
-              <span class="mini-repo-tag">+24 More Repositories</span>
-            </div>
-          </div>
-          <div class="banner-action-col">
-            <a href="https://github.com/SamSunny4?tab=repositories" target="_blank" rel="noopener noreferrer" class="btn-github-large">
-              <span>See All Projects on GitHub</span>
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
-            </a>
-            <span class="banner-subtext">github.com/SamSunny4 &bull; Open Source</span>
           </div>
         </div>
-      </div>
 
+        <!-- SCENE 4: GITHUB FINALE -->
+        <div class="cinema-scene scene-finale" id="cinemaScene4">
+          <div class="cinema-focal-card text-center">
+            <div class="cinema-octo-bubble">
+              <svg width="36" height="36" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
+            </div>
+            <div class="cinema-pre-tag">[ COMPLETE REPOSITORY ECOSYSTEM ]</div>
+            <h3 class="cinema-finale-title">Explore 29+ Repositories</h3>
+            <p class="cinema-punch-body mx-auto">
+              From Neo4j graph anti-money-laundering engines to 43-inch campus digital signage, browse all public codebases on GitHub.
+            </p>
+            <div class="cinema-repo-tags-wrap">
+              <span class="cinema-tag-item">Neo4j Graph Explorer</span>
+              <span class="cinema-tag-item">InfoGrid Signage</span>
+              <span class="cinema-tag-item">Fitman Engine</span>
+              <span class="cinema-tag-item">AiSam Vision</span>
+              <span class="cinema-tag-item">Rainiest</span>
+              <span class="cinema-tag-item">+24 More Repositories</span>
+            </div>
+            <div class="cinema-finale-btn-wrap">
+              <a href="https://github.com/SamSunny4?tab=repositories" target="_blank" rel="noopener noreferrer" class="cinema-action-btn large">
+                <span>See All Projects on GitHub</span>
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
+              </a>
+            </div>
+          </div>
+        </div>
+
+      </div>
     </div>
   </section>
 

@@ -249,8 +249,106 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
 
+    // D. Cinematic Interactive Runway Scrubber
+    updateCinematicScroll();
+
     ticking = false;
   }
+
+  // 5.5. Cinematic Projects Runway Scroll Engine
+  const workSection = document.getElementById('work');
+  const ambientAura = document.getElementById('cinemaAmbientAura');
+  const hudDots = document.querySelectorAll('.cinema-hud-dot');
+  const cinemaScenes = [
+    document.getElementById('cinemaScene0'),
+    document.getElementById('cinemaScene1'),
+    document.getElementById('cinemaScene2'),
+    document.getElementById('cinemaScene3'),
+    document.getElementById('cinemaScene4')
+  ];
+
+  function updateCinematicScroll() {
+    if (!workSection) return;
+    const rect = workSection.getBoundingClientRect();
+    const scrollDistance = rect.height - window.innerHeight;
+    if (scrollDistance <= 0) return;
+
+    // Progress: 0 at top entry, 1 at bottom exit
+    const rawProgress = -rect.top / scrollDistance;
+    const p = Math.max(0, Math.min(1, rawProgress));
+
+    // Determine active scene based on scroll thresholds
+    let activeSceneIdx = 0;
+    if (p < 0.16) {
+      activeSceneIdx = 0; // Title card "MY PROJECTS"
+    } else if (p < 0.42) {
+      activeSceneIdx = 1; // Project 1: ShareDash
+    } else if (p < 0.68) {
+      activeSceneIdx = 2; // Project 2: KeyBase
+    } else if (p < 0.90) {
+      activeSceneIdx = 3; // Project 3: Leadis
+    } else {
+      activeSceneIdx = 4; // Finale: GitHub Ecosystem
+    }
+
+    // Toggle active scene
+    cinemaScenes.forEach((scene, idx) => {
+      if (!scene) return;
+      scene.classList.toggle('active', idx === activeSceneIdx);
+    });
+
+    // Progressive beats for ShareDash (Scene 1)
+    if (cinemaScenes[1]) {
+      cinemaScenes[1].classList.toggle('beat-1-active', p >= 0.16);
+      cinemaScenes[1].classList.toggle('beat-2-active', p >= 0.23);
+      cinemaScenes[1].classList.toggle('beat-3-active', p >= 0.31);
+    }
+
+    // Progressive beats for KeyBase (Scene 2)
+    if (cinemaScenes[2]) {
+      cinemaScenes[2].classList.toggle('beat-1-active', p >= 0.42);
+      cinemaScenes[2].classList.toggle('beat-2-active', p >= 0.49);
+      cinemaScenes[2].classList.toggle('beat-3-active', p >= 0.57);
+    }
+
+    // Progressive beats for Leadis (Scene 3)
+    if (cinemaScenes[3]) {
+      cinemaScenes[3].classList.toggle('beat-1-active', p >= 0.68);
+      cinemaScenes[3].classList.toggle('beat-2-active', p >= 0.74);
+      cinemaScenes[3].classList.toggle('beat-3-active', p >= 0.81);
+    }
+
+    // Dynamic ambient aura per project
+    if (ambientAura) {
+      ambientAura.className = `cinema-ambient-aura aura-scene-${activeSceneIdx}`;
+    }
+
+    // HUD dots active state
+    hudDots.forEach(dot => {
+      const target = parseInt(dot.getAttribute('data-scene-target'), 10);
+      dot.classList.toggle('active', target === activeSceneIdx);
+    });
+  }
+
+  // Interactive HUD dot clicking to smooth-jump to any scene
+  hudDots.forEach(dot => {
+    dot.addEventListener('click', () => {
+      if (!workSection) return;
+      const targetIdx = parseInt(dot.getAttribute('data-scene-target'), 10);
+      const sceneProgressTargets = [0.01, 0.26, 0.52, 0.76, 0.95];
+      const targetP = sceneProgressTargets[targetIdx] !== undefined ? sceneProgressTargets[targetIdx] : 0;
+      
+      const rect = workSection.getBoundingClientRect();
+      const scrollDistance = rect.height - window.innerHeight;
+      const sectionAbsoluteTop = window.scrollY + rect.top;
+      const targetScrollY = sectionAbsoluteTop + (targetP * scrollDistance);
+
+      window.scrollTo({
+        top: targetScrollY,
+        behavior: 'smooth'
+      });
+    });
+  });
 
   window.addEventListener('scroll', () => {
     if (!ticking) {
