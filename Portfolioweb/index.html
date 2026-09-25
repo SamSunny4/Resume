@@ -3,862 +3,179 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sam Sunny — Software Engineer · AI Systems</title>
+  <title>Sam Sunny — Applied AI, Computer Vision & Full-Stack Systems</title>
   
-  <!-- SEO & Engineering Meta -->
-  <meta name="description" content="Sam Sunny — Software engineer building production software and intelligent systems, from desktop tools used by businesses to computer vision platforms recognized at national hackathons.">
-  <meta name="keywords" content="Sam Sunny, KeyBase, GenBreed AI, Leadis, ShareDash, Software Engineer, AI Systems, Java, Python, Next.js, MITS Kochi">
+  <!-- SEO & Social Meta -->
+  <meta name="description" content="Portfolio of Sam Sunny — Software Engineer specializing in Applied AI, Computer Vision, and Full-Stack Systems. Creator of KeyBase and 2nd prize winner at National AI Samasya Hackathon.">
   <meta name="author" content="Sam Sunny">
-  <meta name="theme-color" content="#050505">
-
-  <!-- OpenGraph -->
+  <meta property="og:title" content="Sam Sunny — Applied AI & Full-Stack Systems">
+  <meta property="og:description" content="Portfolio of Sam Sunny — Software Engineer specializing in Applied AI, Computer Vision, and Full-Stack Systems.">
   <meta property="og:type" content="website">
-  <meta property="og:title" content="Sam Sunny — Software Engineer · AI Systems">
-  <meta property="og:description" content="I build production software and intelligent systems—from desktop tools used by local businesses to computer-vision systems recognized at national hackathons.">
   <meta property="og:image" content="assets/me.png">
-  <meta property="og:url" content="https://github.com/SamSunny4">
-
-  <!-- Favicon -->
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='16' fill='%2318181b'/><text x='50%' y='64%' font-size='50' font-family='sans-serif' font-weight='800' fill='white' text-anchor='middle'>S</text></svg>">
-
-  <!-- Fonts: Inter, Outfit, JetBrains Mono -->
+  
+  <!-- Google Fonts: Editorial Serif, Technical Display & Sans -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
-
-  <link rel="stylesheet" href="style.css?v=2.3">
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+  
+  <!-- Design System Stylesheet -->
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" type="image/png" href="assets/me.png">
 </head>
-<body>
+<body class="grid-lines">
 
-  <!-- Top Scroll Progress Bar -->
-  <div class="scroll-progress-track" aria-hidden="true">
-    <div class="scroll-progress-bar" id="scrollProgressBar"></div>
-  </div>
+  <!-- Ambient Glow & Noise Layers -->
+  <div class="ambient-mesh" aria-hidden="true"></div>
+  <div class="noise-overlay" aria-hidden="true"></div>
+  
+  <!-- 3D WebGL Canvas Layer (Background Scene) -->
+  <div id="webgl-canvas-container" aria-hidden="true"></div>
 
-  <!-- Subtle Technical Dot Matrix Background -->
-  <div class="bg-dots" aria-hidden="true"></div>
-
-  <!-- Ambient Glowing Gradient Blur Elements -->
-  <div class="ambient-blur-container" aria-hidden="true">
-    <div class="ambient-blur-orb orb-hero-blue"></div>
-    <div class="ambient-blur-orb orb-hero-cyan"></div>
-    <div class="ambient-blur-orb orb-work-cyan"></div>
-    <div class="ambient-blur-orb orb-work-indigo"></div>
-    <div class="ambient-blur-orb orb-work-amber"></div>
-    <div class="ambient-blur-orb orb-stack-aurora"></div>
-  </div>
-
-  <!-- 1. Floating Pill Dock Navigation -->
-  <div class="floating-dock-wrap">
-    <nav class="floating-dock" aria-label="Main Navigation">
-      <a href="#home" class="dock-logo">
-        <img src="assets/me.png" alt="Sam Sunny avatar" class="dock-avatar">
-        <span>sam.dev</span>
-      </a>
-
-      <div class="dock-divider desktop-only-divider"></div>
-
-      <ul class="dock-links">
-        <li><a href="#work" class="dock-link">Work</a></li>
-        <li><a href="#experience" class="dock-link">Experience</a></li>
-        <li><a href="#stack" class="dock-link">Stack</a></li>
-        <li><a href="#credentials" class="dock-link">Credentials</a></li>
-        <li><a href="#contact" class="dock-link">Contact</a></li>
-      </ul>
-
-      <div class="dock-divider"></div>
-
-      <a href="mailto:samsunnymodern12@gmail.com" class="dock-action-btn" aria-label="Send email">
-        <span>Email</span>
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
-      </a>
-
-      <!-- Mobile Menu Hamburger Button -->
-      <button type="button" class="dock-mobile-toggle" id="dockMobileToggle" aria-label="Toggle Navigation Menu" aria-expanded="false">
-        <span class="hamburger-bar"></span>
-        <span class="hamburger-bar"></span>
-        <span class="hamburger-bar"></span>
-      </button>
-    </nav>
-
-    <!-- Mobile Navigation Drawer Panel -->
-    <div class="mobile-nav-panel" id="mobileNavPanel" aria-hidden="true" style="display: none;">
-      <div class="mobile-nav-header">
-        <span class="mobile-nav-label">NAVIGATION</span>
-        <span class="mobile-nav-status"><span class="dot-pulse"></span> Available for hire</span>
-      </div>
-      <ul class="mobile-nav-list">
-        <li><a href="#home" class="mobile-nav-item"><span>00</span> Home</a></li>
-        <li><a href="#work" class="mobile-nav-item"><span>01</span> Selected Work</a></li>
-        <li><a href="#experience" class="mobile-nav-item"><span>02</span> Experience</a></li>
-        <li><a href="#stack" class="mobile-nav-item"><span>03</span> Tech Stack</a></li>
-        <li><a href="#credentials" class="mobile-nav-item"><span>04</span> Credentials</a></li>
-        <li><a href="#contact" class="mobile-nav-item"><span>05</span> Contact</a></li>
-      </ul>
-      <div class="mobile-nav-footer">
-        <a href="mailto:samsunnymodern12@gmail.com" class="mobile-nav-direct">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
-          <span>samsunnymodern12@gmail.com</span>
-        </a>
-      </div>
-    </div>
-  </div>
-
-  <!-- 2. Hero Section (Reduced Height, Focused Flow) -->
-  <header class="hero-compact" id="home">
-    <div class="container">
-      <div class="hero-layout">
-        
-        <!-- Left: Technical Identity -->
-        <div class="hero-text-col">
-          <div class="status-indicator">
-            <span class="dot-pulse"></span>
-            <span>OPEN TO &bull; SOFTWARE / AI / FULL-STACK</span>
-          </div>
-
-          <div class="hero-name-tech">SAM SUNNY</div>
-          <h1 class="hero-title-main">Software Engineer &bull; AI Systems</h1>
-
-          <p class="hero-description">
-            I build production software and intelligent systems—from desktop tools used by local businesses to computer-vision systems recognized at national hackathons.
-          </p>
-
-          <div class="hero-cta-group">
-            <a href="#work" class="btn-primary-tech">
-              <span>View Selected Work</span>
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
-            </a>
-            <a href="https://github.com/SamSunny4" target="_blank" rel="noopener noreferrer" class="btn-secondary-tech">
-              <span>GitHub</span>
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
-            </a>
-          </div>
-
-          <div class="hero-sublinks">
-            <a href="https://github.com/SamSunny4" target="_blank" rel="noopener noreferrer">
-              <span>GitHub</span>
-              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17l10-10M7 7h10v10"/></svg>
-            </a>
-            <span>&bull;</span>
-            <a href="https://www.linkedin.com/in/sam-sunny-36b4772bb/" target="_blank" rel="noopener noreferrer">
-              <span>LinkedIn</span>
-              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17l10-10M7 7h10v10"/></svg>
-            </a>
-            <span>&bull;</span>
-            <span>Kochi, Kerala</span>
-          </div>
-        </div>
-
-        <!-- Right: Editorial Portrait Card -->
-        <div class="hero-portrait-col">
-          <div class="portrait-wrap-editorial">
-            <img src="assets/me.png" alt="Sam Sunny portrait" class="portrait-img-clean" loading="eager">
-            <div class="portrait-meta-subtle">
-              <div class="meta-name">Sam Sunny</div>
-              <div class="meta-sub">B.Tech CSE (AI) &bull; MITS &bull; Kochi, Kerala</div>
-            </div>
-          </div>
-        </div>
-
-      </div>
-    </div>
-  </header>
-
-  <!-- 3. Proof Strip (Numbers Visually Dominant, Strong Dividers) -->
-  <section class="proof-strip reveal">
-    <div class="container">
-      <div class="proof-grid stagger-group">
-        <div class="proof-item reveal">
-          <div class="proof-number">₹30K</div>
-          <div class="proof-label">AI Samasya &bull; 2nd Prize</div>
-        </div>
-        <div class="proof-item reveal">
-          <div class="proof-number">KeyBase v4</div>
-          <div class="proof-label">Commercially deployed</div>
-        </div>
-        <div class="proof-item reveal">
-          <div class="proof-number">29+</div>
-          <div class="proof-label">Public repositories</div>
-        </div>
-        <div class="proof-item reveal">
-          <div class="proof-number">3331</div>
-          <div class="proof-label">KEAM State Rank</div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- 4. Cinematic Interactive Projects Runway -->
-  <section class="cinematic-work-section" id="work">
+  <!-- Primary Interactive Content Wrapper -->
+  <div class="content-wrapper">
     
-    <!-- Sticky Fullscreen Viewport (Pins on scroll, cinematic negative space) -->
-    <div class="cinematic-viewport" id="cinematicViewport">
+    <!-- Top System Navigation Header -->
+    <header class="site-header" id="main-header" style="position: sticky; top: 0; z-index: var(--z-header); padding: 1.25rem 0; border-bottom: 1px solid var(--border-subtle); background: var(--color-surface-glass-heavy); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);">
+      <div class="container" style="display: flex; align-items: center; justify-content: space-between;">
+        <a href="#hero" class="brand-link" style="display: flex; align-items: center; gap: 0.75rem;">
+          <div style="width: 10px; height: 10px; background: var(--color-lime); border-radius: 2px;"></div>
+          <span class="font-display" style="font-weight: 800; font-size: 1.1rem; letter-spacing: 0.05em; text-transform: uppercase;">SAM SUNNY</span>
+          <span class="font-mono text-muted" style="font-size: 0.75rem; letter-spacing: 0.05em; border-left: 1px solid var(--border-subtle); padding-left: 0.75rem;">SYS_v1.0</span>
+        </a>
+
+        <!-- Navigation Links -->
+        <nav style="display: flex; align-items: center; gap: 2rem;">
+          <a href="#projects" class="font-mono text-muted" style="font-size: var(--font-size-xs); text-transform: uppercase; transition: color var(--duration-fast);" onmouseover="this.style.color='var(--color-lime)'" onmouseout="this.style.color='var(--color-text-muted)'">// 01. SYSTEMS</a>
+          <a href="#credentials" class="font-mono text-muted" style="font-size: var(--font-size-xs); text-transform: uppercase; transition: color var(--duration-fast);" onmouseover="this.style.color='var(--color-lime)'" onmouseout="this.style.color='var(--color-text-muted)'">// 02. CREDENTIALS</a>
+          <a href="#contact" class="font-mono text-muted" style="font-size: var(--font-size-xs); text-transform: uppercase; transition: color var(--duration-fast);" onmouseover="this.style.color='var(--color-lime)'" onmouseout="this.style.color='var(--color-text-muted)'">// 03. CONTACT</a>
+          <a href="assets/Sam_Sunny_Resume.pdf" target="_blank" class="btn-primary" style="padding: 0.5rem 1rem; font-size: var(--font-size-xs);">RESUME ↗</a>
+        </nav>
+      </div>
+    </header>
+
+    <!-- Main Content Flow -->
+    <main>
       
-      <!-- Dynamic Ambient Radial Glow Aura (Changes color per scene) -->
-      <div class="cinema-ambient-aura aura-scene-0" id="cinemaAmbientAura" aria-hidden="true"></div>
-
-      <!-- Subtle Film Vignette Overlay -->
-      <div class="cinema-vignette-overlay" aria-hidden="true"></div>
-
-      <!-- Cinematic HUD Scrubber / Track Navigation -->
-      <nav class="cinema-hud-nav" aria-label="Project Scenes Navigation">
-        <button type="button" class="cinema-hud-dot active" data-scene-target="0" aria-label="Intro: My Projects">
-          <span class="hud-dot-circle"></span>
-          <span class="hud-dot-label">MY PROJECTS</span>
-        </button>
-        <button type="button" class="cinema-hud-dot" data-scene-target="1" aria-label="Project 1: ShareDash">
-          <span class="hud-dot-circle"></span>
-          <span class="hud-dot-label">SHAREDASH</span>
-        </button>
-        <button type="button" class="cinema-hud-dot" data-scene-target="2" aria-label="Project 2: KeyBase">
-          <span class="hud-dot-circle"></span>
-          <span class="hud-dot-label">KEYBASE</span>
-        </button>
-        <button type="button" class="cinema-hud-dot" data-scene-target="3" aria-label="Project 3: Leadis">
-          <span class="hud-dot-circle"></span>
-          <span class="hud-dot-label">LEADIS</span>
-        </button>
-        <button type="button" class="cinema-hud-dot" data-scene-target="4" aria-label="Finale: GitHub Ecosystem">
-          <span class="hud-dot-circle"></span>
-          <span class="hud-dot-label">GITHUB</span>
-        </button>
-      </nav>
-
-      <!-- Stage Container (Laser-focused, vast empty screen around content) -->
-      <div class="cinema-stage-container">
-        
-        <!-- SCENE 0: Title Card "MY PROJECTS" -->
-        <div class="cinema-scene scene-intro active" id="cinemaScene0">
-          <div class="cinema-focal-card text-center">
-            <div class="cinema-pre-tag">[ 01 // SELECTED ARCHITECTURE ]</div>
-            <h2 class="cinema-title-grand">MY PROJECTS</h2>
-            <p class="cinema-subtitle-grand">
-              Three flagship systems engineered for extreme speed, offline reliability, and clinical AI.
+      <!-- HERO SECTION -->
+      <section id="hero" class="hero-section" style="min-height: 85vh; display: flex; flex-direction: column; justify-content: center; position: relative; padding: var(--space-xl) 0;">
+        <div class="container">
+          
+          <!-- Hero Headline Architecture with Slow Cinematic Reveal -->
+          <div class="hero-title-group" style="max-width: 1300px;">
+            <h1 class="hero-monumental-title" aria-label="I AM SAM SUNNY">
+              <span class="hero-line-mask">
+                <span class="hero-line-1">
+                  <span class="reveal-word word-i">I</span>
+                  <span class="reveal-word word-am">AM</span>
+                </span>
+              </span>
+              <span class="hero-line-mask">
+                <span class="hero-line-2">
+                  <span class="reveal-word word-sam">SAM</span>
+                  <span class="reveal-word word-sunny">SUNNY</span>
+                </span>
+              </span>
+            </h1>
+            <p class="font-sans text-editorial-muted hero-desc-reveal" style="font-size: var(--font-size-md); max-width: 680px; line-height: 1.6; margin-top: var(--space-md); margin-bottom: var(--space-lg);">
+              Software Engineer specializing in Computer Vision, Applied AI pipelines, and commercial full-stack applications. Proven track record deploying production retail software and national hackathon achievements.
             </p>
-            <div class="cinema-scroll-prompt">
-              <span>Scroll to enter showcase</span>
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M7 13l5 5 5-5M7 6l5 5 5-5"/></svg>
-            </div>
           </div>
+
+          <!-- Action HUD Buttons -->
+          <div class="hero-actions-reveal" style="display: flex; align-items: center; gap: 1rem; flex-wrap: wrap;">
+            <a href="#projects" class="btn-primary">EXPLORE SYSTEMS ↓</a>
+            <a href="#contact" class="btn-secondary">INITIATE CONTACT</a>
+          </div>
+
         </div>
+      </section>
 
-        <!-- SCENE 1: SHAREDASH -->
-        <div class="cinema-scene scene-project" id="cinemaScene1">
-          <div class="cinema-focal-card">
-            
-            <!-- Beat 1: Logo and Title -->
-            <div class="cinema-beat cinema-beat-header">
-              <div class="cinema-logo-frame">
-                <div class="cinema-logo-halo halo-cyan"></div>
-                <img src="assets/sharedash-logo.svg" alt="ShareDash Logo" class="cinema-logo-asset">
-              </div>
-              <div class="cinema-title-info">
-                <div class="cinema-meta-badge-row">
-                  <span class="cinema-index-num">01 / 03</span>
-                  <span class="cinema-badge badge-cyan">MULTIPATH ENGINE</span>
-                </div>
-                <h3 class="cinema-project-title">SHAREDASH</h3>
-              </div>
-            </div>
-
-            <!-- Beat 2: Marketing Punchlines -->
-            <div class="cinema-beat cinema-beat-desc">
-              <p class="cinema-punch-lead">
-                Zero cables needed. Zero internet required.
-              </p>
-              <p class="cinema-punch-body">
-                Aggregates USB 3.x and 5 GHz Wi-Fi Direct into one unified <strong>78+ MB/s pipeline</strong>.
-                Windows & Android seamlessly bridged with out-of-band BLE radar discovery and cryptographic chunk integrity.
-              </p>
-            </div>
-
-            <!-- Beat 3: Tech Stack with Logos -->
-            <div class="cinema-beat cinema-beat-stack">
-              <span class="cinema-stack-kicker">ENGINEERED WITH</span>
-              <div class="cinema-tech-grid">
-                <div class="tech-pill">
-                  <img src="assets/tech-icons/rust.svg" alt="Rust" class="tech-pill-icon">
-                  <span>Rust Core</span>
-                </div>
-                <div class="tech-pill">
-                  <img src="assets/tech-icons/kotlin.svg" alt="Kotlin" class="tech-pill-icon">
-                  <span>Kotlin</span>
-                </div>
-                <div class="tech-pill">
-                  <img src="assets/tech-icons/android.svg" alt="Android" class="tech-pill-icon">
-                  <span>Android 8+</span>
-                </div>
-                <div class="tech-pill">
-                  <img src="assets/tech-icons/windows.svg" alt="WinRT" class="tech-pill-icon">
-                  <span>WinRT</span>
-                </div>
-                <div class="tech-pill">
-                  <img src="assets/tech-icons/wifi.svg" alt="Wi-Fi Direct" class="tech-pill-icon">
-                  <span>Wi-Fi Direct</span>
-                </div>
-                <div class="tech-pill">
-                  <img src="assets/tech-icons/ble.svg" alt="BLE" class="tech-pill-icon">
-                  <span>BLE Radar</span>
-                </div>
-              </div>
-
-              <!-- Action Link -->
-              <div class="cinema-action-bar">
-                <a href="https://github.com/SamSunny4/ShareDash" target="_blank" rel="noopener noreferrer" class="cinema-action-btn">
-                  <span>View ShareDash on GitHub</span>
-                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M7 17l10-10M7 7h10v10"/></svg>
-                </a>
-                <span class="cinema-pill-tag">⚡ 78+ MB/s Multipath Pipeline</span>
-              </div>
-            </div>
-
-          </div>
-        </div>
-
-        <!-- SCENE 2: KEYBASE -->
-        <div class="cinema-scene scene-project" id="cinemaScene2">
-          <div class="cinema-focal-card">
-            
-            <!-- Beat 1: Logo and Title -->
-            <div class="cinema-beat cinema-beat-header">
-              <div class="cinema-logo-frame">
-                <div class="cinema-logo-halo halo-blue"></div>
-                <img src="assets/keybase-splash.png" alt="KeyBase Logo" class="cinema-logo-asset">
-              </div>
-              <div class="cinema-title-info">
-                <div class="cinema-meta-badge-row">
-                  <span class="cinema-index-num">02 / 03</span>
-                  <span class="cinema-badge badge-blue">COMMERCIAL WORKSTATION</span>
-                </div>
-                <h3 class="cinema-project-title">KEYBASE</h3>
-              </div>
-            </div>
-
-            <!-- Beat 2: Marketing Punchlines -->
-            <div class="cinema-beat cinema-beat-desc">
-              <p class="cinema-punch-lead">
-                Built for the real world. Sold and running in production firms.
-              </p>
-              <p class="cinema-punch-body">
-                Full-featured desktop CRM with 100% offline embedded database and live webcam customer capture.
-                Zero server overhead. Bundled portable JRE for single-click deployment on retail workstations.
-              </p>
-            </div>
-
-            <!-- Beat 3: Tech Stack with Logos -->
-            <div class="cinema-beat cinema-beat-stack">
-              <span class="cinema-stack-kicker">ENGINEERED WITH</span>
-              <div class="cinema-tech-grid">
-                <div class="tech-pill">
-                  <img src="assets/tech-icons/java.svg" alt="Java" class="tech-pill-icon">
-                  <span>Java 17 (LTS)</span>
-                </div>
-                <div class="tech-pill">
-                  <img src="assets/tech-icons/swing.svg" alt="Swing" class="tech-pill-icon">
-                  <span>Swing UI</span>
-                </div>
-                <div class="tech-pill">
-                  <img src="assets/tech-icons/sqlite.svg" alt="H2" class="tech-pill-icon">
-                  <span>H2 Database</span>
-                </div>
-                <div class="tech-pill">
-                  <svg class="tech-pill-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
-                  <span>Sarxos Webcam</span>
-                </div>
-                <div class="tech-pill">
-                  <svg class="tech-pill-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
-                  <span>ZXing Barcode</span>
-                </div>
-                <div class="tech-pill">
-                  <img src="assets/tech-icons/windows.svg" alt="Windows" class="tech-pill-icon">
-                  <span>Inno Setup</span>
-                </div>
-              </div>
-
-              <!-- Action Link -->
-              <div class="cinema-action-bar">
-                <a href="https://github.com/SamSunny4/KeyBase" target="_blank" rel="noopener noreferrer" class="cinema-action-btn">
-                  <span>View KeyBase on GitHub</span>
-                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M7 17l10-10M7 7h10v10"/></svg>
-                </a>
-                <span class="cinema-pill-tag">💼 Commercially Sold & Active in Retail</span>
-              </div>
-            </div>
-
-          </div>
-        </div>
-
-        <!-- SCENE 3: LEADIS -->
-        <div class="cinema-scene scene-project" id="cinemaScene3">
-          <div class="cinema-focal-card">
-            
-            <!-- Beat 1: Logo and Title -->
-            <div class="cinema-beat cinema-beat-header">
-              <div class="cinema-logo-frame">
-                <div class="cinema-logo-halo halo-amber"></div>
-                <img src="assets/leadis-ferret.png" alt="Leadis Logo" class="cinema-logo-asset">
-              </div>
-              <div class="cinema-title-info">
-                <div class="cinema-meta-badge-row">
-                  <span class="cinema-index-num">03 / 03</span>
-                  <span class="cinema-badge badge-gold">🏆 NATIONAL 2ND PRIZE (₹30K)</span>
-                </div>
-                <h3 class="cinema-project-title">LEADIS</h3>
-              </div>
-            </div>
-
-            <!-- Beat 2: Marketing Punchlines -->
-            <div class="cinema-beat cinema-beat-desc">
-              <p class="cinema-punch-lead">
-                Early developmental screening powered by browser computer vision.
-              </p>
-              <p class="cinema-punch-body">
-                Sub-millisecond hand gesture tracking with MediaPipe and Python ML risk scoring.
-                Won <strong>National 2nd Prize</strong> among 30 finalist teams across India (ICGAIFE 3.0 / Govt. of Kerala).
-              </p>
-            </div>
-
-            <!-- Beat 3: Tech Stack with Logos -->
-            <div class="cinema-beat cinema-beat-stack">
-              <span class="cinema-stack-kicker">ENGINEERED WITH</span>
-              <div class="cinema-tech-grid">
-                <div class="tech-pill">
-                  <img src="assets/tech-icons/nextjs.svg" alt="Next.js" class="tech-pill-icon">
-                  <span>Next.js</span>
-                </div>
-                <div class="tech-pill">
-                  <img src="assets/tech-icons/python.svg" alt="Python" class="tech-pill-icon">
-                  <span>Python</span>
-                </div>
-                <div class="tech-pill">
-                  <img src="assets/tech-icons/flask.svg" alt="Flask" class="tech-pill-icon">
-                  <span>Flask ML</span>
-                </div>
-                <div class="tech-pill">
-                  <img src="assets/tech-icons/mediapipe.svg" alt="MediaPipe" class="tech-pill-icon">
-                  <span>MediaPipe CV</span>
-                </div>
-                <div class="tech-pill">
-                  <img src="assets/tech-icons/typescript.svg" alt="TypeScript" class="tech-pill-icon">
-                  <span>TypeScript</span>
-                </div>
-                <div class="tech-pill">
-                  <img src="assets/tech-icons/tailwind.svg" alt="Tailwind CSS" class="tech-pill-icon">
-                  <span>Tailwind</span>
-                </div>
-              </div>
-
-              <!-- Action Link -->
-              <div class="cinema-action-bar">
-                <a href="https://github.com/SamSunny4/Leadis" target="_blank" rel="noopener noreferrer" class="cinema-action-btn">
-                  <span>View Leadis on GitHub</span>
-                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M7 17l10-10M7 7h10v10"/></svg>
-                </a>
-                <span class="cinema-pill-tag">🥈 2nd Place of 30 Finalist Teams</span>
-              </div>
-            </div>
-
-          </div>
-        </div>
-
-        <!-- SCENE 4: GITHUB FINALE -->
-        <div class="cinema-scene scene-finale" id="cinemaScene4">
-          <div class="cinema-focal-card text-center">
-            <div class="cinema-octo-bubble">
-              <svg width="36" height="36" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
-            </div>
-            <div class="cinema-pre-tag">[ COMPLETE REPOSITORY ECOSYSTEM ]</div>
-            <h3 class="cinema-finale-title">Explore 29+ Repositories</h3>
-            <p class="cinema-punch-body mx-auto">
-              From Neo4j graph anti-money-laundering engines to 43-inch campus digital signage, browse all public codebases on GitHub.
-            </p>
-            <div class="cinema-repo-tags-wrap">
-              <span class="cinema-tag-item">Neo4j Graph Explorer</span>
-              <span class="cinema-tag-item">InfoGrid Signage</span>
-              <span class="cinema-tag-item">Fitman Engine</span>
-              <span class="cinema-tag-item">AiSam Vision</span>
-              <span class="cinema-tag-item">Rainiest</span>
-              <span class="cinema-tag-item">+24 More Repositories</span>
-            </div>
-            <div class="cinema-finale-btn-wrap">
-              <a href="https://github.com/SamSunny4?tab=repositories" target="_blank" rel="noopener noreferrer" class="cinema-action-btn large">
-                <span>See All Projects on GitHub</span>
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
-              </a>
-            </div>
-          </div>
-        </div>
-
-      </div>
-    </div>
-  </section>
-
-  <!-- 5. Experience & Leadership -->
-  <section class="section" id="experience">
-    <div class="container">
-      
-      <div class="section-head-clean reveal">
-        <h2 class="section-title-clean">Experience & Leadership</h2>
-        <span class="section-tag-subtle">Institutional & Technical Roles</span>
-      </div>
-
-      <div class="timeline-clean stagger-group">
-        
-        <div class="timeline-row reveal">
-          <div class="timeline-info">
-            <h3>B.Tech in Computer Science & Engineering (Artificial Intelligence)</h3>
-            <div class="timeline-org">Muthoot Institute of Technology and Science (MITS), Kochi</div>
-            <p>Undergraduate engineering curriculum emphasizing machine learning, graph theory, data structures, and production software design.</p>
-          </div>
-          <span class="timeline-period">2024 — Present</span>
-        </div>
-
-        <div class="timeline-row reveal">
-          <div class="timeline-info">
-            <h3>Program Representative (UG) — CSE (AI)</h3>
-            <div class="timeline-org">MITS College Union</div>
-            <p>Elected representative for the Artificial Intelligence undergraduate division in the College Union. Awarded Certificate of Appreciation by the Principal for institutional leadership and student coordination.</p>
-          </div>
-          <span class="timeline-period">2025 — 2026</span>
-        </div>
-
-        <div class="timeline-row reveal">
-          <div class="timeline-info">
-            <h3>Organizer — "Synergia" AI Hackathon</h3>
-            <div class="timeline-org">MITS Technical Conclave</div>
-            <p>Co-organized a department-level AI hackathon. Handled participant flow, team mentorship logistics, technical criteria, and evaluation workflows.</p>
-          </div>
-          <span class="timeline-period">2026</span>
-        </div>
-
-        <div class="timeline-row reveal">
-          <div class="timeline-info">
-            <h3>Academic Foundation & State Rank</h3>
-            <div class="timeline-org">Kerala Engineering Entrance (KEAM) &bull; CBSE</div>
-            <p>Secured State Rank 3331 in the KEAM entrance exam. Scored 95% in CBSE XII (Science Stream) and 94% in CBSE X.</p>
-          </div>
-          <span class="timeline-period">2024</span>
-        </div>
-
-      </div>
-    </div>
-  </section>
-
-  <!-- 6. Technical Stack -->
-  <section class="section" id="stack">
-    <div class="container">
-      
-      <div class="section-head-clean reveal">
-        <h2 class="section-title-clean">Technical Stack</h2>
-        <span class="section-tag-subtle">Languages &bull; Frameworks &bull; Systems</span>
-      </div>
-
-      <div class="stack-matrix-clean stagger-group">
-        <div class="stack-group reveal">
-          <h3>Languages</h3>
-          <div class="stack-chips-flex">
-            <span class="stack-chip"><img src="assets/tech-icons/java.svg" alt="Java" class="stack-chip-icon">Java</span>
-            <span class="stack-chip"><img src="assets/tech-icons/python.svg" alt="Python" class="stack-chip-icon">Python</span>
-            <span class="stack-chip"><img src="assets/tech-icons/rust.svg" alt="Rust" class="stack-chip-icon">Rust</span>
-            <span class="stack-chip"><img src="assets/tech-icons/cs.svg" alt="C#" class="stack-chip-icon">C#</span>
-            <span class="stack-chip"><img src="assets/tech-icons/typescript.svg" alt="TypeScript" class="stack-chip-icon">TypeScript</span>
-            <span class="stack-chip"><img src="assets/tech-icons/javascript.svg" alt="JavaScript" class="stack-chip-icon">JavaScript</span>
-            <span class="stack-chip"><img src="assets/tech-icons/kotlin.svg" alt="Kotlin" class="stack-chip-icon">Kotlin</span>
-            <span class="stack-chip"><img src="assets/tech-icons/c.svg" alt="C" class="stack-chip-icon">C</span>
-            <span class="stack-chip"><img src="assets/tech-icons/postgres.svg" alt="SQL" class="stack-chip-icon">SQL</span>
-          </div>
-        </div>
-
-        <div class="stack-group reveal">
-          <h3>Frameworks & Web</h3>
-          <div class="stack-chips-flex">
-            <span class="stack-chip"><img src="assets/tech-icons/nextjs.svg" alt="Next.js" class="stack-chip-icon">Next.js</span>
-            <span class="stack-chip"><img src="assets/tech-icons/react.svg" alt="React" class="stack-chip-icon">React</span>
-            <span class="stack-chip"><img src="assets/tech-icons/dotnet.svg" alt=".NET MAUI" class="stack-chip-icon">.NET MAUI</span>
-            <span class="stack-chip"><img src="assets/tech-icons/flask.svg" alt="Flask" class="stack-chip-icon">Flask</span>
-            <span class="stack-chip"><img src="assets/tech-icons/fastapi.svg" alt="Fastify" class="stack-chip-icon">Fastify</span>
-            <span class="stack-chip"><img src="assets/tech-icons/tailwind.svg" alt="Tailwind CSS" class="stack-chip-icon">Tailwind CSS</span>
-            <span class="stack-chip"><img src="assets/tech-icons/swing.svg" alt="Swing" class="stack-chip-icon">Swing UI</span>
-          </div>
-        </div>
-
-        <div class="stack-group reveal">
-          <h3>Systems & Databases</h3>
-          <div class="stack-chips-flex">
-            <span class="stack-chip"><img src="assets/tech-icons/neo4j.svg" alt="Neo4j" class="stack-chip-icon">Neo4j Graph DB</span>
-            <span class="stack-chip"><img src="assets/tech-icons/mongodb.svg" alt="MongoDB" class="stack-chip-icon">MongoDB</span>
-            <span class="stack-chip"><img src="assets/tech-icons/postgres.svg" alt="PostgreSQL" class="stack-chip-icon">PostgreSQL</span>
-            <span class="stack-chip"><img src="assets/tech-icons/sqlite.svg" alt="SQLite / H2" class="stack-chip-icon">SQLite / H2</span>
-            <span class="stack-chip"><img src="assets/tech-icons/cloudflare.svg" alt="Cloudflare" class="stack-chip-icon">Cloudflare R2</span>
-            <span class="stack-chip"><img src="assets/tech-icons/docker.svg" alt="Docker" class="stack-chip-icon">Docker</span>
-          </div>
-        </div>
-
-        <div class="stack-group reveal">
-          <h3>Core Domains & Tools</h3>
-          <div class="stack-chips-flex">
-            <span class="stack-chip"><img src="assets/tech-icons/mediapipe.svg" alt="MediaPipe" class="stack-chip-icon">MediaPipe (Vision)</span>
-            <span class="stack-chip"><img src="assets/tech-icons/neo4j.svg" alt="Graph Analytics" class="stack-chip-icon">Graph Analytics</span>
-            <span class="stack-chip"><img src="assets/tech-icons/wifi.svg" alt="Multipath Networking" class="stack-chip-icon">Multipath Networking</span>
-            <span class="stack-chip"><img src="assets/tech-icons/windows.svg" alt="Desktop Systems" class="stack-chip-icon">Desktop Packaging</span>
-            <span class="stack-chip"><img src="assets/tech-icons/git.svg" alt="Git" class="stack-chip-icon">Git</span>
-            <span class="stack-chip"><img src="assets/tech-icons/linux.svg" alt="Linux" class="stack-chip-icon">Linux / Shell</span>
-          </div>
+      <!-- CONTINUOUS TECH TICKER MARQUEE -->
+      <div class="marquee-container" aria-hidden="true">
+        <div class="marquee-track">
+          <div class="marquee-item">COMPUTER VISION <span class="marquee-separator">✦</span></div>
+          <div class="marquee-item">MEDIAPIPE <span class="marquee-separator">✦</span></div>
+          <div class="marquee-item">FLASK ML PIPELINES <span class="marquee-separator">✦</span></div>
+          <div class="marquee-item">NEXT.JS & TYPESCRIPT <span class="marquee-separator">✦</span></div>
+          <div class="marquee-item">JAVA & H2 DATABASE <span class="marquee-separator">✦</span></div>
+          <div class="marquee-item">DOCKER & LINUX <span class="marquee-separator">✦</span></div>
+          <div class="marquee-item">ISRO HACKATHON 2025 <span class="marquee-separator">✦</span></div>
+          <div class="marquee-item">COMMERCIAL DEPLOYMENTS <span class="marquee-separator">✦</span></div>
+          <!-- Duplicate set for seamless continuous loop -->
+          <div class="marquee-item">COMPUTER VISION <span class="marquee-separator">✦</span></div>
+          <div class="marquee-item">MEDIAPIPE <span class="marquee-separator">✦</span></div>
+          <div class="marquee-item">FLASK ML PIPELINES <span class="marquee-separator">✦</span></div>
+          <div class="marquee-item">NEXT.JS & TYPESCRIPT <span class="marquee-separator">✦</span></div>
+          <div class="marquee-item">JAVA & H2 DATABASE <span class="marquee-separator">✦</span></div>
+          <div class="marquee-item">DOCKER & LINUX <span class="marquee-separator">✦</span></div>
+          <div class="marquee-item">ISRO HACKATHON 2025 <span class="marquee-separator">✦</span></div>
+          <div class="marquee-item">COMMERCIAL DEPLOYMENTS <span class="marquee-separator">✦</span></div>
         </div>
       </div>
 
-    </div>
-  </section>
-
-  <!-- 7. Verified Credentials (Inspection Rows - No raw images on page until clicked) -->
-  <section class="section" id="credentials">
-    <div class="container">
-      
-      <div class="section-head-clean reveal">
-        <h2 class="section-title-clean">Verified Credentials</h2>
-        <span class="section-tag-subtle">Click any credential to inspect certificate</span>
-      </div>
-
-      <div class="credentials-list-clean stagger-group">
-        
-        <!-- Credential 1: AI Samasya -->
-        <div class="credential-row-clean reveal" data-cert="national-hackathon" role="button" tabindex="0" aria-label="Inspect AI Samasya 2nd Prize Certificate">
-          <div class="cred-left">
-            <div class="cred-icon-box">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="7"></circle><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline></svg>
-            </div>
-            <div class="cred-info">
-              <div class="cred-meta-line">
-                <span>Govt. of Kerala (Dept. of Higher Education & IHRD)</span>
-                <span>&bull;</span>
-                <span>Jan 2026</span>
-              </div>
-              <h3 class="cred-title">National Level 2nd Prize — AI SAMASYA Hackathon</h3>
-              <p class="cred-desc">Won 2nd Place and ₹30,000 cash award among 30 national finalist teams (ICGAIFE 3.0) for Leadis.</p>
-            </div>
-          </div>
-          <div class="cred-right">
-            <span class="cred-badge gold">🏆 ₹30,000 Award</span>
-            <span class="cred-action-btn">
-              <span>Inspect Certificate</span>
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17l10-10M7 7h10v10"/></svg>
-            </span>
-          </div>
-        </div>
-
-        <!-- Credential 2: ISRO -->
-        <div class="credential-row-clean reveal" data-cert="isro-hackathon" role="button" tabindex="0" aria-label="Inspect ISRO Hackathon Certificate">
-          <div class="cred-left">
-            <div class="cred-icon-box">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
-            </div>
-            <div class="cred-info">
-              <div class="cred-meta-line">
-                <span>ISRO &bull; Hack2Skill</span>
-                <span>&bull;</span>
-                <span>2025</span>
-              </div>
-              <h3 class="cred-title">Bharatiya Antariksh Hackathon 2025</h3>
-              <p class="cred-desc">Official Certificate of Acknowledgement for innovative software architecture (Code: 2025H2S06BAH25–P05177).</p>
-            </div>
-          </div>
-          <div class="cred-right">
-            <span class="cred-badge">🚀 ISRO Acknowledged</span>
-            <span class="cred-action-btn">
-              <span>Inspect Certificate</span>
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17l10-10M7 7h10v10"/></svg>
-            </span>
-          </div>
-        </div>
-
-        <!-- Credential 3: NPTEL -->
-        <div class="credential-row-clean reveal" data-cert="nptel-python" role="button" tabindex="0" aria-label="Inspect NPTEL Elite Certificate">
-          <div class="cred-left">
-            <div class="cred-icon-box">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"></path><path d="M6 12v5c3 3 9 3 12 0v-5"></path></svg>
-            </div>
-            <div class="cred-info">
-              <div class="cred-meta-line">
-                <span>NPTEL &bull; IIT Madras</span>
-                <span>&bull;</span>
-                <span>2025</span>
-              </div>
-              <h3 class="cred-title">Python for Data Science — Elite Certificate</h3>
-              <p class="cred-desc">Completed 12-week national certification with an Elite grade (73%) covering NumPy, Pandas, and data modeling.</p>
-            </div>
-          </div>
-          <div class="cred-right">
-            <span class="cred-badge">🎓 Elite (73%)</span>
-            <span class="cred-action-btn">
-              <span>Inspect Certificate</span>
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17l10-10M7 7h10v10"/></svg>
-            </span>
-          </div>
-        </div>
-
-        <!-- Credential 4: Program Representative -->
-        <div class="credential-row-clean reveal" data-cert="program-rep" role="button" tabindex="0" aria-label="Inspect Program Representative Certificate">
-          <div class="cred-left">
-            <div class="cred-icon-box">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
-            </div>
-            <div class="cred-info">
-              <div class="cred-meta-line">
-                <span>MITS College Union &bull; Principal</span>
-                <span>&bull;</span>
-                <span>2025–2026</span>
-              </div>
-              <h3 class="cred-title">Program Representative (UG) — CSE (AI)</h3>
-              <p class="cred-desc">Certificate of Appreciation awarded by the Principal for institutional leadership representing the AI department.</p>
-            </div>
-          </div>
-          <div class="cred-right">
-            <span class="cred-badge">🎖️ Union Leadership</span>
-            <span class="cred-action-btn">
-              <span>Inspect Certificate</span>
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17l10-10M7 7h10v10"/></svg>
-            </span>
-          </div>
-        </div>
-
-        <!-- Credential 5: MERN Stack -->
-        <div class="credential-row-clean reveal" data-cert="mern-stack" role="button" tabindex="0" aria-label="Inspect MERN Stack Certificate">
-          <div class="cred-left">
-            <div class="cred-icon-box">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
-            </div>
-            <div class="cred-info">
-              <div class="cred-meta-line">
-                <span>Web Architecture Certification</span>
-                <span>&bull;</span>
-                <span>2025</span>
-              </div>
-              <h3 class="cred-title">Full Stack MERN Web Development</h3>
-              <p class="cred-desc">Production web engineering covering React SPA architecture, Node.js/Express REST microservices, and MongoDB schema design.</p>
-            </div>
-          </div>
-          <div class="cred-right">
-            <span class="cred-badge">⚡ Full Stack Architecture</span>
-            <span class="cred-action-btn">
-              <span>Inspect Certificate</span>
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17l10-10M7 7h10v10"/></svg>
-            </span>
-          </div>
-        </div>
-
-        <!-- Credential 6: Enerya -->
-        <div class="credential-row-clean reveal" data-cert="enerya-hackathon" role="button" tabindex="0" aria-label="Inspect Enerya Hackathon Certificate">
-          <div class="cred-left">
-            <div class="cred-icon-box">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
-            </div>
-            <div class="cred-info">
-              <div class="cred-meta-line">
-                <span>Enerya Tech Conclave</span>
-                <span>&bull;</span>
-                <span>2025</span>
-              </div>
-              <h3 class="cred-title">Enerya Hackathon Achievement</h3>
-              <p class="cred-desc">Rapid software engineering sprint developing functional applications under time constraints.</p>
-            </div>
-          </div>
-          <div class="cred-right">
-            <span class="cred-badge">💡 Rapid Sprint</span>
-            <span class="cred-action-btn">
-              <span>Inspect Certificate</span>
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17l10-10M7 7h10v10"/></svg>
-            </span>
-          </div>
-        </div>
-
-      </div>
-    </div>
-  </section>
-
-  <!-- 8. Contact Section -->
-  <section class="section" id="contact">
-    <div class="container">
-      
-      <div class="contact-card-box reveal">
-        <div class="contact-layout">
+      <!-- PROJECTS BENTO SECTION SKELETON (Phase 4 Target) -->
+      <section id="projects" class="section-padding container">
+        <div style="margin-bottom: var(--space-lg); display: flex; justify-content: space-between; align-items: flex-end; border-bottom: 1px solid var(--border-subtle); padding-bottom: 1rem;">
           <div>
-            <h2 class="contact-title-tech">Let's Connect</h2>
-            <p class="contact-desc-tech">
-              Open to software engineering, AI systems, and full-stack development roles. Reach out directly via email or connect on GitHub.
+            <span class="font-mono text-lime" style="font-size: var(--font-size-xs); letter-spacing: 0.1em;">// ARCHITECTURE & REPOSITORIES</span>
+            <h2 class="text-heading" style="margin-top: 0.25rem;">FLAGSHIP SYSTEMS</h2>
+          </div>
+          <span class="font-mono text-muted" style="font-size: var(--font-size-xs);">04 VERIFIED DEPLOYMENTS</span>
+        </div>
+
+        <div class="grid-bento">
+          <!-- Bento Skeleton Card 1 -->
+          <div class="glass-panel hud-frame notch-card" style="grid-column: span 8; min-height: 280px; padding: var(--space-md);">
+            <div class="status-pill" style="margin-bottom: 1rem;">COMMERCIAL SOFTWARE</div>
+            <h3 class="font-display" style="font-size: var(--font-size-lg); font-weight: 700;">KeyBase</h3>
+            <p class="font-sans text-muted" style="margin-top: 0.5rem; max-width: 500px;">
+              Enterprise key duplication & records management system running live in commercial retail operations.
             </p>
           </div>
 
-          <div class="contact-buttons-col">
-            <!-- Email Action -->
-            <button type="button" class="contact-action-row copy-btn-trigger" data-copy="samsunnymodern12@gmail.com" aria-label="Copy email">
-              <span>samsunnymodern12@gmail.com</span>
-              <span class="copy-badge-pill btn-text">Copy</span>
-            </button>
-
-            <!-- Phone Action -->
-            <button type="button" class="contact-action-row copy-btn-trigger" data-copy="+918078748831" aria-label="Copy phone number">
-              <span>+91 80787 48831</span>
-              <span class="copy-badge-pill btn-text">Copy</span>
-            </button>
-
-            <!-- GitHub Action -->
-            <a href="https://github.com/SamSunny4" target="_blank" rel="noopener noreferrer" class="contact-action-row">
-              <span>github.com/SamSunny4</span>
-              <span class="copy-badge-pill">Visit &rarr;</span>
-            </a>
-
-            <!-- LinkedIn Action -->
-            <a href="https://www.linkedin.com/in/sam-sunny-36b4772bb/" target="_blank" rel="noopener noreferrer" class="contact-action-row">
-              <span>linkedin.com/in/sam-sunny</span>
-              <span class="copy-badge-pill">Visit &rarr;</span>
-            </a>
+          <!-- Bento Skeleton Card 2 -->
+          <div class="glass-panel hud-frame" style="grid-column: span 4; min-height: 280px; padding: var(--space-md);">
+            <div class="status-pill" style="margin-bottom: 1rem; border-color: rgba(0, 240, 255, 0.3);">🥈 NATIONAL 2ND PRIZE</div>
+            <h3 class="font-display" style="font-size: var(--font-size-lg); font-weight: 700;">Leadis / AiSam</h3>
+            <p class="font-sans text-muted" style="margin-top: 0.5rem;">
+              AI-assisted developmental screening combining MediaPipe pose estimation with multimodal risk assessment.
+            </p>
           </div>
         </div>
-      </div>
+      </section>
 
-    </div>
-  </section>
-
-  <!-- Lightbox Modal for Certificate Inspection (Only rendered when clicked) -->
-  <div class="modal-overlay" id="certModal" role="dialog" aria-modal="true" aria-hidden="true">
-    <div class="modal-content-box">
-      <button class="modal-close-minimal" id="modalClose" aria-label="Close modal">&times;</button>
-      
-      <div class="modal-media-wrap">
-        <img id="modalImg" src="" alt="Certificate preview">
-      </div>
-
-      <div class="modal-text-wrap">
-        <div class="modal-tag" id="modalTag">Verified Credential</div>
-        <h3 class="modal-title" id="modalTitle">Certificate Title</h3>
-        <p class="modal-paragraph" id="modalDesc">Certificate description</p>
-
-        <div class="modal-specs-table" id="modalSpecs">
-          <!-- Populated by script.js -->
+      <!-- CREDENTIALS SECTION SKELETON (Phase 5 Target) -->
+      <section id="credentials" class="section-padding container">
+        <div style="margin-bottom: var(--space-lg); border-bottom: 1px solid var(--border-subtle); padding-bottom: 1rem;">
+          <span class="font-mono text-lime" style="font-size: var(--font-size-xs); letter-spacing: 0.1em;">// VERIFIED HONORS & AWARDS</span>
+          <h2 class="text-heading" style="margin-top: 0.25rem;">CREDENTIALS & HACKATHONS</h2>
         </div>
-      </div>
-    </div>
+        <div class="glass-panel" style="padding: var(--space-lg); text-align: center;">
+          <p class="font-mono text-muted">// Credentials lightbox module initialized for Phase 5 integration.</p>
+        </div>
+      </section>
+
+      <!-- CONTACT SECTION SKELETON (Phase 6 Target) -->
+      <section id="contact" class="section-padding container" style="border-top: 1px solid var(--border-subtle); margin-top: var(--space-2xl);">
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1.5rem;">
+          <div>
+            <span class="font-mono text-muted" style="font-size: var(--font-size-xs);">COMMUNICATION PROTOCOL</span>
+            <h2 class="font-display" style="font-size: var(--font-size-lg); font-weight: 700; margin-top: 0.25rem;">samsunnymodern12@gmail.com</h2>
+          </div>
+          <div style="display: flex; gap: 1rem;">
+            <a href="https://github.com/SamSunny4" target="_blank" class="btn-secondary" style="font-size: var(--font-size-xs);">GITHUB ↗</a>
+            <a href="https://www.linkedin.com/in/sam-sunny-36b4772bb/" target="_blank" class="btn-secondary" style="font-size: var(--font-size-xs);">LINKEDIN ↗</a>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
   </div>
 
-  <!-- Footer -->
-  <footer class="site-footer-tech">
-    <div class="container footer-flex">
-      <div>
-        <span>Sam Sunny &bull; Software Engineer &bull; AI Systems</span>
-      </div>
-
-      <ul class="footer-nav-list">
-        <li><a href="#home">Top</a></li>
-        <li><a href="#work">Work</a></li>
-        <li><a href="#experience">Experience</a></li>
-        <li><a href="#stack">Stack</a></li>
-        <li><a href="#credentials">Credentials</a></li>
-        <li><a href="https://github.com/SamSunny4" target="_blank" rel="noopener noreferrer">GitHub</a></li>
-        <li><a href="https://www.linkedin.com/in/sam-sunny-36b4772bb/" target="_blank" rel="noopener noreferrer">LinkedIn</a></li>
-      </ul>
-    </div>
-  </footer>
-
-  <script src="script.js?v=2.3"></script>
+  <!-- Lenis Momentum Smooth Scroll Library -->
+  <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.9/dist/lenis.min.js"></script>
+  <!-- Main ES6 Module Entry -->
+  <script type="module" src="js/main.js"></script>
 </body>
 </html>
