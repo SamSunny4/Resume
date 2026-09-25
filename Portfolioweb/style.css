@@ -755,11 +755,11 @@ html.lenis, html.lenis body {
    Architectural Stage: Deep space zoom from Hero into 3D Solar Tech Universe
    ========================================================================== */
 
-/* Outer scroll track for smooth zoom through space (250vh scroll distance) */
+/* Outer scroll track for smooth cosmic travel through space, wormhole & projects (520vh scroll distance) */
 .space-stage-track {
   position: relative;
   width: 100%;
-  height: 250vh;
+  height: 520vh;
 }
 
 /* Sticky 100vh spatial viewport stage */
@@ -836,9 +836,25 @@ html.lenis, html.lenis body {
   justify-content: center;
 }
 
-/* Central Gravitational Singularity / Star Core (Glow eliminated) */
+/* Central Gravitational Singularity / Star Core (Subtle celestial glow) */
 .solar-singularity {
-  display: none !important;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 480px;
+  height: 480px;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(circle, rgba(210, 255, 0, 0.04) 0%, rgba(0, 240, 255, 0.02) 35%, transparent 65%);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 2;
+  filter: blur(50px);
+  animation: singularityPulse 7s ease-in-out infinite alternate;
+}
+
+@keyframes singularityPulse {
+  0% { transform: translate(-50%, -50%) scale(0.92); opacity: 0.55; }
+  100% { transform: translate(-50%, -50%) scale(1.08); opacity: 0.85; }
 }
 
 /* Central Monumental 3D Text (PIVOT DEPTH: z-index: 50) */
@@ -870,8 +886,8 @@ html.lenis, html.lenis body {
   letter-spacing: 0.25em;
   color: var(--color-lime);
   margin-bottom: 0.4rem;
-  opacity: 0.85;
-  text-shadow: none;
+  opacity: 0.9;
+  text-shadow: 0 0 8px rgba(210, 255, 0, 0.35);
 }
 
 .solar-text-monumental {
@@ -885,9 +901,10 @@ html.lenis, html.lenis body {
   background: linear-gradient(180deg, #FFFFFF 0%, #E6E8E3 45%, #888E82 80%, #252822 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  /* Layered 3D Depth Shadows (Pure celestial depth, zero diffuse glow) */
+  /* Layered 3D Depth Shadows with subtle ambient aura */
   filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.9))
-          drop-shadow(0 8px 24px rgba(0, 0, 0, 0.95));
+          drop-shadow(0 8px 24px rgba(0, 0, 0, 0.95))
+          drop-shadow(0 0 20px rgba(255, 255, 255, 0.08));
   margin: 0;
   user-select: none;
 }
@@ -956,14 +973,14 @@ html.lenis, html.lenis body {
   display: none !important;
 }
 
-/* FOREGROUND STATE: PASSING OVER THE TEXT */
+/* FOREGROUND STATE: PASSING OVER THE TEXT (Subtle luminous aura) */
 .solar-node.is-front .solar-node-badge {
   box-shadow: none !important;
   border: none !important;
 }
 
 .solar-node.is-front .solar-node-img {
-  filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.88));
+  filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.85)) drop-shadow(0 0 4px var(--node-accent));
 }
 
 /* BACKGROUND STATE: PASSING BEHIND THE TEXT */
@@ -976,7 +993,7 @@ html.lenis, html.lenis body {
   filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.5));
 }
 
-/* HOVERED / FOCUSED STATE (Clean scale, zero neon bloom) */
+/* HOVERED / FOCUSED STATE (Subtle defined glow) */
 .solar-node:hover .solar-node-badge,
 .solar-node.is-hovered .solar-node-badge {
   transform: scale(1.35);
@@ -988,7 +1005,7 @@ html.lenis, html.lenis body {
 
 .solar-node:hover .solar-node-img,
 .solar-node.is-hovered .solar-node-img {
-  filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.95)) !important;
+  filter: drop-shadow(0 6px 16px rgba(0, 0, 0, 0.9)) drop-shadow(0 0 8px var(--node-accent)) !important;
 }
 
 /* ==========================================================================
@@ -1007,10 +1024,10 @@ html.lenis, html.lenis body {
   background: rgba(10, 14, 6, 0.95);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.16);
+  border: 1px solid var(--tooltip-accent, rgba(210, 255, 0, 0.35));
   border-radius: 8px;
   padding: 0.85rem 1.1rem;
-  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.92);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.92), 0 0 16px rgba(210, 255, 0, 0.12);
   opacity: 0;
   transform: scale(0.92);
   will-change: transform, opacity;
@@ -1080,18 +1097,427 @@ html.lenis, html.lenis body {
   padding-top: 0.35rem;
 }
 
+/* ==========================================================================
+   11. PROJECTS SOLAR SYSTEM & WORMHOLE DESTINATION STAGE
+   ========================================================================== */
+
+/* Projects Universe Layer (Emerges through wormhole into foreground) */
+.projects-space-layer {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 25;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  will-change: transform, opacity, filter;
+  transform-origin: center center;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.projects-universe-section {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: visible;
+}
+
+.projects-stage-wrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  margin: 0 auto;
+  perspective: 1000px;
+  overflow: visible;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.projects-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.projects-singularity {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 540px;
+  height: 540px;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(circle, rgba(0, 240, 255, 0.05) 0%, rgba(168, 85, 247, 0.03) 35%, transparent 65%);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 2;
+  filter: blur(55px);
+  animation: projectsSingularityPulse 6s ease-in-out infinite alternate;
+}
+
+@keyframes projectsSingularityPulse {
+  0% { transform: translate(-50%, -50%) scale(0.90); opacity: 0.5; }
+  100% { transform: translate(-50%, -50%) scale(1.12); opacity: 0.85; }
+}
+
+.projects-center-anchor {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 50;
+  pointer-events: none;
+  text-align: center;
+  width: 100%;
+  max-width: 950px;
+  padding: 0 1rem;
+}
+
+.projects-center-3d-text {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transform-style: preserve-3d;
+  will-change: transform;
+  transition: transform 0.12s linear;
+}
+
+.projects-text-pre {
+  font-size: var(--font-size-xs);
+  letter-spacing: 0.22em;
+  color: var(--color-lime);
+  margin-bottom: 0.4rem;
+  opacity: 0.9;
+  text-shadow: 0 0 8px rgba(210, 255, 0, 0.35);
+}
+
+.projects-text-monumental {
+  font-family: var(--font-display);
+  font-size: clamp(2.6rem, 6.4vw, 5.8rem);
+  font-weight: 900;
+  line-height: 0.95;
+  letter-spacing: -0.03em;
+  text-transform: uppercase;
+  color: #FFFFFF;
+  background: linear-gradient(180deg, #FFFFFF 0%, #D8DFE6 45%, #7B8594 80%, #1A202C 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.9))
+          drop-shadow(0 8px 24px rgba(0, 0, 0, 0.95))
+          drop-shadow(0 0 20px rgba(0, 240, 255, 0.08));
+  margin: 0;
+  user-select: none;
+}
+
+.projects-text-sub {
+  font-size: clamp(0.62rem, 0.85vw, 0.78rem);
+  letter-spacing: 0.18em;
+  color: var(--color-text-muted);
+  margin-top: 0.8rem;
+  max-width: 600px;
+  text-transform: uppercase;
+}
+
+.projects-orbits-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+/* Individual Project Planetary World Node */
+.project-node {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  pointer-events: auto;
+  cursor: pointer;
+  will-change: transform, opacity, filter;
+  transition: filter 0.25s ease, opacity 0.25s ease;
+  user-select: none;
+}
+
+.project-node-badge {
+  width: clamp(210px, 22vw, 260px);
+  background: rgba(14, 19, 10, 0.92);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--proj-accent, rgba(255, 255, 255, 0.16));
+  border-radius: 12px;
+  padding: 0.85rem 1.1rem;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.85), 0 0 12px color-mix(in srgb, var(--proj-accent) 25%, transparent);
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  transition: transform 0.25s var(--ease-expo), border-color 0.25s, box-shadow 0.25s;
+  position: relative;
+}
+
+.project-node:hover .project-node-badge,
+.project-node.is-hovered .project-node-badge {
+  transform: scale(1.12);
+  border-color: var(--proj-accent, #D2FF00);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.95), 0 0 20px color-mix(in srgb, var(--proj-accent) 45%, transparent);
+}
+
+.project-badge-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.project-badge-icon-wrap {
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.project-badge-icon {
+  width: 22px;
+  height: 22px;
+  object-fit: contain;
+}
+
+.project-badge-status {
+  font-size: 0.58rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: var(--proj-accent, var(--color-lime));
+  background: rgba(255, 255, 255, 0.04);
+  padding: 0.2rem 0.45rem;
+  border-radius: 4px;
+  border: 1px solid color-mix(in srgb, var(--proj-accent) 30%, transparent);
+  white-space: nowrap;
+}
+
+.project-badge-title {
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: #FFFFFF;
+  margin: 0;
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+}
+
+.project-badge-sub {
+  font-size: 0.62rem;
+  letter-spacing: 0.08em;
+  color: var(--color-text-dim);
+  margin: 0.15rem 0 0 0;
+  text-transform: uppercase;
+}
+
+/* In-Stage HUD Navigation Buttons */
+.stage-nav-hud {
+  position: absolute;
+  bottom: 2.2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 60;
+  pointer-events: auto;
+}
+
+.stage-nav-btn {
+  font-size: var(--font-size-xs);
+  letter-spacing: 0.12em;
+  background: rgba(14, 19, 10, 0.88);
+  border: 1px solid rgba(210, 255, 0, 0.35);
+  color: var(--color-lime);
+  padding: 0.55rem 1.25rem;
+  border-radius: 9999px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  backdrop-filter: blur(12px);
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.6);
+}
+
+.stage-nav-btn:hover {
+  background: var(--color-lime);
+  color: #000000;
+  box-shadow: 0 0 24px rgba(210, 255, 0, 0.45);
+  transform: translateY(-2px);
+}
+
+/* ==========================================================================
+   12. INTERACTIVE PROJECT DEEP-DIVE MODAL
+   ========================================================================== */
+
+.project-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 100000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s var(--ease-expo);
+}
+
+.project-modal.is-active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.project-modal-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(4, 7, 2, 0.88);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+}
+
+.project-modal-card {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 620px;
+  background: rgba(14, 18, 10, 0.96);
+  border: 1px solid var(--modal-accent, var(--color-lime));
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.95), 0 0 28px rgba(210, 255, 0, 0.15);
+  transform: scale(0.92);
+  transition: transform 0.25s var(--ease-expo);
+}
+
+.project-modal.is-active .project-modal-card {
+  transform: scale(1);
+}
+
+.project-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.25rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.project-modal-icon-wrap {
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.project-modal-icon {
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
+}
+
+.project-modal-close {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: var(--color-text-dim);
+  padding: 0.35rem 0.65rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.72rem;
+  transition: all 0.2s ease;
+}
+
+.project-modal-close:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #FFFFFF;
+  border-color: #FFFFFF;
+}
+
+.project-modal-footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 1rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.modal-chips-wrap {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.modal-chip {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  padding: 0.25rem 0.6rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 4px;
+  color: var(--color-text-bright);
+}
+
+.modal-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 0.6rem;
+}
+
+.modal-stat-pill {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.06em;
+  padding: 0.4rem 0.65rem;
+  background: rgba(210, 255, 0, 0.05);
+  border: 1px solid rgba(210, 255, 0, 0.2);
+  border-radius: 6px;
+  color: var(--color-lime);
+  text-align: center;
+}
+
 /* Mobile & Tablet Adjustments */
 @media (max-width: 768px) {
   .solar-text-monumental {
     font-size: 2.8rem;
   }
+  .projects-text-monumental {
+    font-size: 2.4rem;
+  }
   .solar-node-badge {
     width: 38px;
     height: 38px;
   }
+  .project-node-badge {
+    width: 190px;
+    padding: 0.65rem 0.85rem;
+  }
   .solar-cursor-tooltip {
     width: 280px;
     padding: 0.7rem 0.9rem;
+  }
+  .stage-nav-btn {
+    font-size: 0.62rem;
+    padding: 0.45rem 0.95rem;
   }
 }
 

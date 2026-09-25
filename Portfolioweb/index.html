@@ -19,7 +19,7 @@
 
   
   <!-- Design System Stylesheet -->
-  <link rel="stylesheet" href="style.css?v=18">
+  <link rel="stylesheet" href="style.css?v=23">
   <link rel="icon" type="image/png" href="assets/me.png">
 </head>
 <body>
@@ -94,7 +94,6 @@
                 <!-- Central 3D Monumental Text (At Depth Z = 0, z-index: 50) -->
                 <div class="solar-center-anchor" id="solar-center-anchor">
                   <div class="solar-center-3d-text" id="solar-center-text">
-
                     <h2 class="solar-text-monumental" data-text="TECH STACK">TECH STACK</h2>
                   </div>
                 </div>
@@ -102,6 +101,44 @@
                 <!-- 3D Orbiting Logos Container (Z-sorted: < 0 behind text, >= 0 over text) -->
                 <div class="solar-orbits-container" id="solar-orbits-container">
                   <!-- 28 nodes dynamically generated and updated with 3D projection math -->
+                </div>
+
+                <!-- Quick Jump Navigation HUD -->
+                <div class="stage-nav-hud">
+                  <button id="engage-wormhole-btn" class="stage-nav-btn font-mono" title="Warp through wormhole to projects">ENGAGE WORMHOLE ↯ TO PROJECTS</button>
+                </div>
+              </div>
+            </section>
+          </div>
+
+          <!-- PROJECTS UNIVERSE LAYER (Emerges on other side of the Wormhole) -->
+          <div id="projects-space-layer" class="projects-space-layer">
+            <section id="projects" class="projects-universe-section">
+              <!-- Central 3D Projects Solar Stage -->
+              <div class="projects-stage-wrapper" id="projects-stage">
+                <!-- 3D Orbital Geometry Canvas for Projects -->
+                <canvas id="projects-canvas" class="projects-canvas"></canvas>
+
+                <!-- Central Star / Cosmic Singularity Core -->
+                <div class="projects-singularity" aria-hidden="true"></div>
+
+                <!-- Central 3D Monumental Title (Depth Z = 0) -->
+                <div class="projects-center-anchor" id="projects-center-anchor">
+                  <div class="projects-center-3d-text" id="projects-center-text">
+                    <span class="projects-text-pre font-mono">// VERIFIED ARCHITECTURE & SYSTEMS</span>
+                    <h2 class="projects-text-monumental" data-text="FLAGSHIP PROJECTS">FLAGSHIP PROJECTS</h2>
+                    <span class="projects-text-sub font-mono">06 DEPLOYED PLATFORMS · CELESTIAL STELLAR FLEET</span>
+                  </div>
+                </div>
+
+                <!-- 3D Orbiting Project Planets Container -->
+                <div class="projects-orbits-container" id="projects-orbits-container">
+                  <!-- 6 Flagship Project Planetary Worlds dynamically rendered in 3D Keplerian orbits -->
+                </div>
+
+                <!-- Quick Jump Navigation HUD -->
+                <div class="stage-nav-hud">
+                  <button id="return-tech-btn" class="stage-nav-btn font-mono" title="Return to tech matrix">⤾ RETURN TO TECH MATRIX</button>
                 </div>
               </div>
             </section>
@@ -125,36 +162,39 @@
         <div class="tooltip-footer font-mono" id="tooltip-footer">ORBIT: REALTIME 3D SPATIAL</div>
       </div>
 
-      <!-- LOWER PARTS OF THE WEBSITE: FLAGSHIP SYSTEMS & REPOSITORIES -->
-      <section id="projects" class="section-padding container" style="padding-top: var(--space-3xl); border-top: 1px solid var(--border-subtle); margin-top: var(--space-xl);">
-        <div style="margin-bottom: var(--space-lg); display: flex; justify-content: space-between; align-items: flex-end; border-bottom: 1px solid var(--border-subtle); padding-bottom: 1rem;">
-          <div>
-            <span class="font-mono text-lime" style="font-size: var(--font-size-xs); letter-spacing: 0.1em;">// ARCHITECTURE & REPOSITORIES</span>
-            <h2 class="text-heading" style="margin-top: 0.25rem;">FLAGSHIP SYSTEMS</h2>
+      <!-- Interactive Project Deep-Dive Modal -->
+      <div id="project-detail-modal" class="project-modal" aria-hidden="true">
+        <div class="project-modal-backdrop" id="project-modal-backdrop"></div>
+        <div class="project-modal-card hud-frame">
+          <div class="project-modal-header">
+            <div style="display: flex; align-items: center; gap: 0.85rem;">
+              <div class="project-modal-icon-wrap" id="modal-icon-wrap">
+                <img src="" alt="" id="modal-icon" class="project-modal-icon" />
+              </div>
+              <div>
+                <span class="font-mono text-lime" id="modal-status" style="font-size: 0.65rem; letter-spacing: 0.08em;">// STATUS</span>
+                <h3 class="font-display" id="modal-title" style="font-size: 1.45rem; margin-top: 0.15rem; color: #FFFFFF;">PROJECT NAME</h3>
+              </div>
+            </div>
+            <button class="project-modal-close font-mono" id="modal-close-btn" aria-label="Close Modal">✕ [ESC]</button>
           </div>
-          <span class="font-mono text-muted" style="font-size: var(--font-size-xs);">04 VERIFIED DEPLOYMENTS</span>
+          <div class="project-modal-body">
+            <p class="font-sans text-editorial-muted" id="modal-desc" style="line-height: 1.6; margin-bottom: 1.2rem; font-size: 0.95rem;"></p>
+            <div style="margin-bottom: 1.2rem;">
+              <span class="font-mono text-muted" style="font-size: 0.72rem; letter-spacing: 0.1em; display: block; margin-bottom: 0.5rem;">// TECHNOLOGY ARCHITECTURE</span>
+              <div id="modal-tech-chips" class="modal-chips-wrap"></div>
+            </div>
+            <div style="margin-bottom: 1.4rem;">
+              <span class="font-mono text-muted" style="font-size: 0.72rem; letter-spacing: 0.1em; display: block; margin-bottom: 0.5rem;">// SYSTEM SPECIFICATIONS & METRICS</span>
+              <div id="modal-stats-list" class="modal-stats-grid"></div>
+            </div>
+          </div>
+          <div class="project-modal-footer">
+            <a href="#" target="_blank" id="modal-repo-link" class="btn-primary" style="font-size: 0.75rem;">VIEW REPOSITORY ON GITHUB ↗</a>
+            <button class="btn-secondary" id="modal-dismiss-btn" style="font-size: 0.75rem;">DISMISS TELEMETRY</button>
+          </div>
         </div>
-
-        <div class="grid-bento">
-          <!-- Bento Skeleton Card 1 -->
-          <div class="glass-panel hud-frame notch-card" style="grid-column: span 8; min-height: 280px; padding: var(--space-md);">
-            <div class="status-pill" style="margin-bottom: 1rem;">COMMERCIAL SOFTWARE</div>
-            <h3 class="font-display" style="font-size: var(--font-size-lg); font-weight: 700;">KeyBase</h3>
-            <p class="font-sans text-muted" style="margin-top: 0.5rem; max-width: 500px;">
-              Enterprise key duplication & records management system running live in commercial retail operations.
-            </p>
-          </div>
-
-          <!-- Bento Skeleton Card 2 -->
-          <div class="glass-panel hud-frame" style="grid-column: span 4; min-height: 280px; padding: var(--space-md);">
-            <div class="status-pill" style="margin-bottom: 1rem; border-color: rgba(0, 240, 255, 0.3);">🥈 NATIONAL 2ND PRIZE</div>
-            <h3 class="font-display" style="font-size: var(--font-size-lg); font-weight: 700;">Leadis / AiSam</h3>
-            <p class="font-sans text-muted" style="margin-top: 0.5rem;">
-              AI-assisted developmental screening combining MediaPipe pose estimation with multimodal risk assessment.
-            </p>
-          </div>
-        </div>
-      </section>
+      </div>
 
       <!-- CREDENTIALS SECTION SKELETON (Phase 5 Target) -->
       <section id="credentials" class="section-padding container">
@@ -188,6 +228,6 @@
   <!-- Lenis Momentum Smooth Scroll Library -->
   <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.9/dist/lenis.min.js"></script>
   <!-- Main ES6 Module Entry -->
-  <script type="module" src="js/main.js?v=18"></script>
+  <script type="module" src="js/main.js?v=23"></script>
 </body>
 </html>

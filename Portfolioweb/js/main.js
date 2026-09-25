@@ -65,6 +65,7 @@ export function initMouseTracking() {
 import { initHeroAsciiBurst } from './ascii-burst.js';
 import { initStickyBrandLogo } from './sticky-logo.js';
 import { initTechSolarSystem } from './tech-solar.js';
+import { initProjectSolarSystem } from './project-solar.js';
 
 /**
  * Main System Bootstrap
@@ -80,13 +81,26 @@ function bootstrap() {
   initMouseTracking();
   initHeroAsciiBurst();
   initStickyBrandLogo();
-  initTechSolarSystem();
+  const techSolar = initTechSolarSystem();
+  const projectSolar = initProjectSolarSystem();
+  window.AppState.techSolar = techSolar;
+  window.AppState.projectSolar = projectSolar;
 
   // Smooth scroll handler for anchor links
   document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
     anchor.addEventListener('click', (e) => {
       const targetId = anchor.getAttribute('href');
-      if (targetId === '#tech-stack') return; // Handled by tech-solar space zoom
+      if (targetId === '#tech-stack') {
+        e.preventDefault();
+        if (techSolar) techSolar.triggerSpaceZoom();
+        return;
+      }
+      if (targetId === '#projects' || targetId === '#projects-solar') {
+        e.preventDefault();
+        if (projectSolar) projectSolar.triggerProjectsZoom();
+        else if (techSolar) techSolar.triggerProjectsZoom();
+        return;
+      }
       const targetEl = document.querySelector(targetId);
       if (targetEl) {
         e.preventDefault();
