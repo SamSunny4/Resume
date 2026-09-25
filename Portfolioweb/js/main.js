@@ -61,6 +61,8 @@ export function initMouseTracking() {
   requestAnimationFrame(updateMouseCoords);
 }
 
+import { initHeroFontShuffle } from './font-shuffle.js';
+
 /**
  * Main System Bootstrap
  */
@@ -73,6 +75,7 @@ function bootstrap() {
 
   initSmoothScroll();
   initMouseTracking();
+  initHeroFontShuffle();
 
   AppState.isInitialized = true;
 }
@@ -83,3 +86,4 @@ if (document.readyState === 'loading') {
 } else {
   bootstrap();
 }
+

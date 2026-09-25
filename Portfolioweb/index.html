@@ -16,7 +16,7 @@
   <!-- Google Fonts: Editorial Serif, Technical Display & Sans -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@500;700&family=Syne:wght@700;800&display=swap" rel="stylesheet">
   
   <!-- Design System Stylesheet -->
   <link rel="stylesheet" href="style.css">
@@ -57,10 +57,11 @@
     <main>
       
       <!-- HERO SECTION -->
-      <section id="hero" class="hero-section" style="min-height: 85vh; display: flex; flex-direction: column; justify-content: center; position: relative; padding: var(--space-xl) 0;">
+      <!-- HERO SECTION (Full Viewport Focus) -->
+      <section id="hero" class="hero-section" style="min-height: calc(100vh - 75px); display: flex; flex-direction: column; justify-content: center; position: relative; padding: var(--space-xl) 0;">
         <div class="container">
           
-          <!-- Hero Headline Architecture with Slow Cinematic Reveal -->
+          <!-- Hero Headline Architecture with Slow Cinematic Reveal & Font Shuffle -->
           <div class="hero-title-group" style="max-width: 1300px;">
             <h1 class="hero-monumental-title" aria-label="I AM SAM SUNNY">
               <span class="hero-line-mask">
@@ -69,12 +70,18 @@
                   <span class="reveal-word word-am">AM</span>
                 </span>
               </span>
-              <span class="hero-line-mask">
-                <span class="hero-line-2">
-                  <span class="reveal-word word-sam">SAM</span>
-                  <span class="reveal-word word-sunny">SUNNY</span>
+              <div id="shuffle-hero-name" class="shuffle-name-wrapper" title="Shuffling typography">
+                <span class="hero-line-mask">
+                  <span class="hero-name-line hero-line-sam">
+                    <span class="reveal-word word-sam">SAM</span>
+                  </span>
                 </span>
-              </span>
+                <span class="hero-line-mask">
+                  <span class="hero-name-line hero-line-sunny">
+                    <span class="reveal-word word-sunny">SUNNY</span>
+                  </span>
+                </span>
+              </div>
             </h1>
             <p class="font-sans text-editorial-muted hero-desc-reveal" style="font-size: var(--font-size-md); max-width: 680px; line-height: 1.6; margin-top: var(--space-md); margin-bottom: var(--space-lg);">
               Software Engineer specializing in Computer Vision, Applied AI pipelines, and commercial full-stack applications. Proven track record deploying production retail software and national hackathon achievements.
@@ -90,31 +97,8 @@
         </div>
       </section>
 
-      <!-- CONTINUOUS TECH TICKER MARQUEE -->
-      <div class="marquee-container" aria-hidden="true">
-        <div class="marquee-track">
-          <div class="marquee-item">COMPUTER VISION <span class="marquee-separator">✦</span></div>
-          <div class="marquee-item">MEDIAPIPE <span class="marquee-separator">✦</span></div>
-          <div class="marquee-item">FLASK ML PIPELINES <span class="marquee-separator">✦</span></div>
-          <div class="marquee-item">NEXT.JS & TYPESCRIPT <span class="marquee-separator">✦</span></div>
-          <div class="marquee-item">JAVA & H2 DATABASE <span class="marquee-separator">✦</span></div>
-          <div class="marquee-item">DOCKER & LINUX <span class="marquee-separator">✦</span></div>
-          <div class="marquee-item">ISRO HACKATHON 2025 <span class="marquee-separator">✦</span></div>
-          <div class="marquee-item">COMMERCIAL DEPLOYMENTS <span class="marquee-separator">✦</span></div>
-          <!-- Duplicate set for seamless continuous loop -->
-          <div class="marquee-item">COMPUTER VISION <span class="marquee-separator">✦</span></div>
-          <div class="marquee-item">MEDIAPIPE <span class="marquee-separator">✦</span></div>
-          <div class="marquee-item">FLASK ML PIPELINES <span class="marquee-separator">✦</span></div>
-          <div class="marquee-item">NEXT.JS & TYPESCRIPT <span class="marquee-separator">✦</span></div>
-          <div class="marquee-item">JAVA & H2 DATABASE <span class="marquee-separator">✦</span></div>
-          <div class="marquee-item">DOCKER & LINUX <span class="marquee-separator">✦</span></div>
-          <div class="marquee-item">ISRO HACKATHON 2025 <span class="marquee-separator">✦</span></div>
-          <div class="marquee-item">COMMERCIAL DEPLOYMENTS <span class="marquee-separator">✦</span></div>
-        </div>
-      </div>
-
-      <!-- PROJECTS BENTO SECTION SKELETON (Phase 4 Target) -->
-      <section id="projects" class="section-padding container">
+      <!-- LOWER PARTS OF THE WEBSITE: FLAGSHIP SYSTEMS & REPOSITORIES -->
+      <section id="projects" class="section-padding container" style="padding-top: var(--space-3xl); border-top: 1px solid var(--border-subtle); margin-top: var(--space-xl);">
         <div style="margin-bottom: var(--space-lg); display: flex; justify-content: space-between; align-items: flex-end; border-bottom: 1px solid var(--border-subtle); padding-bottom: 1rem;">
           <div>
             <span class="font-mono text-lime" style="font-size: var(--font-size-xs); letter-spacing: 0.1em;">// ARCHITECTURE & REPOSITORIES</span>
