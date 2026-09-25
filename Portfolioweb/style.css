@@ -226,41 +226,126 @@ button {
   line-height: 1;
 }
 
-/* --- MULTI-LINE SHUFFLE TYPOGRAPHY WRAPPER --- */
-.shuffle-name-wrapper {
-  --shuffle-font-family: 'Syne', sans-serif;
-  --shuffle-font-weight: 800;
-  --shuffle-font-style: normal;
-  --shuffle-letter-spacing: -0.045em;
+/* --- FLOATING STICKY BRAND LOGO (Scroll-Triggered) --- */
+.sticky-brand-container {
+  position: fixed;
+  top: 1.5rem;
+  left: 2rem;
+  z-index: var(--z-nav, 100);
+  opacity: 0;
+  transform: translateY(-16px) scale(0.96);
+  pointer-events: none;
+  transition: opacity 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.sticky-brand-container.is-visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  pointer-events: auto;
+}
+
+.sticky-brand-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.35rem 0.9rem;
+  background: rgba(10, 15, 7, 0.82);
+  border: 1px solid rgba(210, 255, 0, 0.22);
+  border-radius: 9999px;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.7), inset 0 0 12px rgba(210, 255, 0, 0.06);
+  transition: border-color 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.sticky-brand-link:hover {
+  border-color: rgba(210, 255, 0, 0.6);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 36px rgba(0, 0, 0, 0.8), 0 0 24px rgba(210, 255, 0, 0.35);
+}
+
+.sticky-brand-img {
+  height: 32px;
+  width: auto;
+  max-width: 105px;
+  object-fit: contain;
+  display: block;
+  filter: drop-shadow(0 0 8px rgba(210, 255, 0, 0.4));
+}
+
+/* --- INTERACTIVE ASCII BLOCK BURST TYPOGRAPHY --- */
+.ascii-hero-container {
   display: flex;
   flex-direction: column;
-  margin-top: 0.04em;
-  cursor: pointer;
+  margin-top: 0.25em;
   user-select: none;
-  transition: filter 0.2s ease;
-  will-change: font-family;
+  cursor: crosshair;
+  position: relative;
+  will-change: transform;
 }
 
-.hero-name-line {
-  font-family: var(--shuffle-font-family) !important;
-  font-weight: var(--shuffle-font-weight) !important;
-  font-style: var(--shuffle-font-style) !important;
-  letter-spacing: var(--shuffle-letter-spacing) !important;
-  font-size: clamp(3.8rem, 11vw, 10.5rem);
-  line-height: 0.86;
-  text-transform: uppercase;
-  display: block;
-  min-height: 0.9em;
-  will-change: font-family, transform;
+.ascii-name-block {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4em;
+  font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', 'Consolas', monospace;
+  line-height: 0.92;
+  letter-spacing: -0.01em;
 }
 
-.hero-line-sam {
-  margin-bottom: 0.04em;
+.ascii-word-group {
+  display: flex;
+  flex-direction: column;
+  line-height: 0.92;
+  position: relative;
 }
 
-.hero-line-sunny {
-  margin-top: 0.02em;
+.ascii-row {
+  display: flex;
+  align-items: center;
+  white-space: pre;
+  line-height: 0.92;
+  letter-spacing: 0;
 }
+
+.ascii-cell {
+  display: inline-block;
+  font-family: inherit;
+  font-size: clamp(1.25rem, 3.1vw, 3.5rem);
+  font-weight: 700;
+  line-height: 0.92;
+  width: 0.62em;
+  text-align: center;
+  will-change: transform;
+  transform-origin: center center;
+  transition: filter 0.15s ease, text-shadow 0.15s ease;
+}
+
+.ascii-cell.ascii-space {
+  pointer-events: none;
+  user-select: none;
+}
+
+/* SAM: Brilliant White with Pure Glow */
+.ascii-word-sam .ascii-cell:not(.ascii-space) {
+  color: #FFFFFF;
+  text-shadow: 0 0 16px rgba(255, 255, 255, 0.5), 0 0 35px rgba(255, 255, 255, 0.2);
+}
+
+/* SUNNY: Cyber Lime with Neon Aura */
+.ascii-word-sunny .ascii-cell:not(.ascii-space) {
+  color: var(--color-lime);
+  text-shadow: 0 0 20px rgba(210, 255, 0, 0.65), 0 0 45px rgba(210, 255, 0, 0.3);
+}
+
+.ascii-cell:hover {
+  filter: brightness(1.7) drop-shadow(0 0 16px #FFFFFF);
+}
+
+
 
 /* Slow, elegant animation tokens */
 .reveal-word {
@@ -673,3 +758,468 @@ html.lenis, html.lenis body {
     animation: none;
   }
 }
+
+/* ==========================================================================
+   10. TECH STACK 3D SOLAR SYSTEM SECTION
+   Architectural Stage: Chaotic Solar Swarm Orbiting Behind & Over 3D Monumental Text
+   ========================================================================== */
+
+.tech-universe-section {
+  position: relative;
+  min-height: 100vh;
+  padding: var(--space-xl) 0 var(--space-xl) 0;
+  border-top: 1px solid var(--border-subtle);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* HUD Top Bar */
+.tech-hud-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  gap: 1.25rem;
+  margin-bottom: var(--space-md);
+  padding-bottom: 1.25rem;
+  border-bottom: 1px solid var(--border-subtle);
+  position: relative;
+  z-index: 10;
+}
+
+.tech-hud-left {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.tech-hud-label {
+  font-size: var(--font-size-xs);
+  letter-spacing: 0.12em;
+}
+
+.tech-heading-sub {
+  font-family: var(--font-display);
+  font-size: var(--font-size-xl);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+}
+
+/* Filter Chips */
+.tech-hud-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.tech-filter-pill {
+  font-family: var(--font-mono);
+  font-size: var(--font-size-xs);
+  padding: 0.35rem 0.75rem;
+  border: 1px solid var(--border-subtle);
+  background: rgba(14, 19, 9, 0.55);
+  color: var(--color-text-muted);
+  border-radius: 9999px;
+  cursor: pointer;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  transition: all var(--duration-fast) var(--ease-smooth);
+}
+
+.tech-filter-pill:hover {
+  color: var(--color-text-white);
+  border-color: var(--border-medium);
+  background: rgba(22, 30, 14, 0.75);
+}
+
+.tech-filter-pill.is-active {
+  background: var(--color-lime);
+  color: #000000;
+  border-color: var(--color-lime);
+  font-weight: 700;
+  box-shadow: 0 0 16px rgba(210, 255, 0, 0.4);
+}
+
+/* Chaos Mode Button */
+.chaos-mode-btn {
+  font-family: var(--font-mono);
+  font-size: var(--font-size-xs);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.45rem 0.9rem;
+  background: rgba(10, 14, 6, 0.85);
+  border: 1px solid var(--border-medium);
+  border-radius: 4px;
+  color: var(--color-text-editorial);
+  cursor: pointer;
+  transition: all var(--duration-fast) var(--ease-smooth);
+}
+
+.chaos-indicator {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--color-lime);
+  box-shadow: 0 0 8px var(--color-lime);
+  transition: background 0.3s, box-shadow 0.3s;
+}
+
+.chaos-mode-btn:hover {
+  border-color: var(--color-lime);
+  background: rgba(210, 255, 0, 0.08);
+}
+
+.chaos-mode-btn.is-hyperdrive {
+  border-color: #FF0055;
+  background: rgba(255, 0, 85, 0.15);
+  color: #FFFFFF;
+  box-shadow: 0 0 20px rgba(255, 0, 85, 0.35);
+}
+
+.chaos-mode-btn.is-hyperdrive .chaos-indicator {
+  background: #FF0055;
+  box-shadow: 0 0 12px #FF0055;
+  animation: chaosPulse 0.4s infinite alternate;
+}
+
+@keyframes chaosPulse {
+  0% { transform: scale(0.85); opacity: 0.7; }
+  100% { transform: scale(1.3); opacity: 1; }
+}
+
+/* 3D Solar Stage Wrapper */
+.solar-stage-wrapper {
+  position: relative;
+  width: 100%;
+  height: clamp(560px, 75vh, 760px);
+  margin: 0 auto;
+  perspective: 1000px;
+  overflow: visible;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* 3D Canvas Background for Orbit Ellipses & Stardust */
+.solar-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Central Gravitational Singularity / Star Core */
+.solar-singularity {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 480px;
+  height: 480px;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(circle, rgba(210, 255, 0, 0.14) 0%, rgba(0, 240, 255, 0.06) 35%, transparent 70%);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 2;
+  filter: blur(28px);
+  animation: singularityPulse 5s ease-in-out infinite alternate;
+}
+
+@keyframes singularityPulse {
+  0% { transform: translate(-50%, -50%) scale(0.88); opacity: 0.65; }
+  100% { transform: translate(-50%, -50%) scale(1.15); opacity: 0.95; }
+}
+
+/* Central Monumental 3D Text (PIVOT DEPTH: z-index: 50) */
+.solar-center-anchor {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 50; /* EXACT DEPTH THRESHOLD: nodes < 0 are behind (z-index < 50), nodes >= 0 are over (z-index > 50) */
+  pointer-events: none;
+  text-align: center;
+  width: 100%;
+  max-width: 950px;
+  padding: 0 1rem;
+}
+
+.solar-center-3d-text {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transform-style: preserve-3d;
+  will-change: transform;
+  transition: transform 0.12s linear;
+}
+
+.solar-text-pre {
+  font-size: var(--font-size-xs);
+  letter-spacing: 0.25em;
+  color: var(--color-lime);
+  margin-bottom: 0.4rem;
+  opacity: 0.9;
+  text-shadow: 0 0 12px rgba(210, 255, 0, 0.5);
+}
+
+.solar-text-monumental {
+  font-family: var(--font-display);
+  font-size: clamp(3.2rem, 7.8vw, 7.2rem);
+  font-weight: 900;
+  line-height: 0.95;
+  letter-spacing: -0.04em;
+  text-transform: uppercase;
+  color: #FFFFFF;
+  background: linear-gradient(180deg, #FFFFFF 0%, #D2FF00 50%, #4D6400 85%, #182200 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  /* 3D Extrusion Depth Shadows */
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.8))
+          drop-shadow(0 8px 24px rgba(0, 0, 0, 0.9))
+          drop-shadow(0 0 45px rgba(210, 255, 0, 0.35));
+  margin: 0;
+  user-select: none;
+}
+
+.solar-text-sub {
+  font-size: clamp(0.65rem, 0.9vw, 0.82rem);
+  letter-spacing: 0.18em;
+  color: var(--color-text-muted);
+  margin-top: 0.8rem;
+  max-width: 600px;
+  text-transform: uppercase;
+}
+
+/* 3D Orbiting Logos Container */
+.solar-orbits-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+/* Individual Planetary Tech Node */
+.solar-node {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  pointer-events: auto;
+  cursor: pointer;
+  will-change: transform, opacity, filter;
+  transition: filter 0.2s ease, opacity 0.2s ease;
+  user-select: none;
+}
+
+/* 2D Billboard Badge */
+.solar-node-badge {
+  width: clamp(42px, 4.4vw, 56px);
+  height: clamp(42px, 4.4vw, 56px);
+  border-radius: 14px;
+  background: rgba(12, 17, 8, 0.88);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--border-medium);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  transition: transform 0.25s var(--ease-expo), border-color 0.25s, box-shadow 0.25s;
+}
+
+.solar-node-img {
+  width: 68%;
+  height: 68%;
+  object-fit: contain;
+  pointer-events: none;
+}
+
+.solar-node-glow {
+  position: absolute;
+  inset: -6px;
+  border-radius: 18px;
+  pointer-events: none;
+  opacity: 0.35;
+  transition: opacity 0.3s;
+}
+
+/* Pill Name Tag (Subtle HUD Micro-Badge on Hover) */
+.solar-node-pill {
+  font-size: 0.62rem;
+  letter-spacing: 0.06em;
+  padding: 2px 7px;
+  border-radius: 4px;
+  background: rgba(7, 10, 4, 0.94);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  color: var(--color-text-editorial);
+  margin-top: 5px;
+  white-space: nowrap;
+  opacity: 0;
+  transform: translateY(-4px);
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  pointer-events: none;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.7);
+}
+
+/* FOREGROUND STATE: PASSING OVER THE TEXT */
+.solar-node.is-front .solar-node-badge {
+  border-color: var(--node-accent, var(--color-lime));
+  box-shadow: 0 0 18px var(--node-accent, rgba(210, 255, 0, 0.45)), 0 8px 24px rgba(0, 0, 0, 0.85);
+}
+
+/* BACKGROUND STATE: PASSING BEHIND THE TEXT */
+.solar-node.is-behind .solar-node-badge {
+  border-color: rgba(255, 255, 255, 0.06);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+}
+
+/* HOVERED / FOCUSED STATE: REVEAL NAME TAG & INTENSE GLOW */
+.solar-node:hover .solar-node-badge,
+.solar-node.is-hovered .solar-node-badge {
+  transform: scale(1.35);
+  border-color: #FFFFFF !important;
+  box-shadow: 0 0 28px var(--node-accent, #D2FF00), 0 0 50px rgba(210, 255, 0, 0.55) !important;
+  z-index: 100 !important;
+}
+
+.solar-node:hover .solar-node-pill,
+.solar-node.is-hovered .solar-node-pill,
+.solar-node:focus .solar-node-pill {
+  opacity: 1 !important;
+  transform: translateY(2px) !important;
+  border-color: var(--color-lime);
+  color: #FFFFFF;
+}
+
+/* CATEGORY FILTER STATES */
+.solar-node.is-filtered-out {
+  opacity: 0.12 !important;
+  filter: grayscale(1) blur(2.5px) !important;
+  pointer-events: none;
+}
+
+.solar-node.is-filtered-in .solar-node-badge {
+  animation: filterPulse 2s infinite alternate;
+}
+
+@keyframes filterPulse {
+  0% { box-shadow: 0 0 12px var(--node-accent, #D2FF00); }
+  100% { box-shadow: 0 0 26px var(--node-accent, #D2FF00); }
+}
+
+/* Active Hover Telemetry HUD Card */
+.solar-telemetry-hud {
+  position: absolute;
+  bottom: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(94%, 780px);
+  background: rgba(10, 14, 6, 0.90);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border: 1px solid var(--border-medium);
+  border-radius: 6px;
+  padding: 0.65rem 1.25rem;
+  z-index: 60;
+  pointer-events: auto;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.75), 0 0 20px rgba(210, 255, 0, 0.08);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1.5rem;
+  transition: border-color var(--duration-fast) var(--ease-smooth), box-shadow var(--duration-fast);
+}
+
+.solar-telemetry-hud.is-active {
+  border-color: var(--color-lime);
+  box-shadow: 0 10px 35px rgba(0, 0, 0, 0.85), 0 0 28px rgba(210, 255, 0, 0.25);
+}
+
+.telemetry-info-left {
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  min-width: 170px;
+}
+
+.telemetry-badge {
+  font-size: 0.68rem;
+  letter-spacing: 0.12em;
+  margin-bottom: 0.15rem;
+}
+
+.telemetry-name {
+  font-size: 1.05rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--color-text-white);
+  transition: color 0.2s ease;
+  white-space: nowrap;
+}
+
+.telemetry-info-right {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  text-align: right;
+}
+
+.telemetry-desc {
+  font-size: 0.76rem;
+  line-height: 1.4;
+  color: var(--color-text-muted);
+  max-width: 480px;
+}
+
+.telemetry-extra {
+  font-size: 0.65rem;
+  letter-spacing: 0.08em;
+  color: var(--color-text-dim);
+}
+
+/* Mobile & Tablet Adjustments */
+@media (max-width: 768px) {
+  .tech-universe-section {
+    padding: var(--space-lg) 0;
+  }
+  .tech-hud-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .solar-stage-wrapper {
+    height: 540px;
+  }
+  .solar-text-monumental {
+    font-size: 2.8rem;
+  }
+  .solar-node-badge {
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
+  }
+  .solar-telemetry-hud {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.4rem;
+    padding: 0.6rem 0.9rem;
+    bottom: 4px;
+  }
+  .telemetry-info-right {
+    text-align: left;
+  }
+}
+

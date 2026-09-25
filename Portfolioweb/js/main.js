@@ -61,7 +61,9 @@ export function initMouseTracking() {
   requestAnimationFrame(updateMouseCoords);
 }
 
-import { initHeroFontShuffle } from './font-shuffle.js';
+import { initHeroAsciiBurst } from './ascii-burst.js';
+import { initStickyBrandLogo } from './sticky-logo.js';
+import { initTechSolarSystem } from './tech-solar.js';
 
 /**
  * Main System Bootstrap
@@ -75,7 +77,9 @@ function bootstrap() {
 
   initSmoothScroll();
   initMouseTracking();
-  initHeroFontShuffle();
+  initHeroAsciiBurst();
+  initStickyBrandLogo();
+  initTechSolarSystem();
 
   AppState.isInitialized = true;
 }

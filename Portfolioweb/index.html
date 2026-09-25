@@ -13,16 +13,23 @@
   <meta property="og:type" content="website">
   <meta property="og:image" content="assets/me.png">
   
-  <!-- Google Fonts: Editorial Serif, Technical Display & Sans -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@500;700&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@700;800&family=MedievalSharp&family=Orbitron:wght@800;900&family=Oxanium:wght@700;800&family=Pixelify+Sans:wght@700&family=Press+Start+2P&family=Syne:wght@800&display=swap" rel="stylesheet">
+
   
   <!-- Design System Stylesheet -->
   <link rel="stylesheet" href="style.css">
   <link rel="icon" type="image/png" href="assets/me.png">
 </head>
 <body class="grid-lines">
+
+  <!-- Floating Sticky Brand Logo (Appears when scrolled away from Hero) -->
+  <header id="sticky-header-brand" class="sticky-brand-container" aria-label="Sam Sunny Brand">
+    <a href="#hero" class="sticky-brand-link" title="Sam Sunny — Return to Top">
+      <img src="assets/Samlogo.png" alt="Sam Sunny Signature Logo" class="sticky-brand-img">
+    </a>
+  </header>
 
   <!-- Ambient Glow & Noise Layers -->
   <div class="ambient-mesh" aria-hidden="true"></div>
@@ -34,34 +41,14 @@
   <!-- Primary Interactive Content Wrapper -->
   <div class="content-wrapper">
     
-    <!-- Top System Navigation Header -->
-    <header class="site-header" id="main-header" style="position: sticky; top: 0; z-index: var(--z-header); padding: 1.25rem 0; border-bottom: 1px solid var(--border-subtle); background: var(--color-surface-glass-heavy); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);">
-      <div class="container" style="display: flex; align-items: center; justify-content: space-between;">
-        <a href="#hero" class="brand-link" style="display: flex; align-items: center; gap: 0.75rem;">
-          <div style="width: 10px; height: 10px; background: var(--color-lime); border-radius: 2px;"></div>
-          <span class="font-display" style="font-weight: 800; font-size: 1.1rem; letter-spacing: 0.05em; text-transform: uppercase;">SAM SUNNY</span>
-          <span class="font-mono text-muted" style="font-size: 0.75rem; letter-spacing: 0.05em; border-left: 1px solid var(--border-subtle); padding-left: 0.75rem;">SYS_v1.0</span>
-        </a>
-
-        <!-- Navigation Links -->
-        <nav style="display: flex; align-items: center; gap: 2rem;">
-          <a href="#projects" class="font-mono text-muted" style="font-size: var(--font-size-xs); text-transform: uppercase; transition: color var(--duration-fast);" onmouseover="this.style.color='var(--color-lime)'" onmouseout="this.style.color='var(--color-text-muted)'">// 01. SYSTEMS</a>
-          <a href="#credentials" class="font-mono text-muted" style="font-size: var(--font-size-xs); text-transform: uppercase; transition: color var(--duration-fast);" onmouseover="this.style.color='var(--color-lime)'" onmouseout="this.style.color='var(--color-text-muted)'">// 02. CREDENTIALS</a>
-          <a href="#contact" class="font-mono text-muted" style="font-size: var(--font-size-xs); text-transform: uppercase; transition: color var(--duration-fast);" onmouseover="this.style.color='var(--color-lime)'" onmouseout="this.style.color='var(--color-text-muted)'">// 03. CONTACT</a>
-          <a href="assets/Sam_Sunny_Resume.pdf" target="_blank" class="btn-primary" style="padding: 0.5rem 1rem; font-size: var(--font-size-xs);">RESUME ↗</a>
-        </nav>
-      </div>
-    </header>
-
     <!-- Main Content Flow -->
     <main>
       
-      <!-- HERO SECTION -->
       <!-- HERO SECTION (Full Viewport Focus) -->
-      <section id="hero" class="hero-section" style="min-height: calc(100vh - 75px); display: flex; flex-direction: column; justify-content: center; position: relative; padding: var(--space-xl) 0;">
+      <section id="hero" class="hero-section" style="min-height: 100vh; display: flex; flex-direction: column; justify-content: center; position: relative; padding: var(--space-xl) 0;">
         <div class="container">
           
-          <!-- Hero Headline Architecture with Slow Cinematic Reveal & Font Shuffle -->
+          <!-- Hero Headline Architecture with Slow Cinematic Reveal & Interactive ASCII Burst -->
           <div class="hero-title-group" style="max-width: 1300px;">
             <h1 class="hero-monumental-title" aria-label="I AM SAM SUNNY">
               <span class="hero-line-mask">
@@ -70,19 +57,11 @@
                   <span class="reveal-word word-am">AM</span>
                 </span>
               </span>
-              <div id="shuffle-hero-name" class="shuffle-name-wrapper" title="Shuffling typography">
-                <span class="hero-line-mask">
-                  <span class="hero-name-line hero-line-sam">
-                    <span class="reveal-word word-sam">SAM</span>
-                  </span>
-                </span>
-                <span class="hero-line-mask">
-                  <span class="hero-name-line hero-line-sunny">
-                    <span class="reveal-word word-sunny">SUNNY</span>
-                  </span>
-                </span>
+              <div id="shuffle-hero-name" class="ascii-hero-container" title="Interactive ASCII Typography — Hover or Click to Burst">
+                <!-- ASCII Block Burst Engine automatically populates SAM and SUNNY -->
               </div>
             </h1>
+
             <p class="font-sans text-editorial-muted hero-desc-reveal" style="font-size: var(--font-size-md); max-width: 680px; line-height: 1.6; margin-top: var(--space-md); margin-bottom: var(--space-lg);">
               Software Engineer specializing in Computer Vision, Applied AI pipelines, and commercial full-stack applications. Proven track record deploying production retail software and national hackathon achievements.
             </p>
@@ -90,10 +69,75 @@
 
           <!-- Action HUD Buttons -->
           <div class="hero-actions-reveal" style="display: flex; align-items: center; gap: 1rem; flex-wrap: wrap;">
-            <a href="#projects" class="btn-primary">EXPLORE SYSTEMS ↓</a>
+            <a href="#tech-stack" class="btn-primary">EXPLORE TECH MATRIX ↓</a>
+            <a href="#projects" class="btn-secondary">FLAGSHIP SYSTEMS ↓</a>
+            <a href="assets/Sam_Sunny_Resume.pdf" target="_blank" class="btn-secondary">RESUME ↗</a>
             <a href="#contact" class="btn-secondary">INITIATE CONTACT</a>
           </div>
 
+        </div>
+      </section>
+
+      <!-- 3D SOLAR SYSTEM TECH STACK & ORBITAL MATRIX -->
+      <section id="tech-stack" class="tech-universe-section">
+        <!-- HUD Telemetry & Filter Bar -->
+        <div class="container tech-hud-header">
+          <div class="tech-hud-left">
+            <span class="font-mono text-lime tech-hud-label">// ORBITAL ARCHITECTURE &amp; TECH MATRIX</span>
+            <h2 class="tech-heading-sub">CORE CAPABILITIES</h2>
+          </div>
+
+          <!-- Interactive Category Filter Chips -->
+          <div class="tech-hud-filters" role="tablist" aria-label="Tech Stack Categories">
+            <button class="tech-filter-pill is-active" data-category="all">ALL NODES [28]</button>
+            <button class="tech-filter-pill" data-category="ai">AI &amp; VISION [4]</button>
+            <button class="tech-filter-pill" data-category="systems">SYSTEMS &amp; ARCH [6]</button>
+            <button class="tech-filter-pill" data-category="web">MODERN WEB [5]</button>
+            <button class="tech-filter-pill" data-category="cloud">CLOUD &amp; DATA [7]</button>
+            <button class="tech-filter-pill" data-category="protocols">PROTOCOLS [6]</button>
+          </div>
+
+          <div class="tech-hud-right">
+            <button id="chaos-toggle-btn" class="chaos-mode-btn" type="button" title="Toggle Solar Gravitational Perturbation">
+              <span class="chaos-indicator"></span>
+              <span class="chaos-text font-mono">CHAOS HARMONICS: NORMAL</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Central 3D Solar System Viewport Stage -->
+        <div class="solar-stage-wrapper" id="solar-stage">
+          <!-- 3D Projected Orbital Ring & Celestial Dust Canvas Layer -->
+          <canvas id="solar-canvas" class="solar-canvas"></canvas>
+
+          <!-- Central Gravitational Core / Glowing Singularity -->
+          <div class="solar-singularity" aria-hidden="true"></div>
+
+          <!-- Central 3D Monumental Text (At Depth Z = 0, z-index: 50) -->
+          <div class="solar-center-anchor" id="solar-center-anchor">
+            <div class="solar-center-3d-text" id="solar-center-text">
+              <span class="solar-text-pre font-mono">// ARSENAL &amp; CAPABILITIES</span>
+              <h2 class="solar-text-monumental" data-text="TECH STACK">TECH STACK</h2>
+              <span class="solar-text-sub font-mono">APPLIED AI • HIGH-PERFORMANCE SYSTEMS • FULL-STACK</span>
+            </div>
+          </div>
+
+          <!-- 3D Orbiting Logos Container (Z-sorted: < 0 behind text, >= 0 over text) -->
+          <div class="solar-orbits-container" id="solar-orbits-container">
+            <!-- 28 nodes dynamically generated and updated with 3D projection math -->
+          </div>
+
+          <!-- Active Hover Telemetry HUD Card -->
+          <div class="solar-telemetry-hud" id="solar-telemetry" aria-live="polite">
+            <div class="telemetry-info-left">
+              <span class="telemetry-badge font-mono text-lime" id="telemetry-category">// SYSTEM TELEMETRY</span>
+              <h4 class="telemetry-name font-display" id="telemetry-title">HOVER NODE TO INSPECT</h4>
+            </div>
+            <div class="telemetry-info-right">
+              <p class="telemetry-desc font-sans text-muted" id="telemetry-desc">Move cursor to tilt 3D perspective. Tech stack logos revolve in chaotic orbits both behind and over the 3D monumental core.</p>
+              <div class="telemetry-extra font-mono text-dim" id="telemetry-extra">ORBIT VELOCITY: REALTIME • DEPTH SORTED</div>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -160,6 +204,6 @@
   <!-- Lenis Momentum Smooth Scroll Library -->
   <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.9/dist/lenis.min.js"></script>
   <!-- Main ES6 Module Entry -->
-  <script type="module" src="js/main.js"></script>
+  <script type="module" src="js/main.js?v=5"></script>
 </body>
 </html>
