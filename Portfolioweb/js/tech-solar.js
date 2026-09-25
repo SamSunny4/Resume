@@ -869,18 +869,17 @@ export class TechSolarSystem {
         this.techLayer.style.opacity = techOpacity.toFixed(3);
         this.techLayer.style.filter = techBlur > 0.4 ? `blur(${techBlur.toFixed(1)}px)` : 'none';
         this.techLayer.style.pointerEvents = enterP > 0.8 ? 'auto' : 'none';
-      } else if (p <= 0.64) {
-        // Tech Stack accelerates forward past camera into the wormhole
+      } else if (p <= 0.67) {
+        // Tech Stack warps THROUGH the glass wormhole lens
         this.techLayer.style.visibility = 'visible';
-        const exitP = Math.min(1, (p - 0.48) / 0.16);
-        const techScale = 1.0 + exitP * 2.8; // 1.0 -> 3.8
-        const techOpacity = Math.max(0, 1.0 - exitP * 1.35);
-        const techBlur = exitP * 20;
-
-        this.techLayer.style.transform = `scale(${techScale.toFixed(3)}) translateZ(0)`;
-        this.techLayer.style.opacity = techOpacity.toFixed(3);
-        this.techLayer.style.filter = techBlur > 0.4 ? `blur(${techBlur.toFixed(1)}px)` : 'none';
+        this.techLayer.style.transform = 'translateZ(0)';
+        this.techLayer.style.filter = 'none';
         this.techLayer.style.pointerEvents = 'none';
+
+        // Overall container dissolves only at the end of the wormhole transit (p > 0.58)
+        const exitP = Math.max(0, (p - 0.58) / 0.09);
+        const techOpacity = Math.max(0, 1.0 - exitP);
+        this.techLayer.style.opacity = techOpacity.toFixed(3);
       } else {
         this.techLayer.style.opacity = '0';
         this.techLayer.style.visibility = 'hidden';
@@ -964,6 +963,40 @@ export class TechSolarSystem {
       scale: perspectiveScale,
     };
   }
+  /**
+   * Heavy Optical Glass Refraction Function
+   * Bends light rays passing through or near the spherical glass lens with heavy magnification & curvature
+   */
+  refractPoint(x, y, lensX, lensY, lensR, intensity) {
+    const dx = x - lensX;
+    const dy = y - lensY;
+    const dist = Math.hypot(dx, dy);
+    const maxR = lensR * 1.30;
+
+    if (dist < maxR && dist > 0.05) {
+      const u = dist / lensR;
+      let disp;
+      if (u <= 1.0) {
+        // Inside glass: heavy convex dome refraction (strong magnification + outward deflection)
+        const dome = Math.sqrt(Math.max(0, 1.0 - u * u));
+        disp = (0.85 * dome + 1.15 * (1.0 - dome)) * intensity;
+      } else {
+        // Outside glass edge: smooth cubic Hermite falloff into ambient space
+        const t = (1.30 - u) / 0.30;
+        const s = t * t * (3 - 2 * t);
+        disp = 1.15 * s * intensity;
+      }
+
+      const factor = 1.0 + disp;
+      return {
+        x: lensX + dx * factor,
+        y: lensY + dy * factor,
+        inGlass: u <= 1.0,
+      };
+    }
+
+    return { x, y, inGlass: false };
+  }
 
   /**
    * Render Canvas Background: Hyperspace Warp Stardust & 3D Orbital Rings
@@ -981,7 +1014,13 @@ export class TechSolarSystem {
     const isWarping = this.warpSpeed > 0.35;
     const warpStreakLength = Math.min(140, this.warpSpeed * 32);
 
-    // 1. Draw 3D Stardust with Space Warp Streaks
+    const hasLens = this.wormholeIntensity > 0.005;
+    const lensIntensity = this.wormholeIntensity;
+    const lensX = centerX + camY * 28;
+    const lensY = centerY - camX * 28;
+    const lensR = Math.min(w, h) * (0.22 + 0.16 * lensIntensity);
+
+    // 1. Draw 3D Stardust with Space Warp Streaks & Heavy Optical Glass Refraction
     this.stardust.forEach(star => {
       // Advance star along Z toward camera
       star.z -= (star.speed + this.warpSpeed * 7);
@@ -996,12 +1035,24 @@ export class TechSolarSystem {
       const s = fov / (fov - zCam);
       if (s <= 0 || s > 3.5) return;
 
-      const px = centerX + xCam * s;
-      const py = centerY + yCam * s;
+      const pxRaw = centerX + xCam * s;
+      const pyRaw = centerY + yCam * s;
 
-      if (px >= -60 && px <= w + 60 && py >= -60 && py <= h + 60) {
+      let px = pxRaw;
+      let py = pyRaw;
+      let inGlass = false;
+
+      // Heavy optical glass convex refraction on star head
+      if (hasLens) {
+        const rHead = this.refractPoint(pxRaw, pyRaw, lensX, lensY, lensR, lensIntensity);
+        px = rHead.x;
+        py = rHead.y;
+        inGlass = rHead.inGlass;
+      }
+
+      if (px >= -80 && px <= w + 80 && py >= -80 && py <= h + 80) {
         const pulse = 0.6 + 0.4 * Math.sin(this.time * star.pulseSpeed + star.phase);
-        const starAlpha = Math.min(1, star.alpha * pulse * Math.min(1.2, s));
+        let starAlpha = Math.min(1, star.alpha * pulse * Math.min(1.2, s));
 
         if (isWarping) {
           // Draw clean hyperspace warp speed streak line backwards into space
@@ -1013,21 +1064,48 @@ export class TechSolarSystem {
 
           const sTail = fov / (fov - zTail);
           if (sTail > 0) {
-            const pTailX = centerX + xTail * sTail;
-            const pTailY = centerY + yTail * sTail;
+            const pTailXRaw = centerX + xTail * sTail;
+            const pTailYRaw = centerY + yTail * sTail;
 
+            let pTailX = pTailXRaw;
+            let pTailY = pTailYRaw;
+            let pMidX = (pxRaw + pTailXRaw) * 0.5;
+            let pMidY = (pyRaw + pTailYRaw) * 0.5;
+
+            // Heavy non-linear refraction: bending streaks along curved glass geometry
+            if (hasLens) {
+              const rTail = this.refractPoint(pTailXRaw, pTailYRaw, lensX, lensY, lensR, lensIntensity);
+              pTailX = rTail.x;
+              pTailY = rTail.y;
+
+              const rMid = this.refractPoint(pMidX, pMidY, lensX, lensY, lensR, lensIntensity);
+              pMidX = rMid.x;
+              pMidY = rMid.y;
+
+              if (rTail.inGlass || rMid.inGlass || inGlass) {
+                inGlass = true;
+              }
+            }
+
+            const streakAlpha = Math.min(0.95, starAlpha * (inGlass ? 2.0 : 1.6));
             ctx.beginPath();
-            ctx.moveTo(px, py);
-            ctx.lineTo(pTailX, pTailY);
-            ctx.strokeStyle = `rgba(255, 255, 255, ${Math.min(0.85, starAlpha * 1.6)})`;
-            ctx.lineWidth = Math.max(1, star.size * s * 0.85);
+            ctx.moveTo(pTailX, pTailY);
+            if (hasLens) {
+              // Physically curve the light streak through the curved glass lens
+              ctx.quadraticCurveTo(pMidX, pMidY, px, py);
+            } else {
+              ctx.lineTo(px, py);
+            }
+            ctx.strokeStyle = `rgba(255, 255, 255, ${streakAlpha.toFixed(3)})`;
+            ctx.lineWidth = Math.max(1, star.size * s * (inGlass ? 1.2 : 0.85));
             ctx.stroke();
           }
         } else {
-          // Normal point stardust
-          ctx.fillStyle = `rgba(227, 232, 220, ${starAlpha})`;
+          // Normal point stardust (pure neutral starlight)
+          const pointAlpha = inGlass ? Math.min(1.0, starAlpha * 1.5) : starAlpha;
+          ctx.fillStyle = `rgba(242, 245, 255, ${pointAlpha.toFixed(3)})`;
           ctx.beginPath();
-          ctx.arc(px, py, star.size * Math.min(2, s), 0, Math.PI * 2);
+          ctx.arc(px, py, star.size * Math.min(3, s * (inGlass ? 1.6 : 1.0)), 0, Math.PI * 2);
           ctx.fill();
         }
       }
@@ -1127,8 +1205,8 @@ export class TechSolarSystem {
   }
 
   /**
-   * Render Clean Single Optical Lens
-   * Minimalist, elegant optical glass lens without concentric refraction ripple rings.
+   * Render Clean Optical Glass Lens
+   * Strictly NO outline, NO colors - heavy optical glass refraction volume only.
    * Occurs during Phase 3 (p: 0.46 -> 0.76), peaking at singularity transit (p ~ 0.61)
    */
   renderWormhole(camX, camY) {
@@ -1147,45 +1225,40 @@ export class TechSolarSystem {
     const lensY = centerY - camX * 28;
     const lensR = Math.min(w, h) * (0.22 + 0.16 * intensity);
 
-    // 2. Soft Outer Ambient Aura (Smooth radial fade - zero lines or rings)
-    const haloR = lensR * 1.4;
-    const auraGrad = ctx.createRadialGradient(lensX, lensY, lensR * 0.88, lensX, lensY, haloR);
-    auraGrad.addColorStop(0.00, `rgba(0, 240, 255, ${(0.16 * intensity).toFixed(3)})`);
-    auraGrad.addColorStop(0.45, `rgba(138, 92, 246, ${(0.06 * intensity).toFixed(3)})`);
-    auraGrad.addColorStop(1.00, 'rgba(0, 0, 0, 0)');
-
-    ctx.fillStyle = auraGrad;
-    ctx.beginPath();
-    ctx.arc(lensX, lensY, haloR, 0, Math.PI * 2);
-    ctx.fill();
-
-    // 3. Optical Glass Interior (Semi-translucent dark cosmic glass)
-    const glassGrad = ctx.createRadialGradient(lensX, lensY, 0, lensX, lensY, lensR);
-    glassGrad.addColorStop(0.00, `rgba(2, 5, 16, ${(0.90 * intensity).toFixed(3)})`);
-    glassGrad.addColorStop(0.72, `rgba(3, 8, 22, ${(0.80 * intensity).toFixed(3)})`);
-    glassGrad.addColorStop(0.94, `rgba(6, 16, 38, ${(0.60 * intensity).toFixed(3)})`);
-    glassGrad.addColorStop(1.00, `rgba(0, 240, 255, ${(0.22 * intensity).toFixed(3)})`);
+    // 2. Optical Glass Body (Transparent, subtle neutral glass shading - ZERO outline, fades to 0)
+    const glassGrad = ctx.createRadialGradient(
+      lensX - lensR * 0.25, lensY - lensR * 0.25, 0,
+      lensX, lensY, lensR
+    );
+    glassGrad.addColorStop(0.00, `rgba(255, 255, 255, ${(0.05 * intensity).toFixed(3)})`);
+    glassGrad.addColorStop(0.55, `rgba(0, 0, 0, ${(0.06 * intensity).toFixed(3)})`);
+    glassGrad.addColorStop(0.85, `rgba(0, 0, 0, ${(0.14 * intensity).toFixed(3)})`);
+    glassGrad.addColorStop(1.00, 'rgba(0, 0, 0, 0)'); // Fades smoothly to 0 - NO OUTLINE
 
     ctx.fillStyle = glassGrad;
     ctx.beginPath();
     ctx.arc(lensX, lensY, lensR, 0, Math.PI * 2);
     ctx.fill();
 
-    // 4. Single Crisp Optical Lens Rim (Single sleek bevel ring)
-    ctx.shadowColor = '#00F0FF';
-    ctx.shadowBlur = 10 * intensity;
-    ctx.strokeStyle = `rgba(255, 255, 255, ${(0.88 * intensity).toFixed(3)})`;
-    ctx.lineWidth = 1.6 + intensity * 0.6;
+    // 3. Spherical Convex Glass Specular Sheen (Curved White Reflection Arc - NO stroke)
+    const glareGrad = ctx.createRadialGradient(
+      lensX - lensR * 0.35, lensY - lensR * 0.35, 0,
+      lensX - lensR * 0.35, lensY - lensR * 0.35, lensR * 0.70
+    );
+    glareGrad.addColorStop(0.00, `rgba(255, 255, 255, ${(0.12 * intensity).toFixed(3)})`);
+    glareGrad.addColorStop(0.40, `rgba(255, 255, 255, ${(0.02 * intensity).toFixed(3)})`);
+    glareGrad.addColorStop(1.00, 'rgba(255, 255, 255, 0)');
+
+    ctx.fillStyle = glareGrad;
     ctx.beginPath();
     ctx.arc(lensX, lensY, lensR, 0, Math.PI * 2);
-    ctx.stroke();
-    ctx.shadowBlur = 0;
+    ctx.fill();
 
-    // 5. Central Optical Micro-Glint
-    const glintAlpha = (0.4 + 0.5 * Math.sin(this.time * 0.08)) * intensity;
+    // 4. Central Optical Micro-Glint (Focal Catchlight - NO outline)
+    const glintAlpha = (0.25 + 0.35 * Math.sin(this.time * 0.08)) * intensity;
     ctx.fillStyle = `rgba(255, 255, 255, ${glintAlpha.toFixed(3)})`;
     ctx.beginPath();
-    ctx.arc(lensX, lensY, 2.0 * intensity, 0, Math.PI * 2);
+    ctx.arc(lensX, lensY, 1.4 * intensity, 0, Math.PI * 2);
     ctx.fill();
 
     ctx.restore();
@@ -1209,16 +1282,35 @@ export class TechSolarSystem {
       const centerY = this.stageHeight / 2;
 
       // 3. Update Monumental 3D Center Text Parallax (Tech Stack)
-      if (this.centerText && this.zoomProgress < 0.65) {
+      if (this.centerText && this.zoomProgress < 0.67) {
         const textPitch = -this.camRotX * 18;
         const textYaw = this.camRotY * 24;
-        this.centerText.style.transform = `perspective(900px) rotateX(${textPitch.toFixed(2)}deg) rotateY(${textYaw.toFixed(2)}deg) translateZ(0)`;
+
+        if (this.zoomProgress >= 0.46) {
+          // Monumental title pulls forward into the glass lens and dissolves
+          const textWarpP = Math.min(1.0, (this.zoomProgress - 0.46) / 0.16);
+          const textScale = 1.0 + textWarpP * 2.5;
+          const textZ = textWarpP * 400;
+          const textOpacity = Math.max(0, 1.0 - textWarpP * 1.5);
+          const textBlur = textWarpP * 14;
+
+          this.centerText.style.transform = `perspective(900px) rotateX(${textPitch.toFixed(2)}deg) rotateY(${textYaw.toFixed(2)}deg) translateZ(${textZ.toFixed(1)}px) scale(${textScale.toFixed(3)})`;
+          this.centerText.style.opacity = textOpacity.toFixed(3);
+          this.centerText.style.filter = textBlur > 0.4 ? `blur(${textBlur.toFixed(1)}px)` : 'none';
+        } else {
+          this.centerText.style.transform = `perspective(900px) rotateX(${textPitch.toFixed(2)}deg) rotateY(${textYaw.toFixed(2)}deg) translateZ(0)`;
+          this.centerText.style.opacity = '1';
+          this.centerText.style.filter = 'none';
+        }
       }
 
-      // 4. Update Planetary Tech Nodes in 3D Orbits (Phase 1 & 2: zoomProgress < 0.66)
-      if (this.zoomProgress < 0.66) {
+      // 4. Update Planetary Tech Nodes in 3D Orbits (Warp through glass wormhole lens: zoomProgress < 0.67)
+      if (this.zoomProgress < 0.67) {
+        const isTransit = this.zoomProgress >= 0.46;
+        const transitP = isTransit ? Math.min(1.0, (this.zoomProgress - 0.46) / 0.18) : 0;
+
         let minMouseDist = 9999;
-        if (this.pointerClientX > -1000 && this.pointerClientY > -1000) {
+        if (!isTransit && this.pointerClientX > -1000 && this.pointerClientY > -1000) {
           const distToCenter = Math.hypot(this.pointerClientX - centerX, this.pointerClientY - centerY);
 
           for (let i = 0; i < this.nodes.length; i++) {
@@ -1244,46 +1336,82 @@ export class TechSolarSystem {
 
         this.orbitDilation += (this.targetOrbitDilation - this.orbitDilation) * 0.08;
 
+        // When warping through wormhole, orbits accelerate rapidly into the vortex
+        const warpSpeedMultiplier = isTransit ? (1.0 + Math.pow(transitP, 1.4) * 6.0) : 1.0;
+
+        const hasLens = this.wormholeIntensity > 0.005;
+        const lensIntensity = this.wormholeIntensity;
+        const lensX = centerX + this.camRotY * 28;
+        const lensY = centerY - this.camRotX * 28;
+        const lensR = Math.min(this.stageWidth, this.stageHeight) * (0.22 + 0.16 * lensIntensity);
+
         this.nodes.forEach(node => {
           const ring = node.ring;
 
-          const nodeSpeed = (node.meta.id === this.hoveredNode?.id)
+          const baseNodeSpeed = (node.meta.id === this.hoveredNode?.id && !isTransit)
             ? ring.baseSpeed * 0.08
             : ring.baseSpeed * this.orbitDilation;
 
-          node.theta += nodeSpeed;
+          node.theta += baseNodeSpeed * warpSpeedMultiplier;
 
-          const a = ring.baseRadiusX * this.scaleRatio;
-          const b = ring.baseRadiusY * this.scaleRatio;
+          // Scaled semi-axes: collapse inward toward the glass wormhole lens during transit
+          const collapse = isTransit ? (1.0 - Math.pow(transitP, 1.2) * 0.70) : 1.0;
+          const a = ring.baseRadiusX * this.scaleRatio * collapse;
+          const b = ring.baseRadiusY * this.scaleRatio * collapse;
 
           const x0 = a * Math.cos(node.theta);
           const y0 = b * Math.sin(node.theta);
 
-          const wobbleAmp = (ring.wobbleAmp * 0.5) * this.scaleRatio;
+          const wobbleAmp = (ring.wobbleAmp * 0.5) * this.scaleRatio * collapse;
           const z0 = wobbleAmp * Math.sin(2 * node.theta + this.time * 0.015);
 
-          const proj = this.project3D(x0, y0, z0, ring, this.camRotX, this.camRotY);
+          // Forward warp surge along Z through the wormhole
+          const forwardZ = isTransit ? Math.pow(transitP, 1.6) * 1100 : 0;
 
-          node.projX = proj.screenX;
-          node.projY = proj.screenY;
+          const proj = this.project3D(x0, y0, z0 + forwardZ, ring, this.camRotX, this.camRotY);
+
+          // Raw 3D projected screen coordinates
+          const rawScreenX = centerX + proj.screenX;
+          const rawScreenY = centerY + proj.screenY;
+
+          let screenPosX = rawScreenX;
+          let screenPosY = rawScreenY;
+          let inGlass = false;
+
+          // Apply Heavy Optical Glass Refraction through the lens!
+          if (hasLens) {
+            const rNode = this.refractPoint(rawScreenX, rawScreenY, lensX, lensY, lensR, lensIntensity);
+            screenPosX = rNode.x;
+            screenPosY = rNode.y;
+            inGlass = rNode.inGlass;
+          }
+
+          node.projX = screenPosX - centerX;
+          node.projY = screenPosY - centerY;
           node.projZ = proj.depthZ;
-          node.scale = proj.scale;
 
-          const screenPosX = centerX + proj.screenX;
-          const screenPosY = centerY + proj.screenY;
-
-          const isFront = node.projZ >= 0;
+          const isFront = proj.depthZ >= 0;
           node.isFront = isFront;
 
           let zIndex = 50;
           let opacity = 1.0;
-          let scale = node.scale;
+          let scale = proj.scale;
           let blurPx = 0;
           let brightness = 1.0;
 
-          if (isFront) {
+          if (isTransit) {
+            // Relativistic transit styling: node stretches and warps through the glass
+            zIndex = inGlass ? 92 : Math.max(52, Math.min(88, Math.round(55 + proj.depthZ / 12)));
+            scale = proj.scale * (1.0 + transitP * 1.5) * (inGlass ? 1.35 : 1.0);
+
+            // Fade out as node exits through the wormhole past the camera
+            const nodeExitFade = Math.max(0, 1.0 - Math.pow(Math.max(0, (transitP - 0.55) / 0.45), 1.5));
+            opacity = nodeExitFade;
+            brightness = inGlass ? 1.35 : (1.0 + transitP * 0.4);
+            blurPx = transitP * (inGlass ? 0.4 : 2.0);
+          } else if (isFront) {
             zIndex = Math.max(52, Math.min(99, Math.round(55 + node.projZ / 12)));
-            scale = node.scale * 1.15;
+            scale = proj.scale * 1.15;
             opacity = 1.0;
             blurPx = 0;
             brightness = 1.06;
@@ -1292,7 +1420,7 @@ export class TechSolarSystem {
             node.el.classList.remove('is-behind');
           } else {
             zIndex = Math.max(1, Math.min(48, Math.round(25 + node.projZ / 18)));
-            scale = node.scale * 0.78;
+            scale = proj.scale * 0.78;
             opacity = Math.max(0.42, Math.min(0.85, 0.75 + node.projZ / 700));
             blurPx = Math.min(3.0, Math.abs(node.projZ) / 180);
             brightness = Math.max(0.60, 0.9 + node.projZ / 800);
@@ -1301,9 +1429,20 @@ export class TechSolarSystem {
             node.el.classList.remove('is-front');
           }
 
+          // Calculate radial angle from lens center for relativistic elongation
+          let transformStr;
+          if (isTransit && transitP > 0.05) {
+            const radAngle = Math.atan2(screenPosY - lensY, screenPosX - lensX);
+            const deg = (radAngle * 180 / Math.PI);
+            const stretch = 1.0 + transitP * (inGlass ? 1.4 : 0.6);
+            transformStr = `translate3d(${screenPosX.toFixed(1)}px, ${screenPosY.toFixed(1)}px, 0) translate(-50%, -50%) rotate(${deg.toFixed(1)}deg) scale(${stretch.toFixed(3)}, ${(scale / stretch).toFixed(3)}) rotate(${(-deg).toFixed(1)}deg)`;
+          } else {
+            transformStr = `translate3d(${screenPosX.toFixed(1)}px, ${screenPosY.toFixed(1)}px, 0) translate(-50%, -50%) scale(${scale.toFixed(3)})`;
+          }
+
           node.el.style.zIndex = zIndex;
-          node.el.style.opacity = opacity;
-          node.el.style.transform = `translate3d(${screenPosX.toFixed(1)}px, ${screenPosY.toFixed(1)}px, 0) translate(-50%, -50%) scale(${scale.toFixed(3)})`;
+          node.el.style.opacity = opacity.toFixed(3);
+          node.el.style.transform = transformStr;
           node.el.style.filter = blurPx > 0.4 ? `blur(${blurPx.toFixed(1)}px) brightness(${brightness.toFixed(2)})` : `brightness(${brightness.toFixed(2)})`;
         });
       }
