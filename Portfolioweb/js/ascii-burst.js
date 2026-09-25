@@ -60,7 +60,9 @@ class AsciiBurstEngine {
     window.addEventListener('pointermove', this.onPointerMove, { passive: true });
     this.container.addEventListener('click', this.onPointerClick);
     window.addEventListener('resize', this.onResize, { passive: true });
-    window.addEventListener('scroll', this.onResize, { passive: true });
+    window.addEventListener('scroll', () => {
+      if (window.scrollY < 30) this.updateBounds();
+    }, { passive: true });
   }
 
   buildDOM() {
@@ -140,6 +142,9 @@ class AsciiBurstEngine {
   }
 
   onPointerMove(e) {
+    // If scrolled past hero during space zoom, skip physics
+    if (window.scrollY > window.innerHeight * 0.25) return;
+
     this.mouseX = e.clientX;
     this.mouseY = e.clientY;
     this.hasMoved = true;

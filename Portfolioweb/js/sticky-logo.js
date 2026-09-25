@@ -8,9 +8,8 @@ export function initStickyBrandLogo() {
   if (!brandContainer || !heroSection) return;
 
   const checkVisibility = () => {
-    const heroRect = heroSection.getBoundingClientRect();
-    // When hero bottom has scrolled above 35% of the viewport height, reveal sticky logo
-    const isHeroScrolledAway = heroRect.bottom < (window.innerHeight * 0.35);
+    // When user scrolls down more than 40% of viewport height (hero zooms into space), reveal sticky logo
+    const isHeroScrolledAway = window.scrollY > (window.innerHeight * 0.38);
     if (isHeroScrolledAway) {
       brandContainer.classList.add('is-visible');
     } else {

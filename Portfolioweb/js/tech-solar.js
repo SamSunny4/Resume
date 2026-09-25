@@ -358,62 +358,62 @@ export const TECH_NODES = [
   },
 ];
 
-// Chaotic Multi-Plane Orbital Geometry Definitions
+// Chaotic Multi-Plane Orbital Geometry Definitions (Bigger, Expansive Orbits & Reduced Glow)
 const ORBIT_RINGS = [
-  // Ring 0: Inner Core (AI & Vision) — tight, high velocity
+  // Ring 0: Inner Core (AI & Vision) — wide clearance around central text
   {
-    baseRadiusX: 190,
-    baseRadiusY: 125,
+    baseRadiusX: 360,
+    baseRadiusY: 210,
     tiltX: 0.36,     // 21 deg pitch
     tiltY: -0.28,    // -16 deg yaw
     tiltZ: 0.10,     // 6 deg roll
-    baseSpeed: 0.0084,
-    wobbleAmp: 18,
-    color: 'rgba(210, 255, 0, 0.45)',
+    baseSpeed: 0.0150,
+    wobbleAmp: 16,
+    color: 'rgba(210, 255, 0, 0.14)',
   },
   // Ring 1: Systems & Low-Level — inclined counter-orbit
   {
-    baseRadiusX: 280,
-    baseRadiusY: 175,
+    baseRadiusX: 520,
+    baseRadiusY: 295,
     tiltX: -0.56,    // -32 deg pitch
     tiltY: 0.36,     // 21 deg yaw
     tiltZ: -0.20,
-    baseSpeed: -0.0062,
-    wobbleAmp: 26,
-    color: 'rgba(0, 240, 255, 0.4)',
+    baseSpeed: -0.0115,
+    wobbleAmp: 22,
+    color: 'rgba(0, 240, 255, 0.14)',
   },
   // Ring 2: Web & Modern UI — wide tilted plane
   {
-    baseRadiusX: 370,
-    baseRadiusY: 225,
+    baseRadiusX: 680,
+    baseRadiusY: 375,
     tiltX: 0.62,     // 35 deg pitch
     tiltY: -0.32,
     tiltZ: 0.25,
-    baseSpeed: 0.0046,
-    wobbleAmp: 32,
-    color: 'rgba(255, 215, 0, 0.35)',
+    baseSpeed: 0.0090,
+    wobbleAmp: 26,
+    color: 'rgba(255, 215, 0, 0.12)',
   },
   // Ring 3: Cloud & Data — deep eccentric outer orbit
   {
-    baseRadiusX: 460,
-    baseRadiusY: 270,
+    baseRadiusX: 840,
+    baseRadiusY: 450,
     tiltX: -0.30,
     tiltY: 0.62,     // 35 deg yaw
     tiltZ: -0.16,
-    baseSpeed: -0.0035,
-    wobbleAmp: 38,
-    color: 'rgba(56, 126, 184, 0.4)',
+    baseSpeed: -0.0070,
+    wobbleAmp: 30,
+    color: 'rgba(90, 160, 220, 0.14)',
   },
-  // Ring 4: Comets & Protocols — chaotic steep polar inclination!
+  // Ring 4: Comets & Protocols — expansive steep polar inclination
   {
-    baseRadiusX: 510,
-    baseRadiusY: 210,
+    baseRadiusX: 1000,
+    baseRadiusY: 420,
     tiltX: 1.15,     // 66 deg steep polar pitch!
     tiltY: -0.48,
     tiltZ: 0.58,
-    baseSpeed: 0.0040,
-    wobbleAmp: 42,
-    color: 'rgba(240, 80, 50, 0.42)',
+    baseSpeed: 0.0078,
+    wobbleAmp: 34,
+    color: 'rgba(240, 100, 70, 0.14)',
   },
 ];
 
@@ -472,6 +472,10 @@ export class TechSolarSystem {
     // Drifting 3D Stardust background particles
     this.stardust = this.generateStardust(65);
 
+    // Dynamic Mouse Proximity Orbit Speed Dilation
+    this.orbitDilation = 1.0;
+    this.targetOrbitDilation = 1.0;
+
     // Bind methods
     this.animate = this.animate.bind(this);
     this.onResize = this.onResize.bind(this);
@@ -514,42 +518,60 @@ export class TechSolarSystem {
     this.container.innerHTML = '';
     this.nodes = [];
 
+    // Group nodes by ring to dynamically calculate equidistant phase distribution
+    const ringBuckets = {};
     TECH_NODES.forEach((tech) => {
-      const ring = ORBIT_RINGS[tech.ringIndex];
+      const rIdx = Math.max(0, Math.min(ORBIT_RINGS.length - 1, tech.ringIndex ?? 0));
+      if (!ringBuckets[rIdx]) ringBuckets[rIdx] = [];
+      ringBuckets[rIdx].push(tech);
+    });
 
-      const el = document.createElement('div');
-      el.className = 'solar-node';
-      el.dataset.id = tech.id;
-      el.dataset.category = tech.category;
-      el.setAttribute('role', 'button');
-      el.setAttribute('tabindex', '0');
-      el.setAttribute('aria-label', `${tech.name}: ${tech.categoryLabel}`);
+    Object.keys(ringBuckets).forEach((rKey) => {
+      const ringIndex = parseInt(rKey, 10);
+      const ring = ORBIT_RINGS[ringIndex];
+      const ringNodes = ringBuckets[ringIndex];
+      const totalInRing = ringNodes.length;
 
-      el.innerHTML = `
-        <div class="solar-node-badge" style="--node-accent: ${tech.color}">
-          <img src="${tech.icon}" alt="${tech.name}" class="solar-node-img" loading="lazy" />
-          <div class="solar-node-glow" style="background: radial-gradient(circle, ${tech.color}44 0%, transparent 70%);"></div>
-        </div>
-      `;
+      ringNodes.forEach((tech, itemIndex) => {
+        // Automatically space nodes evenly around 360 degrees
+        const initialTheta = (itemIndex / totalInRing) * Math.PI * 2 + (ringIndex * 0.45);
 
-      // Hover / Focus interactions
-      el.addEventListener('pointerenter', (e) => this.handleNodeHover(tech, el, e));
-      el.addEventListener('pointerleave', () => this.handleNodeLeave());
-      el.addEventListener('focus', (e) => this.handleNodeHover(tech, el, e));
-      el.addEventListener('blur', () => this.handleNodeLeave());
+        const el = document.createElement('div');
+        el.className = 'solar-node';
+        el.dataset.id = tech.id;
+        el.dataset.category = tech.category;
+        el.setAttribute('role', 'button');
+        el.setAttribute('tabindex', '0');
+        el.setAttribute('aria-label', `${tech.name}: ${tech.categoryLabel}`);
 
-      this.container.appendChild(el);
+        // Monogram fallback if SVG is missing
+        const fallbackMonogram = tech.name ? tech.name.replace(/[^a-zA-Z0-9]/g, '').substring(0, 2).toUpperCase() : 'UI';
 
-      this.nodes.push({
-        meta: tech,
-        ring: ring,
-        el: el,
-        theta: tech.orbitPhase,
-        projX: 0,
-        projY: 0,
-        projZ: 0,
-        scale: 1,
-        isFront: false,
+        el.innerHTML = `
+          <div class="solar-node-badge" style="--node-accent: ${tech.color}">
+            <img src="${tech.icon}" alt="${tech.name}" class="solar-node-img" loading="lazy" onerror="this.style.display='none'; this.parentElement.insertAdjacentHTML('beforeend', '<span style=\\'font-family: JetBrains Mono, monospace; font-size: 11px; font-weight: 800; color: ${tech.color};\\'>${fallbackMonogram}</span>');" />
+          </div>
+        `;
+
+        // Hover / Focus interactions
+        el.addEventListener('pointerenter', (e) => this.handleNodeHover(tech, el, e));
+        el.addEventListener('pointerleave', () => this.handleNodeLeave());
+        el.addEventListener('focus', (e) => this.handleNodeHover(tech, el, e));
+        el.addEventListener('blur', () => this.handleNodeLeave());
+
+        this.container.appendChild(el);
+
+        this.nodes.push({
+          meta: tech,
+          ring: ring,
+          el: el,
+          theta: initialTheta,
+          projX: 0,
+          projY: 0,
+          projZ: 0,
+          scale: 1,
+          isFront: false,
+        });
       });
     });
   }
@@ -634,6 +656,11 @@ export class TechSolarSystem {
     window.addEventListener('resize', this.onResize, { passive: true });
     window.addEventListener('scroll', this.onScroll, { passive: true });
     window.addEventListener('pointermove', this.onPointerMove, { passive: true });
+    window.addEventListener('pointerleave', () => {
+      this.pointerClientX = -9999;
+      this.pointerClientY = -9999;
+      this.targetOrbitDilation = 1.0;
+    });
 
     // Smooth space zoom button in hero
     const exploreBtn = document.getElementById('hero-explore-btn');
@@ -684,15 +711,21 @@ export class TechSolarSystem {
     this.stageWidth = window.innerWidth;
     this.stageHeight = window.innerHeight;
 
-    // Responsive scaling ratio for orbits
+    // Responsive scaling ratio for wider cosmic orbits
+    const widthScale = this.stageWidth / 1500;
+    const heightScale = this.stageHeight / 850;
+    const uniformScale = Math.min(widthScale, heightScale);
+
     if (this.stageWidth < 600) {
-      this.scaleRatio = 0.50;
+      this.scaleRatio = Math.max(0.32, uniformScale * 0.90);
     } else if (this.stageWidth < 900) {
-      this.scaleRatio = 0.68;
+      this.scaleRatio = Math.max(0.48, uniformScale * 0.95);
     } else if (this.stageWidth < 1200) {
-      this.scaleRatio = 0.82;
+      this.scaleRatio = Math.max(0.66, uniformScale);
+    } else if (this.stageWidth < 1600) {
+      this.scaleRatio = Math.max(0.80, uniformScale * 1.02);
     } else {
-      this.scaleRatio = Math.min(1.0, this.stageWidth / 1440);
+      this.scaleRatio = Math.min(1.15, Math.max(0.90, uniformScale * 1.05));
     }
 
     if (this.canvas) {
@@ -872,7 +905,7 @@ export class TechSolarSystem {
             ctx.beginPath();
             ctx.moveTo(px, py);
             ctx.lineTo(pTailX, pTailY);
-            ctx.strokeStyle = `rgba(210, 255, 0, ${Math.min(0.85, starAlpha * 1.6)})`;
+            ctx.strokeStyle = `rgba(255, 255, 255, ${Math.min(0.85, starAlpha * 1.6)})`;
             ctx.lineWidth = Math.max(1, star.size * s * 0.85);
             ctx.stroke();
           }
@@ -919,11 +952,11 @@ export class TechSolarSystem {
             else { ctx.lineTo(pt.x, pt.y); }
           } else { isDrawing = false; }
         }
-        ctx.strokeStyle = ring.color.replace(/[\d\.]+\)$/, `${(0.12 * ringAlphaMultiplier).toFixed(2)})`);
+        ctx.strokeStyle = ring.color.replace(/[\d\.]+\)$/, `${(0.04 * ringAlphaMultiplier).toFixed(2)})`);
         ctx.setLineDash([3, 5]);
         ctx.stroke();
 
-        // Draw foreground segments (bright, over)
+        // Draw foreground segments (subtle, clean, over)
         ctx.beginPath();
         isDrawing = false;
         for (let i = 0; i < points.length; i++) {
@@ -933,36 +966,35 @@ export class TechSolarSystem {
             else { ctx.lineTo(pt.x, pt.y); }
           } else { isDrawing = false; }
         }
-        ctx.strokeStyle = ring.color.replace(/[\d\.]+\)$/, `${(0.42 * ringAlphaMultiplier).toFixed(2)})`);
+        ctx.strokeStyle = ring.color.replace(/[\d\.]+\)$/, `${(0.11 * ringAlphaMultiplier).toFixed(2)})`);
         ctx.setLineDash([]);
         ctx.stroke();
 
-        // Travelling photon energy packet
+        // Travelling photon energy packet (crisp dot, zero glow)
         const photonPhase = (this.time * ring.baseSpeed * 2) % (Math.PI * 2);
         const px0 = a * Math.cos(photonPhase);
         const py0 = b * Math.sin(photonPhase);
         const photonProj = this.project3D(px0, py0, 0, ring, camX, camY);
         if (photonProj.depthZ >= 0) {
-          ctx.fillStyle = '#FFFFFF';
-          ctx.shadowColor = '#D2FF00';
-          ctx.shadowBlur = 8;
-          ctx.beginPath();
-          ctx.arc(centerX + photonProj.screenX, centerY + photonProj.screenY, 2.2 * photonProj.scale, 0, Math.PI * 2);
-          ctx.fill();
+          ctx.fillStyle = 'rgba(255, 255, 255, 0.6)';
           ctx.shadowBlur = 0;
+          ctx.beginPath();
+          ctx.arc(centerX + photonProj.screenX, centerY + photonProj.screenY, 1.4 * photonProj.scale, 0, Math.PI * 2);
+          ctx.fill();
         }
       });
     }
 
-    // 3. Laser connection line if node is hovered
+    // 3. Laser connection line if node is hovered (subtle technical guide)
     if (this.hoveredNode && this.zoomProgress > 0.5) {
       const activeNode = this.nodes.find(n => n.meta.id === this.hoveredNode.id);
       if (activeNode) {
         ctx.beginPath();
         ctx.moveTo(centerX, centerY);
         ctx.lineTo(centerX + activeNode.projX, centerY + activeNode.projY);
-        ctx.strokeStyle = activeNode.meta.color;
-        ctx.lineWidth = 1.5;
+        ctx.strokeStyle = 'rgba(255, 255, 255, 0.3)';
+        ctx.lineWidth = 1;
+        ctx.shadowBlur = 0;
         ctx.setLineDash([4, 4]);
         ctx.stroke();
         ctx.setLineDash([]);
@@ -995,14 +1027,45 @@ export class TechSolarSystem {
       const centerX = this.stageWidth / 2;
       const centerY = this.stageHeight / 2;
 
+      // 4a. Dynamic Mouse Proximity Time-Dilation Engine
+      // Mouse far away: full fast orbit speed (dilation = 1.0)
+      // Mouse close to logos/center: smoothly slows down to calm inspection drift (~0.15)
+      let minMouseDist = 9999;
+      if (this.pointerClientX > -1000 && this.pointerClientY > -1000) {
+        const distToCenter = Math.hypot(this.pointerClientX - centerX, this.pointerClientY - centerY);
+
+        for (let i = 0; i < this.nodes.length; i++) {
+          const n = this.nodes[i];
+          const nx = centerX + n.projX;
+          const ny = centerY + n.projY;
+          const d = Math.hypot(this.pointerClientX - nx, this.pointerClientY - ny);
+          if (d < minMouseDist) minMouseDist = d;
+        }
+
+        const nodeProximity = Math.max(0, Math.min(1, (minMouseDist - 25) / 220));
+        const centerProximity = Math.max(0, Math.min(1, (distToCenter - 60) / 450));
+        const proximity = Math.min(nodeProximity, centerProximity);
+
+        this.targetOrbitDilation = 0.15 + 0.85 * Math.pow(proximity, 1.5);
+
+        if (this.hoveredNode) {
+          this.targetOrbitDilation = 0.08;
+        }
+      } else {
+        this.targetOrbitDilation = 1.0;
+      }
+
+      // Smooth buttery lerp of orbit time dilation
+      this.orbitDilation += (this.targetOrbitDilation - this.orbitDilation) * 0.08;
+
+      // Pass 4b: Calculate pure 3D projected orbital positions and apply billboard transforms
       this.nodes.forEach(node => {
         const ring = node.ring;
-        const meta = node.meta;
 
-        // Advance orbital angle
+        // Advance orbital angle (unified baseSpeed * proximity dilation)
         const nodeSpeed = (node.meta.id === this.hoveredNode?.id)
-          ? ring.baseSpeed * 0.15
-          : ring.baseSpeed * meta.speedFactor;
+          ? ring.baseSpeed * 0.08
+          : ring.baseSpeed * this.orbitDilation;
 
         node.theta += nodeSpeed;
 
@@ -1014,10 +1077,10 @@ export class TechSolarSystem {
         const x0 = a * Math.cos(node.theta);
         const y0 = b * Math.sin(node.theta);
 
-        // Chaotic out-of-plane wobble
-        const wobbleFreq = 3;
-        const wobbleAmp = ring.wobbleAmp * this.scaleRatio;
-        const z0 = wobbleAmp * Math.sin(wobbleFreq * node.theta + this.time * 0.02);
+        // Subtle out-of-plane wobble
+        const wobbleFreq = 2;
+        const wobbleAmp = (ring.wobbleAmp * 0.5) * this.scaleRatio;
+        const z0 = wobbleAmp * Math.sin(wobbleFreq * node.theta + this.time * 0.015);
 
         // 3D Projection through ring Euler matrix & Camera angles
         const proj = this.project3D(x0, y0, z0, ring, this.camRotX, this.camRotY);
@@ -1025,49 +1088,47 @@ export class TechSolarSystem {
         node.projX = proj.screenX;
         node.projY = proj.screenY;
         node.projZ = proj.depthZ;
+        node.scale = proj.scale;
 
-        // Position in container coordinates
         const screenPosX = centerX + proj.screenX;
         const screenPosY = centerY + proj.screenY;
 
-        // DEPTH SORTING RELATIVE TO MONUMENTAL TEXT (Text is at depthZ = 0, z-index: 50)
-        // If depthZ < 0: BEHIND TEXT
-        // If depthZ >= 0: OVER / IN FRONT OF TEXT
-        const isFront = proj.depthZ >= 0;
+        // Depth sorting relative to text (depthZ = 0)
+        const isFront = node.projZ >= 0;
         node.isFront = isFront;
 
         let zIndex = 50;
         let opacity = 1.0;
-        let scale = proj.scale;
+        let scale = node.scale;
         let blurPx = 0;
         let brightness = 1.0;
 
         if (isFront) {
           // Foreground: Passes OVER the text letters!
-          zIndex = Math.max(52, Math.min(99, Math.round(55 + proj.depthZ / 12)));
-          scale = proj.scale * 1.15;
+          zIndex = Math.max(52, Math.min(99, Math.round(55 + node.projZ / 12)));
+          scale = node.scale * 1.15;
           opacity = 1.0;
           blurPx = 0;
-          brightness = 1.1;
+          brightness = 1.06;
 
           node.el.classList.add('is-front');
           node.el.classList.remove('is-behind');
         } else {
           // Background: Passes BEHIND the text letters!
-          zIndex = Math.max(1, Math.min(48, Math.round(25 + proj.depthZ / 18)));
-          scale = proj.scale * 0.78;
-          opacity = Math.max(0.42, Math.min(0.85, 0.75 + proj.depthZ / 700));
-          blurPx = Math.min(3.5, Math.abs(proj.depthZ) / 160);
-          brightness = Math.max(0.55, 0.9 + proj.depthZ / 800);
+          zIndex = Math.max(1, Math.min(48, Math.round(25 + node.projZ / 18)));
+          scale = node.scale * 0.78;
+          opacity = Math.max(0.42, Math.min(0.85, 0.75 + node.projZ / 700));
+          blurPx = Math.min(3.0, Math.abs(node.projZ) / 180);
+          brightness = Math.max(0.60, 0.9 + node.projZ / 800);
 
           node.el.classList.add('is-behind');
           node.el.classList.remove('is-front');
         }
 
-        // Apply hardware-accelerated 3D Transform to the 2D billboard sprite
+        // Apply hardware-accelerated 3D Transform to the borderless badge
         node.el.style.zIndex = zIndex;
         node.el.style.opacity = opacity;
-        node.el.style.transform = `translate3d(${screenPosX}px, ${screenPosY}px, 0) translate(-50%, -50%) scale(${scale})`;
+        node.el.style.transform = `translate3d(${screenPosX.toFixed(1)}px, ${screenPosY.toFixed(1)}px, 0) translate(-50%, -50%) scale(${scale.toFixed(3)})`;
         node.el.style.filter = blurPx > 0.4 ? `blur(${blurPx.toFixed(1)}px) brightness(${brightness.toFixed(2)})` : `brightness(${brightness.toFixed(2)})`;
       });
 

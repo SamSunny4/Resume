@@ -11,6 +11,7 @@ export const AppState = {
   threeScene: null,
   mouse: { x: 0, y: 0, targetX: 0, targetY: 0 },
 };
+window.AppState = AppState;
 
 /**
  * Initialize Lenis Momentum Smooth Scrolling
@@ -80,6 +81,23 @@ function bootstrap() {
   initHeroAsciiBurst();
   initStickyBrandLogo();
   initTechSolarSystem();
+
+  // Smooth scroll handler for anchor links
+  document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+    anchor.addEventListener('click', (e) => {
+      const targetId = anchor.getAttribute('href');
+      if (targetId === '#tech-stack') return; // Handled by tech-solar space zoom
+      const targetEl = document.querySelector(targetId);
+      if (targetEl) {
+        e.preventDefault();
+        if (AppState.lenis) {
+          AppState.lenis.scrollTo(targetEl, { duration: 1.2 });
+        } else {
+          targetEl.scrollIntoView({ behavior: 'smooth' });
+        }
+      }
+    });
+  });
 
   AppState.isInitialized = true;
 }

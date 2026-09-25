@@ -19,10 +19,10 @@
 
   
   <!-- Design System Stylesheet -->
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css?v=18">
   <link rel="icon" type="image/png" href="assets/me.png">
 </head>
-<body class="grid-lines">
+<body>
 
   <!-- Floating Sticky Brand Logo (Appears when scrolled away from Hero) -->
   <header id="sticky-header-brand" class="sticky-brand-container" aria-label="Sam Sunny Brand">
@@ -31,8 +31,7 @@
     </a>
   </header>
 
-  <!-- Ambient Glow & Noise Layers -->
-  <div class="ambient-mesh" aria-hidden="true"></div>
+  <!-- Ambient Noise Layer -->
   <div class="noise-overlay" aria-hidden="true"></div>
   
   <!-- 3D WebGL Canvas Layer (Background Scene) -->
@@ -95,9 +94,8 @@
                 <!-- Central 3D Monumental Text (At Depth Z = 0, z-index: 50) -->
                 <div class="solar-center-anchor" id="solar-center-anchor">
                   <div class="solar-center-3d-text" id="solar-center-text">
-                    <span class="solar-text-pre font-mono">// ARSENAL &amp; CAPABILITIES</span>
+
                     <h2 class="solar-text-monumental" data-text="TECH STACK">TECH STACK</h2>
-                    <span class="solar-text-sub font-mono">APPLIED AI • HIGH-PERFORMANCE SYSTEMS • FULL-STACK</span>
                   </div>
                 </div>
 
@@ -190,6 +188,6 @@
   <!-- Lenis Momentum Smooth Scroll Library -->
   <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.9/dist/lenis.min.js"></script>
   <!-- Main ES6 Module Entry -->
-  <script type="module" src="js/main.js?v=6"></script>
+  <script type="module" src="js/main.js?v=18"></script>
 </body>
 </html>
