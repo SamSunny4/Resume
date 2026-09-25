@@ -1,11 +1,12 @@
 /**
- * TECH STACK 3D SOLAR SYSTEM ORBITAL ENGINE
+ * TECH STACK 3D SOLAR SYSTEM ORBITAL & SPACE WARP ZOOM ENGINE
  * Author: Sam Sunny Portfolio
  * Description: 
- *   Chaotic multi-plane 3D solar system orbital simulation for 28 tech stack nodes.
- *   Logos revolve both BEHIND and OVER the monumental 3D central text via dynamic depth-sorting (z-index & camera Z).
- *   Features 2D billboard sprites, 3D mouse/touch parallax, scroll inertia, glowing canvas orbital rings,
- *   telemetry HUD inspection, and interactive chaos mode.
+ *   - Scroll-driven 3D cosmic zoom transition from Hero into the Tech Stack universe.
+ *   - As user scrolls from Hero, camera flies through space (hyperspace star streaks, Hero zooms past camera),
+ *     and the 3D Solar System Tech Stack blooms in from deep space.
+ *   - 28 planetary tech nodes revolve in chaotic 3D orbits BOTH BEHIND AND OVER the monumental 3D text.
+ *   - Hovering any node displays rich details in a floating holographic HUD tooltip right near the pointer!
  */
 
 // 28 Verified Tech Stack Nodes with authentic project context
@@ -422,9 +423,20 @@ export class TechSolarSystem {
     this.container = document.getElementById('solar-orbits-container');
     this.canvas = document.getElementById('solar-canvas');
     this.centerText = document.getElementById('solar-center-text');
-    this.telemetryBox = document.getElementById('solar-telemetry');
-    this.chaosBtn = document.getElementById('chaos-toggle-btn');
     
+    // Space Warp Zoom Stage Track & Layers
+    this.track = document.getElementById('space-stage-track');
+    this.heroLayer = document.getElementById('hero-space-layer');
+    this.techLayer = document.getElementById('tech-space-layer');
+
+    // Near-Pointer Floating Tooltip
+    this.tooltip = document.getElementById('solar-cursor-tooltip');
+    this.tooltipIcon = document.getElementById('tooltip-icon');
+    this.tooltipTitle = document.getElementById('tooltip-title');
+    this.tooltipCategory = document.getElementById('tooltip-category');
+    this.tooltipDesc = document.getElementById('tooltip-desc');
+    this.tooltipFooter = document.getElementById('tooltip-footer');
+
     if (!this.stage || !this.container) {
       console.warn('[Solar] Solar stage or container not found in DOM.');
       return;
@@ -432,14 +444,8 @@ export class TechSolarSystem {
 
     this.ctx = this.canvas ? this.canvas.getContext('2d') : null;
     this.nodes = [];
-    this.activeCategory = 'all';
     this.hoveredNode = null;
-    this.isChaosMode = false;
-    this.chaosSpeedMultiplier = 1.0;
-    this.chaosWobbleMultiplier = 1.0;
     this.time = 0;
-    this.scrollImpulse = 0;
-    this.lastScrollY = window.scrollY;
     this.isInViewport = true;
     this.scaleRatio = 1.0;
     this.stageWidth = 1200;
@@ -451,16 +457,27 @@ export class TechSolarSystem {
     this.targetCamRotX = 0;
     this.targetCamRotY = 0;
 
+    // Pointer Coordinates for Tooltip & Parallax
+    this.pointerClientX = -9999;
+    this.pointerClientY = -9999;
+    this.tooltipCurrentX = -9999;
+    this.tooltipCurrentY = -9999;
+    this.isTooltipActive = false;
+
+    // Space Zoom & Warp Travel State
+    this.zoomProgress = 0;
+    this.targetZoomProgress = 0;
+    this.warpSpeed = 0;
+
     // Drifting 3D Stardust background particles
-    this.stardust = this.generateStardust(55);
+    this.stardust = this.generateStardust(65);
 
     // Bind methods
     this.animate = this.animate.bind(this);
     this.onResize = this.onResize.bind(this);
     this.onScroll = this.onScroll.bind(this);
     this.onPointerMove = this.onPointerMove.bind(this);
-    this.onFilterClick = this.onFilterClick.bind(this);
-    this.toggleChaos = this.toggleChaos.bind(this);
+    this.triggerSpaceZoom = this.triggerSpaceZoom.bind(this);
 
     this.init();
   }
@@ -480,11 +497,12 @@ export class TechSolarSystem {
     const stars = [];
     for (let i = 0; i < count; i++) {
       stars.push({
-        x: (Math.random() - 0.5) * 1400,
-        y: (Math.random() - 0.5) * 800,
-        z: (Math.random() - 0.5) * 1000,
+        x: (Math.random() - 0.5) * 1600,
+        y: (Math.random() - 0.5) * 1000,
+        z: Math.random() * 1200 - 400,
         size: Math.random() * 1.8 + 0.6,
-        alpha: Math.random() * 0.5 + 0.2,
+        alpha: Math.random() * 0.5 + 0.25,
+        speed: Math.random() * 0.6 + 0.3,
         pulseSpeed: Math.random() * 0.03 + 0.01,
         phase: Math.random() * Math.PI * 2,
       });
@@ -496,7 +514,7 @@ export class TechSolarSystem {
     this.container.innerHTML = '';
     this.nodes = [];
 
-    TECH_NODES.forEach((tech, index) => {
+    TECH_NODES.forEach((tech) => {
       const ring = ORBIT_RINGS[tech.ringIndex];
 
       const el = document.createElement('div');
@@ -512,13 +530,12 @@ export class TechSolarSystem {
           <img src="${tech.icon}" alt="${tech.name}" class="solar-node-img" loading="lazy" />
           <div class="solar-node-glow" style="background: radial-gradient(circle, ${tech.color}44 0%, transparent 70%);"></div>
         </div>
-        <div class="solar-node-pill font-mono">${tech.name.split(' ')[0]}</div>
       `;
 
-      // Hover / Touch interaction
-      el.addEventListener('pointerenter', () => this.handleNodeHover(tech, el));
+      // Hover / Focus interactions
+      el.addEventListener('pointerenter', (e) => this.handleNodeHover(tech, el, e));
       el.addEventListener('pointerleave', () => this.handleNodeLeave());
-      el.addEventListener('focus', () => this.handleNodeHover(tech, el));
+      el.addEventListener('focus', (e) => this.handleNodeHover(tech, el, e));
       el.addEventListener('blur', () => this.handleNodeLeave());
 
       this.container.appendChild(el);
@@ -541,22 +558,38 @@ export class TechSolarSystem {
     this.hoveredNode = tech;
     el.classList.add('is-hovered');
 
-    if (this.telemetryBox) {
-      const catEl = document.getElementById('telemetry-category');
-      const titleEl = document.getElementById('telemetry-title');
-      const descEl = document.getElementById('telemetry-desc');
-      const extraEl = document.getElementById('telemetry-extra');
+    if (this.tooltip) {
+      if (this.tooltipIcon) {
+        this.tooltipIcon.src = tech.icon;
+        this.tooltipIcon.alt = tech.name;
+      }
+      if (this.tooltipTitle) {
+        this.tooltipTitle.textContent = tech.name;
+        this.tooltipTitle.style.color = tech.color;
+      }
+      if (this.tooltipCategory) {
+        this.tooltipCategory.textContent = `// ${tech.categoryLabel}`;
+        this.tooltipCategory.style.color = tech.color;
+      }
+      if (this.tooltipDesc) {
+        this.tooltipDesc.textContent = tech.desc;
+      }
+      if (this.tooltipFooter) {
+        this.tooltipFooter.textContent = `ORBIT RING ${tech.ringIndex + 1} • REALTIME 3D SPATIAL`;
+      }
 
-      if (catEl) catEl.textContent = `// ${tech.categoryLabel}`;
-      if (titleEl) {
-        titleEl.textContent = tech.name;
-        titleEl.style.color = tech.color;
+      this.tooltip.style.setProperty('--tooltip-accent', tech.color);
+      this.tooltip.style.setProperty('--tooltip-glow', `${tech.color}44`);
+
+      // Initialize position if not set
+      if (this.pointerClientX > -1000) {
+        this.tooltipCurrentX = this.pointerClientX + 18;
+        this.tooltipCurrentY = this.pointerClientY + 18;
+        this.tooltip.style.transform = `translate3d(${this.tooltipCurrentX}px, ${this.tooltipCurrentY}px, 0)`;
       }
-      if (descEl) descEl.textContent = tech.desc;
-      if (extraEl) {
-        extraEl.textContent = `ORBIT: RING ${tech.ringIndex + 1} • CLASS: 2D SPRITE / 3D SPATIAL`;
-      }
-      this.telemetryBox.classList.add('is-active');
+
+      this.tooltip.classList.add('is-visible');
+      this.isTooltipActive = true;
     }
   }
 
@@ -567,21 +600,34 @@ export class TechSolarSystem {
       this.hoveredNode = null;
     }
 
-    if (this.telemetryBox) {
-      const catEl = document.getElementById('telemetry-category');
-      const titleEl = document.getElementById('telemetry-title');
-      const descEl = document.getElementById('telemetry-desc');
-      const extraEl = document.getElementById('telemetry-extra');
-
-      if (catEl) catEl.textContent = '// SYSTEM TELEMETRY';
-      if (titleEl) {
-        titleEl.textContent = 'HOVER NODE TO INSPECT';
-        titleEl.style.color = 'var(--color-text-white)';
-      }
-      if (descEl) descEl.textContent = 'Move cursor to tilt 3D perspective. Tech stack logos revolve in chaotic orbits both behind and over the 3D monumental core.';
-      if (extraEl) extraEl.textContent = 'ORBIT VELOCITY: REALTIME • DEPTH SORTED';
-      this.telemetryBox.classList.remove('is-active');
+    if (this.tooltip) {
+      this.tooltip.classList.remove('is-visible');
+      this.isTooltipActive = false;
     }
+  }
+
+  updateTooltipPosition() {
+    if (!this.isTooltipActive || !this.tooltip) return;
+
+    const tooltipWidth = 320;
+    const tooltipHeight = 150;
+    let targetX = this.pointerClientX + 18;
+    let targetY = this.pointerClientY + 18;
+
+    // Prevent clipping right screen edge
+    if (targetX + tooltipWidth > window.innerWidth - 16) {
+      targetX = this.pointerClientX - tooltipWidth - 18;
+    }
+    // Prevent clipping bottom screen edge
+    if (targetY + tooltipHeight > window.innerHeight - 16) {
+      targetY = this.pointerClientY - tooltipHeight - 18;
+    }
+
+    // Smooth lerp
+    this.tooltipCurrentX += (targetX - this.tooltipCurrentX) * 0.24;
+    this.tooltipCurrentY += (targetY - this.tooltipCurrentY) * 0.24;
+
+    this.tooltip.style.transform = `translate3d(${this.tooltipCurrentX.toFixed(1)}px, ${this.tooltipCurrentY.toFixed(1)}px, 0)`;
   }
 
   setupListeners() {
@@ -589,82 +635,54 @@ export class TechSolarSystem {
     window.addEventListener('scroll', this.onScroll, { passive: true });
     window.addEventListener('pointermove', this.onPointerMove, { passive: true });
 
-    // Category filter buttons
-    const filterButtons = document.querySelectorAll('.tech-filter-pill');
-    filterButtons.forEach(btn => {
-      btn.addEventListener('click', (e) => this.onFilterClick(e, btn));
-    });
-
-    // Chaos Mode Toggle button
-    if (this.chaosBtn) {
-      this.chaosBtn.addEventListener('click', this.toggleChaos);
+    // Smooth space zoom button in hero
+    const exploreBtn = document.getElementById('hero-explore-btn');
+    if (exploreBtn) {
+      exploreBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        this.triggerSpaceZoom();
+      });
     }
   }
 
-  onFilterClick(e, btn) {
-    const category = btn.dataset.category || 'all';
-    this.activeCategory = category;
+  triggerSpaceZoom() {
+    if (!this.track) return;
+    const trackTop = this.track.offsetTop;
+    const maxScroll = this.track.offsetHeight - window.innerHeight;
+    const targetY = trackTop + maxScroll * 0.85;
 
-    // Update active UI state on filter chips
-    document.querySelectorAll('.tech-filter-pill').forEach(b => b.classList.remove('is-active'));
-    btn.classList.add('is-active');
-
-    // Update node visual dimming
-    this.nodes.forEach(node => {
-      if (category === 'all' || node.meta.category === category) {
-        node.el.classList.remove('is-filtered-out');
-        node.el.classList.add('is-filtered-in');
-      } else {
-        node.el.classList.add('is-filtered-out');
-        node.el.classList.remove('is-filtered-in');
-      }
-    });
-  }
-
-  toggleChaos() {
-    this.isChaosMode = !this.isChaosMode;
-    const indicator = this.chaosBtn?.querySelector('.chaos-indicator');
-    const textEl = this.chaosBtn?.querySelector('.chaos-text');
-
-    if (this.isChaosMode) {
-      this.chaosBtn?.classList.add('is-hyperdrive');
-      if (textEl) textEl.textContent = 'CHAOS HARMONICS: HYPERDRIVE ⚡';
-      if (indicator) indicator.style.background = '#FF0055';
+    // Use Lenis if available for cinematic smooth flight
+    if (window.AppState && window.AppState.lenis) {
+      window.AppState.lenis.scrollTo(targetY, { duration: 1.4 });
     } else {
-      this.chaosBtn?.classList.remove('is-hyperdrive');
-      if (textEl) textEl.textContent = 'CHAOS HARMONICS: NORMAL';
-      if (indicator) indicator.style.background = '#D2FF00';
+      window.scrollTo({ top: targetY, behavior: 'smooth' });
     }
   }
 
   onPointerMove(e) {
+    this.pointerClientX = e.clientX;
+    this.pointerClientY = e.clientY;
+
     if (!this.isInViewport) return;
-    const rect = this.stage.getBoundingClientRect();
-    const centerX = rect.left + rect.width / 2;
-    const centerY = rect.top + rect.height / 2;
+    const centerX = window.innerWidth / 2;
+    const centerY = window.innerHeight / 2;
 
-    // Normalized mouse (-1 to +1) relative to stage center
-    const nx = Math.max(-1, Math.min(1, (e.clientX - centerX) / (rect.width / 2)));
-    const ny = Math.max(-1, Math.min(1, (e.clientY - centerY) / (rect.height / 2)));
+    // Normalized mouse (-1 to +1) relative to screen center
+    const nx = Math.max(-1, Math.min(1, (e.clientX - centerX) / (window.innerWidth / 2)));
+    const ny = Math.max(-1, Math.min(1, (e.clientY - centerY) / (window.innerHeight / 2)));
 
-    this.targetCamRotY = nx * 0.48; // Max ~28 deg yaw
-    this.targetCamRotX = -ny * 0.38; // Max ~22 deg pitch
+    this.targetCamRotY = nx * 0.44; // Max ~25 deg yaw
+    this.targetCamRotX = -ny * 0.35; // Max ~20 deg pitch
   }
 
   onScroll() {
-    const currentY = window.scrollY;
-    const delta = currentY - this.lastScrollY;
-    this.lastScrollY = currentY;
-
-    // Scroll adds angular impulse
-    this.scrollImpulse += Math.abs(delta) * 0.00035;
+    // Scroll event triggers progress update in animation loop
   }
 
   onResize() {
     if (!this.stage) return;
-    const rect = this.stage.getBoundingClientRect();
-    this.stageWidth = rect.width;
-    this.stageHeight = rect.height;
+    this.stageWidth = window.innerWidth;
+    this.stageHeight = window.innerHeight;
 
     // Responsive scaling ratio for orbits
     if (this.stageWidth < 600) {
@@ -697,37 +715,94 @@ export class TechSolarSystem {
           this.isInViewport = entry.isIntersecting;
         });
       },
-      { rootMargin: '100px 0px 100px 0px', threshold: 0.05 }
+      { rootMargin: '100px 0px 100px 0px', threshold: 0.02 }
     );
-    observer.observe(this.stage);
+    if (this.track) {
+      observer.observe(this.track);
+    }
+  }
+
+  /**
+   * Continuous Scroll-Driven 3D Space Warp Zoom Engine
+   */
+  updateSpaceZoom() {
+    if (!this.track) return;
+    const rect = this.track.getBoundingClientRect();
+    const maxScroll = this.track.offsetHeight - window.innerHeight;
+    const rawProgress = maxScroll > 0 ? Math.max(0, Math.min(1, -rect.top / maxScroll)) : 0;
+
+    // Smooth lerp progress
+    this.targetZoomProgress = rawProgress;
+    this.zoomProgress += (this.targetZoomProgress - this.zoomProgress) * 0.12;
+    const p = this.zoomProgress;
+
+    // Warp speed intensity based on velocity of progress change
+    const deltaP = Math.abs(this.targetZoomProgress - this.zoomProgress);
+    const activeZoomWarp = (p > 0.05 && p < 0.75) ? Math.sin((p / 0.75) * Math.PI) * 1.5 : 0;
+    this.warpSpeed = Math.max(0, deltaP * 18 + activeZoomWarp);
+
+    // 1. Hero Layer Zoom & Dissolve: p in [0.0, 0.40]
+    if (this.heroLayer) {
+      const heroP = Math.min(1, Math.max(0, p / 0.40));
+      // Camera moves through hero: scales up from 1.0 to 3.2, blurs and fades out
+      const heroScale = 1.0 + heroP * 2.2;
+      const heroOpacity = Math.max(0, 1.0 - heroP * 1.45);
+      const heroBlur = heroP * 18;
+
+      this.heroLayer.style.transform = `scale(${heroScale.toFixed(3)}) translateZ(0)`;
+      this.heroLayer.style.opacity = heroOpacity.toFixed(3);
+      this.heroLayer.style.filter = heroBlur > 0.4 ? `blur(${heroBlur.toFixed(1)}px)` : 'none';
+      this.heroLayer.style.pointerEvents = heroP > 0.15 ? 'none' : 'auto';
+      this.heroLayer.style.visibility = heroOpacity <= 0.005 ? 'hidden' : 'visible';
+    }
+
+    // 2. Tech Stack Layer Arrival: p in [0.15, 0.85]
+    if (this.techLayer) {
+      if (p <= 0.15) {
+        this.techLayer.style.opacity = '0';
+        this.techLayer.style.visibility = 'hidden';
+        this.techLayer.style.pointerEvents = 'none';
+        this.techLayer.style.transform = 'scale(0.18) translateZ(0)';
+      } else {
+        this.techLayer.style.visibility = 'visible';
+        const techP = Math.min(1, Math.max(0, (p - 0.15) / 0.65));
+        // Smooth ease-out curve
+        const easedTech = Math.sin((techP * Math.PI) / 2);
+
+        // Scales in from deep space: 0.18 -> 1.0
+        const techScale = 0.18 + easedTech * 0.82;
+        const techOpacity = Math.min(1, techP * 1.35);
+        const techBlur = (1 - easedTech) * 16;
+
+        this.techLayer.style.transform = `scale(${techScale.toFixed(3)}) translateZ(0)`;
+        this.techLayer.style.opacity = techOpacity.toFixed(3);
+        this.techLayer.style.filter = techBlur > 0.4 ? `blur(${techBlur.toFixed(1)}px)` : 'none';
+        this.techLayer.style.pointerEvents = techP > 0.65 ? 'auto' : 'none';
+      }
+    }
   }
 
   /**
    * 3D Rotation Math & Camera Projection Engine
    */
   project3D(x0, y0, z0, ring, camX, camY) {
-    // 1. Local orbital plane Euler rotation (pitch, yaw, roll)
-    // Pitch (tiltX)
+    // 1. Local orbital plane Euler rotation
     const y1 = y0 * Math.cos(ring.tiltX) - z0 * Math.sin(ring.tiltX);
     const z1 = y0 * Math.sin(ring.tiltX) + z0 * Math.cos(ring.tiltX);
     const x1 = x0;
 
-    // Yaw (tiltY)
     const x2 = x1 * Math.cos(ring.tiltY) + z1 * Math.sin(ring.tiltY);
     const z2 = -x1 * Math.sin(ring.tiltY) + z1 * Math.cos(ring.tiltY);
     const y2 = y1;
 
-    // Roll (tiltZ)
     const x3 = x2 * Math.cos(ring.tiltZ) - y2 * Math.sin(ring.tiltZ);
     const y3 = x2 * Math.sin(ring.tiltZ) + y2 * Math.cos(ring.tiltZ);
     const z3 = z2;
 
     // 2. Global Camera / Parallax Rotation
-    // Yaw around Y
     const xCam = x3 * Math.cos(camY) + z3 * Math.sin(camY);
     const zCam1 = -x3 * Math.sin(camY) + z3 * Math.cos(camY);
 
-    // Pitch around X
     const yCam = y3 * Math.cos(camX) - zCam1 * Math.sin(camX);
     const zCam = y3 * Math.sin(camX) + zCam1 * Math.cos(camX);
 
@@ -744,7 +819,7 @@ export class TechSolarSystem {
   }
 
   /**
-   * Render Canvas Background: Orbital Rings & Stardust
+   * Render Canvas Background: Hyperspace Warp Stardust & 3D Orbital Rings
    */
   renderCanvas(camX, camY) {
     if (!this.ctx) return;
@@ -756,9 +831,15 @@ export class TechSolarSystem {
 
     ctx.clearRect(0, 0, w, h);
 
-    // Draw 3D Stardust with Parallax
+    const isWarping = this.warpSpeed > 0.35;
+    const warpStreakLength = Math.min(140, this.warpSpeed * 32);
+
+    // 1. Draw 3D Stardust with Space Warp Streaks
     this.stardust.forEach(star => {
-      // Perspective projection of star
+      // Advance star along Z toward camera
+      star.z -= (star.speed + this.warpSpeed * 7);
+      if (star.z < -400) star.z += 1200;
+
       const xCam = star.x * Math.cos(camY) + star.z * Math.sin(camY);
       const zCam1 = -star.x * Math.sin(camY) + star.z * Math.cos(camY);
       const yCam = star.y * Math.cos(camX) - zCam1 * Math.sin(camX);
@@ -766,104 +847,115 @@ export class TechSolarSystem {
 
       const fov = 850;
       const s = fov / (fov - zCam);
-      if (s <= 0 || s > 3) return;
+      if (s <= 0 || s > 3.5) return;
 
       const px = centerX + xCam * s;
       const py = centerY + yCam * s;
 
-      if (px >= 0 && px <= w && py >= 0 && py <= h) {
+      if (px >= -60 && px <= w + 60 && py >= -60 && py <= h + 60) {
         const pulse = 0.6 + 0.4 * Math.sin(this.time * star.pulseSpeed + star.phase);
-        ctx.fillStyle = `rgba(227, 232, 220, ${star.alpha * pulse * Math.min(1, s)})`;
-        ctx.beginPath();
-        ctx.arc(px, py, star.size * Math.min(2, s), 0, Math.PI * 2);
-        ctx.fill();
+        const starAlpha = Math.min(1, star.alpha * pulse * Math.min(1.2, s));
+
+        if (isWarping) {
+          // Draw warp speed streak line backwards into space
+          const tailZ = star.z + warpStreakLength;
+          const xTail = star.x * Math.cos(camY) + tailZ * Math.sin(camY);
+          const zTail1 = -star.x * Math.sin(camY) + tailZ * Math.cos(camY);
+          const yTail = star.y * Math.cos(camX) - zTail1 * Math.sin(camX);
+          const zTail = star.y * Math.sin(camX) + zTail1 * Math.cos(camX);
+
+          const sTail = fov / (fov - zTail);
+          if (sTail > 0) {
+            const pTailX = centerX + xTail * sTail;
+            const pTailY = centerY + yTail * sTail;
+
+            ctx.beginPath();
+            ctx.moveTo(px, py);
+            ctx.lineTo(pTailX, pTailY);
+            ctx.strokeStyle = `rgba(210, 255, 0, ${Math.min(0.85, starAlpha * 1.6)})`;
+            ctx.lineWidth = Math.max(1, star.size * s * 0.85);
+            ctx.stroke();
+          }
+        } else {
+          // Normal point stardust
+          ctx.fillStyle = `rgba(227, 232, 220, ${starAlpha})`;
+          ctx.beginPath();
+          ctx.arc(px, py, star.size * Math.min(2, s), 0, Math.PI * 2);
+          ctx.fill();
+        }
       }
     });
 
-    // Draw projected 3D Orbital Rings (split into back and front paths)
-    ORBIT_RINGS.forEach((ring, rIdx) => {
-      const a = ring.baseRadiusX * this.scaleRatio;
-      const b = ring.baseRadiusY * this.scaleRatio;
-      const segments = 90;
+    // 2. Draw 3D Orbital Rings (only when Tech Stack is blooming in, zoomProgress > 0.15)
+    if (this.zoomProgress > 0.15) {
+      const ringAlphaMultiplier = Math.min(1, (this.zoomProgress - 0.15) / 0.5);
 
-      // Sample ring points in 3D
-      const points = [];
-      for (let i = 0; i <= segments; i++) {
-        const phi = (i / segments) * Math.PI * 2;
-        const x0 = a * Math.cos(phi);
-        const y0 = b * Math.sin(phi);
-        const z0 = 0; // base orbital plane
-        const p = this.project3D(x0, y0, z0, ring, camX, camY);
-        points.push({
-          x: centerX + p.screenX,
-          y: centerY + p.screenY,
-          z: p.depthZ,
-        });
-      }
+      ORBIT_RINGS.forEach((ring) => {
+        const a = ring.baseRadiusX * this.scaleRatio;
+        const b = ring.baseRadiusY * this.scaleRatio;
+        const segments = 90;
 
-      // Draw faint background segments (depthZ < 0)
-      ctx.lineWidth = 1;
-      ctx.beginPath();
-      let isDrawing = false;
-
-      for (let i = 0; i < points.length; i++) {
-        const pt = points[i];
-        if (pt.z < 0) {
-          if (!isDrawing) {
-            ctx.moveTo(pt.x, pt.y);
-            isDrawing = true;
-          } else {
-            ctx.lineTo(pt.x, pt.y);
-          }
-        } else {
-          isDrawing = false;
+        const points = [];
+        for (let i = 0; i <= segments; i++) {
+          const phi = (i / segments) * Math.PI * 2;
+          const x0 = a * Math.cos(phi);
+          const y0 = b * Math.sin(phi);
+          const p = this.project3D(x0, y0, 0, ring, camX, camY);
+          points.push({
+            x: centerX + p.screenX,
+            y: centerY + p.screenY,
+            z: p.depthZ,
+          });
         }
-      }
-      ctx.strokeStyle = ring.color.replace(/[\d\.]+\)$/, '0.12)');
-      ctx.setLineDash([3, 5]);
-      ctx.stroke();
 
-      // Draw vibrant foreground segments (depthZ >= 0)
-      ctx.beginPath();
-      isDrawing = false;
-      for (let i = 0; i < points.length; i++) {
-        const pt = points[i];
-        if (pt.z >= 0) {
-          if (!isDrawing) {
-            ctx.moveTo(pt.x, pt.y);
-            isDrawing = true;
-          } else {
-            ctx.lineTo(pt.x, pt.y);
-          }
-        } else {
-          isDrawing = false;
-        }
-      }
-      ctx.strokeStyle = ring.color;
-      ctx.setLineDash([]);
-      ctx.stroke();
-
-      // Draw photon energy packet travelling along the orbit
-      const photonPhase = (this.time * ring.baseSpeed * 2) % (Math.PI * 2);
-      const px0 = a * Math.cos(photonPhase);
-      const py0 = b * Math.sin(photonPhase);
-      const photonProj = this.project3D(px0, py0, 0, ring, camX, camY);
-      const phX = centerX + photonProj.screenX;
-      const phY = centerY + photonProj.screenY;
-
-      if (photonProj.depthZ >= 0) {
-        ctx.fillStyle = '#FFFFFF';
-        ctx.shadowColor = '#D2FF00';
-        ctx.shadowBlur = 8;
+        // Draw background segments (faint, behind)
+        ctx.lineWidth = 1;
         ctx.beginPath();
-        ctx.arc(phX, phY, 2.2 * photonProj.scale, 0, Math.PI * 2);
-        ctx.fill();
-        ctx.shadowBlur = 0;
-      }
-    });
+        let isDrawing = false;
+        for (let i = 0; i < points.length; i++) {
+          const pt = points[i];
+          if (pt.z < 0) {
+            if (!isDrawing) { ctx.moveTo(pt.x, pt.y); isDrawing = true; }
+            else { ctx.lineTo(pt.x, pt.y); }
+          } else { isDrawing = false; }
+        }
+        ctx.strokeStyle = ring.color.replace(/[\d\.]+\)$/, `${(0.12 * ringAlphaMultiplier).toFixed(2)})`);
+        ctx.setLineDash([3, 5]);
+        ctx.stroke();
 
-    // If a node is hovered, draw an ethereal laser link connecting it to center
-    if (this.hoveredNode) {
+        // Draw foreground segments (bright, over)
+        ctx.beginPath();
+        isDrawing = false;
+        for (let i = 0; i < points.length; i++) {
+          const pt = points[i];
+          if (pt.z >= 0) {
+            if (!isDrawing) { ctx.moveTo(pt.x, pt.y); isDrawing = true; }
+            else { ctx.lineTo(pt.x, pt.y); }
+          } else { isDrawing = false; }
+        }
+        ctx.strokeStyle = ring.color.replace(/[\d\.]+\)$/, `${(0.42 * ringAlphaMultiplier).toFixed(2)})`);
+        ctx.setLineDash([]);
+        ctx.stroke();
+
+        // Travelling photon energy packet
+        const photonPhase = (this.time * ring.baseSpeed * 2) % (Math.PI * 2);
+        const px0 = a * Math.cos(photonPhase);
+        const py0 = b * Math.sin(photonPhase);
+        const photonProj = this.project3D(px0, py0, 0, ring, camX, camY);
+        if (photonProj.depthZ >= 0) {
+          ctx.fillStyle = '#FFFFFF';
+          ctx.shadowColor = '#D2FF00';
+          ctx.shadowBlur = 8;
+          ctx.beginPath();
+          ctx.arc(centerX + photonProj.screenX, centerY + photonProj.screenY, 2.2 * photonProj.scale, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.shadowBlur = 0;
+        }
+      });
+    }
+
+    // 3. Laser connection line if node is hovered
+    if (this.hoveredNode && this.zoomProgress > 0.5) {
       const activeNode = this.nodes.find(n => n.meta.id === this.hoveredNode.id);
       if (activeNode) {
         ctx.beginPath();
@@ -883,17 +975,10 @@ export class TechSolarSystem {
    */
   animate() {
     if (this.isInViewport) {
-      // 1. Advance simulation clock with chaos and scroll impulse
-      const targetChaosSpeed = this.isChaosMode ? 2.3 : 1.0;
-      const targetChaosWobble = this.isChaosMode ? 2.8 : 1.0;
-      this.chaosSpeedMultiplier += (targetChaosSpeed - this.chaosSpeedMultiplier) * 0.08;
-      this.chaosWobbleMultiplier += (targetChaosWobble - this.chaosWobbleMultiplier) * 0.08;
-
-      // Decay scroll impulse with smooth friction
-      this.scrollImpulse *= 0.94;
-      const totalSpeed = (1.0 + this.scrollImpulse) * this.chaosSpeedMultiplier;
-
       this.time += 1.0;
+
+      // 1. Process Continuous Space Warp Zoom
+      this.updateSpaceZoom();
 
       // 2. Smooth lerp camera angles (mouse parallax)
       this.camRotX += (this.targetCamRotX - this.camRotX) * 0.07;
@@ -906,7 +991,7 @@ export class TechSolarSystem {
         this.centerText.style.transform = `perspective(900px) rotateX(${textPitch}deg) rotateY(${textYaw}deg) translateZ(0)`;
       }
 
-      // 4. Update Each Planetary Tech Node
+      // 4. Update Each Planetary Tech Node in 3D Orbits
       const centerX = this.stageWidth / 2;
       const centerY = this.stageHeight / 2;
 
@@ -914,11 +999,10 @@ export class TechSolarSystem {
         const ring = node.ring;
         const meta = node.meta;
 
-        // Advance orbital angle (theta)
-        // If hovered, slow down orbit to a gentle drift
+        // Advance orbital angle
         const nodeSpeed = (node.meta.id === this.hoveredNode?.id)
           ? ring.baseSpeed * 0.15
-          : ring.baseSpeed * meta.speedFactor * totalSpeed;
+          : ring.baseSpeed * meta.speedFactor;
 
         node.theta += nodeSpeed;
 
@@ -932,7 +1016,7 @@ export class TechSolarSystem {
 
         // Chaotic out-of-plane wobble
         const wobbleFreq = 3;
-        const wobbleAmp = ring.wobbleAmp * this.chaosWobbleMultiplier * this.scaleRatio;
+        const wobbleAmp = ring.wobbleAmp * this.scaleRatio;
         const z0 = wobbleAmp * Math.sin(wobbleFreq * node.theta + this.time * 0.02);
 
         // 3D Projection through ring Euler matrix & Camera angles
@@ -960,7 +1044,6 @@ export class TechSolarSystem {
 
         if (isFront) {
           // Foreground: Passes OVER the text letters!
-          // z-index: 52 to 99
           zIndex = Math.max(52, Math.min(99, Math.round(55 + proj.depthZ / 12)));
           scale = proj.scale * 1.15;
           opacity = 1.0;
@@ -971,7 +1054,6 @@ export class TechSolarSystem {
           node.el.classList.remove('is-behind');
         } else {
           // Background: Passes BEHIND the text letters!
-          // z-index: 1 to 48
           zIndex = Math.max(1, Math.min(48, Math.round(25 + proj.depthZ / 18)));
           scale = proj.scale * 0.78;
           opacity = Math.max(0.42, Math.min(0.85, 0.75 + proj.depthZ / 700));
@@ -991,6 +1073,9 @@ export class TechSolarSystem {
 
       // 5. Draw Canvas Background (Orbits & Stars)
       this.renderCanvas(this.camRotX, this.camRotY);
+
+      // 6. Update Near-Pointer Tooltip
+      this.updateTooltipPosition();
     }
 
     requestAnimationFrame(this.animate);

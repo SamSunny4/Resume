@@ -760,153 +760,29 @@ html.lenis, html.lenis body {
 }
 
 /* ==========================================================================
-   10. TECH STACK 3D SOLAR SYSTEM SECTION
-   Architectural Stage: Chaotic Solar Swarm Orbiting Behind & Over 3D Monumental Text
+   10. SPACE STAGE: 3D WARP ZOOM & SOLAR SYSTEM TECH STACK
+   Architectural Stage: Deep space zoom from Hero into 3D Solar Tech Universe
    ========================================================================== */
 
-.tech-universe-section {
-  position: relative;
-  min-height: 100vh;
-  padding: var(--space-xl) 0 var(--space-xl) 0;
-  border-top: 1px solid var(--border-subtle);
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-
-/* HUD Top Bar */
-.tech-hud-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
-  flex-wrap: wrap;
-  gap: 1.25rem;
-  margin-bottom: var(--space-md);
-  padding-bottom: 1.25rem;
-  border-bottom: 1px solid var(--border-subtle);
-  position: relative;
-  z-index: 10;
-}
-
-.tech-hud-left {
-  display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
-}
-
-.tech-hud-label {
-  font-size: var(--font-size-xs);
-  letter-spacing: 0.12em;
-}
-
-.tech-heading-sub {
-  font-family: var(--font-display);
-  font-size: var(--font-size-xl);
-  font-weight: 800;
-  letter-spacing: -0.02em;
-  text-transform: uppercase;
-}
-
-/* Filter Chips */
-.tech-hud-filters {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-  align-items: center;
-}
-
-.tech-filter-pill {
-  font-family: var(--font-mono);
-  font-size: var(--font-size-xs);
-  padding: 0.35rem 0.75rem;
-  border: 1px solid var(--border-subtle);
-  background: rgba(14, 19, 9, 0.55);
-  color: var(--color-text-muted);
-  border-radius: 9999px;
-  cursor: pointer;
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  transition: all var(--duration-fast) var(--ease-smooth);
-}
-
-.tech-filter-pill:hover {
-  color: var(--color-text-white);
-  border-color: var(--border-medium);
-  background: rgba(22, 30, 14, 0.75);
-}
-
-.tech-filter-pill.is-active {
-  background: var(--color-lime);
-  color: #000000;
-  border-color: var(--color-lime);
-  font-weight: 700;
-  box-shadow: 0 0 16px rgba(210, 255, 0, 0.4);
-}
-
-/* Chaos Mode Button */
-.chaos-mode-btn {
-  font-family: var(--font-mono);
-  font-size: var(--font-size-xs);
-  display: inline-flex;
-  align-items: center;
-  gap: 0.6rem;
-  padding: 0.45rem 0.9rem;
-  background: rgba(10, 14, 6, 0.85);
-  border: 1px solid var(--border-medium);
-  border-radius: 4px;
-  color: var(--color-text-editorial);
-  cursor: pointer;
-  transition: all var(--duration-fast) var(--ease-smooth);
-}
-
-.chaos-indicator {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: var(--color-lime);
-  box-shadow: 0 0 8px var(--color-lime);
-  transition: background 0.3s, box-shadow 0.3s;
-}
-
-.chaos-mode-btn:hover {
-  border-color: var(--color-lime);
-  background: rgba(210, 255, 0, 0.08);
-}
-
-.chaos-mode-btn.is-hyperdrive {
-  border-color: #FF0055;
-  background: rgba(255, 0, 85, 0.15);
-  color: #FFFFFF;
-  box-shadow: 0 0 20px rgba(255, 0, 85, 0.35);
-}
-
-.chaos-mode-btn.is-hyperdrive .chaos-indicator {
-  background: #FF0055;
-  box-shadow: 0 0 12px #FF0055;
-  animation: chaosPulse 0.4s infinite alternate;
-}
-
-@keyframes chaosPulse {
-  0% { transform: scale(0.85); opacity: 0.7; }
-  100% { transform: scale(1.3); opacity: 1; }
-}
-
-/* 3D Solar Stage Wrapper */
-.solar-stage-wrapper {
+/* Outer scroll track for smooth zoom through space (250vh scroll distance) */
+.space-stage-track {
   position: relative;
   width: 100%;
-  height: clamp(560px, 75vh, 760px);
-  margin: 0 auto;
-  perspective: 1000px;
-  overflow: visible;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  height: 250vh;
 }
 
-/* 3D Canvas Background for Orbit Ellipses & Stardust */
-.solar-canvas {
+/* Sticky 100vh spatial viewport stage */
+.space-stage-sticky {
+  position: sticky;
+  top: 0;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+  perspective: 1200px;
+}
+
+/* Shared Cosmic Starfield & 3D Orbital Canvas */
+.space-warp-canvas {
   position: absolute;
   top: 0;
   left: 0;
@@ -916,19 +792,72 @@ html.lenis, html.lenis body {
   z-index: 1;
 }
 
+/* Hero Layer (Zooms in towards viewer and dissolves into space) */
+.hero-space-layer {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  will-change: transform, opacity, filter;
+  transform-origin: center center;
+}
+
+/* Tech Universe Layer (Zooms in from deep cosmic fog into foreground) */
+.tech-space-layer {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  will-change: transform, opacity, filter;
+  transform-origin: center center;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.tech-universe-section {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: visible;
+}
+
+/* 3D Solar Stage Wrapper */
+.solar-stage-wrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  margin: 0 auto;
+  perspective: 1000px;
+  overflow: visible;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 /* Central Gravitational Singularity / Star Core */
 .solar-singularity {
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 480px;
-  height: 480px;
+  width: 520px;
+  height: 520px;
   transform: translate(-50%, -50%);
-  background: radial-gradient(circle, rgba(210, 255, 0, 0.14) 0%, rgba(0, 240, 255, 0.06) 35%, transparent 70%);
+  background: radial-gradient(circle, rgba(210, 255, 0, 0.16) 0%, rgba(0, 240, 255, 0.08) 35%, transparent 70%);
   border-radius: 50%;
   pointer-events: none;
   z-index: 2;
-  filter: blur(28px);
+  filter: blur(32px);
   animation: singularityPulse 5s ease-in-out infinite alternate;
 }
 
@@ -943,7 +872,7 @@ html.lenis, html.lenis body {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  z-index: 50; /* EXACT DEPTH THRESHOLD: nodes < 0 are behind (z-index < 50), nodes >= 0 are over (z-index > 50) */
+  z-index: 50; /* EXACT DEPTH THRESHOLD: nodes < 0 behind text, nodes >= 0 over text */
   pointer-events: none;
   text-align: center;
   width: 100%;
@@ -972,7 +901,7 @@ html.lenis, html.lenis body {
 
 .solar-text-monumental {
   font-family: var(--font-display);
-  font-size: clamp(3.2rem, 7.8vw, 7.2rem);
+  font-size: clamp(3.4rem, 8vw, 7.5rem);
   font-weight: 900;
   line-height: 0.95;
   letter-spacing: -0.04em;
@@ -981,7 +910,7 @@ html.lenis, html.lenis body {
   background: linear-gradient(180deg, #FFFFFF 0%, #D2FF00 50%, #4D6400 85%, #182200 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  /* 3D Extrusion Depth Shadows */
+  /* Layered 3D Depth Shadows */
   filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.8))
           drop-shadow(0 8px 24px rgba(0, 0, 0, 0.9))
           drop-shadow(0 0 45px rgba(210, 255, 0, 0.35));
@@ -1057,24 +986,6 @@ html.lenis, html.lenis body {
   transition: opacity 0.3s;
 }
 
-/* Pill Name Tag (Subtle HUD Micro-Badge on Hover) */
-.solar-node-pill {
-  font-size: 0.62rem;
-  letter-spacing: 0.06em;
-  padding: 2px 7px;
-  border-radius: 4px;
-  background: rgba(7, 10, 4, 0.94);
-  border: 1px solid rgba(255, 255, 255, 0.16);
-  color: var(--color-text-editorial);
-  margin-top: 5px;
-  white-space: nowrap;
-  opacity: 0;
-  transform: translateY(-4px);
-  transition: opacity 0.2s ease, transform 0.2s ease;
-  pointer-events: none;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.7);
-}
-
 /* FOREGROUND STATE: PASSING OVER THE TEXT */
 .solar-node.is-front .solar-node-badge {
   border-color: var(--node-accent, var(--color-lime));
@@ -1087,7 +998,7 @@ html.lenis, html.lenis body {
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
 }
 
-/* HOVERED / FOCUSED STATE: REVEAL NAME TAG & INTENSE GLOW */
+/* HOVERED / FOCUSED STATE */
 .solar-node:hover .solar-node-badge,
 .solar-node.is-hovered .solar-node-badge {
   transform: scale(1.35);
@@ -1096,113 +1007,97 @@ html.lenis, html.lenis body {
   z-index: 100 !important;
 }
 
-.solar-node:hover .solar-node-pill,
-.solar-node.is-hovered .solar-node-pill,
-.solar-node:focus .solar-node-pill {
-  opacity: 1 !important;
-  transform: translateY(2px) !important;
-  border-color: var(--color-lime);
-  color: #FFFFFF;
-}
+/* ==========================================================================
+   FLOATING NEAR-POINTER HOLOGRAPHIC TOOLTIP
+   Follows cursor tip dynamically when inspecting any tech node
+   ========================================================================== */
 
-/* CATEGORY FILTER STATES */
-.solar-node.is-filtered-out {
-  opacity: 0.12 !important;
-  filter: grayscale(1) blur(2.5px) !important;
+.solar-cursor-tooltip {
+  position: fixed;
+  top: 0;
+  left: 0;
   pointer-events: none;
+  z-index: 99999;
+  width: 320px;
+  max-width: 88vw;
+  background: rgba(10, 14, 6, 0.94);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--tooltip-accent, var(--color-lime));
+  border-radius: 8px;
+  padding: 0.85rem 1.1rem;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.88), 0 0 25px var(--tooltip-glow, rgba(210, 255, 0, 0.25));
+  opacity: 0;
+  transform: scale(0.92);
+  will-change: transform, opacity;
+  transition: opacity 0.18s var(--ease-expo), transform 0.18s var(--ease-expo), border-color 0.2s, box-shadow 0.2s;
 }
 
-.solar-node.is-filtered-in .solar-node-badge {
-  animation: filterPulse 2s infinite alternate;
+.solar-cursor-tooltip.is-visible {
+  opacity: 1;
+  transform: scale(1);
 }
 
-@keyframes filterPulse {
-  0% { box-shadow: 0 0 12px var(--node-accent, #D2FF00); }
-  100% { box-shadow: 0 0 26px var(--node-accent, #D2FF00); }
-}
-
-/* Active Hover Telemetry HUD Card */
-.solar-telemetry-hud {
-  position: absolute;
-  bottom: 8px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: min(94%, 780px);
-  background: rgba(10, 14, 6, 0.90);
-  backdrop-filter: blur(18px);
-  -webkit-backdrop-filter: blur(18px);
-  border: 1px solid var(--border-medium);
-  border-radius: 6px;
-  padding: 0.65rem 1.25rem;
-  z-index: 60;
-  pointer-events: auto;
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.75), 0 0 20px rgba(210, 255, 0, 0.08);
+.tooltip-badge-row {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  gap: 1.5rem;
-  transition: border-color var(--duration-fast) var(--ease-smooth), box-shadow var(--duration-fast);
+  gap: 0.75rem;
+  margin-bottom: 0.5rem;
 }
 
-.solar-telemetry-hud.is-active {
-  border-color: var(--color-lime);
-  box-shadow: 0 10px 35px rgba(0, 0, 0, 0.85), 0 0 28px rgba(210, 255, 0, 0.25);
+.tooltip-icon-wrap {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
 }
 
-.telemetry-info-left {
+.tooltip-icon-img {
+  width: 22px;
+  height: 22px;
+  object-fit: contain;
+}
+
+.tooltip-title-wrap {
   display: flex;
   flex-direction: column;
-  flex-shrink: 0;
-  min-width: 170px;
 }
 
-.telemetry-badge {
-  font-size: 0.68rem;
+.tooltip-category {
+  font-size: 0.65rem;
   letter-spacing: 0.12em;
-  margin-bottom: 0.15rem;
+  color: var(--tooltip-accent, var(--color-lime));
 }
 
-.telemetry-name {
+.tooltip-name {
   font-size: 1.05rem;
   font-weight: 700;
-  letter-spacing: -0.01em;
-  color: var(--color-text-white);
-  transition: color 0.2s ease;
-  white-space: nowrap;
+  color: #FFFFFF;
+  line-height: 1.2;
 }
 
-.telemetry-info-right {
-  display: flex;
-  flex-direction: column;
-  gap: 0.2rem;
-  text-align: right;
+.tooltip-desc {
+  font-size: 0.78rem;
+  line-height: 1.45;
+  color: var(--color-text-editorial);
+  margin-bottom: 0.45rem;
 }
 
-.telemetry-desc {
-  font-size: 0.76rem;
-  line-height: 1.4;
-  color: var(--color-text-muted);
-  max-width: 480px;
-}
-
-.telemetry-extra {
-  font-size: 0.65rem;
+.tooltip-footer {
+  font-size: 0.62rem;
   letter-spacing: 0.08em;
   color: var(--color-text-dim);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  padding-top: 0.35rem;
 }
 
 /* Mobile & Tablet Adjustments */
 @media (max-width: 768px) {
-  .tech-universe-section {
-    padding: var(--space-lg) 0;
-  }
-  .tech-hud-header {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-  .solar-stage-wrapper {
-    height: 540px;
-  }
   .solar-text-monumental {
     font-size: 2.8rem;
   }
@@ -1211,15 +1106,10 @@ html.lenis, html.lenis body {
     height: 38px;
     border-radius: 10px;
   }
-  .solar-telemetry-hud {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0.4rem;
-    padding: 0.6rem 0.9rem;
-    bottom: 4px;
-  }
-  .telemetry-info-right {
-    text-align: left;
+  .solar-cursor-tooltip {
+    width: 280px;
+    padding: 0.7rem 0.9rem;
   }
 }
+
 

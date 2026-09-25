@@ -44,102 +44,88 @@
     <!-- Main Content Flow -->
     <main>
       
-      <!-- HERO SECTION (Full Viewport Focus) -->
-      <section id="hero" class="hero-section" style="min-height: 100vh; display: flex; flex-direction: column; justify-content: center; position: relative; padding: var(--space-xl) 0;">
-        <div class="container">
+      <!-- SPACE STAGE: HERO TO TECH STACK 3D WARP ZOOM SEQUENCE -->
+      <div id="space-stage-track" class="space-stage-track">
+        <div id="space-stage-sticky" class="space-stage-sticky">
           
-          <!-- Hero Headline Architecture with Slow Cinematic Reveal & Interactive ASCII Burst -->
-          <div class="hero-title-group" style="max-width: 1300px;">
-            <h1 class="hero-monumental-title" aria-label="I AM SAM SUNNY">
-              <span class="hero-line-mask">
-                <span class="hero-line-1">
-                  <span class="reveal-word word-i">I</span>
-                  <span class="reveal-word word-am">AM</span>
-                </span>
-              </span>
-              <div id="shuffle-hero-name" class="ascii-hero-container" title="Interactive ASCII Typography — Hover or Click to Burst">
-                <!-- ASCII Block Burst Engine automatically populates SAM and SUNNY -->
+          <!-- Shared 3D Cosmic Canvas (Warp Stardust & 3D Orbital Rings) -->
+          <canvas id="solar-canvas" class="solar-canvas space-warp-canvas"></canvas>
+
+          <!-- HERO VIEWPORT LAYER (Zooms forward towards camera on scroll) -->
+          <div id="hero-space-layer" class="hero-space-layer">
+            <section id="hero" class="hero-section">
+              <div class="container">
+                <div class="hero-title-group" style="max-width: 1300px;">
+                  <h1 class="hero-monumental-title" aria-label="I AM SAM SUNNY">
+                    <span class="hero-line-mask">
+                      <span class="hero-line-1">
+                        <span class="reveal-word word-i">I</span>
+                        <span class="reveal-word word-am">AM</span>
+                      </span>
+                    </span>
+                    <div id="shuffle-hero-name" class="ascii-hero-container" title="Interactive ASCII Typography — Hover or Click to Burst">
+                      <!-- ASCII Block Burst Engine automatically populates SAM and SUNNY -->
+                    </div>
+                  </h1>
+
+                  <p class="font-sans text-editorial-muted hero-desc-reveal" style="font-size: var(--font-size-md); max-width: 680px; line-height: 1.6; margin-top: var(--space-md); margin-bottom: var(--space-lg);">
+                    Software Engineer specializing in Computer Vision, Applied AI pipelines, and commercial full-stack applications. Proven track record deploying production retail software and national hackathon achievements.
+                  </p>
+                </div>
+
+                <!-- Action HUD Buttons -->
+                <div class="hero-actions-reveal" style="display: flex; align-items: center; gap: 1rem; flex-wrap: wrap;">
+                  <a href="#tech-stack" id="hero-explore-btn" class="btn-primary">EXPLORE TECH MATRIX ↓</a>
+                  <a href="#projects" class="btn-secondary">FLAGSHIP SYSTEMS ↓</a>
+                  <a href="assets/Sam_Sunny_Resume.pdf" target="_blank" class="btn-secondary">RESUME ↗</a>
+                  <a href="#contact" class="btn-secondary">INITIATE CONTACT</a>
+                </div>
               </div>
-            </h1>
-
-            <p class="font-sans text-editorial-muted hero-desc-reveal" style="font-size: var(--font-size-md); max-width: 680px; line-height: 1.6; margin-top: var(--space-md); margin-bottom: var(--space-lg);">
-              Software Engineer specializing in Computer Vision, Applied AI pipelines, and commercial full-stack applications. Proven track record deploying production retail software and national hackathon achievements.
-            </p>
+            </section>
           </div>
 
-          <!-- Action HUD Buttons -->
-          <div class="hero-actions-reveal" style="display: flex; align-items: center; gap: 1rem; flex-wrap: wrap;">
-            <a href="#tech-stack" class="btn-primary">EXPLORE TECH MATRIX ↓</a>
-            <a href="#projects" class="btn-secondary">FLAGSHIP SYSTEMS ↓</a>
-            <a href="assets/Sam_Sunny_Resume.pdf" target="_blank" class="btn-secondary">RESUME ↗</a>
-            <a href="#contact" class="btn-secondary">INITIATE CONTACT</a>
+          <!-- TECH STACK UNIVERSE LAYER (Zooms in from deep space into foreground) -->
+          <div id="tech-space-layer" class="tech-space-layer">
+            <section id="tech-stack" class="tech-universe-section">
+              <!-- Central 3D Solar System Viewport Stage -->
+              <div class="solar-stage-wrapper" id="solar-stage">
+                <!-- Central Gravitational Core / Glowing Singularity -->
+                <div class="solar-singularity" aria-hidden="true"></div>
+
+                <!-- Central 3D Monumental Text (At Depth Z = 0, z-index: 50) -->
+                <div class="solar-center-anchor" id="solar-center-anchor">
+                  <div class="solar-center-3d-text" id="solar-center-text">
+                    <span class="solar-text-pre font-mono">// ARSENAL &amp; CAPABILITIES</span>
+                    <h2 class="solar-text-monumental" data-text="TECH STACK">TECH STACK</h2>
+                    <span class="solar-text-sub font-mono">APPLIED AI • HIGH-PERFORMANCE SYSTEMS • FULL-STACK</span>
+                  </div>
+                </div>
+
+                <!-- 3D Orbiting Logos Container (Z-sorted: < 0 behind text, >= 0 over text) -->
+                <div class="solar-orbits-container" id="solar-orbits-container">
+                  <!-- 28 nodes dynamically generated and updated with 3D projection math -->
+                </div>
+              </div>
+            </section>
           </div>
 
         </div>
-      </section>
+      </div>
 
-      <!-- 3D SOLAR SYSTEM TECH STACK & ORBITAL MATRIX -->
-      <section id="tech-stack" class="tech-universe-section">
-        <!-- HUD Telemetry & Filter Bar -->
-        <div class="container tech-hud-header">
-          <div class="tech-hud-left">
-            <span class="font-mono text-lime tech-hud-label">// ORBITAL ARCHITECTURE &amp; TECH MATRIX</span>
-            <h2 class="tech-heading-sub">CORE CAPABILITIES</h2>
+      <!-- Floating Near-Pointer Telemetry Tooltip -->
+      <div id="solar-cursor-tooltip" class="solar-cursor-tooltip" aria-hidden="true">
+        <div class="tooltip-badge-row">
+          <div class="tooltip-icon-wrap" id="tooltip-icon-wrap">
+            <img src="" alt="" id="tooltip-icon" class="tooltip-icon-img" />
           </div>
-
-          <!-- Interactive Category Filter Chips -->
-          <div class="tech-hud-filters" role="tablist" aria-label="Tech Stack Categories">
-            <button class="tech-filter-pill is-active" data-category="all">ALL NODES [28]</button>
-            <button class="tech-filter-pill" data-category="ai">AI &amp; VISION [4]</button>
-            <button class="tech-filter-pill" data-category="systems">SYSTEMS &amp; ARCH [6]</button>
-            <button class="tech-filter-pill" data-category="web">MODERN WEB [5]</button>
-            <button class="tech-filter-pill" data-category="cloud">CLOUD &amp; DATA [7]</button>
-            <button class="tech-filter-pill" data-category="protocols">PROTOCOLS [6]</button>
-          </div>
-
-          <div class="tech-hud-right">
-            <button id="chaos-toggle-btn" class="chaos-mode-btn" type="button" title="Toggle Solar Gravitational Perturbation">
-              <span class="chaos-indicator"></span>
-              <span class="chaos-text font-mono">CHAOS HARMONICS: NORMAL</span>
-            </button>
+          <div class="tooltip-title-wrap">
+            <span class="tooltip-category font-mono" id="tooltip-category">// DOMAIN</span>
+            <h4 class="tooltip-name font-display" id="tooltip-title">TECH NAME</h4>
           </div>
         </div>
-
-        <!-- Central 3D Solar System Viewport Stage -->
-        <div class="solar-stage-wrapper" id="solar-stage">
-          <!-- 3D Projected Orbital Ring & Celestial Dust Canvas Layer -->
-          <canvas id="solar-canvas" class="solar-canvas"></canvas>
-
-          <!-- Central Gravitational Core / Glowing Singularity -->
-          <div class="solar-singularity" aria-hidden="true"></div>
-
-          <!-- Central 3D Monumental Text (At Depth Z = 0, z-index: 50) -->
-          <div class="solar-center-anchor" id="solar-center-anchor">
-            <div class="solar-center-3d-text" id="solar-center-text">
-              <span class="solar-text-pre font-mono">// ARSENAL &amp; CAPABILITIES</span>
-              <h2 class="solar-text-monumental" data-text="TECH STACK">TECH STACK</h2>
-              <span class="solar-text-sub font-mono">APPLIED AI • HIGH-PERFORMANCE SYSTEMS • FULL-STACK</span>
-            </div>
-          </div>
-
-          <!-- 3D Orbiting Logos Container (Z-sorted: < 0 behind text, >= 0 over text) -->
-          <div class="solar-orbits-container" id="solar-orbits-container">
-            <!-- 28 nodes dynamically generated and updated with 3D projection math -->
-          </div>
-
-          <!-- Active Hover Telemetry HUD Card -->
-          <div class="solar-telemetry-hud" id="solar-telemetry" aria-live="polite">
-            <div class="telemetry-info-left">
-              <span class="telemetry-badge font-mono text-lime" id="telemetry-category">// SYSTEM TELEMETRY</span>
-              <h4 class="telemetry-name font-display" id="telemetry-title">HOVER NODE TO INSPECT</h4>
-            </div>
-            <div class="telemetry-info-right">
-              <p class="telemetry-desc font-sans text-muted" id="telemetry-desc">Move cursor to tilt 3D perspective. Tech stack logos revolve in chaotic orbits both behind and over the 3D monumental core.</p>
-              <div class="telemetry-extra font-mono text-dim" id="telemetry-extra">ORBIT VELOCITY: REALTIME • DEPTH SORTED</div>
-            </div>
-          </div>
-        </div>
-      </section>
+        <p class="tooltip-desc font-sans" id="tooltip-desc">Description...</p>
+        <div class="tooltip-footer font-mono" id="tooltip-footer">ORBIT: REALTIME 3D SPATIAL</div>
+      </div>
 
       <!-- LOWER PARTS OF THE WEBSITE: FLAGSHIP SYSTEMS & REPOSITORIES -->
       <section id="projects" class="section-padding container" style="padding-top: var(--space-3xl); border-top: 1px solid var(--border-subtle); margin-top: var(--space-xl);">
@@ -204,6 +190,6 @@
   <!-- Lenis Momentum Smooth Scroll Library -->
   <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.9/dist/lenis.min.js"></script>
   <!-- Main ES6 Module Entry -->
-  <script type="module" src="js/main.js?v=5"></script>
+  <script type="module" src="js/main.js?v=6"></script>
 </body>
 </html>
