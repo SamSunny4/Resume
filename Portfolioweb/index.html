@@ -293,17 +293,96 @@
         </div>
       </div>
 
-      <!-- CONTACT SECTION (Phase 6 Target) -->
-      <section id="contact" class="section-padding container" style="border-top: 1px solid var(--border-subtle); margin-top: var(--space-2xl);">
-        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1.5rem;">
-          <div>
-            <span class="font-mono text-muted" style="font-size: var(--font-size-xs);">COMMUNICATION PROTOCOL</span>
-            <h2 class="font-display" style="font-size: var(--font-size-lg); font-weight: 700; margin-top: 0.25rem;">samsunnymodern12@gmail.com</h2>
+      <!-- CONTACT SINGULARITY & REALISTIC GREEN BLACK HOLE (End of Website) -->
+      <section id="contact" class="blackhole-contact-section" aria-label="Black Hole Event Horizon Contact Protocol">
+        
+        <!-- SVG Gravitational Lensing & Refraction Filter -->
+        <svg class="bh-svg-filters" aria-hidden="true" style="position: absolute; width: 0; height: 0; pointer-events: none;">
+          <defs>
+            <filter id="bh-refraction-filter" x="-50%" y="-50%" width="200%" height="200%">
+              <feTurbulence type="fractalNoise" baseFrequency="0.02 0.04" numOctaves="3" result="noise" />
+              <feDisplacementMap in="SourceGraphic" in2="noise" scale="22" xChannelSelector="R" yChannelSelector="G" result="displaced" />
+              <feColorMatrix type="matrix" values="
+                0.7 0   0   0 0
+                0   1.3 0   0 0
+                0   0   0.8 0 0
+                0   0   0   1 0" result="greenShift" />
+              <feGaussianBlur in="greenShift" stdDeviation="0.8" result="blurred" />
+              <feMerge>
+                <feMergeNode in="blurred" />
+                <feMergeNode in="SourceGraphic" opacity="0.35" />
+              </feMerge>
+            </filter>
+          </defs>
+        </svg>
+
+        <div class="container blackhole-stage-container">
+          
+          <!-- Section Cosmic Header -->
+          <div class="blackhole-header text-center">
+            <div class="bh-header-badge font-mono">
+              <span class="bh-badge-dot"></span>
+              <span>// FINAL GRAVITATIONAL ANOMALY · EVENT HORIZON NEXUS</span>
+            </div>
+            <h2 class="blackhole-title font-display">SINGULARITY COMMS</h2>
+            <p class="blackhole-subtitle font-mono text-muted">
+              05 ORBITING CONTACT NODES SUBJECT TO RELATIVISTIC GRAVITATIONAL REFRACTION · HOVER TO ENGAGE TIME DILATION
+            </p>
           </div>
-          <div style="display: flex; gap: 1rem;">
-            <a href="https://github.com/SamSunny4" target="_blank" class="btn-secondary" style="font-size: var(--font-size-xs);">GITHUB ↗</a>
-            <a href="https://www.linkedin.com/in/sam-sunny-36b4772bb/" target="_blank" class="btn-secondary" style="font-size: var(--font-size-xs);">LINKEDIN ↗</a>
+
+          <!-- 3D Black Hole & Orbiting Contact Nodes Viewport -->
+          <div class="blackhole-viewport" id="blackhole-viewport">
+            
+            <!-- Atmospheric Gravitational Lensing Glow (Neon Green) -->
+            <div class="bh-lensing-aura" aria-hidden="true"></div>
+
+            <!-- Accretion Disk - Upper Lensing Arc (Light bent over the top of the event horizon) -->
+            <div class="bh-accretion-upper" aria-hidden="true"></div>
+
+            <!-- Accretion Disk - Lower Lensing Arc (Light bent beneath event horizon) -->
+            <div class="bh-accretion-lower" aria-hidden="true"></div>
+
+            <!-- Equatorial Relativistic Swirling Accretion Disk -->
+            <div class="bh-accretion-equatorial" aria-hidden="true">
+              <div class="bh-plasma-filaments"></div>
+            </div>
+
+            <!-- Inner Einstein Photon Ring (Bright white-green caustic light loop) -->
+            <div class="bh-photon-ring" aria-hidden="true"></div>
+
+            <!-- Pure Pitch-Black Event Horizon Core (Shadow) -->
+            <div class="bh-shadow-core" id="bh-shadow-core" aria-hidden="true"></div>
+
+            <!-- Orbiting Contact Icons Container (Nodes pass in front & behind with refraction) -->
+            <div class="bh-orbit-container" id="bh-orbit-container">
+              <!-- Dynamically populated by js/blackhole.js with GitHub, LinkedIn, Email, Call, Resume -->
+            </div>
+
           </div>
+
+          <!-- Direct Comms Protocol Quick-Action Bar & Clipboard Toast -->
+          <div class="blackhole-footer-actions font-mono">
+            <div class="bh-direct-links">
+              <a href="mailto:samsunnymodern12@gmail.com" class="bh-action-pill" id="bh-copy-email-btn" title="Click to copy email">
+                <span class="bh-pill-icon">✉</span>
+                <span class="bh-pill-text">samsunnymodern12@gmail.com</span>
+                <span class="bh-pill-tag text-lime">[COPY]</span>
+              </a>
+              <a href="assets/Sam_Sunny_Resume.pdf" target="_blank" class="bh-action-pill" title="View Curriculum Vitae">
+                <span class="bh-pill-icon">↗</span>
+                <span class="bh-pill-text">Sam_Sunny_Resume.pdf</span>
+                <span class="bh-pill-tag text-lime">[PDF]</span>
+              </a>
+              <button id="bh-return-hero-btn" class="bh-action-pill" title="Return to Hero Launchpad">
+                <span class="bh-pill-icon">⤾</span>
+                <span class="bh-pill-text">RETURN TO LAUNCHPAD</span>
+              </button>
+            </div>
+            <div id="bh-clipboard-toast" class="bh-clipboard-toast font-mono" aria-live="polite">
+              ✓ TELEMETRY COPIED TO CLIPBOARD
+            </div>
+          </div>
+
         </div>
       </section>
 
@@ -314,6 +393,6 @@
   <!-- Lenis Momentum Smooth Scroll Library -->
   <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.9/dist/lenis.min.js"></script>
   <!-- Main ES6 Module Entry -->
-  <script type="module" src="js/main.js?v=38"></script>
+  <script type="module" src="js/main.js?v=39"></script>
 </body>
 </html>

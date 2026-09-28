@@ -78,6 +78,7 @@ import { initTechSolarSystem } from './tech-solar.js';
 import { initProjectSolarSystem } from './project-solar.js';
 import { initTopoBackground } from './topo-background.js';
 import { initCredentialsStones } from './credentials-stones.js';
+import { initBlackHoleContact } from './blackhole.js';
 
 /**
  * Main System Bootstrap
@@ -116,6 +117,10 @@ function bootstrap() {
   // Initialize Credentials Infinity Stones Showcase
   const credStones = initCredentialsStones();
   window.AppState.credStones = credStones;
+
+  // Initialize Realistic Green Black Hole Contact Singularity at End of Site
+  const blackHole = initBlackHoleContact();
+  window.AppState.blackHole = blackHole;
 
   // ---------------------------------------------------------------
   // SCROLL-SETTLE AUTO-SNAP

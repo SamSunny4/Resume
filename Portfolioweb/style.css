@@ -2361,363 +2361,433 @@ html.lenis, html.lenis body {
 }
 
 /* ==========================================================================
-   14. CELESTIAL NEUTRON STAR (PULSAR PSR-J2026) & HYPER-SPEED ORBITS
-   Faintly visible in corner during Tech Stack; warps to center on scroll;
-   7 certificates orbit around it at insane relativistic speeds.
+   14. REALISTIC GREEN BLACK HOLE & GRAVITATIONAL REFRACTION CONTACT NEXUS
+   Positioned at the end of the website.
+   Features:
+   - Pitch-black Event Horizon shadow (#000000)
+   - Inner Einstein Photon Ring (electric neon lime/white caustic loop)
+   - Realistic Warped Accretion Disk in incandescent Green (Lime / Emerald / Cyan-Green)
+   - Upper & Lower Gravitational Lensing Arcs (bent above and beneath the shadow)
+   - 05 Orbiting Contact Nodes (GitHub, LinkedIn, Email, Call, Resume)
+   - Relativistic Gravitational Refraction & Shearing when passing behind (z < 0)
+   - Gravitational Time-Dilation on Hover
    ========================================================================== */
 
-/* Main spatial beacon: positioned relative to center of sticky stage */
-.neutron-star-beacon {
+.blackhole-contact-section {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  padding: 5rem 1.5rem 4rem 1.5rem;
+  background: radial-gradient(circle at 50% 50%, #030804 0%, #020402 45%, #000200 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border-top: 1px solid rgba(0, 255, 136, 0.15);
+  box-shadow: inset 0 60px 100px rgba(0, 0, 0, 0.95);
+}
+
+.blackhole-stage-container {
+  position: relative;
+  width: 100%;
+  max-width: 1280px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 5;
+}
+
+/* Cosmic Header */
+.blackhole-header {
+  margin-bottom: 2.2rem;
+  z-index: 10;
+  position: relative;
+}
+
+.bh-header-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.3rem 0.85rem;
+  border-radius: 999px;
+  background: rgba(0, 255, 136, 0.08);
+  border: 1px solid rgba(0, 255, 136, 0.28);
+  color: #00FF88;
+  font-size: 0.68rem;
+  letter-spacing: 0.12em;
+  margin-bottom: 0.75rem;
+}
+
+.bh-badge-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #00FF88;
+  box-shadow: 0 0 10px #00FF88;
+  animation: bhPulse 1.2s ease-in-out infinite alternate;
+}
+
+@keyframes bhPulse {
+  0% { transform: scale(0.85); opacity: 0.4; }
+  100% { transform: scale(1.3); opacity: 1.0; }
+}
+
+.blackhole-title {
+  font-size: clamp(2.4rem, 5.5vw, 4.2rem);
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: -0.03em;
+  line-height: 1.0;
+  color: #FFFFFF;
+  background: linear-gradient(180deg, #FFFFFF 0%, #E2FFE8 40%, #00FF88 85%, #059669 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 0 35px rgba(0, 255, 136, 0.35));
+  margin: 0;
+}
+
+.blackhole-subtitle {
+  font-size: clamp(0.64rem, 0.9vw, 0.78rem);
+  letter-spacing: 0.12em;
+  color: var(--color-text-muted);
+  max-width: 650px;
+  margin: 0.75rem auto 0;
+}
+
+/* 3D Viewport Stage */
+.blackhole-viewport {
+  position: relative;
+  width: 100%;
+  height: 580px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  perspective: 1000px;
+  overflow: visible;
+  margin: 1.5rem 0;
+}
+
+/* Luminous Green Gravitational Lensing Atmosphere */
+.bh-lensing-aura {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 580px;
+  height: 580px;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(circle, rgba(0, 255, 136, 0.28) 0%, rgba(210, 255, 0, 0.14) 28%, rgba(5, 150, 105, 0.08) 50%, transparent 72%);
+  border-radius: 50%;
+  filter: blur(55px);
+  pointer-events: none;
+  z-index: 2;
+  animation: bhAtmospherePulse 4.5s ease-in-out infinite alternate;
+}
+
+@keyframes bhAtmospherePulse {
+  0% { transform: translate(-50%, -50%) scale(0.92); opacity: 0.7; }
+  100% { transform: translate(-50%, -50%) scale(1.12); opacity: 1.0; }
+}
+
+/* Upper Warped Accretion Arc (Light bent OVER the top of the shadow) */
+.bh-accretion-upper {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 320px;
+  height: 190px;
+  transform: translate(-50%, -85%);
+  border-radius: 50% 50% 10% 10% / 100% 100% 0% 0%;
+  background: radial-gradient(ellipse at 50% 100%, transparent 45%, rgba(0, 255, 136, 0.35) 60%, rgba(210, 255, 0, 0.85) 75%, rgba(255, 255, 255, 0.95) 90%, transparent 100%);
+  filter: drop-shadow(0 -4px 18px rgba(0, 255, 136, 0.8)) blur(1px);
+  pointer-events: none;
+  z-index: 12;
+  animation: bhAccretionShimmer 3s ease-in-out infinite alternate;
+}
+
+/* Lower Warped Accretion Arc (Light bent UNDER the shadow) */
+.bh-accretion-lower {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 290px;
+  height: 140px;
+  transform: translate(-50%, -15%);
+  border-radius: 10% 10% 50% 50% / 0% 0% 100% 100%;
+  background: radial-gradient(ellipse at 50% 0%, transparent 48%, rgba(5, 150, 105, 0.35) 62%, rgba(0, 255, 136, 0.75) 80%, rgba(210, 255, 0, 0.9) 92%, transparent 100%);
+  filter: drop-shadow(0 4px 16px rgba(0, 255, 136, 0.7)) blur(1px);
+  pointer-events: none;
+  z-index: 12;
+  animation: bhAccretionShimmer 3.8s ease-in-out infinite alternate-reverse;
+}
+
+@keyframes bhAccretionShimmer {
+  0% { filter: drop-shadow(0 0 16px rgba(0, 255, 136, 0.7)) brightness(1.0); }
+  100% { filter: drop-shadow(0 0 28px rgba(210, 255, 0, 0.9)) brightness(1.28); }
+}
+
+/* Main Equatorial Swirling Accretion Disk */
+.bh-accretion-equatorial {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 520px;
+  height: 160px;
+  transform: translate(-50%, -50%) rotateX(72deg) rotateZ(-12deg);
+  border-radius: 50%;
+  background: radial-gradient(circle, transparent 38%, rgba(0, 255, 136, 0.4) 50%, rgba(210, 255, 0, 0.85) 72%, rgba(0, 255, 136, 0.95) 85%, transparent 100%);
+  box-shadow: 0 0 45px rgba(0, 255, 136, 0.6), inset 0 0 35px rgba(210, 255, 0, 0.5);
+  filter: blur(1.5px);
+  pointer-events: none;
+  z-index: 18;
+  animation: bhEquatorialSpin 8s linear infinite;
+}
+
+@keyframes bhEquatorialSpin {
+  0% { transform: translate(-50%, -50%) rotateX(72deg) rotateZ(0deg); }
+  100% { transform: translate(-50%, -50%) rotateX(72deg) rotateZ(360deg); }
+}
+
+/* Inner Einstein Photon Ring (Ultra-caustic razor light filament) */
+.bh-photon-ring {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 196px;
+  height: 196px;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  border: 2px solid #FFFFFF;
+  box-shadow: 
+    0 0 6px #FFFFFF,
+    0 0 16px #00FF88,
+    0 0 32px #00FF88,
+    0 0 60px rgba(0, 255, 136, 0.8),
+    inset 0 0 8px #00FF88;
+  pointer-events: none;
+  z-index: 19;
+  animation: photonRingPulse 0.45s ease-in-out infinite alternate;
+}
+
+@keyframes photonRingPulse {
+  0% { transform: translate(-50%, -50%) scale(0.99); filter: brightness(1.0); }
+  100% { transform: translate(-50%, -50%) scale(1.015); filter: brightness(1.35) drop-shadow(0 0 12px #00FF88); }
+}
+
+/* Pure Pitch-Black Event Horizon Shadow Core */
+.bh-shadow-core {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 184px;
+  height: 184px;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: #000000 !important;
+  box-shadow: 
+    inset 0 0 25px #000000,
+    0 0 12px rgba(0, 0, 0, 0.95);
+  pointer-events: auto;
+  cursor: pointer;
+  z-index: 20;
+}
+
+/* 3D Orbiting Contact Container */
+.bh-orbit-container {
   position: absolute;
   top: 50%;
   left: 50%;
   width: 0;
   height: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  pointer-events: none;
-  z-index: 28;
-  will-change: transform, opacity;
+  transform-style: preserve-3d;
+  pointer-events: auto;
+  z-index: 25;
+}
+
+/* Individual Orbiting Contact Node Card */
+.bh-contact-node {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 220px;
+  text-decoration: none !important;
+  color: inherit !important;
+  cursor: pointer;
+  will-change: transform, opacity, filter;
+  transition: border-color 0.25s ease, box-shadow 0.25s ease;
+  user-select: none;
+  pointer-events: auto;
   transform-origin: center center;
 }
 
-.pulsar-anchor {
+.bh-node-card {
+  padding: 0.85rem 1rem;
+  border-radius: 12px;
+  background: rgba(6, 12, 7, 0.92);
+  border: 1px solid rgba(0, 255, 136, 0.24);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.85);
+  transition: all 0.25s var(--ease-expo);
   position: relative;
-  width: 0;
-  height: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-/* Pulsar Core: Ultra-Dense Relativistic Star */
-.pulsar-core {
-  position: absolute;
-  width: 34px;
-  height: 34px;
-  border-radius: 50%;
-  background: radial-gradient(circle, #FFFFFF 0%, #E2FAFF 30%, #00F0FF 70%, #0284C7 100%);
-  box-shadow:
-    0 0 16px #FFFFFF,
-    0 0 35px #00F0FF,
-    0 0 75px rgba(0, 240, 255, 0.9),
-    0 0 120px rgba(168, 85, 247, 0.65),
-    inset 0 0 10px #FFFFFF;
-  animation: pulsarBeat 0.14s ease-in-out infinite alternate;
-  z-index: 10;
-  pointer-events: auto;
-  cursor: pointer;
-}
-
-@keyframes pulsarBeat {
-  0% { transform: scale(0.92); filter: brightness(1.0); }
-  100% { transform: scale(1.12); filter: brightness(1.45) drop-shadow(0 0 25px #00F0FF); }
-}
-
-/* Luminous Electromagnetic Corona */
-.pulsar-corona {
-  position: absolute;
-  width: 240px;
-  height: 240px;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(0, 240, 255, 0.35) 0%, rgba(168, 85, 247, 0.2) 35%, rgba(0, 240, 255, 0.06) 60%, transparent 75%);
-  filter: blur(25px);
-  pointer-events: none;
-  animation: coronaPulse 1.8s ease-in-out infinite alternate;
-  z-index: 2;
-}
-
-@keyframes coronaPulse {
-  0% { transform: scale(0.88); opacity: 0.7; }
-  100% { transform: scale(1.18); opacity: 1.0; }
-}
-
-/* High-frequency optical sweep / shockwave */
-.pulsar-flash-pulse {
-  position: absolute;
-  width: 140px;
-  height: 140px;
-  border-radius: 50%;
-  border: 1px solid rgba(0, 240, 255, 0.6);
-  opacity: 0;
-  pointer-events: none;
-  animation: pulsarShockwave 0.85s cubic-bezier(0.1, 0.8, 0.3, 1) infinite;
-  z-index: 4;
-}
-
-@keyframes pulsarShockwave {
-  0% { transform: scale(0.2); opacity: 0.9; }
-  100% { transform: scale(3.2); opacity: 0; }
-}
-
-/* Relativistic Magnetic Jet Cones */
-.pulsar-jets {
-  position: absolute;
-  width: 0;
-  height: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  animation: jetSpin 2.2s linear infinite;
-  pointer-events: none;
-  z-index: 6;
-}
-
-@keyframes jetSpin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
-
-.pulsar-jet {
-  position: absolute;
-  width: 3px;
-  height: 380px;
-  pointer-events: none;
-}
-
-.pulsar-jet-north {
-  bottom: 14px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: linear-gradient(to top, #FFFFFF 0%, rgba(0, 240, 255, 0.95) 15%, rgba(168, 85, 247, 0.6) 50%, rgba(0, 240, 255, 0.15) 85%, transparent 100%);
-  box-shadow: 0 0 14px #00F0FF, 0 0 30px rgba(168, 85, 247, 0.8);
-  filter: blur(0.5px);
-}
-
-.pulsar-jet-south {
-  top: 14px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: linear-gradient(to bottom, #FFFFFF 0%, rgba(0, 240, 255, 0.95) 15%, rgba(168, 85, 247, 0.6) 50%, rgba(0, 240, 255, 0.15) 85%, transparent 100%);
-  box-shadow: 0 0 14px #00F0FF, 0 0 30px rgba(168, 85, 247, 0.8);
-  filter: blur(0.5px);
-}
-
-/* Accretion Plasma Rings */
-.pulsar-accretion-ring {
-  position: absolute;
-  border-radius: 50%;
-  pointer-events: none;
-  z-index: 5;
-}
-
-.pulsar-accretion-ring.ring-1 {
-  width: 260px;
-  height: 260px;
-  border: 1.5px solid rgba(0, 240, 255, 0.55);
-  box-shadow: 0 0 16px rgba(0, 240, 255, 0.3), inset 0 0 16px rgba(0, 240, 255, 0.2);
-  transform: rotateX(74deg) rotateY(18deg);
-  animation: accretionSpin 3.5s linear infinite;
-}
-
-.pulsar-accretion-ring.ring-2 {
-  width: 380px;
-  height: 380px;
-  border: 1px dashed rgba(168, 85, 247, 0.4);
-  box-shadow: 0 0 20px rgba(168, 85, 247, 0.2);
-  transform: rotateX(68deg) rotateY(-25deg);
-  animation: accretionSpinReverse 6s linear infinite;
-}
-
-@keyframes accretionSpin {
-  0% { transform: rotateX(74deg) rotateY(18deg) rotateZ(0deg); }
-  100% { transform: rotateX(74deg) rotateY(18deg) rotateZ(360deg); }
-}
-
-@keyframes accretionSpinReverse {
-  0% { transform: rotateX(68deg) rotateY(-25deg) rotateZ(0deg); }
-  100% { transform: rotateX(68deg) rotateY(-25deg) rotateZ(-360deg); }
-}
-
-/* Corner Telemetry HUD Marker (Visible in Tech Stack corner) */
-.pulsar-hud-marker {
-  position: absolute;
-  left: 36px;
-  top: -22px;
-  background: rgba(6, 10, 6, 0.9);
-  border: 1px solid rgba(0, 240, 255, 0.4);
-  border-radius: 6px;
-  padding: 0.35rem 0.65rem;
-  pointer-events: auto;
-  cursor: pointer;
-  white-space: nowrap;
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  transition: border-color 0.25s, transform 0.25s, box-shadow 0.25s;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.8), 0 0 10px rgba(0, 240, 255, 0.15);
-  z-index: 100;
-}
-
-.pulsar-hud-marker:hover {
-  border-color: var(--color-lime);
-  transform: scale(1.06) translateX(4px);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.9), 0 0 16px rgba(210, 255, 0, 0.3);
-}
-
-.pulsar-marker-header {
-  display: flex;
-  align-items: center;
-  gap: 0.35rem;
-  font-size: 0.62rem;
-  color: #00F0FF;
-  letter-spacing: 0.08em;
-}
-
-.pulsar-marker-dot {
-  width: 5px;
-  height: 5px;
-  border-radius: 50%;
-  background: #00F0FF;
-  box-shadow: 0 0 6px #00F0FF;
-  animation: dotBlink 0.6s ease-in-out infinite alternate;
-}
-
-@keyframes dotBlink {
-  0% { opacity: 0.3; }
-  100% { opacity: 1.0; }
-}
-
-.pulsar-marker-data {
-  font-size: 0.54rem;
-  color: var(--color-text-muted);
-  margin-top: 0.15rem;
-  letter-spacing: 0.05em;
-}
-
-.pulsar-marker-action {
-  font-size: 0.56rem;
-  letter-spacing: 0.08em;
-  margin-top: 0.2rem;
-  font-weight: 700;
-}
-
-/* ==========================================================================
-   3D HIGH-SPEED PULSAR ORBITS (CREDENTIALS STONES)
-   Cards rotate around the neutron star at relativistic speed with time-dilation
-   ========================================================================== */
-
-.pulsar-orbit-viewport {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  overflow: visible;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  perspective: 1200px;
-}
-
-.pulsar-orbit-canvas {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  z-index: 3;
-}
-
-.pulsar-orbit-container {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 0;
-  height: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transform-style: preserve-3d;
-  z-index: 15;
-  pointer-events: auto;
-  transition: opacity 0.3s ease;
-}
-
-/* Individual Orbiting Certificate Card */
-.pulsar-card-node {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 195px;
-  border-radius: 10px;
-  background: rgba(8, 12, 8, 0.92);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.85);
-  cursor: pointer;
-  will-change: transform, opacity, filter;
-  transition: border-color 0.25s ease, box-shadow 0.25s ease, filter 0.2s ease;
-  user-select: none;
   overflow: hidden;
-  pointer-events: auto;
 }
 
-.pulsar-card-node:hover,
-.pulsar-card-node.is-hovered {
-  border-color: var(--stone-accent, #00F0FF);
-  box-shadow: 0 0 32px var(--stone-accent, rgba(0, 240, 255, 0.4)), inset 0 0 16px rgba(255, 255, 255, 0.05);
-  z-index: 999 !important;
+.bh-contact-node:hover .bh-node-card,
+.bh-contact-node.is-hovered .bh-node-card {
+  border-color: var(--node-accent, #00FF88);
+  box-shadow: 
+    0 0 35px var(--node-accent, rgba(0, 255, 136, 0.5)),
+    inset 0 0 18px rgba(0, 255, 136, 0.12);
+  background: rgba(10, 20, 12, 0.96);
+  transform: translateY(-2px);
 }
 
-/* Accent glow line at bottom of card */
-.pulsar-card-node::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 10%;
-  right: 10%;
-  height: 2px;
-  background: var(--stone-accent, var(--color-lime));
-  opacity: 0;
-  transition: opacity 0.4s ease;
-  border-radius: 2px;
-  filter: blur(1px);
+.bh-node-badge-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
 }
 
-.pulsar-card-node:hover::after,
-.pulsar-card-node.is-hovered::after {
-  opacity: 0.9;
-}
-
-/* Card Passing In Front of Star Core */
-.pulsar-card-node.is-front {
-  border-color: rgba(255, 255, 255, 0.22);
-}
-
-/* Card Passing Behind Star Core */
-.pulsar-card-node.is-behind {
-  border-color: rgba(255, 255, 255, 0.05);
-}
-
-/* Speed / Dilation Telemetry Controls */
-.pulsar-telemetry-hud {
+.bh-node-icon {
+  width: 28px;
+  height: 28px;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.85rem;
-  margin-top: 0.65rem;
-  z-index: 40;
-  position: relative;
+  filter: drop-shadow(0 0 8px currentColor);
 }
 
-.pulsar-speed-pill {
-  font-size: 0.65rem;
-  letter-spacing: 0.08em;
-  padding: 0.35rem 0.85rem;
+.bh-node-badge {
+  font-size: 0.55rem;
+  letter-spacing: 0.1em;
+  padding: 0.15rem 0.45rem;
   border-radius: 4px;
-  background: rgba(8, 14, 8, 0.88);
-  border: 1px solid rgba(0, 240, 255, 0.35);
-  color: #00F0FF;
-  backdrop-filter: blur(8px);
-  cursor: pointer;
-  transition: all 0.25s ease;
+  background: rgba(0, 0, 0, 0.6);
+  border: 1px solid var(--node-accent, rgba(0, 255, 136, 0.3));
+  color: var(--node-accent, #00FF88);
 }
 
-.pulsar-speed-pill:hover,
-.pulsar-speed-pill.is-dilated {
-  border-color: var(--color-lime);
+.bh-node-info {
+  margin-bottom: 0.5rem;
+}
+
+.bh-node-title {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #FFFFFF;
+  line-height: 1.2;
+  margin: 0 0 0.15rem 0;
+}
+
+.bh-node-handle {
+  font-size: 0.68rem;
   color: var(--color-lime);
-  box-shadow: 0 0 14px rgba(210, 255, 0, 0.25);
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin: 0;
+}
+
+.bh-node-footer {
+  font-size: 0.58rem;
+  color: var(--color-text-muted);
+  letter-spacing: 0.08em;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  padding-top: 0.4rem;
+}
+
+/* Gravitational Refraction States */
+.bh-contact-node.is-refracted .bh-node-card {
+  border-color: rgba(0, 255, 136, 0.12);
+  box-shadow: 0 0 18px rgba(0, 255, 136, 0.18);
+}
+
+.bh-contact-node.is-front .bh-node-card {
+  border-color: rgba(0, 255, 136, 0.35);
+  box-shadow: 0 0 25px rgba(0, 255, 136, 0.25), 0 12px 32px rgba(0, 0, 0, 0.88);
+}
+
+/* Quick-Action Bar & Toast */
+.blackhole-footer-actions {
+  margin-top: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  z-index: 15;
+}
+
+.bh-direct-links {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.85rem;
+}
+
+.bh-action-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.55rem 1.15rem;
+  border-radius: 8px;
+  background: rgba(8, 16, 10, 0.88);
+  border: 1px solid rgba(0, 255, 136, 0.28);
+  color: #E2FFE8;
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-decoration: none;
+  cursor: pointer;
+  backdrop-filter: blur(10px);
+  transition: all 0.25s var(--ease-expo);
+}
+
+.bh-action-pill:hover {
+  border-color: var(--color-lime);
+  background: rgba(12, 24, 14, 0.95);
+  box-shadow: 0 0 20px rgba(0, 255, 136, 0.35);
+  transform: translateY(-2px);
+  color: #FFFFFF;
+}
+
+.bh-clipboard-toast {
+  padding: 0.4rem 1rem;
+  border-radius: 6px;
+  background: rgba(0, 255, 136, 0.15);
+  border: 1px solid #00FF88;
+  color: #00FF88;
+  font-size: 0.68rem;
+  letter-spacing: 0.08em;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(6px);
+  transition: all 0.3s ease;
+}
+
+.bh-clipboard-toast.is-active {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (max-width: 768px) {
+  .blackhole-viewport {
+    height: 480px;
+  }
+  .bh-contact-node {
+    width: 175px;
+  }
+  .bh-node-title {
+    font-size: 0.85rem;
+  }
+  .bh-node-handle {
+    font-size: 0.6rem;
+  }
 }
 
