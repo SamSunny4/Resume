@@ -88,7 +88,7 @@ class SimplexNoise2D {
 
 export class TopoBackground {
   constructor(options = {}) {
-    this.container = options.container || document.getElementById('webgl-canvas-container');
+    this.container = options.container || document.getElementById('hero-topo-container') || document.getElementById('hero-space-layer');
     this.canvas = options.canvas || null;
     this.theme = options.theme || 'cyber-light'; // 'cyber-light', 'lime-mint', 'ice-cyan', 'ethereal-pearl'
     this.cellSize = options.cellSize || 20; // Larger cells = fewer, broader contour shapes
@@ -156,11 +156,11 @@ export class TopoBackground {
       this.canvas = document.createElement('canvas');
       this.canvas.id = 'topo-background-canvas';
       this.canvas.className = 'topo-background-canvas';
-      this.canvas.style.position = 'fixed';
+      this.canvas.style.position = 'absolute';
       this.canvas.style.top = '0';
       this.canvas.style.left = '0';
-      this.canvas.style.width = '100vw';
-      this.canvas.style.height = '100vh';
+      this.canvas.style.width = '100%';
+      this.canvas.style.height = '100%';
       this.canvas.style.pointerEvents = 'none';
       this.canvas.style.zIndex = '0';
       this.canvas.style.display = 'block';
@@ -168,7 +168,12 @@ export class TopoBackground {
       if (this.container) {
         this.container.appendChild(this.canvas);
       } else {
-        document.body.prepend(this.canvas);
+        const heroLayer = document.getElementById('hero-topo-container') || document.getElementById('hero-space-layer');
+        if (heroLayer) {
+          heroLayer.appendChild(this.canvas);
+        } else {
+          document.body.prepend(this.canvas);
+        }
       }
     }
 
@@ -320,6 +325,14 @@ export class TopoBackground {
    */
   animate() {
     if (!this.isRunning) return;
+
+    // Topographic background is strictly for the landing page.
+    // When user scrolls into deep space (p > 0.20), pause heavy marching squares computation.
+    const p = window.AppState?.techSolar?.zoomProgress ?? 0;
+    if (p > 0.20) {
+      this.animId = requestAnimationFrame(this.animate);
+      return;
+    }
 
     this.time += this.speed;
 
@@ -769,6 +782,6 @@ export class TopoBackground {
 
 // Auto-initialize helper
 export function initTopoBackground(options = {}) {
-  const container = options.container || document.getElementById('webgl-canvas-container');
+  const container = options.container || document.getElementById('hero-topo-container') || document.getElementById('hero-space-layer');
   return new TopoBackground({ container, ...options });
 }

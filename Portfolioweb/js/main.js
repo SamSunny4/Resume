@@ -94,8 +94,10 @@ function bootstrap() {
   initHeroAsciiBurst();
   initStickyBrandLogo();
 
-  // Initialize Ultra-Minimal Topographic Background (clean, monochromatic, spacious)
+  // Initialize Ultra-Minimal Topographic Background (STRICTLY on Landing Page)
+  const heroTopoContainer = document.getElementById('hero-topo-container') || document.getElementById('hero-space-layer');
   const topoBg = initTopoBackground({
+    container: heroTopoContainer,
     theme: 'cyber-light',
     cellSize: 22,
     lineLevelsCount: 5,

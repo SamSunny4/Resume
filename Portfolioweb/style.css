@@ -152,16 +152,9 @@ button {
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
 }
 
-/* 3D WebGL Background Canvas Container */
+/* 3D WebGL Background Canvas Container (Disabled: Topo is strictly in Landing Page) */
 #webgl-canvas-container {
-  position: fixed;
-  inset: 0;
-  width: 100vw;
-  height: 100vh;
-  z-index: var(--z-canvas-3d);
-  pointer-events: none;
-  opacity: 0.9;
-  transition: opacity var(--duration-normal) var(--ease-expo);
+  display: none !important;
 }
 
 /* Content wrapper that sits cleanly on top of 3D Canvas */
@@ -1244,6 +1237,29 @@ html.lenis, html.lenis body {
   justify-content: center;
   will-change: transform, opacity, filter;
   transform-origin: center center;
+  overflow: hidden;
+}
+
+/* Dedicated Landing Page Topographic Background Container */
+.hero-topo-container {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.hero-topo-container canvas,
+.topo-background-canvas {
+  position: absolute !important;
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  pointer-events: none !important;
+  z-index: 0 !important;
+  display: block;
 }
 
 /* Tech Universe Layer (Zooms in from deep cosmic fog into foreground) */
@@ -2008,13 +2024,24 @@ html.lenis, html.lenis body {
 .credentials-stage-wrapper {
   position: relative;
   width: 100%;
+  height: 100%;
   max-width: 1260px;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
+  padding: 1.8rem 1.5rem 1.2rem 1.5rem;
   z-index: 10;
+  pointer-events: none;
+}
+
+.cred-stones-header,
+.stage-nav-hud,
+.pulsar-telemetry-hud,
+.pulsar-speed-pill,
+.stage-nav-btn {
+  pointer-events: auto;
 }
 
 /* Celestial Singularity Core */
@@ -2331,5 +2358,366 @@ html.lenis, html.lenis body {
   .cred-stones-title {
     font-size: var(--font-size-lg);
   }
+}
+
+/* ==========================================================================
+   14. CELESTIAL NEUTRON STAR (PULSAR PSR-J2026) & HYPER-SPEED ORBITS
+   Faintly visible in corner during Tech Stack; warps to center on scroll;
+   7 certificates orbit around it at insane relativistic speeds.
+   ========================================================================== */
+
+/* Main spatial beacon: positioned relative to center of sticky stage */
+.neutron-star-beacon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  z-index: 28;
+  will-change: transform, opacity;
+  transform-origin: center center;
+}
+
+.pulsar-anchor {
+  position: relative;
+  width: 0;
+  height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Pulsar Core: Ultra-Dense Relativistic Star */
+.pulsar-core {
+  position: absolute;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #FFFFFF 0%, #E2FAFF 30%, #00F0FF 70%, #0284C7 100%);
+  box-shadow:
+    0 0 16px #FFFFFF,
+    0 0 35px #00F0FF,
+    0 0 75px rgba(0, 240, 255, 0.9),
+    0 0 120px rgba(168, 85, 247, 0.65),
+    inset 0 0 10px #FFFFFF;
+  animation: pulsarBeat 0.14s ease-in-out infinite alternate;
+  z-index: 10;
+  pointer-events: auto;
+  cursor: pointer;
+}
+
+@keyframes pulsarBeat {
+  0% { transform: scale(0.92); filter: brightness(1.0); }
+  100% { transform: scale(1.12); filter: brightness(1.45) drop-shadow(0 0 25px #00F0FF); }
+}
+
+/* Luminous Electromagnetic Corona */
+.pulsar-corona {
+  position: absolute;
+  width: 240px;
+  height: 240px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(0, 240, 255, 0.35) 0%, rgba(168, 85, 247, 0.2) 35%, rgba(0, 240, 255, 0.06) 60%, transparent 75%);
+  filter: blur(25px);
+  pointer-events: none;
+  animation: coronaPulse 1.8s ease-in-out infinite alternate;
+  z-index: 2;
+}
+
+@keyframes coronaPulse {
+  0% { transform: scale(0.88); opacity: 0.7; }
+  100% { transform: scale(1.18); opacity: 1.0; }
+}
+
+/* High-frequency optical sweep / shockwave */
+.pulsar-flash-pulse {
+  position: absolute;
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  border: 1px solid rgba(0, 240, 255, 0.6);
+  opacity: 0;
+  pointer-events: none;
+  animation: pulsarShockwave 0.85s cubic-bezier(0.1, 0.8, 0.3, 1) infinite;
+  z-index: 4;
+}
+
+@keyframes pulsarShockwave {
+  0% { transform: scale(0.2); opacity: 0.9; }
+  100% { transform: scale(3.2); opacity: 0; }
+}
+
+/* Relativistic Magnetic Jet Cones */
+.pulsar-jets {
+  position: absolute;
+  width: 0;
+  height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: jetSpin 2.2s linear infinite;
+  pointer-events: none;
+  z-index: 6;
+}
+
+@keyframes jetSpin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.pulsar-jet {
+  position: absolute;
+  width: 3px;
+  height: 380px;
+  pointer-events: none;
+}
+
+.pulsar-jet-north {
+  bottom: 14px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: linear-gradient(to top, #FFFFFF 0%, rgba(0, 240, 255, 0.95) 15%, rgba(168, 85, 247, 0.6) 50%, rgba(0, 240, 255, 0.15) 85%, transparent 100%);
+  box-shadow: 0 0 14px #00F0FF, 0 0 30px rgba(168, 85, 247, 0.8);
+  filter: blur(0.5px);
+}
+
+.pulsar-jet-south {
+  top: 14px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: linear-gradient(to bottom, #FFFFFF 0%, rgba(0, 240, 255, 0.95) 15%, rgba(168, 85, 247, 0.6) 50%, rgba(0, 240, 255, 0.15) 85%, transparent 100%);
+  box-shadow: 0 0 14px #00F0FF, 0 0 30px rgba(168, 85, 247, 0.8);
+  filter: blur(0.5px);
+}
+
+/* Accretion Plasma Rings */
+.pulsar-accretion-ring {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 5;
+}
+
+.pulsar-accretion-ring.ring-1 {
+  width: 260px;
+  height: 260px;
+  border: 1.5px solid rgba(0, 240, 255, 0.55);
+  box-shadow: 0 0 16px rgba(0, 240, 255, 0.3), inset 0 0 16px rgba(0, 240, 255, 0.2);
+  transform: rotateX(74deg) rotateY(18deg);
+  animation: accretionSpin 3.5s linear infinite;
+}
+
+.pulsar-accretion-ring.ring-2 {
+  width: 380px;
+  height: 380px;
+  border: 1px dashed rgba(168, 85, 247, 0.4);
+  box-shadow: 0 0 20px rgba(168, 85, 247, 0.2);
+  transform: rotateX(68deg) rotateY(-25deg);
+  animation: accretionSpinReverse 6s linear infinite;
+}
+
+@keyframes accretionSpin {
+  0% { transform: rotateX(74deg) rotateY(18deg) rotateZ(0deg); }
+  100% { transform: rotateX(74deg) rotateY(18deg) rotateZ(360deg); }
+}
+
+@keyframes accretionSpinReverse {
+  0% { transform: rotateX(68deg) rotateY(-25deg) rotateZ(0deg); }
+  100% { transform: rotateX(68deg) rotateY(-25deg) rotateZ(-360deg); }
+}
+
+/* Corner Telemetry HUD Marker (Visible in Tech Stack corner) */
+.pulsar-hud-marker {
+  position: absolute;
+  left: 36px;
+  top: -22px;
+  background: rgba(6, 10, 6, 0.9);
+  border: 1px solid rgba(0, 240, 255, 0.4);
+  border-radius: 6px;
+  padding: 0.35rem 0.65rem;
+  pointer-events: auto;
+  cursor: pointer;
+  white-space: nowrap;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  transition: border-color 0.25s, transform 0.25s, box-shadow 0.25s;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.8), 0 0 10px rgba(0, 240, 255, 0.15);
+  z-index: 100;
+}
+
+.pulsar-hud-marker:hover {
+  border-color: var(--color-lime);
+  transform: scale(1.06) translateX(4px);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.9), 0 0 16px rgba(210, 255, 0, 0.3);
+}
+
+.pulsar-marker-header {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.62rem;
+  color: #00F0FF;
+  letter-spacing: 0.08em;
+}
+
+.pulsar-marker-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #00F0FF;
+  box-shadow: 0 0 6px #00F0FF;
+  animation: dotBlink 0.6s ease-in-out infinite alternate;
+}
+
+@keyframes dotBlink {
+  0% { opacity: 0.3; }
+  100% { opacity: 1.0; }
+}
+
+.pulsar-marker-data {
+  font-size: 0.54rem;
+  color: var(--color-text-muted);
+  margin-top: 0.15rem;
+  letter-spacing: 0.05em;
+}
+
+.pulsar-marker-action {
+  font-size: 0.56rem;
+  letter-spacing: 0.08em;
+  margin-top: 0.2rem;
+  font-weight: 700;
+}
+
+/* ==========================================================================
+   3D HIGH-SPEED PULSAR ORBITS (CREDENTIALS STONES)
+   Cards rotate around the neutron star at relativistic speed with time-dilation
+   ========================================================================== */
+
+.pulsar-orbit-viewport {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  perspective: 1200px;
+}
+
+.pulsar-orbit-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 3;
+}
+
+.pulsar-orbit-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform-style: preserve-3d;
+  z-index: 15;
+  pointer-events: auto;
+  transition: opacity 0.3s ease;
+}
+
+/* Individual Orbiting Certificate Card */
+.pulsar-card-node {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 195px;
+  border-radius: 10px;
+  background: rgba(8, 12, 8, 0.92);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.85);
+  cursor: pointer;
+  will-change: transform, opacity, filter;
+  transition: border-color 0.25s ease, box-shadow 0.25s ease, filter 0.2s ease;
+  user-select: none;
+  overflow: hidden;
+  pointer-events: auto;
+}
+
+.pulsar-card-node:hover,
+.pulsar-card-node.is-hovered {
+  border-color: var(--stone-accent, #00F0FF);
+  box-shadow: 0 0 32px var(--stone-accent, rgba(0, 240, 255, 0.4)), inset 0 0 16px rgba(255, 255, 255, 0.05);
+  z-index: 999 !important;
+}
+
+/* Accent glow line at bottom of card */
+.pulsar-card-node::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 10%;
+  right: 10%;
+  height: 2px;
+  background: var(--stone-accent, var(--color-lime));
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  border-radius: 2px;
+  filter: blur(1px);
+}
+
+.pulsar-card-node:hover::after,
+.pulsar-card-node.is-hovered::after {
+  opacity: 0.9;
+}
+
+/* Card Passing In Front of Star Core */
+.pulsar-card-node.is-front {
+  border-color: rgba(255, 255, 255, 0.22);
+}
+
+/* Card Passing Behind Star Core */
+.pulsar-card-node.is-behind {
+  border-color: rgba(255, 255, 255, 0.05);
+}
+
+/* Speed / Dilation Telemetry Controls */
+.pulsar-telemetry-hud {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.85rem;
+  margin-top: 0.65rem;
+  z-index: 40;
+  position: relative;
+}
+
+.pulsar-speed-pill {
+  font-size: 0.65rem;
+  letter-spacing: 0.08em;
+  padding: 0.35rem 0.85rem;
+  border-radius: 4px;
+  background: rgba(8, 14, 8, 0.88);
+  border: 1px solid rgba(0, 240, 255, 0.35);
+  color: #00F0FF;
+  backdrop-filter: blur(8px);
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.pulsar-speed-pill:hover,
+.pulsar-speed-pill.is-dilated {
+  border-color: var(--color-lime);
+  color: var(--color-lime);
+  box-shadow: 0 0 14px rgba(210, 255, 0, 0.25);
 }
 

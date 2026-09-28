@@ -1,18 +1,16 @@
 /**
- * CREDENTIALS INFINITY STONES ENGINE
- * ----------------------------------
- * Certificate cards fly in from offscreen at high velocity,
- * decelerate with spring-damped easing, and settle into a gentle
- * orbital float — like infinity stones assembling around a gauntlet.
- *
- * Each card has:
- * - A random entry vector (angle + speed)
- * - Spring-physics deceleration to its target grid position
- * - Subtle idle floating drift once settled
- * - Glassmorphism HUD styling with accent glow
+ * CREDENTIALS INFINITY STONES MATRIX ENGINE
+ * -----------------------------------------
+ * Author: Sam Sunny Portfolio
+ * Description:
+ *   - 07 verified honors & credentials cards fly into the Celestial Matrix,
+ *     decelerating with spring-damped physics and settling into an organic floating drift.
+ *   - Glassmorphism HUD styling with certificate badges and luminous accent glows.
+ *   - Full-resolution modal lightbox inspection for certificates + PDF viewer for Linguaskill.
+ *   - Navigation link directly to the Black Hole Contact Singularity at the end of the site.
  */
 
-const CERTIFICATES = [
+export const CERTIFICATES = [
   {
     id: 'national-hackathon',
     title: 'National AI 2nd Prize',
@@ -90,6 +88,12 @@ export class CredentialsStonesEngine {
     this.animId = null;
     this.time = 0;
 
+    // Lightbox modal references
+    this.lightbox = null;
+    this.lightboxImg = null;
+    this.lightboxBackdrop = null;
+    this.lightboxClose = null;
+
     this.init();
   }
 
@@ -99,17 +103,16 @@ export class CredentialsStonesEngine {
   }
 
   buildDOM() {
-    // Build celestial stage inside credentials layer
     this.section.innerHTML = `
       <div class="credentials-stage-wrapper" id="credentials-stage">
-        <!-- Celestial Singularity Core -->
+        <!-- Celestial Singularity Aura -->
         <div class="credentials-singularity" aria-hidden="true"></div>
 
         <!-- Cosmic Header -->
         <div class="cred-stones-header">
           <span class="font-mono text-lime" style="font-size: var(--font-size-xs); letter-spacing: 0.14em;">// CELESTIAL HONORS · VERIFIED CREDENTIALS &amp; AWARDS</span>
           <h2 class="cred-stones-title font-display">CREDENTIALS MATRIX</h2>
-          <p class="font-mono text-muted" style="font-size: 0.72rem; margin-top: 0.25rem; letter-spacing: 0.05em;">07 ARTIFACT STONES ASSEMBLED VIA SPACE JOURNEY · CLICK TO INSPECT</p>
+          <p class="font-mono text-muted" style="font-size: 0.72rem; margin-top: 0.25rem; letter-spacing: 0.05em;">07 ARTIFACT STONES ASSEMBLED VIA COSMIC JOURNEY · CLICK TO INSPECT</p>
         </div>
 
         <!-- Floating Stones Stage -->
@@ -120,7 +123,7 @@ export class CredentialsStonesEngine {
         <!-- Navigation HUD -->
         <div class="stage-nav-hud">
           <button id="cred-return-projects-btn" class="stage-nav-btn font-mono" title="Return to flagship projects">⤾ RETURN TO PROJECTS</button>
-          <a href="#contact" class="stage-nav-btn font-mono text-lime" title="Proceed to communication protocol">INITIATE CONTACT PROTOCOL ↓</a>
+          <a href="#contact" class="stage-nav-btn font-mono text-lime" id="cred-to-contact-btn" title="Descend to Black Hole Singularity at end of website">DESCEND TO EVENT HORIZON: CONTACT SINGULARITY ↓</a>
         </div>
       </div>
 
@@ -150,6 +153,22 @@ export class CredentialsStonesEngine {
       });
     }
 
+    // Direct descend to contact button
+    const toContactBtn = document.getElementById('cred-to-contact-btn');
+    if (toContactBtn) {
+      toContactBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        const contactSection = document.getElementById('contact');
+        if (contactSection) {
+          if (window.AppState?.lenis) {
+            window.AppState.lenis.scrollTo(contactSection, { duration: 1.8 });
+          } else {
+            contactSection.scrollIntoView({ behavior: 'smooth' });
+          }
+        }
+      });
+    }
+
     // Lightbox events
     if (this.lightboxClose) {
       this.lightboxClose.addEventListener('click', () => this.closeLightbox());
@@ -165,7 +184,7 @@ export class CredentialsStonesEngine {
 
     // Build card elements
     const gridEl = this.container;
-    const stageRect = document.getElementById('cred-stones-stage');
+    this.cards = [];
 
     CERTIFICATES.forEach((cert, index) => {
       const el = document.createElement('div');
@@ -173,17 +192,20 @@ export class CredentialsStonesEngine {
       el.dataset.id = cert.id;
       el.style.setProperty('--stone-accent', cert.accent);
 
-      // Determine if image is viewable (not PDF)
       const isPDF = cert.image.toLowerCase().endsWith('.pdf');
 
       el.innerHTML = `
         <div class="stone-card-inner">
           <div class="stone-card-badge font-mono">${cert.badge}</div>
-          ${!isPDF ? `<div class="stone-card-thumb">
-            <img src="${cert.image}" alt="${cert.title}" loading="lazy" />
-          </div>` : `<div class="stone-card-thumb stone-card-thumb-pdf">
-            <div class="stone-pdf-placeholder font-mono">📄 PDF</div>
-          </div>`}
+          ${!isPDF ? `
+            <div class="stone-card-thumb">
+              <img src="${cert.image}" alt="${cert.title}" loading="lazy" />
+            </div>
+          ` : `
+            <div class="stone-card-thumb stone-card-thumb-pdf">
+              <div class="stone-pdf-placeholder font-mono">📄 VIEW PDF ↗</div>
+            </div>
+          `}
           <div class="stone-card-info">
             <h3 class="stone-card-title font-display">${cert.title}</h3>
             <p class="stone-card-subtitle font-mono">${cert.subtitle}</p>
@@ -192,7 +214,6 @@ export class CredentialsStonesEngine {
         </div>
       `;
 
-      // Click to open lightbox (or new tab for PDF)
       el.style.cursor = 'pointer';
       if (!isPDF) {
         el.addEventListener('click', () => this.openLightbox(cert));
@@ -202,42 +223,36 @@ export class CredentialsStonesEngine {
 
       gridEl.appendChild(el);
 
-      // Random entry vector — each card flies from a random direction
+      // Random entry vector
       const entryAngle = (index / CERTIFICATES.length) * Math.PI * 2 + (Math.random() - 0.5) * 0.8;
       const entryDistance = 1200 + Math.random() * 800;
-      const entryDelay = index * 120; // stagger
+      const entryDelay = index * 120;
 
       this.cards.push({
         el,
         cert,
         index,
-        // Physics state
         currentX: Math.cos(entryAngle) * entryDistance,
         currentY: Math.sin(entryAngle) * entryDistance,
         currentRotate: (Math.random() - 0.5) * 180,
         currentScale: 0.3 + Math.random() * 0.3,
         currentOpacity: 0,
-        // Target = grid position (0,0 relative — CSS handles layout)
         targetX: 0,
         targetY: 0,
         targetRotate: 0,
         targetScale: 1,
         targetOpacity: 1,
-        // Velocities
         vx: 0,
         vy: 0,
         vr: 0,
         vs: 0,
         vo: 0,
-        // Spring constants (slightly varied per card for organic feel)
         spring: 0.035 + Math.random() * 0.025,
         damping: 0.82 + Math.random() * 0.06,
-        // Timing
         delay: entryDelay,
         elapsed: 0,
         isActive: false,
         isSettled: false,
-        // Idle float
         floatPhase: Math.random() * Math.PI * 2,
         floatSpeed: 0.008 + Math.random() * 0.006,
         floatAmpX: 3 + Math.random() * 4,
@@ -252,7 +267,6 @@ export class CredentialsStonesEngine {
     this.isSettled = false;
     this.time = 0;
 
-    // Reset physics vectors if re-triggered or starting fresh
     this.cards.forEach((card, index) => {
       const entryAngle = (index / CERTIFICATES.length) * Math.PI * 2 + (Math.random() - 0.5) * 0.8;
       const entryDistance = 1200 + Math.random() * 800;
@@ -279,13 +293,11 @@ export class CredentialsStonesEngine {
   }
 
   animate() {
-    this.time += 16.67; // ~60fps frame time
+    this.time += 16.67;
     let allSettled = true;
 
     this.cards.forEach((card) => {
-      // Check delay
       if (this.time < card.delay) {
-        // Still waiting — keep offscreen
         card.el.style.transform = `translate3d(${card.currentX}px, ${card.currentY}px, 0) rotate(${card.currentRotate}deg) scale(${card.currentScale})`;
         card.el.style.opacity = '0';
         allSettled = false;
@@ -300,7 +312,6 @@ export class CredentialsStonesEngine {
       card.elapsed += 16.67;
 
       if (!card.isSettled) {
-        // Spring physics: F = -k * x, v += F, v *= damping, x += v
         const dx = card.targetX - card.currentX;
         const dy = card.targetY - card.currentY;
         const dr = card.targetRotate - card.currentRotate;
@@ -325,7 +336,6 @@ export class CredentialsStonesEngine {
         card.currentScale += card.vs;
         card.currentOpacity += card.vo;
 
-        // Check if settled (all velocities near zero)
         const totalV = Math.abs(card.vx) + Math.abs(card.vy) + Math.abs(card.vr) + Math.abs(card.vs * 100);
         if (totalV < 0.15 && card.elapsed > 600) {
           card.isSettled = true;
@@ -342,7 +352,6 @@ export class CredentialsStonesEngine {
         }
       }
 
-      // Idle float after settling
       let floatX = 0;
       let floatY = 0;
       if (card.isSettled) {
@@ -362,7 +371,6 @@ export class CredentialsStonesEngine {
       this.isSettled = true;
     }
 
-    // Keep animating for idle float
     this.animId = requestAnimationFrame(this.animate);
   }
 
