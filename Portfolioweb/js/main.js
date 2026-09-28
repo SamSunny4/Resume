@@ -53,10 +53,20 @@ export function initMouseTracking() {
     AppState.mouse.targetY = -(e.clientY / window.innerHeight) * 2 + 1;
   });
 
+  const portraitCard = document.getElementById('hero-portrait-card');
+
   // Smooth lerp update loop
   function updateMouseCoords() {
     AppState.mouse.x += (AppState.mouse.targetX - AppState.mouse.x) * 0.08;
     AppState.mouse.y += (AppState.mouse.targetY - AppState.mouse.y) * 0.08;
+
+    // Subtle 3D parallax tilt for hero portrait card
+    if (portraitCard && window.innerWidth >= 992) {
+      const rotY = (AppState.mouse.x * 6.5).toFixed(2);
+      const rotX = (-AppState.mouse.y * 6.5).toFixed(2);
+      portraitCard.style.transform = `perspective(1000px) rotateY(${rotY}deg) rotateX(${rotX}deg) translateZ(0)`;
+    }
+
     requestAnimationFrame(updateMouseCoords);
   }
   requestAnimationFrame(updateMouseCoords);
@@ -66,6 +76,8 @@ import { initHeroAsciiBurst } from './ascii-burst.js';
 import { initStickyBrandLogo } from './sticky-logo.js';
 import { initTechSolarSystem } from './tech-solar.js';
 import { initProjectSolarSystem } from './project-solar.js';
+import { initTopoBackground } from './topo-background.js';
+import { initCredentialsStones } from './credentials-stones.js';
 
 /**
  * Main System Bootstrap
@@ -81,10 +93,95 @@ function bootstrap() {
   initMouseTracking();
   initHeroAsciiBurst();
   initStickyBrandLogo();
+
+  // Initialize Ultra-Minimal Topographic Background (clean, monochromatic, spacious)
+  const topoBg = initTopoBackground({
+    theme: 'cyber-light',
+    cellSize: 22,
+    lineLevelsCount: 5,
+    speed: 0.00018,
+    mouseRadius: 280,
+    mouseStrength: 0.35,
+    parallaxFactor: 20
+  });
+  window.AppState.topoBg = topoBg;
+
   const techSolar = initTechSolarSystem();
   const projectSolar = initProjectSolarSystem();
   window.AppState.techSolar = techSolar;
   window.AppState.projectSolar = projectSolar;
+
+  // Initialize Credentials Infinity Stones Showcase
+  const credStones = initCredentialsStones();
+  window.AppState.credStones = credStones;
+
+  // ---------------------------------------------------------------
+  // SCROLL-SETTLE AUTO-SNAP
+  // When user stops scrolling near a phase boundary (Tech Stack or
+  // Projects), auto-scroll to the optimal resting position.
+  // ---------------------------------------------------------------
+  let scrollSettleTimer = null;
+  const track = document.getElementById('space-stage-track');
+
+  function getPhaseProgress() {
+    if (!track) return -1;
+    const rect = track.getBoundingClientRect();
+    const maxScroll = track.offsetHeight - window.innerHeight;
+    if (maxScroll <= 0) return -1;
+    return Math.max(0, Math.min(1, -rect.top / maxScroll));
+  }
+
+  function settleToPhase() {
+    const p = getPhaseProgress();
+    if (p < 0 || !track) return;
+
+    const trackTop = track.offsetTop;
+    const maxScroll = track.offsetHeight - window.innerHeight;
+
+    // Phase zones and their ideal resting positions:
+    // Hero:        p <= 0.06           → snap to 0.00 (top of hero)
+    // Tech:        0.14 < p < 0.38     → snap to 0.28 (centered tech stack)
+    // Wormhole 1:  0.38 <= p < 0.48    → snap to closer side (0.28 or 0.60)
+    // Projects:    0.48 <= p < 0.70    → snap to 0.60 (centered flagship projects)
+    // Hyperspace:  0.70 <= p < 0.80    → snap to closer side (0.60 or 0.88)
+    // Credentials: 0.80 <= p <= 1.00   → snap to 0.88 (centered credentials matrix)
+
+    let targetP = null;
+
+    if (p > 0.01 && p <= 0.06) {
+      targetP = 0.0;
+    } else if (p > 0.14 && p < 0.38) {
+      targetP = 0.28;
+    } else if (p >= 0.38 && p < 0.48) {
+      targetP = p < 0.43 ? 0.28 : 0.60;
+    } else if (p >= 0.48 && p < 0.70) {
+      targetP = 0.60;
+    } else if (p >= 0.70 && p < 0.80) {
+      targetP = p < 0.75 ? 0.60 : 0.88;
+    } else if (p >= 0.80 && p <= 0.99) {
+      targetP = 0.88;
+    }
+
+    if (targetP !== null) {
+      const targetY = trackTop + maxScroll * targetP;
+      const currentScroll = window.scrollY || window.pageYOffset;
+      const diff = Math.abs(currentScroll - targetY);
+
+      // Only snap if we're reasonably close but not already at the target
+      if (diff > 30 && diff < 800) {
+        if (window.AppState && window.AppState.lenis) {
+          window.AppState.lenis.scrollTo(targetY, { duration: 0.8 });
+        } else {
+          window.scrollTo({ top: targetY, behavior: 'smooth' });
+        }
+      }
+    }
+  }
+
+  window.addEventListener('scroll', () => {
+    if (scrollSettleTimer) clearTimeout(scrollSettleTimer);
+    scrollSettleTimer = setTimeout(settleToPhase, 600);
+  }, { passive: true });
 
   // Smooth scroll handler for anchor links
   document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
@@ -99,6 +196,12 @@ function bootstrap() {
         e.preventDefault();
         if (projectSolar) projectSolar.triggerProjectsZoom();
         else if (techSolar) techSolar.triggerProjectsZoom();
+        return;
+      }
+      if (targetId === '#credentials' || targetId === '#credentials-matrix') {
+        e.preventDefault();
+        if (techSolar) techSolar.triggerCredentialsZoom();
+        else if (projectSolar) projectSolar.triggerCredentialsZoom();
         return;
       }
       const targetEl = document.querySelector(targetId);

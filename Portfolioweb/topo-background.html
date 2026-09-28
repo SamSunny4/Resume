@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Interactive 2D Topographic Contours — Sam Sunny</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700;800&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/png" href="assets/me.png">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      user-select: none;
+    }
+    body, html {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background-color: #060905;
+      color: #FFFFFF;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    #webgl-canvas-container {
+      position: fixed;
+      inset: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 1;
+    }
+
+    /* Ambient CRT Scanline Overlay */
+    .scanline-fx {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 2;
+      background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 3px,
+        rgba(0, 240, 255, 0.012) 3px,
+        rgba(0, 240, 255, 0.012) 6px
+      );
+    }
+
+    /* Cybernetic UI HUD Frame */
+    .hud-layer {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 10;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: clamp(1.2rem, 3vw, 2.5rem);
+    }
+
+    .hud-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      flex-wrap: wrap;
+      gap: 1rem;
+      pointer-events: auto;
+    }
+
+    .hud-brand {
+      background: rgba(10, 15, 7, 0.82);
+      border: 1px solid rgba(210, 255, 0, 0.3);
+      border-radius: 12px;
+      padding: 0.75rem 1.25rem;
+      backdrop-filter: blur(16px);
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.7), inset 0 0 15px rgba(210, 255, 0, 0.06);
+    }
+
+    .brand-title {
+      font-size: 0.95rem;
+      font-weight: 800;
+      color: #D2FF00;
+      letter-spacing: 0.08em;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .brand-pulse-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #D2FF00;
+      box-shadow: 0 0 10px #D2FF00;
+      animation: pulse 1.8s infinite ease-in-out;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.35; transform: scale(0.8); }
+    }
+
+    .brand-sub {
+      font-size: 0.68rem;
+      color: #A0B095;
+      margin-top: 0.25rem;
+      letter-spacing: 0.06em;
+    }
+
+    .hud-nav-links {
+      display: flex;
+      gap: 0.75rem;
+      align-items: center;
+    }
+
+    .hud-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.65rem 1.15rem;
+      background: rgba(14, 20, 10, 0.85);
+      border: 1px solid rgba(0, 240, 255, 0.3);
+      color: #00F0FF;
+      font-family: inherit;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      border-radius: 8px;
+      text-decoration: none;
+      cursor: pointer;
+      backdrop-filter: blur(14px);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
+      transition: all 0.2s ease;
+    }
+
+    .hud-btn:hover {
+      background: #00F0FF;
+      color: #000000;
+      box-shadow: 0 0 25px rgba(0, 240, 255, 0.6);
+      transform: translateY(-2px);
+    }
+
+    .hud-btn-lime {
+      border-color: rgba(210, 255, 0, 0.4);
+      color: #D2FF00;
+    }
+    .hud-btn-lime:hover {
+      background: #D2FF00;
+      color: #000000;
+      box-shadow: 0 0 25px rgba(210, 255, 0, 0.6);
+    }
+
+    /* Floating Center Interaction Guide */
+    .hud-center-hint {
+      align-self: center;
+      background: rgba(10, 15, 8, 0.75);
+      border: 1px dashed rgba(210, 255, 0, 0.25);
+      border-radius: 9999px;
+      padding: 0.45rem 1.25rem;
+      font-size: 0.72rem;
+      color: #D2FF00;
+      letter-spacing: 0.08em;
+      backdrop-filter: blur(12px);
+      opacity: 0.75;
+      animation: floatBreath 4s ease-in-out infinite alternate;
+      pointer-events: none;
+    }
+
+    @keyframes floatBreath {
+      0% { transform: translateY(0); opacity: 0.55; }
+      100% { transform: translateY(-8px); opacity: 0.95; }
+    }
+
+    /* Bottom Control Bar */
+    .hud-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      flex-wrap: wrap;
+      gap: 1.25rem;
+      pointer-events: auto;
+    }
+
+    .hud-panel {
+      background: rgba(10, 15, 7, 0.88);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 14px;
+      padding: 1rem 1.25rem;
+      backdrop-filter: blur(20px);
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.8);
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      min-width: 280px;
+    }
+
+    .hud-panel-title {
+      font-size: 0.68rem;
+      color: #D2FF00;
+      letter-spacing: 0.1em;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      padding-bottom: 0.4rem;
+    }
+
+    .theme-buttons {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    .theme-chip {
+      padding: 0.35rem 0.75rem;
+      border-radius: 6px;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      background: rgba(255, 255, 255, 0.04);
+      color: #CCCCCC;
+      font-size: 0.68rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .theme-chip:hover, .theme-chip.active {
+      border-color: #D2FF00;
+      color: #D2FF00;
+      background: rgba(210, 255, 0, 0.12);
+      box-shadow: 0 0 12px rgba(210, 255, 0, 0.25);
+    }
+
+    .telemetry-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.68rem;
+      color: #889988;
+    }
+
+    .telemetry-val {
+      color: #00F0FF;
+      font-weight: 700;
+    }
+
+    @media (max-width: 768px) {
+      .hud-header {
+        flex-direction: column;
+      }
+      .hud-center-hint {
+        display: none;
+      }
+      .hud-footer {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .hud-panel {
+        min-width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Background Canvas Container -->
+  <div id="webgl-canvas-container"></div>
+
+  <!-- Scanline Screen Effect -->
+  <div class="scanline-fx" aria-hidden="true"></div>
+
+  <!-- Cybernetic Floating Telemetry HUD -->
+  <div class="hud-layer">
+    <!-- Top Header -->
+    <header class="hud-header">
+      <div class="hud-brand">
+        <div class="brand-title">
+          <span class="brand-pulse-dot"></span>
+          <span>TOPOGRAPHIC CONTOUR MATRIX</span>
+        </div>
+        <div class="brand-sub">// PROCEDURAL 2D ELEVATION MAP · MOUSE DEFLECTION FIELD</div>
+      </div>
+
+      <div class="hud-nav-links">
+        <button id="ripple-burst-btn" class="hud-btn hud-btn-lime">TRIGGER SHOCKWAVE ↯</button>
+        <a href="index.html" class="hud-btn">RETURN TO PORTFOLIO ↗</a>
+      </div>
+    </header>
+
+    <!-- Center Interaction Tooltip -->
+    <div class="hud-center-hint">
+      MOVE MOUSE TO DEFLECT ELEVATION · CLICK TO EXPAND TOPOGRAPHIC RIPPLE
+    </div>
+
+    <!-- Bottom Controls & Telemetry -->
+    <footer class="hud-footer">
+      <!-- Theme & Style Controls -->
+      <div class="hud-panel">
+        <div class="hud-panel-title">
+          <span>// LIGHT SPECTRUM</span>
+          <span style="color: #68FFB8;">PALETTE</span>
+        </div>
+        <div class="theme-buttons">
+          <button class="theme-chip active" data-theme="cyber-light">CYBER LIGHT</button>
+          <button class="theme-chip" data-theme="lime-mint">LIME MINT</button>
+          <button class="theme-chip" data-theme="ice-cyan">ICE CYAN</button>
+          <button class="theme-chip" data-theme="ethereal-pearl">PEARL</button>
+        </div>
+        <div class="hud-panel-title" style="margin-top: 0.4rem;">
+          <span>// CONTOUR DENSITY</span>
+          <span style="color: #7BF0FF;">LINES</span>
+        </div>
+        <div class="theme-buttons">
+          <button class="theme-chip line-chip" data-count="5">5 LINES</button>
+          <button class="theme-chip line-chip active" data-count="7">7 LINES (CLEAN)</button>
+          <button class="theme-chip line-chip" data-count="9">9 LINES</button>
+        </div>
+      </div>
+
+      <!-- Realtime Telemetry Status -->
+      <div class="hud-panel" style="min-width: 250px;">
+        <div class="hud-panel-title">
+          <span>// SYSTEM TELEMETRY</span>
+          <span style="color: #00FFA3;">60 FPS</span>
+        </div>
+        <div class="telemetry-row">
+          <span>COORDINATES:</span>
+          <span id="coord-readout" class="telemetry-val">0, 0</span>
+        </div>
+        <div class="telemetry-row">
+          <span>INTERACTION:</span>
+          <span id="interaction-state" class="telemetry-val" style="color: #E8FF54;">HOVER TRACKING</span>
+        </div>
+        <div class="telemetry-row">
+          <span>CURVE ENGINE:</span>
+          <span class="telemetry-val" style="color: #7BF0FF;">CHAIKIN SPLINE</span>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <!-- Initialize Topographic Background Engine -->
+  <script type="module">
+    import { TopoBackground } from './js/topo-background.js';
+
+    // Initialize 2D background engine (Fewer lines, lighter colors, silky curves)
+    const topo = new TopoBackground({
+      container: document.getElementById('webgl-canvas-container'),
+      theme: 'cyber-light',
+      cellSize: 18,
+      dotSpacing: 70,
+      lineLevelsCount: 7,
+      speed: 0.00028,
+      mouseRadius: 320,
+      mouseStrength: 0.85,
+      parallaxFactor: 35
+    });
+
+    // Theme selector buttons
+    document.querySelectorAll('.theme-chip[data-theme]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.theme-chip[data-theme]').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        topo.setTheme(btn.dataset.theme);
+      });
+    });
+
+    // Line density selector buttons
+    document.querySelectorAll('.line-chip').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.line-chip').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        topo.setLineCount(parseInt(btn.dataset.count, 10));
+      });
+    });
+
+    // Ripple button
+    const rippleBtn = document.getElementById('ripple-burst-btn');
+    if (rippleBtn) {
+      rippleBtn.addEventListener('click', (e) => {
+        topo.onClick({
+          clientX: window.innerWidth * 0.5,
+          clientY: window.innerHeight * 0.5
+        });
+      });
+    }
+
+    // Telemetry readout
+    const coordEl = document.getElementById('coord-readout');
+    const stateEl = document.getElementById('interaction-state');
+    window.addEventListener('mousemove', (e) => {
+      if (coordEl) coordEl.textContent = `${e.clientX}, ${e.clientY}`;
+      if (stateEl) stateEl.textContent = 'DEFLECTING CONTOURS';
+    });
+    window.addEventListener('mouseleave', () => {
+      if (stateEl) stateEl.textContent = 'AMBIENT DRIFT';
+    });
+  </script>
+</body>
+</html>

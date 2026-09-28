@@ -19,7 +19,7 @@
 
   
   <!-- Design System Stylesheet -->
-  <link rel="stylesheet" href="style.css?v=26">
+  <link rel="stylesheet" href="style.css?v=34">
   <link rel="icon" type="image/png" href="assets/me.png">
 </head>
 <body>
@@ -53,31 +53,117 @@
           <!-- HERO VIEWPORT LAYER (Zooms forward towards camera on scroll) -->
           <div id="hero-space-layer" class="hero-space-layer">
             <section id="hero" class="hero-section">
-              <div class="container">
-                <div class="hero-title-group" style="max-width: 1300px;">
-                  <h1 class="hero-monumental-title" aria-label="I AM SAM SUNNY">
-                    <span class="hero-line-mask">
-                      <span class="hero-line-1">
-                        <span class="reveal-word word-i">I</span>
-                        <span class="reveal-word word-am">AM</span>
-                      </span>
-                    </span>
-                    <div id="shuffle-hero-name" class="ascii-hero-container" title="Interactive ASCII Typography — Hover or Click to Burst">
-                      <!-- ASCII Block Burst Engine automatically populates SAM and SUNNY -->
+              <div class="container hero-container">
+                <div class="hero-grid">
+                  
+                  <!-- Left: Monumental Editorial Identity & Directives -->
+                  <div class="hero-content">
+                    <!-- Live Telemetry Status Pill -->
+                    <div class="hero-status-tag hero-badge-reveal">
+                      <span class="status-indicator-dot"></span>
+                      <span class="font-mono status-indicator-text">// SYSTEM ACTIVE: APPLIED AI &amp; SYSTEMS ENGINEER</span>
                     </div>
-                  </h1>
 
-                  <p class="font-sans text-editorial-muted hero-desc-reveal" style="font-size: var(--font-size-md); max-width: 680px; line-height: 1.6; margin-top: var(--space-md); margin-bottom: var(--space-lg);">
-                    Software Engineer specializing in Computer Vision, Applied AI pipelines, and commercial full-stack applications. Proven track record deploying production retail software and national hackathon achievements.
-                  </p>
-                </div>
+                    <div class="hero-title-group">
+                      <h1 class="hero-monumental-title" aria-label="I AM SAM SUNNY">
+                        <span class="hero-line-mask">
+                          <span class="hero-line-1">
+                            <span class="reveal-word word-i">I</span>
+                            <span class="reveal-word word-am">AM</span>
+                          </span>
+                        </span>
+                        <div id="shuffle-hero-name" class="ascii-hero-container" title="Interactive ASCII Typography — Hover or Click to Burst">
+                          <!-- ASCII Block Burst Engine automatically populates SAM and SUNNY -->
+                        </div>
+                      </h1>
 
-                <!-- Action HUD Buttons -->
-                <div class="hero-actions-reveal" style="display: flex; align-items: center; gap: 1rem; flex-wrap: wrap;">
-                  <a href="#tech-stack" id="hero-explore-btn" class="btn-primary">EXPLORE TECH MATRIX ↓</a>
-                  <a href="#projects" class="btn-secondary">FLAGSHIP SYSTEMS ↓</a>
-                  <a href="assets/Sam_Sunny_Resume.pdf" target="_blank" class="btn-secondary">RESUME ↗</a>
-                  <a href="#contact" class="btn-secondary">INITIATE CONTACT</a>
+                      <p class="font-sans text-editorial-muted hero-desc-reveal" style="font-size: var(--font-size-md); max-width: 640px; line-height: 1.6; margin-top: var(--space-md); margin-bottom: var(--space-lg);">
+                        Software Engineer specializing in Computer Vision, Applied AI pipelines, and commercial full-stack applications. Proven track record deploying production retail software and national hackathon achievements.
+                      </p>
+                    </div>
+
+                    <!-- Action HUD Buttons -->
+                    <div class="hero-actions-reveal" style="display: flex; align-items: center; gap: 1rem; flex-wrap: wrap;">
+                      <a href="#tech-stack" id="hero-explore-btn" class="btn-primary">EXPLORE TECH MATRIX ↓</a>
+                      <a href="#projects" id="hero-projects-btn" class="btn-secondary">FLAGSHIP SYSTEMS ↓</a>
+                      <a href="#credentials" id="hero-credentials-btn" class="btn-secondary">CREDENTIALS MATRIX ↯</a>
+                      <a href="assets/Sam_Sunny_Resume.pdf" target="_blank" class="btn-secondary">RESUME ↗</a>
+                      <a href="#contact" class="btn-secondary">INITIATE CONTACT</a>
+                    </div>
+
+                    <!-- Live Telemetry Stats Ribbon -->
+                    <div class="hero-telemetry-ribbon hero-telemetry-reveal font-mono">
+                      <div class="telemetry-pill">
+                        <span class="telemetry-val">02</span>
+                        <span class="telemetry-lbl">PRODUCTION APPS</span>
+                      </div>
+                      <div class="telemetry-sep">/</div>
+                      <div class="telemetry-pill">
+                        <span class="telemetry-val">AIR 2</span>
+                        <span class="telemetry-lbl">NATIONAL AI PRIZE</span>
+                      </div>
+                      <div class="telemetry-sep">/</div>
+                      <div class="telemetry-pill">
+                        <span class="telemetry-val">28+</span>
+                        <span class="telemetry-lbl">TECH NODES</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Right: Cybernetic Portrait Showcase Stage -->
+                  <div class="hero-portrait-stage hero-portrait-reveal">
+                    <div class="hero-portrait-card" id="hero-portrait-card">
+                      <!-- Dynamic Radial Singularity Glow -->
+                      <div class="portrait-ambient-glow" aria-hidden="true"></div>
+
+                      <!-- Holographic Tactical Corner Brackets -->
+                      <div class="portrait-hud-corner hud-corner-tl" aria-hidden="true"></div>
+                      <div class="portrait-hud-corner hud-corner-tr" aria-hidden="true"></div>
+                      <div class="portrait-hud-corner hud-corner-br" aria-hidden="true"></div>
+                      <div class="portrait-hud-corner hud-corner-bl" aria-hidden="true"></div>
+
+                      <!-- Tactical Header Bar -->
+                      <div class="portrait-tactical-header font-mono">
+                        <div class="tactical-id-group">
+                          <span class="tactical-pulse-dot"></span>
+                          <span class="tactical-id">SYS.ID // SAM SUNNY</span>
+                        </div>
+                        <span class="tactical-spec">OP.SYS: ACTIVE</span>
+                      </div>
+
+                      <!-- Portrait Cutout Viewport with Seamless Gradient Mask -->
+                      <div class="portrait-img-viewport">
+                        <img 
+                          src="assets/me.png?v=28" 
+                          alt="Sam Sunny — Applied AI, Computer Vision &amp; Full-Stack Systems Engineer" 
+                          class="hero-portrait-img" 
+                          id="hero-portrait-img"
+                          loading="eager"
+                        />
+                        <!-- Precision HUD Scanline Effect -->
+                        <div class="portrait-scanline-fx" aria-hidden="true"></div>
+                      </div>
+
+                      <!-- Floating Verified Status Pill -->
+                      <div class="portrait-floating-badge font-mono">
+                        <div class="floating-badge-icon">
+                          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="20 6 9 17 4 12"></polyline>
+                          </svg>
+                        </div>
+                        <div class="floating-badge-info">
+                          <span class="floating-badge-title">SAM SUNNY</span>
+                          <span class="floating-badge-role">APPLIED AI &amp; SYSTEMS</span>
+                        </div>
+                      </div>
+
+                      <!-- Telemetry Coordinates Badge -->
+                      <div class="portrait-coord-badge font-mono">
+                        <span class="text-lime">LOC:</span> 9.9312° N, 76.2673° E
+                      </div>
+                    </div>
+                  </div>
+
                 </div>
               </div>
             </section>
@@ -139,8 +225,16 @@
                 <!-- Quick Jump Navigation HUD -->
                 <div class="stage-nav-hud">
                   <button id="return-tech-btn" class="stage-nav-btn font-mono" title="Return to tech matrix">⤾ RETURN TO TECH MATRIX</button>
+                  <button id="engage-credentials-btn" class="stage-nav-btn font-mono text-lime" title="Launch space journey to credentials matrix">SPACE JOURNEY ↯ TO CREDENTIALS</button>
                 </div>
               </div>
+            </section>
+          </div>
+
+          <!-- CREDENTIALS UNIVERSE LAYER (Infinity Stones Celestial Destination) -->
+          <div id="credentials-space-layer" class="credentials-space-layer">
+            <section id="credentials" class="credentials-universe-section">
+              <!-- Dynamically populated by credentials-stones.js with 7 infinity stones -->
             </section>
           </div>
 
@@ -196,18 +290,7 @@
         </div>
       </div>
 
-      <!-- CREDENTIALS SECTION SKELETON (Phase 5 Target) -->
-      <section id="credentials" class="section-padding container">
-        <div style="margin-bottom: var(--space-lg); border-bottom: 1px solid var(--border-subtle); padding-bottom: 1rem;">
-          <span class="font-mono text-lime" style="font-size: var(--font-size-xs); letter-spacing: 0.1em;">// VERIFIED HONORS & AWARDS</span>
-          <h2 class="text-heading" style="margin-top: 0.25rem;">CREDENTIALS & HACKATHONS</h2>
-        </div>
-        <div class="glass-panel" style="padding: var(--space-lg); text-align: center;">
-          <p class="font-mono text-muted">// Credentials lightbox module initialized for Phase 5 integration.</p>
-        </div>
-      </section>
-
-      <!-- CONTACT SECTION SKELETON (Phase 6 Target) -->
+      <!-- CONTACT SECTION (Phase 6 Target) -->
       <section id="contact" class="section-padding container" style="border-top: 1px solid var(--border-subtle); margin-top: var(--space-2xl);">
         <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1.5rem;">
           <div>
@@ -228,6 +311,6 @@
   <!-- Lenis Momentum Smooth Scroll Library -->
   <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.9/dist/lenis.min.js"></script>
   <!-- Main ES6 Module Entry -->
-  <script type="module" src="js/main.js?v=26"></script>
+  <script type="module" src="js/main.js?v=35"></script>
 </body>
 </html>

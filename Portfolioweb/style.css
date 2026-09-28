@@ -188,6 +188,74 @@ button {
 }
 
 /* --- CINEMATIC HERO SLOW REVEAL SYSTEM --- */
+.hero-section {
+  position: relative;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hero-container {
+  width: 100%;
+}
+
+.hero-grid {
+  display: grid;
+  grid-template-columns: 1.18fr 0.82fr;
+  align-items: center;
+  gap: clamp(2rem, 3.8vw, 4.5rem);
+  width: 100%;
+}
+
+.hero-content {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  z-index: 2;
+  min-width: 0;
+}
+
+/* Live Telemetry Status Pill */
+.hero-status-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.35rem 0.95rem;
+  background: rgba(210, 255, 0, 0.06);
+  border: 1px solid rgba(210, 255, 0, 0.24);
+  border-radius: 9999px;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  margin-bottom: 1.15rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4), inset 0 0 12px rgba(210, 255, 0, 0.05);
+  align-self: flex-start;
+  transition: border-color 0.25s ease, background 0.25s ease;
+}
+
+.hero-status-tag:hover {
+  background: rgba(210, 255, 0, 0.1);
+  border-color: rgba(210, 255, 0, 0.45);
+}
+
+.status-indicator-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--color-lime);
+  box-shadow: 0 0 10px var(--color-lime);
+  animation: pulseDot 2s infinite ease-in-out;
+  flex-shrink: 0;
+}
+
+.status-indicator-text {
+  font-size: 0.72rem;
+  color: var(--color-lime);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
 .hero-title-group {
   margin-bottom: var(--space-lg);
   position: relative;
@@ -210,7 +278,7 @@ button {
 .hero-line-1 {
   font-family: var(--font-editorial);
   font-style: italic;
-  font-size: clamp(2.6rem, 7vw, 6.2rem);
+  font-size: clamp(2.4rem, 6.2vw, 5.8rem);
   font-weight: 400;
   letter-spacing: 0.02em;
   color: var(--color-text-editorial);
@@ -218,6 +286,279 @@ button {
   align-items: baseline;
   gap: 0.35em;
   line-height: 1;
+}
+
+/* Micro-Telemetry Ribbon on Hero Content */
+.hero-telemetry-ribbon {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  margin-top: 1.75rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  flex-wrap: wrap;
+}
+
+.telemetry-pill {
+  display: flex;
+  align-items: baseline;
+  gap: 0.45rem;
+}
+
+.telemetry-val {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: var(--color-lime);
+  text-shadow: 0 0 14px rgba(210, 255, 0, 0.45);
+}
+
+.telemetry-lbl {
+  font-size: 0.65rem;
+  letter-spacing: 0.08em;
+  color: var(--color-text-editorial);
+}
+
+.telemetry-sep {
+  color: rgba(255, 255, 255, 0.16);
+  font-size: 0.8rem;
+}
+
+/* --- CYBERNETIC PORTRAIT SHOWCASE STAGE --- */
+.hero-portrait-stage {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  perspective: 1200px;
+  min-width: 0;
+}
+
+.hero-portrait-card {
+  position: relative;
+  width: 100%;
+  max-width: 410px;
+  background: rgba(14, 19, 9, 0.76);
+  border: 1px solid rgba(210, 255, 0, 0.22);
+  border-radius: 20px;
+  padding: 1.15rem;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  box-shadow: 
+    0 24px 60px rgba(0, 0, 0, 0.78),
+    0 0 45px rgba(210, 255, 0, 0.08),
+    inset 0 0 24px rgba(210, 255, 0, 0.04);
+  transition: border-color 0.35s ease, box-shadow 0.35s ease;
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
+.hero-portrait-card:hover {
+  border-color: rgba(210, 255, 0, 0.45);
+  box-shadow: 
+    0 30px 80px rgba(0, 0, 0, 0.88),
+    0 0 60px rgba(210, 255, 0, 0.18),
+    inset 0 0 30px rgba(210, 255, 0, 0.08);
+}
+
+/* Dynamic Ambient Glow Behind Portrait */
+.portrait-ambient-glow {
+  position: absolute;
+  top: 45%;
+  left: 50%;
+  width: 440px;
+  height: 440px;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(circle, rgba(210, 255, 0, 0.28) 0%, rgba(0, 240, 255, 0.12) 42%, transparent 72%);
+  border-radius: 50%;
+  filter: blur(48px);
+  pointer-events: none;
+  z-index: 1;
+  animation: portraitGlowPulse 5.5s ease-in-out infinite alternate;
+}
+
+@keyframes portraitGlowPulse {
+  0% { transform: translate(-50%, -50%) scale(0.92); opacity: 0.6; }
+  100% { transform: translate(-50%, -50%) scale(1.12); opacity: 0.95; }
+}
+
+/* Tactical Corner Brackets */
+.portrait-hud-corner {
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  border-color: var(--color-lime);
+  border-style: solid;
+  pointer-events: none;
+  z-index: 4;
+  opacity: 0.85;
+}
+
+.hud-corner-tl { top: -2px; left: -2px; border-width: 2px 0 0 2px; }
+.hud-corner-tr { top: -2px; right: -2px; border-width: 2px 2px 0 0; }
+.hud-corner-br { bottom: -2px; right: -2px; border-width: 0 2px 2px 0; }
+.hud-corner-bl { bottom: -2px; left: -2px; border-width: 0 0 2px 2px; }
+
+/* Tactical Header Bar */
+.portrait-tactical-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 0.75rem;
+  margin-bottom: 0.75rem;
+  border-bottom: 1px solid rgba(210, 255, 0, 0.14);
+  font-size: 0.68rem;
+  letter-spacing: 0.08em;
+  color: var(--color-text-editorial);
+  position: relative;
+  z-index: 3;
+}
+
+.tactical-id-group {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.tactical-pulse-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--color-lime);
+  box-shadow: 0 0 8px var(--color-lime);
+  animation: pulseDot 1.8s infinite ease-in-out;
+}
+
+.tactical-id {
+  color: #FFFFFF;
+  font-weight: 700;
+}
+
+.tactical-spec {
+  color: var(--color-lime);
+  font-size: 0.62rem;
+}
+
+/* Image Viewport & Cutout */
+.portrait-img-viewport {
+  position: relative;
+  width: 100%;
+  height: 420px;
+  border-radius: 14px;
+  overflow: hidden;
+  background: linear-gradient(180deg, rgba(16, 20, 0, 0.45) 0%, rgba(8, 12, 5, 0.9) 100%);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  z-index: 2;
+  box-shadow: inset 0 0 35px rgba(0, 0, 0, 0.85);
+}
+
+.hero-portrait-img {
+  width: auto;
+  height: 105%;
+  max-width: 100%;
+  object-fit: contain;
+  object-position: bottom center;
+  display: block;
+  filter: drop-shadow(0 15px 35px rgba(0, 0, 0, 0.95)) drop-shadow(0 0 25px rgba(210, 255, 0, 0.18));
+  -webkit-mask-image: linear-gradient(to bottom, #000000 82%, rgba(0, 0, 0, 0) 100%);
+  mask-image: linear-gradient(to bottom, #000000 82%, rgba(0, 0, 0, 0) 100%);
+  transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1), filter 0.45s ease;
+  user-select: none;
+}
+
+.hero-portrait-card:hover .hero-portrait-img {
+  transform: scale(1.035);
+  filter: drop-shadow(0 20px 40px rgba(0, 0, 0, 0.98)) drop-shadow(0 0 35px rgba(210, 255, 0, 0.35));
+}
+
+/* Precision HUD Scanline Effect */
+.portrait-scanline-fx {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 3px,
+    rgba(210, 255, 0, 0.015) 3px,
+    rgba(210, 255, 0, 0.015) 6px
+  );
+  border-radius: 14px;
+  opacity: 0.8;
+  z-index: 3;
+}
+
+/* Floating Verified Status Pill */
+.portrait-floating-badge {
+  position: absolute;
+  bottom: 1.5rem;
+  left: -0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.55rem 0.95rem;
+  background: rgba(10, 15, 7, 0.92);
+  border: 1px solid rgba(210, 255, 0, 0.38);
+  border-radius: 12px;
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.85), 0 0 20px rgba(210, 255, 0, 0.14);
+  z-index: 4;
+  animation: badgeHoverFloat 4.2s ease-in-out infinite alternate;
+}
+
+@keyframes badgeHoverFloat {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(-7px); }
+}
+
+.floating-badge-icon {
+  width: 24px;
+  height: 24px;
+  border-radius: 6px;
+  background: var(--color-lime);
+  color: #000000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.floating-badge-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.floating-badge-title {
+  color: #FFFFFF;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+.floating-badge-role {
+  color: var(--color-lime);
+  font-size: 0.58rem;
+  letter-spacing: 0.08em;
+}
+
+/* Coordinates Pill */
+.portrait-coord-badge {
+  position: absolute;
+  top: 3.2rem;
+  right: -0.75rem;
+  padding: 0.3rem 0.65rem;
+  background: rgba(10, 15, 7, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 9999px;
+  font-size: 0.6rem;
+  color: var(--color-text-muted);
+  letter-spacing: 0.06em;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.65);
+  z-index: 4;
 }
 
 /* --- FLOATING STICKY BRAND LOGO (Scroll-Triggered) --- */
@@ -308,7 +649,7 @@ button {
 .ascii-cell {
   display: inline-block;
   font-family: inherit;
-  font-size: clamp(1.25rem, 3.1vw, 3.5rem);
+  font-size: clamp(1.05rem, 2.15vw, 2.85rem);
   font-weight: 700;
   line-height: 0.92;
   width: 0.62em;
@@ -396,6 +737,22 @@ button {
 }
 
 /* Staggered description & actions reveals */
+.hero-badge-reveal {
+  opacity: 0;
+  transform: translateY(16px);
+  filter: blur(6px);
+  will-change: transform, opacity, filter;
+  animation: slowContentReveal 2s cubic-bezier(0.16, 1, 0.3, 1) 0.15s forwards;
+}
+
+.hero-portrait-reveal {
+  opacity: 0;
+  transform: translateY(28px) scale(0.96);
+  filter: blur(10px);
+  will-change: transform, opacity, filter;
+  animation: slowPortraitReveal 2.4s cubic-bezier(0.16, 1, 0.3, 1) 0.4s forwards;
+}
+
 .hero-desc-reveal {
   opacity: 0;
   transform: translateY(24px);
@@ -409,6 +766,90 @@ button {
   transform: translateY(20px);
   will-change: transform, opacity;
   animation: slowContentReveal 2s cubic-bezier(0.16, 1, 0.3, 1) 1.95s forwards;
+}
+
+.hero-telemetry-reveal {
+  opacity: 0;
+  transform: translateY(16px);
+  filter: blur(6px);
+  will-change: transform, opacity, filter;
+  animation: slowContentReveal 2s cubic-bezier(0.16, 1, 0.3, 1) 2.15s forwards;
+}
+
+@keyframes slowPortraitReveal {
+  0% {
+    opacity: 0;
+    transform: translateY(28px) scale(0.96);
+    filter: blur(10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: blur(0px);
+  }
+}
+
+/* Responsive Media Queries for Hero */
+@media (max-width: 1100px) {
+  .hero-space-layer {
+    align-items: flex-start;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    padding-top: max(4.5rem, 6vh);
+    padding-bottom: 3.5rem;
+  }
+  .hero-grid {
+    grid-template-columns: 1fr;
+    gap: 2.2rem;
+    text-align: left;
+  }
+  .hero-portrait-stage {
+    justify-content: flex-start;
+  }
+  .hero-portrait-card {
+    max-width: 360px;
+  }
+  .portrait-img-viewport {
+    height: 360px;
+  }
+  .ascii-cell {
+    font-size: clamp(1rem, 3.2vw, 2.4rem);
+  }
+}
+
+@media (max-width: 768px) {
+  .hero-space-layer {
+    padding-top: 3.5rem;
+    padding-bottom: 2.5rem;
+  }
+  .hero-grid {
+    gap: 1.5rem;
+  }
+  .hero-portrait-card {
+    max-width: 270px;
+    padding: 0.85rem;
+    margin: 0 auto;
+  }
+  .portrait-img-viewport {
+    height: 270px;
+  }
+  .portrait-floating-badge {
+    left: 0;
+    bottom: 0.65rem;
+    padding: 0.35rem 0.65rem;
+  }
+  .portrait-coord-badge {
+    right: 0;
+    top: 2rem;
+  }
+  .hero-telemetry-ribbon {
+    gap: 0.75rem;
+    margin-top: 1.25rem;
+    padding-top: 1rem;
+  }
+  .ascii-cell {
+    font-size: clamp(0.85rem, 3.6vw, 1.8rem);
+  }
 }
 
 @keyframes slowHeroReveal {
@@ -643,6 +1084,14 @@ button {
   transform: translateY(-2px);
 }
 
+/* Hero Action Buttons Sizing */
+.hero-actions-reveal .btn-primary,
+.hero-actions-reveal .btn-secondary {
+  padding: 0.72rem 1.35rem;
+  font-size: 0.78rem;
+  letter-spacing: 0.04em;
+}
+
 /* --- 6. CONTINUOUS MARQUEE TICKER (Edge Masked) --- */
 .marquee-container {
   overflow: hidden;
@@ -755,11 +1204,11 @@ html.lenis, html.lenis body {
    Architectural Stage: Deep space zoom from Hero into 3D Solar Tech Universe
    ========================================================================== */
 
-/* Outer scroll track for smooth cosmic travel through space, wormhole & projects (520vh scroll distance) */
+/* Outer scroll track for smooth cosmic travel through space, wormhole, projects & credentials (700vh scroll distance) */
 .space-stage-track {
   position: relative;
   width: 100%;
-  height: 520vh;
+  height: 700vh;
 }
 
 /* Sticky 100vh spatial viewport stage */
@@ -1521,4 +1970,366 @@ html.lenis, html.lenis body {
   }
 }
 
+
+/* ==========================================================================
+   13. CREDENTIALS UNIVERSE LAYER: INFINITY STONES CELESTIAL NEXUS
+   Grand Finale of Space Journey: 7 certificate cards burst in at velocity,
+   decelerate with spring physics, and settle into gentle floating orbits.
+   ========================================================================== */
+
+/* Credentials Universe Layer (Grand Finale of Space Journey) */
+.credentials-space-layer {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 30;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  will-change: transform, opacity, filter;
+  transform-origin: center center;
+  opacity: 0;
+  pointer-events: none;
+  visibility: hidden;
+}
+
+.credentials-universe-section {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  padding: 1.2rem 1.5rem;
+}
+
+.credentials-stage-wrapper {
+  position: relative;
+  width: 100%;
+  max-width: 1260px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+}
+
+/* Celestial Singularity Core */
+.credentials-singularity {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 620px;
+  height: 620px;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(circle, rgba(210, 255, 0, 0.05) 0%, rgba(168, 85, 247, 0.04) 30%, rgba(0, 240, 255, 0.02) 55%, transparent 70%);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 0;
+  filter: blur(65px);
+  animation: credSingularityPulse 8s ease-in-out infinite alternate;
+}
+
+@keyframes credSingularityPulse {
+  0% { transform: translate(-50%, -50%) scale(0.92); opacity: 0.55; }
+  100% { transform: translate(-50%, -50%) scale(1.15); opacity: 0.9; }
+}
+
+/* Header */
+.cred-stones-header {
+  text-align: center;
+  margin-bottom: 0.9rem;
+  z-index: 2;
+  position: relative;
+}
+
+.cred-stones-title {
+  font-size: clamp(1.4rem, 2.8vw, 2.1rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  margin-top: 0.2rem;
+  color: #FFFFFF;
+  text-shadow: 0 0 20px rgba(210, 255, 0, 0.25);
+}
+
+/* Stage containing the floating grid */
+.cred-stones-stage {
+  position: relative;
+  width: 100%;
+  max-height: calc(100vh - 170px);
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 0.4rem 0.6rem 0.8rem 0.6rem;
+  z-index: 2;
+}
+
+/* Minimal subtle scrollbar for small screens */
+.cred-stones-stage::-webkit-scrollbar {
+  width: 4px;
+}
+.cred-stones-stage::-webkit-scrollbar-track {
+  background: transparent;
+}
+.cred-stones-stage::-webkit-scrollbar-thumb {
+  background: rgba(210, 255, 0, 0.25);
+  border-radius: 2px;
+}
+
+/* Grid: 4 columns on desktop, 3 on tablet, 2 on mobile */
+.cred-stones-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+  position: relative;
+  width: 100%;
+}
+
+@media (max-width: 1100px) {
+  .cred-stones-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .cred-stones-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .cred-stones-grid {
+    grid-template-columns: 1fr;
+    gap: 0.65rem;
+  }
+}
+
+/* Individual Stone Card */
+.cred-stone-card {
+  position: relative;
+  border-radius: 12px;
+  background: rgba(12, 16, 10, 0.86);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  overflow: hidden;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease;
+  will-change: auto;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.6);
+  opacity: 0;
+  transform: translate3d(0, 0, 0);
+}
+
+.cred-stone-card.is-entering {
+  pointer-events: none;
+}
+
+.cred-stone-card.is-settled {
+  pointer-events: auto;
+}
+
+.cred-stone-card:hover {
+  border-color: var(--stone-accent, rgba(210, 255, 0, 0.5));
+  box-shadow:
+    0 0 24px rgba(210, 255, 0, 0.16),
+    inset 0 0 24px rgba(210, 255, 0, 0.04);
+}
+
+.cred-stone-card.is-settled:hover {
+  transform: translateY(-4px) scale(1.025) !important;
+}
+
+.stone-card-inner {
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Badge */
+.stone-card-badge {
+  position: absolute;
+  top: 0.45rem;
+  right: 0.45rem;
+  font-size: 0.56rem;
+  letter-spacing: 0.08em;
+  padding: 0.18rem 0.42rem;
+  background: rgba(6, 10, 4, 0.88);
+  border: 1px solid var(--stone-accent, rgba(210, 255, 0, 0.4));
+  color: var(--stone-accent, var(--color-lime));
+  border-radius: 4px;
+  z-index: 5;
+  backdrop-filter: blur(8px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
+}
+
+/* Thumbnail */
+.stone-card-thumb {
+  width: 100%;
+  height: 94px;
+  overflow: hidden;
+  position: relative;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.stone-card-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.4s var(--ease-expo);
+}
+
+.cred-stone-card:hover .stone-card-thumb img {
+  transform: scale(1.08);
+}
+
+.stone-card-thumb-pdf {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(34, 197, 94, 0.08);
+  border-bottom: 1px solid rgba(34, 197, 94, 0.2);
+}
+
+.stone-pdf-placeholder {
+  font-size: 0.85rem;
+  color: #22C55E;
+  letter-spacing: 0.12em;
+}
+
+/* Card Info */
+.stone-card-info {
+  padding: 0.55rem 0.75rem 0.65rem;
+}
+
+.stone-card-title {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--color-text-white);
+  margin-bottom: 0.15rem;
+  line-height: 1.25;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.stone-card-subtitle {
+  font-size: 0.64rem;
+  letter-spacing: 0.06em;
+  color: var(--stone-accent, var(--color-lime));
+  margin-bottom: 0.2rem;
+  text-transform: uppercase;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.stone-card-org {
+  font-size: 0.6rem;
+  letter-spacing: 0.04em;
+  color: var(--color-text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Accent glow line at bottom of card */
+.cred-stone-card::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 10%;
+  right: 10%;
+  height: 2px;
+  background: var(--stone-accent, var(--color-lime));
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  border-radius: 2px;
+  filter: blur(1px);
+}
+
+.cred-stone-card:hover::after {
+  opacity: 0.75;
+}
+
+/* Lightbox */
+.cred-stones-lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.35s ease;
+}
+
+.cred-stones-lightbox.is-open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.cred-lightbox-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.88);
+  backdrop-filter: blur(12px);
+}
+
+.cred-lightbox-content {
+  position: relative;
+  max-width: 90vw;
+  max-height: 85vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.2rem;
+  z-index: 1;
+}
+
+.cred-lightbox-img {
+  max-width: 100%;
+  max-height: 78vh;
+  object-fit: contain;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 0 60px rgba(210, 255, 0, 0.08);
+}
+
+.cred-lightbox-close {
+  padding: 0.5rem 1.2rem;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 6px;
+  color: var(--color-text-white);
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  cursor: pointer;
+  transition: background 0.3s ease, border-color 0.3s ease;
+}
+
+.cred-lightbox-close:hover {
+  background: rgba(210, 255, 0, 0.1);
+  border-color: var(--color-lime);
+  color: var(--color-lime);
+}
+
+/* Mobile adjustments for credential cards */
+@media (max-width: 600px) {
+  .cred-stones-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  .stone-card-thumb {
+    height: 140px;
+  }
+  .cred-stones-title {
+    font-size: var(--font-size-lg);
+  }
+}
 

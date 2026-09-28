@@ -429,10 +429,15 @@ export class TechSolarSystem {
     this.heroLayer = document.getElementById('hero-space-layer');
     this.techLayer = document.getElementById('tech-space-layer');
     this.projectsLayer = document.getElementById('projects-space-layer');
+    this.credentialsLayer = document.getElementById('credentials-space-layer');
 
     // Quick Jump Navigation Buttons
     this.engageWormholeBtn = document.getElementById('engage-wormhole-btn');
     this.heroProjectsBtn = document.getElementById('hero-projects-btn');
+    this.heroCredentialsBtn = document.getElementById('hero-credentials-btn');
+    this.engageCredentialsBtn = document.getElementById('engage-credentials-btn');
+    this.credReturnProjectsBtn = document.getElementById('cred-return-projects-btn');
+    this.returnTechBtn = document.getElementById('return-tech-btn');
 
     // Near-Pointer Floating Tooltip
     this.tooltip = document.getElementById('solar-cursor-tooltip');
@@ -690,10 +695,24 @@ export class TechSolarSystem {
       });
     }
 
+    if (this.heroCredentialsBtn) {
+      this.heroCredentialsBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        this.triggerCredentialsZoom();
+      });
+    }
+
     if (this.engageWormholeBtn) {
       this.engageWormholeBtn.addEventListener('click', (e) => {
         e.preventDefault();
         this.triggerProjectsZoom();
+      });
+    }
+
+    if (this.engageCredentialsBtn) {
+      this.engageCredentialsBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        this.triggerCredentialsZoom();
       });
     }
 
@@ -703,13 +722,20 @@ export class TechSolarSystem {
         this.triggerTechZoom();
       });
     }
+
+    if (this.credReturnProjectsBtn) {
+      this.credReturnProjectsBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        this.triggerProjectsZoom();
+      });
+    }
   }
 
   triggerSpaceZoom() {
     if (!this.track) return;
     const trackTop = this.track.offsetTop;
     const maxScroll = this.track.offsetHeight - window.innerHeight;
-    const targetY = trackTop + maxScroll * 0.38;
+    const targetY = trackTop + maxScroll * 0.28;
 
     if (window.AppState && window.AppState.lenis) {
       window.AppState.lenis.scrollTo(targetY, { duration: 1.4 });
@@ -722,7 +748,7 @@ export class TechSolarSystem {
     if (!this.track) return;
     const trackTop = this.track.offsetTop;
     const maxScroll = this.track.offsetHeight - window.innerHeight;
-    const targetY = trackTop + maxScroll * 0.88;
+    const targetY = trackTop + maxScroll * 0.60;
 
     if (window.AppState && window.AppState.lenis) {
       window.AppState.lenis.scrollTo(targetY, { duration: 1.8 });
@@ -735,10 +761,27 @@ export class TechSolarSystem {
     if (!this.track) return;
     const trackTop = this.track.offsetTop;
     const maxScroll = this.track.offsetHeight - window.innerHeight;
-    const targetY = trackTop + maxScroll * 0.38;
+    const targetY = trackTop + maxScroll * 0.28;
 
     if (window.AppState && window.AppState.lenis) {
       window.AppState.lenis.scrollTo(targetY, { duration: 1.4 });
+    } else {
+      window.scrollTo({ top: targetY, behavior: 'smooth' });
+    }
+  }
+
+  triggerCredentialsZoom() {
+    if (!this.track) return;
+    const trackTop = this.track.offsetTop;
+    const maxScroll = this.track.offsetHeight - window.innerHeight;
+    const targetY = trackTop + maxScroll * 0.88;
+
+    if (window.AppState && window.AppState.credStones) {
+      window.AppState.credStones.trigger(true);
+    }
+
+    if (window.AppState && window.AppState.lenis) {
+      window.AppState.lenis.scrollTo(targetY, { duration: 2.0 });
     } else {
       window.scrollTo({ top: targetY, behavior: 'smooth' });
     }
@@ -822,19 +865,20 @@ export class TechSolarSystem {
     const maxScroll = this.track.offsetHeight - window.innerHeight;
     const rawProgress = maxScroll > 0 ? Math.max(0, Math.min(1, -rect.top / maxScroll)) : 0;
 
-    // Smooth lerp progress
+    // Smooth lerp progress (faster during transits to prevent sluggishness)
     this.targetZoomProgress = rawProgress;
-    this.zoomProgress += (this.targetZoomProgress - this.zoomProgress) * 0.12;
+    const lerpFactor = (rawProgress > 0.32 && rawProgress < 0.86) ? 0.18 : 0.12;
+    this.zoomProgress += (this.targetZoomProgress - this.zoomProgress) * lerpFactor;
     const p = this.zoomProgress;
 
     // Velocity-based dynamic warp speed
     const deltaP = Math.abs(this.targetZoomProgress - this.zoomProgress);
 
     // -----------------------------------------------------------------
-    // Phase 1: Hero Layer [0.00 -> 0.28]
+    // Phase 1: Hero Layer [0.00 -> 0.18]
     // -----------------------------------------------------------------
     if (this.heroLayer) {
-      const heroP = Math.min(1, Math.max(0, p / 0.24));
+      const heroP = Math.min(1, Math.max(0, p / 0.16));
       const heroScale = 1.0 + heroP * 2.2;
       const heroOpacity = Math.max(0, 1.0 - heroP * 1.45);
       const heroBlur = heroP * 18;
@@ -842,23 +886,23 @@ export class TechSolarSystem {
       this.heroLayer.style.transform = `scale(${heroScale.toFixed(3)}) translateZ(0)`;
       this.heroLayer.style.opacity = heroOpacity.toFixed(3);
       this.heroLayer.style.filter = heroBlur > 0.4 ? `blur(${heroBlur.toFixed(1)}px)` : 'none';
-      this.heroLayer.style.pointerEvents = heroP > 0.15 ? 'none' : 'auto';
+      this.heroLayer.style.pointerEvents = heroP > 0.10 ? 'none' : 'auto';
       this.heroLayer.style.visibility = heroOpacity <= 0.005 ? 'hidden' : 'visible';
     }
 
     // -----------------------------------------------------------------
-    // Phase 2: Tech Stack Layer [0.12 -> 0.64]
+    // Phase 2: Tech Stack Layer [0.08 -> 0.45]
     // -----------------------------------------------------------------
     if (this.techLayer) {
-      if (p <= 0.12) {
+      if (p <= 0.08) {
         this.techLayer.style.opacity = '0';
         this.techLayer.style.visibility = 'hidden';
         this.techLayer.style.pointerEvents = 'none';
         this.techLayer.style.transform = 'scale(0.18) translateZ(0)';
-      } else if (p <= 0.48) {
+      } else if (p <= 0.36) {
         // Enters & remains actively interactive
         this.techLayer.style.visibility = 'visible';
-        const enterP = Math.min(1, (p - 0.12) / 0.16);
+        const enterP = Math.min(1, (p - 0.08) / 0.12);
         const easedEnter = Math.sin((enterP * Math.PI) / 2);
 
         const techScale = 0.18 + easedEnter * 0.82;
@@ -869,15 +913,15 @@ export class TechSolarSystem {
         this.techLayer.style.opacity = techOpacity.toFixed(3);
         this.techLayer.style.filter = techBlur > 0.4 ? `blur(${techBlur.toFixed(1)}px)` : 'none';
         this.techLayer.style.pointerEvents = enterP > 0.8 ? 'auto' : 'none';
-      } else if (p <= 0.67) {
+      } else if (p <= 0.45) {
         // Tech Stack warps THROUGH the glass wormhole lens
         this.techLayer.style.visibility = 'visible';
         this.techLayer.style.transform = 'translateZ(0)';
         this.techLayer.style.filter = 'none';
         this.techLayer.style.pointerEvents = 'none';
 
-        // Overall container dissolves only at the end of the wormhole transit (p > 0.58)
-        const exitP = Math.max(0, (p - 0.58) / 0.09);
+        // Overall container dissolves into wormhole
+        const exitP = Math.max(0, (p - 0.36) / 0.08);
         const techOpacity = Math.max(0, 1.0 - exitP);
         this.techLayer.style.opacity = techOpacity.toFixed(3);
       } else {
@@ -888,32 +932,42 @@ export class TechSolarSystem {
     }
 
     // -----------------------------------------------------------------
-    // Phase 3: Wormhole Singularity Transit [0.46 -> 0.76]
+    // Phase 3: Wormhole Singularity Transit 1 [0.34 -> 0.52]
     // -----------------------------------------------------------------
-    if (p >= 0.46 && p <= 0.76) {
-      const wormP = (p - 0.46) / 0.30;
+    if (p >= 0.34 && p <= 0.52) {
+      const wormP = (p - 0.34) / 0.18;
       this.wormholeIntensity = Math.sin(wormP * Math.PI);
     } else {
       this.wormholeIntensity = 0;
     }
 
+    // -----------------------------------------------------------------
+    // Phase 4: Hyperspace Journey 2 (Projects -> Credentials) [0.66 -> 0.82]
+    // -----------------------------------------------------------------
+    let journeyIntensity = 0;
+    if (p >= 0.66 && p <= 0.82) {
+      const jp = (p - 0.66) / 0.16;
+      journeyIntensity = Math.sin(jp * Math.PI);
+    }
+
     // Dynamic Warp speed
-    const heroWarp = (p > 0.04 && p < 0.25) ? Math.sin((p / 0.25) * Math.PI) * 2.5 : 0;
+    const heroWarp = (p > 0.03 && p < 0.18) ? Math.sin((p / 0.18) * Math.PI) * 2.5 : 0;
     const wormholeWarp = this.wormholeIntensity * 16.0;
-    this.warpSpeed = Math.max(0, deltaP * 24 + heroWarp + wormholeWarp);
+    const journeyWarp = journeyIntensity * 18.0;
+    this.warpSpeed = Math.max(0, deltaP * 24 + heroWarp + wormholeWarp + journeyWarp);
 
     // -----------------------------------------------------------------
-    // Phase 4: Projects Solar System Layer [0.65 -> 1.00]
+    // Phase 5: Projects Solar System Layer [0.44 -> 0.76]
     // -----------------------------------------------------------------
     if (this.projectsLayer) {
-      if (p <= 0.65) {
+      if (p <= 0.44) {
         this.projectsLayer.style.opacity = '0';
         this.projectsLayer.style.visibility = 'hidden';
         this.projectsLayer.style.pointerEvents = 'none';
         this.projectsLayer.style.transform = 'scale(0.16) translateZ(0)';
-      } else {
+      } else if (p <= 0.66) {
         this.projectsLayer.style.visibility = 'visible';
-        const projP = Math.min(1, Math.max(0, (p - 0.65) / 0.16));
+        const projP = Math.min(1, Math.max(0, (p - 0.44) / 0.12));
         const easedProj = Math.sin((projP * Math.PI) / 2);
 
         const projScale = 0.16 + easedProj * 0.84;
@@ -924,6 +978,54 @@ export class TechSolarSystem {
         this.projectsLayer.style.opacity = projOpacity.toFixed(3);
         this.projectsLayer.style.filter = projBlur > 0.4 ? `blur(${projBlur.toFixed(1)}px)` : 'none';
         this.projectsLayer.style.pointerEvents = projP > 0.85 ? 'auto' : 'none';
+      } else if (p <= 0.76) {
+        // Warps forward into hyperspace as user journeys to Credentials
+        this.projectsLayer.style.visibility = 'visible';
+        const exitP = Math.min(1, (p - 0.66) / 0.08);
+        const easedExit = Math.sin((exitP * Math.PI) / 2);
+
+        const projScale = 1.0 + easedExit * 0.75;
+        const projOpacity = Math.max(0, 1.0 - exitP * 1.3);
+        const projBlur = easedExit * 14;
+
+        this.projectsLayer.style.transform = `scale(${projScale.toFixed(3)}) translateZ(0)`;
+        this.projectsLayer.style.opacity = projOpacity.toFixed(3);
+        this.projectsLayer.style.filter = projBlur > 0.4 ? `blur(${projBlur.toFixed(1)}px)` : 'none';
+        this.projectsLayer.style.pointerEvents = 'none';
+      } else {
+        this.projectsLayer.style.opacity = '0';
+        this.projectsLayer.style.visibility = 'hidden';
+        this.projectsLayer.style.pointerEvents = 'none';
+      }
+    }
+
+    // -----------------------------------------------------------------
+    // Phase 6: Credentials Infinity Stones Celestial Nexus [0.72 -> 1.00]
+    // -----------------------------------------------------------------
+    if (this.credentialsLayer) {
+      if (p <= 0.72) {
+        this.credentialsLayer.style.opacity = '0';
+        this.credentialsLayer.style.visibility = 'hidden';
+        this.credentialsLayer.style.pointerEvents = 'none';
+        this.credentialsLayer.style.transform = 'scale(0.24) translateZ(0)';
+      } else {
+        this.credentialsLayer.style.visibility = 'visible';
+        const credP = Math.min(1, Math.max(0, (p - 0.72) / 0.12));
+        const easedCred = Math.sin((credP * Math.PI) / 2);
+
+        const credScale = 0.24 + easedCred * 0.76;
+        const credOpacity = Math.min(1, credP * 1.35);
+        const credBlur = (1 - easedCred) * 16;
+
+        this.credentialsLayer.style.transform = `scale(${credScale.toFixed(3)}) translateZ(0)`;
+        this.credentialsLayer.style.opacity = credOpacity.toFixed(3);
+        this.credentialsLayer.style.filter = credBlur > 0.4 ? `blur(${credBlur.toFixed(1)}px)` : 'none';
+        this.credentialsLayer.style.pointerEvents = credP > 0.85 ? 'auto' : 'none';
+
+        // Trigger Infinity Stones assembly right as we arrive via space journey
+        if (p >= 0.75 && window.AppState && window.AppState.credStones && !window.AppState.credStones.isTriggered) {
+          window.AppState.credStones.trigger();
+        }
       }
     }
   }
@@ -1111,10 +1213,10 @@ export class TechSolarSystem {
       }
     });
 
-    // 2. Draw 3D Tech Stack Orbital Rings (only when Tech Stack is blooming in and active: 0.12 -> 0.54)
-    if (this.zoomProgress > 0.12 && this.zoomProgress < 0.55) {
-      const inP = Math.min(1, Math.max(0, (this.zoomProgress - 0.12) / 0.16));
-      const outP = Math.max(0, 1 - (this.zoomProgress - 0.44) / 0.10);
+    // 2. Draw 3D Tech Stack Orbital Rings (only when Tech Stack is blooming in and active: 0.08 -> 0.45)
+    if (this.zoomProgress > 0.08 && this.zoomProgress < 0.45) {
+      const inP = Math.min(1, Math.max(0, (this.zoomProgress - 0.08) / 0.12));
+      const outP = Math.max(0, 1 - (this.zoomProgress - 0.36) / 0.08);
       const ringAlphaMultiplier = inP * outP;
 
       if (ringAlphaMultiplier > 0.01) {
@@ -1281,14 +1383,17 @@ export class TechSolarSystem {
       const centerX = this.stageWidth / 2;
       const centerY = this.stageHeight / 2;
 
+      // Performance: skip heavy node/canvas work when layer is fully hidden
+      const techVisible = this.zoomProgress < 0.48;
+
       // 3. Update Monumental 3D Center Text Parallax (Tech Stack)
-      if (this.centerText && this.zoomProgress < 0.67) {
+      if (this.centerText && techVisible) {
         const textPitch = -this.camRotX * 18;
         const textYaw = this.camRotY * 24;
 
-        if (this.zoomProgress >= 0.46) {
+        if (this.zoomProgress >= 0.35) {
           // Monumental title pulls forward into the glass lens and dissolves
-          const textWarpP = Math.min(1.0, (this.zoomProgress - 0.46) / 0.16);
+          const textWarpP = Math.min(1.0, (this.zoomProgress - 0.35) / 0.10);
           const textScale = 1.0 + textWarpP * 2.5;
           const textZ = textWarpP * 400;
           const textOpacity = Math.max(0, 1.0 - textWarpP * 1.5);
@@ -1304,10 +1409,10 @@ export class TechSolarSystem {
         }
       }
 
-      // 4. Update Planetary Tech Nodes in 3D Orbits (Warp through glass wormhole lens: zoomProgress < 0.67)
-      if (this.zoomProgress < 0.67) {
-        const isTransit = this.zoomProgress >= 0.46;
-        const transitP = isTransit ? Math.min(1.0, (this.zoomProgress - 0.46) / 0.18) : 0;
+      // 4. Update Planetary Tech Nodes in 3D Orbits (Warp through glass wormhole lens: zoomProgress < 0.48)
+      if (techVisible) {
+        const isTransit = this.zoomProgress >= 0.35;
+        const transitP = isTransit ? Math.min(1.0, (this.zoomProgress - 0.35) / 0.10) : 0;
 
         let minMouseDist = 9999;
         if (!isTransit && this.pointerClientX > -1000 && this.pointerClientY > -1000) {
@@ -1448,7 +1553,12 @@ export class TechSolarSystem {
       }
 
       // 5. Draw Canvas Background (Wormhole, Rings & Stars)
-      this.renderCanvas(this.camRotX, this.camRotY);
+      if (techVisible || this.warpSpeed > 0.1) {
+        this.renderCanvas(this.camRotX, this.camRotY);
+      } else if (this.ctx) {
+        // Clear canvas when not rendering to free GPU memory
+        this.ctx.clearRect(0, 0, this.stageWidth, this.stageHeight);
+      }
 
       // 8. Update Near-Pointer Tooltip
       this.updateTooltipPosition();
