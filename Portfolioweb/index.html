@@ -194,7 +194,7 @@
 
                 <!-- Quick Jump Navigation HUD -->
                 <div class="stage-nav-hud">
-                  <button id="engage-wormhole-btn" class="stage-nav-btn font-mono" title="Warp through wormhole to projects">ENGAGE WORMHOLE ↯ TO PROJECTS</button>
+                  <button id="engage-wormhole-btn" class="stage-nav-btn font-mono" title="Warp to projects">WARP TO PROJECTS ↯</button>
                 </div>
               </div>
             </section>
@@ -333,29 +333,12 @@
           <!-- 3D Black Hole & Orbiting Contact Nodes Viewport -->
           <div class="blackhole-viewport" id="blackhole-viewport">
             
-            <!-- Atmospheric Gravitational Lensing Glow (Neon Green) -->
-            <div class="bh-lensing-aura" aria-hidden="true"></div>
-
-            <!-- Accretion Disk - Upper Lensing Arc (Light bent over the top of the event horizon) -->
-            <div class="bh-accretion-upper" aria-hidden="true"></div>
-
-            <!-- Accretion Disk - Lower Lensing Arc (Light bent beneath event horizon) -->
-            <div class="bh-accretion-lower" aria-hidden="true"></div>
-
-            <!-- Equatorial Relativistic Swirling Accretion Disk -->
-            <div class="bh-accretion-equatorial" aria-hidden="true">
-              <div class="bh-plasma-filaments"></div>
-            </div>
-
-            <!-- Inner Einstein Photon Ring (Bright white-green caustic light loop) -->
-            <div class="bh-photon-ring" aria-hidden="true"></div>
-
-            <!-- Pure Pitch-Black Event Horizon Core (Shadow) -->
-            <div class="bh-shadow-core" id="bh-shadow-core" aria-hidden="true"></div>
+            <!-- Ultra-Realistic Photorealistic Relativistic Shader Canvas (General Relativity Raymarching) -->
+            <canvas id="bh-webgl-canvas" class="bh-webgl-canvas"></canvas>
 
             <!-- Orbiting Contact Icons Container (Nodes pass in front & behind with refraction) -->
             <div class="bh-orbit-container" id="bh-orbit-container">
-              <!-- Dynamically populated by js/blackhole.js with GitHub, LinkedIn, Email, Call, Resume -->
+              <!-- Dynamically populated by js/blackhole.js with pure icon badges (no text) -->
             </div>
 
           </div>
@@ -383,6 +366,23 @@
             </div>
           </div>
 
+          <!-- Holographic Floating Near-Pointer Tooltip (Tech-Stack Style) -->
+          <div id="bh-cursor-tooltip" class="bh-cursor-tooltip" aria-hidden="true">
+            <div class="bh-tooltip-badge-row">
+              <div class="bh-tooltip-icon-wrap" id="bh-tooltip-icon-wrap"></div>
+              <div class="bh-tooltip-meta">
+                <span class="bh-tooltip-badge font-mono" id="bh-tooltip-badge">CONTACT PROTOCOL</span>
+                <h4 class="bh-tooltip-title font-display" id="bh-tooltip-title">GITHUB</h4>
+              </div>
+            </div>
+            <p class="bh-tooltip-handle font-mono" id="bh-tooltip-handle">@SamSunny4</p>
+            <p class="bh-tooltip-desc" id="bh-tooltip-desc">Production repositories, AI models & systems architecture</p>
+            <div class="bh-tooltip-footer font-mono">
+              <span id="bh-tooltip-action" class="text-lime">TRANSMIT PROTOCOL ↗</span>
+              <span class="bh-tooltip-shortcut">[TIME DILATION LOCKED]</span>
+            </div>
+          </div>
+
         </div>
       </section>
 
@@ -393,6 +393,6 @@
   <!-- Lenis Momentum Smooth Scroll Library -->
   <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.9/dist/lenis.min.js"></script>
   <!-- Main ES6 Module Entry -->
-  <script type="module" src="js/main.js?v=39"></script>
+  <script type="module" src="js/main.js?v=41"></script>
 </body>
 </html>

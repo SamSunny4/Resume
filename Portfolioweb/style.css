@@ -2469,128 +2469,14 @@ html.lenis, html.lenis body {
   margin: 1.5rem 0;
 }
 
-/* Luminous Green Gravitational Lensing Atmosphere */
-.bh-lensing-aura {
+/* Ultra-Realistic Photorealistic Relativistic Shader Canvas (General Relativity) */
+.bh-webgl-canvas {
   position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 580px;
-  height: 580px;
-  transform: translate(-50%, -50%);
-  background: radial-gradient(circle, rgba(0, 255, 136, 0.28) 0%, rgba(210, 255, 0, 0.14) 28%, rgba(5, 150, 105, 0.08) 50%, transparent 72%);
-  border-radius: 50%;
-  filter: blur(55px);
+  inset: 0;
+  width: 100%;
+  height: 100%;
   pointer-events: none;
-  z-index: 2;
-  animation: bhAtmospherePulse 4.5s ease-in-out infinite alternate;
-}
-
-@keyframes bhAtmospherePulse {
-  0% { transform: translate(-50%, -50%) scale(0.92); opacity: 0.7; }
-  100% { transform: translate(-50%, -50%) scale(1.12); opacity: 1.0; }
-}
-
-/* Upper Warped Accretion Arc (Light bent OVER the top of the shadow) */
-.bh-accretion-upper {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 320px;
-  height: 190px;
-  transform: translate(-50%, -85%);
-  border-radius: 50% 50% 10% 10% / 100% 100% 0% 0%;
-  background: radial-gradient(ellipse at 50% 100%, transparent 45%, rgba(0, 255, 136, 0.35) 60%, rgba(210, 255, 0, 0.85) 75%, rgba(255, 255, 255, 0.95) 90%, transparent 100%);
-  filter: drop-shadow(0 -4px 18px rgba(0, 255, 136, 0.8)) blur(1px);
-  pointer-events: none;
-  z-index: 12;
-  animation: bhAccretionShimmer 3s ease-in-out infinite alternate;
-}
-
-/* Lower Warped Accretion Arc (Light bent UNDER the shadow) */
-.bh-accretion-lower {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 290px;
-  height: 140px;
-  transform: translate(-50%, -15%);
-  border-radius: 10% 10% 50% 50% / 0% 0% 100% 100%;
-  background: radial-gradient(ellipse at 50% 0%, transparent 48%, rgba(5, 150, 105, 0.35) 62%, rgba(0, 255, 136, 0.75) 80%, rgba(210, 255, 0, 0.9) 92%, transparent 100%);
-  filter: drop-shadow(0 4px 16px rgba(0, 255, 136, 0.7)) blur(1px);
-  pointer-events: none;
-  z-index: 12;
-  animation: bhAccretionShimmer 3.8s ease-in-out infinite alternate-reverse;
-}
-
-@keyframes bhAccretionShimmer {
-  0% { filter: drop-shadow(0 0 16px rgba(0, 255, 136, 0.7)) brightness(1.0); }
-  100% { filter: drop-shadow(0 0 28px rgba(210, 255, 0, 0.9)) brightness(1.28); }
-}
-
-/* Main Equatorial Swirling Accretion Disk */
-.bh-accretion-equatorial {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 520px;
-  height: 160px;
-  transform: translate(-50%, -50%) rotateX(72deg) rotateZ(-12deg);
-  border-radius: 50%;
-  background: radial-gradient(circle, transparent 38%, rgba(0, 255, 136, 0.4) 50%, rgba(210, 255, 0, 0.85) 72%, rgba(0, 255, 136, 0.95) 85%, transparent 100%);
-  box-shadow: 0 0 45px rgba(0, 255, 136, 0.6), inset 0 0 35px rgba(210, 255, 0, 0.5);
-  filter: blur(1.5px);
-  pointer-events: none;
-  z-index: 18;
-  animation: bhEquatorialSpin 8s linear infinite;
-}
-
-@keyframes bhEquatorialSpin {
-  0% { transform: translate(-50%, -50%) rotateX(72deg) rotateZ(0deg); }
-  100% { transform: translate(-50%, -50%) rotateX(72deg) rotateZ(360deg); }
-}
-
-/* Inner Einstein Photon Ring (Ultra-caustic razor light filament) */
-.bh-photon-ring {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 196px;
-  height: 196px;
-  transform: translate(-50%, -50%);
-  border-radius: 50%;
-  border: 2px solid #FFFFFF;
-  box-shadow: 
-    0 0 6px #FFFFFF,
-    0 0 16px #00FF88,
-    0 0 32px #00FF88,
-    0 0 60px rgba(0, 255, 136, 0.8),
-    inset 0 0 8px #00FF88;
-  pointer-events: none;
-  z-index: 19;
-  animation: photonRingPulse 0.45s ease-in-out infinite alternate;
-}
-
-@keyframes photonRingPulse {
-  0% { transform: translate(-50%, -50%) scale(0.99); filter: brightness(1.0); }
-  100% { transform: translate(-50%, -50%) scale(1.015); filter: brightness(1.35) drop-shadow(0 0 12px #00FF88); }
-}
-
-/* Pure Pitch-Black Event Horizon Shadow Core */
-.bh-shadow-core {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 184px;
-  height: 184px;
-  transform: translate(-50%, -50%);
-  border-radius: 50%;
-  background: #000000 !important;
-  box-shadow: 
-    inset 0 0 25px #000000,
-    0 0 12px rgba(0, 0, 0, 0.95);
-  pointer-events: auto;
-  cursor: pointer;
-  z-index: 20;
+  z-index: 15;
 }
 
 /* 3D Orbiting Contact Container */
@@ -2605,113 +2491,193 @@ html.lenis, html.lenis body {
   z-index: 25;
 }
 
-/* Individual Orbiting Contact Node Card */
+/* Individual Orbiting Contact Node (Tech-Stack Style: Pure Icon Only, No Text) */
 .bh-contact-node {
   position: absolute;
   top: 0;
   left: 0;
-  width: 220px;
+  width: clamp(44px, 4.6vw, 58px);
+  height: clamp(44px, 4.6vw, 58px);
   text-decoration: none !important;
   color: inherit !important;
   cursor: pointer;
   will-change: transform, opacity, filter;
-  transition: border-color 0.25s ease, box-shadow 0.25s ease;
+  transition: filter 0.25s ease, opacity 0.25s ease;
   user-select: none;
   pointer-events: auto;
   transform-origin: center center;
-}
-
-.bh-node-card {
-  padding: 0.85rem 1rem;
-  border-radius: 12px;
-  background: rgba(6, 12, 7, 0.92);
-  border: 1px solid rgba(0, 255, 136, 0.24);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.85);
-  transition: all 0.25s var(--ease-expo);
-  position: relative;
-  overflow: hidden;
-}
-
-.bh-contact-node:hover .bh-node-card,
-.bh-contact-node.is-hovered .bh-node-card {
-  border-color: var(--node-accent, #00FF88);
-  box-shadow: 
-    0 0 35px var(--node-accent, rgba(0, 255, 136, 0.5)),
-    inset 0 0 18px rgba(0, 255, 136, 0.12);
-  background: rgba(10, 20, 12, 0.96);
-  transform: translateY(-2px);
-}
-
-.bh-node-badge-row {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  margin-bottom: 0.5rem;
+  justify-content: center;
+}
+
+/* 2D Billboard Badge (Pure Borderless Floating Logos matching Tech Stack) */
+.bh-node-badge {
+  width: 100%;
+  height: 100%;
+  border: none !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  transition: transform 0.25s var(--ease-expo);
 }
 
 .bh-node-icon {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--node-accent, #00FF88);
+  filter: drop-shadow(0 3px 8px rgba(0, 0, 0, 0.85)) drop-shadow(0 0 6px var(--node-accent, #00FF88));
+  transition: filter 0.25s ease, transform 0.25s ease;
+  pointer-events: none;
+}
+
+.bh-node-icon svg {
+  width: clamp(26px, 2.9vw, 36px);
+  height: clamp(26px, 2.9vw, 36px);
+}
+
+/* FOREGROUND STATE: PASSING IN FRONT OF BLACK HOLE */
+.bh-contact-node.is-front {
+  z-index: 35 !important;
+}
+
+.bh-contact-node.is-front .bh-node-icon {
+  filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.9)) drop-shadow(0 0 10px var(--node-accent, #00FF88));
+}
+
+/* BACKGROUND STATE: PASSING BEHIND BLACK HOLE (Lensed & Refracted) */
+.bh-contact-node.is-refracted {
+  z-index: 8 !important;
+}
+
+.bh-contact-node.is-refracted .bh-node-icon {
+  filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.6)) drop-shadow(0 0 4px rgba(0, 255, 136, 0.4));
+}
+
+/* HOVERED / FOCUSED STATE (Time Dilation Engaged) */
+.bh-contact-node:hover,
+.bh-contact-node.is-hovered {
+  z-index: 100 !important;
+}
+
+.bh-contact-node:hover .bh-node-badge,
+.bh-contact-node.is-hovered .bh-node-badge {
+  transform: scale(1.38);
+}
+
+.bh-contact-node:hover .bh-node-icon,
+.bh-contact-node.is-hovered .bh-node-icon {
+  filter: drop-shadow(0 6px 18px rgba(0, 0, 0, 0.95)) drop-shadow(0 0 18px var(--node-accent, #00FF88)) !important;
+}
+
+/* ==========================================================================
+   FLOATING NEAR-POINTER HOLOGRAPHIC TOOLTIP (Black Hole Nexus)
+   ========================================================================== */
+.bh-cursor-tooltip {
+  position: fixed;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  z-index: 99999;
+  width: 310px;
+  max-width: 88vw;
+  background: rgba(6, 12, 8, 0.95);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--tooltip-accent, rgba(0, 255, 136, 0.38));
+  border-radius: 8px;
+  padding: 0.85rem 1.1rem;
+  box-shadow: 0 18px 45px rgba(0, 0, 0, 0.95), 0 0 20px rgba(0, 255, 136, 0.16);
+  opacity: 0;
+  transform: scale(0.92);
+  will-change: transform, opacity;
+  transition: opacity 0.18s var(--ease-expo), transform 0.18s var(--ease-expo), border-color 0.2s, box-shadow 0.2s;
+}
+
+.bh-cursor-tooltip.is-visible {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.bh-tooltip-badge-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.35rem;
+}
+
+.bh-tooltip-icon-wrap {
   width: 28px;
   height: 28px;
   display: flex;
   align-items: center;
   justify-content: center;
+  color: var(--tooltip-accent, #00FF88);
   filter: drop-shadow(0 0 8px currentColor);
 }
 
-.bh-node-badge {
+.bh-tooltip-icon-wrap svg {
+  width: 22px;
+  height: 22px;
+}
+
+.bh-tooltip-meta {
+  flex: 1;
+}
+
+.bh-tooltip-badge {
   font-size: 0.55rem;
-  letter-spacing: 0.1em;
-  padding: 0.15rem 0.45rem;
-  border-radius: 4px;
-  background: rgba(0, 0, 0, 0.6);
-  border: 1px solid var(--node-accent, rgba(0, 255, 136, 0.3));
-  color: var(--node-accent, #00FF88);
+  color: var(--tooltip-accent, #00FF88);
+  letter-spacing: 0.12em;
+  display: block;
+  margin-bottom: 0.1rem;
 }
 
-.bh-node-info {
-  margin-bottom: 0.5rem;
-}
-
-.bh-node-title {
-  font-size: 0.95rem;
-  font-weight: 700;
+.bh-tooltip-title {
+  font-size: 1.05rem;
+  font-weight: 800;
   color: #FFFFFF;
-  line-height: 1.2;
-  margin: 0 0 0.15rem 0;
-}
-
-.bh-node-handle {
-  font-size: 0.68rem;
-  color: var(--color-lime);
-  letter-spacing: 0.05em;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
   margin: 0;
+  line-height: 1.1;
+  letter-spacing: 0.02em;
 }
 
-.bh-node-footer {
-  font-size: 0.58rem;
+.bh-tooltip-handle {
+  font-size: 0.72rem;
+  color: var(--color-lime);
+  letter-spacing: 0.06em;
+  margin: 0 0 0.45rem 0;
+  word-break: break-all;
+}
+
+.bh-tooltip-desc {
+  font-size: 0.72rem;
+  line-height: 1.45;
   color: var(--color-text-muted);
-  letter-spacing: 0.08em;
+  margin: 0 0 0.65rem 0;
+}
+
+.bh-tooltip-footer {
+  font-size: 0.58rem;
+  letter-spacing: 0.1em;
   display: flex;
   align-items: center;
-  justify-content: flex-end;
+  justify-content: space-between;
   border-top: 1px solid rgba(255, 255, 255, 0.08);
-  padding-top: 0.4rem;
+  padding-top: 0.45rem;
+  color: var(--color-text-muted);
 }
 
-/* Gravitational Refraction States */
-.bh-contact-node.is-refracted .bh-node-card {
-  border-color: rgba(0, 255, 136, 0.12);
-  box-shadow: 0 0 18px rgba(0, 255, 136, 0.18);
-}
-
-.bh-contact-node.is-front .bh-node-card {
-  border-color: rgba(0, 255, 136, 0.35);
-  box-shadow: 0 0 25px rgba(0, 255, 136, 0.25), 0 12px 32px rgba(0, 0, 0, 0.88);
+.bh-tooltip-shortcut {
+  color: rgba(255, 255, 255, 0.4);
 }
 
 /* Quick-Action Bar & Toast */
@@ -2781,13 +2747,8 @@ html.lenis, html.lenis body {
     height: 480px;
   }
   .bh-contact-node {
-    width: 175px;
-  }
-  .bh-node-title {
-    font-size: 0.85rem;
-  }
-  .bh-node-handle {
-    font-size: 0.6rem;
+    width: 44px;
+    height: 44px;
   }
 }
 

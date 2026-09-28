@@ -488,35 +488,36 @@ export class ProjectSolarSystem {
     this.zoomProgress += (this.targetZoomProgress - this.zoomProgress) * lerpFactor;
     const p = this.zoomProgress;
 
-    // Phase 4: Projects Solar System Layer [0.44 -> 0.76]
+    // Phase 3: Projects Solar System Layer [0.44 -> 0.76]
+    // (EXACT SAME AS TECH STACK ENTER FROM HERO!)
     if (this.projectsLayer) {
       if (p <= 0.44) {
         this.projectsLayer.style.opacity = '0';
         this.projectsLayer.style.visibility = 'hidden';
         this.projectsLayer.style.pointerEvents = 'none';
-        this.projectsLayer.style.transform = 'scale(0.16) translateZ(0)';
-      } else if (p <= 0.66) {
+        this.projectsLayer.style.transform = 'scale(0.18) translateZ(0)';
+        this.projectsLayer.style.filter = 'blur(16px)';
+      } else if (p <= 0.70) {
+        // Enters from deep space & remains actively interactive (0.44 -> 0.56 -> 0.70)
         this.projectsLayer.style.visibility = 'visible';
         const projP = Math.min(1, Math.max(0, (p - 0.44) / 0.12));
         const easedProj = Math.sin((projP * Math.PI) / 2);
 
-        const projScale = 0.16 + easedProj * 0.84;
-        const projOpacity = Math.min(1, projP * 1.35);
-        const projBlur = (1 - easedProj) * 18;
+        const projScale = 0.18 + easedProj * 0.82; // zooms in from deep space: 0.18 -> 1.00!
+        const projOpacity = Math.min(1, projP * 1.25);
+        const projBlur = (1 - easedProj) * 16;
 
         this.projectsLayer.style.transform = `scale(${projScale.toFixed(3)}) translateZ(0)`;
         this.projectsLayer.style.opacity = projOpacity.toFixed(3);
         this.projectsLayer.style.filter = projBlur > 0.4 ? `blur(${projBlur.toFixed(1)}px)` : 'none';
         this.projectsLayer.style.pointerEvents = projP > 0.85 ? 'auto' : 'none';
-      } else if (p <= 0.76) {
-        // Warps forward and dissolves as user journeys to Credentials
+      } else if (p <= 0.84) {
+        // Warps forward past camera as user journeys to Credentials
         this.projectsLayer.style.visibility = 'visible';
-        const exitP = Math.min(1, (p - 0.66) / 0.08);
-        const easedExit = Math.sin((exitP * Math.PI) / 2);
-
-        const projScale = 1.0 + easedExit * 0.75;
-        const projOpacity = Math.max(0, 1.0 - exitP * 1.3);
-        const projBlur = easedExit * 14;
+        const exitP = Math.min(1, Math.max(0, (p - 0.70) / 0.14));
+        const projScale = 1.0 + exitP * 2.2;
+        const projOpacity = Math.max(0, 1.0 - exitP * 1.45);
+        const projBlur = exitP * 18;
 
         this.projectsLayer.style.transform = `scale(${projScale.toFixed(3)}) translateZ(0)`;
         this.projectsLayer.style.opacity = projOpacity.toFixed(3);

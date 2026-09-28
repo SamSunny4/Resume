@@ -891,7 +891,7 @@ export class TechSolarSystem {
     }
 
     // -----------------------------------------------------------------
-    // Phase 2: Tech Stack Layer [0.08 -> 0.45]
+    // Phase 2: Tech Stack Layer [0.08 -> 0.52]
     // -----------------------------------------------------------------
     if (this.techLayer) {
       if (p <= 0.08) {
@@ -899,8 +899,9 @@ export class TechSolarSystem {
         this.techLayer.style.visibility = 'hidden';
         this.techLayer.style.pointerEvents = 'none';
         this.techLayer.style.transform = 'scale(0.18) translateZ(0)';
+        this.techLayer.style.filter = 'blur(16px)';
       } else if (p <= 0.36) {
-        // Enters & remains actively interactive
+        // Enters from deep space & remains actively interactive
         this.techLayer.style.visibility = 'visible';
         const enterP = Math.min(1, (p - 0.08) / 0.12);
         const easedEnter = Math.sin((enterP * Math.PI) / 2);
@@ -913,17 +914,20 @@ export class TechSolarSystem {
         this.techLayer.style.opacity = techOpacity.toFixed(3);
         this.techLayer.style.filter = techBlur > 0.4 ? `blur(${techBlur.toFixed(1)}px)` : 'none';
         this.techLayer.style.pointerEvents = enterP > 0.8 ? 'auto' : 'none';
-      } else if (p <= 0.45) {
-        // Tech Stack warps THROUGH the glass wormhole lens
+      } else if (p <= 0.52) {
+        // EXACT SAME AS LANDING PAGE (HERO) EXIT:
+        // Zooms forward straight past the camera (scale 1.0 -> 3.2), blurs (0 -> 18px), and fades out!
         this.techLayer.style.visibility = 'visible';
-        this.techLayer.style.transform = 'translateZ(0)';
-        this.techLayer.style.filter = 'none';
-        this.techLayer.style.pointerEvents = 'none';
+        const exitP = Math.min(1, Math.max(0, (p - 0.36) / 0.16));
+        const techScale = 1.0 + exitP * 2.2;
+        const techOpacity = Math.max(0, 1.0 - exitP * 1.45);
+        const techBlur = exitP * 18;
 
-        // Overall container dissolves into wormhole
-        const exitP = Math.max(0, (p - 0.36) / 0.08);
-        const techOpacity = Math.max(0, 1.0 - exitP);
+        this.techLayer.style.transform = `scale(${techScale.toFixed(3)}) translateZ(0)`;
         this.techLayer.style.opacity = techOpacity.toFixed(3);
+        this.techLayer.style.filter = techBlur > 0.4 ? `blur(${techBlur.toFixed(1)}px)` : 'none';
+        this.techLayer.style.pointerEvents = exitP > 0.10 ? 'none' : 'auto';
+        this.techLayer.style.visibility = techOpacity <= 0.005 ? 'hidden' : 'visible';
       } else {
         this.techLayer.style.opacity = '0';
         this.techLayer.style.visibility = 'hidden';
@@ -932,61 +936,50 @@ export class TechSolarSystem {
     }
 
     // -----------------------------------------------------------------
-    // Phase 3: Wormhole Singularity Transit 1 [0.34 -> 0.52]
+    // Dynamic Hyperspace Star Warp Speeds (Matching across all transitions)
     // -----------------------------------------------------------------
-    if (p >= 0.34 && p <= 0.52) {
-      const wormP = (p - 0.34) / 0.18;
-      this.wormholeIntensity = Math.sin(wormP * Math.PI);
-    } else {
-      this.wormholeIntensity = 0;
-    }
+    // 1. Hero -> Tech Stack Warp Surge
+    const heroWarp = (p > 0.02 && p < 0.18) ? Math.sin((p / 0.18) * Math.PI) * 2.5 : 0;
+    // 2. Tech Stack -> Projects Warp Surge (EXACT SAME AS HERO -> TECH STACK!)
+    const techToProjWarp = (p > 0.36 && p < 0.54) ? Math.sin(((p - 0.36) / 0.18) * Math.PI) * 2.5 : 0;
+    // 3. Projects -> Credentials Warp Surge
+    const journeyWarp = (p > 0.68 && p < 0.84) ? Math.sin(((p - 0.68) / 0.16) * Math.PI) * 2.5 : 0;
+
+    this.wormholeIntensity = 0; // Disable obsolete dark bubble
+    this.warpSpeed = Math.max(0, deltaP * 24 + heroWarp + techToProjWarp + journeyWarp);
 
     // -----------------------------------------------------------------
-    // Phase 4: Hyperspace Journey 2 (Projects -> Credentials) [0.66 -> 0.82]
-    // -----------------------------------------------------------------
-    let journeyIntensity = 0;
-    if (p >= 0.66 && p <= 0.82) {
-      const jp = (p - 0.66) / 0.16;
-      journeyIntensity = Math.sin(jp * Math.PI);
-    }
-
-    // Dynamic Warp speed
-    const heroWarp = (p > 0.03 && p < 0.18) ? Math.sin((p / 0.18) * Math.PI) * 2.5 : 0;
-    const wormholeWarp = this.wormholeIntensity * 16.0;
-    const journeyWarp = journeyIntensity * 18.0;
-    this.warpSpeed = Math.max(0, deltaP * 24 + heroWarp + wormholeWarp + journeyWarp);
-
-    // -----------------------------------------------------------------
-    // Phase 5: Projects Solar System Layer [0.44 -> 0.76]
+    // Phase 3: Projects Solar System Layer [0.44 -> 0.76]
+    // (EXACT SAME AS TECH STACK ENTER FROM HERO!)
     // -----------------------------------------------------------------
     if (this.projectsLayer) {
       if (p <= 0.44) {
         this.projectsLayer.style.opacity = '0';
         this.projectsLayer.style.visibility = 'hidden';
         this.projectsLayer.style.pointerEvents = 'none';
-        this.projectsLayer.style.transform = 'scale(0.16) translateZ(0)';
-      } else if (p <= 0.66) {
+        this.projectsLayer.style.transform = 'scale(0.18) translateZ(0)';
+        this.projectsLayer.style.filter = 'blur(16px)';
+      } else if (p <= 0.70) {
+        // Enters from deep space & remains actively interactive (0.44 -> 0.56 -> 0.70)
         this.projectsLayer.style.visibility = 'visible';
         const projP = Math.min(1, Math.max(0, (p - 0.44) / 0.12));
         const easedProj = Math.sin((projP * Math.PI) / 2);
 
-        const projScale = 0.16 + easedProj * 0.84;
-        const projOpacity = Math.min(1, projP * 1.35);
-        const projBlur = (1 - easedProj) * 18;
+        const projScale = 0.18 + easedProj * 0.82; // zooms in from deep space: 0.18 -> 1.00!
+        const projOpacity = Math.min(1, projP * 1.25);
+        const projBlur = (1 - easedProj) * 16;
 
         this.projectsLayer.style.transform = `scale(${projScale.toFixed(3)}) translateZ(0)`;
         this.projectsLayer.style.opacity = projOpacity.toFixed(3);
         this.projectsLayer.style.filter = projBlur > 0.4 ? `blur(${projBlur.toFixed(1)}px)` : 'none';
         this.projectsLayer.style.pointerEvents = projP > 0.85 ? 'auto' : 'none';
-      } else if (p <= 0.76) {
-        // Warps forward into hyperspace as user journeys to Credentials
+      } else if (p <= 0.84) {
+        // Warps forward past camera as user journeys to Credentials
         this.projectsLayer.style.visibility = 'visible';
-        const exitP = Math.min(1, (p - 0.66) / 0.08);
-        const easedExit = Math.sin((exitP * Math.PI) / 2);
-
-        const projScale = 1.0 + easedExit * 0.75;
-        const projOpacity = Math.max(0, 1.0 - exitP * 1.3);
-        const projBlur = easedExit * 14;
+        const exitP = Math.min(1, Math.max(0, (p - 0.70) / 0.14));
+        const projScale = 1.0 + exitP * 2.2;
+        const projOpacity = Math.max(0, 1.0 - exitP * 1.45);
+        const projBlur = exitP * 18;
 
         this.projectsLayer.style.transform = `scale(${projScale.toFixed(3)}) translateZ(0)`;
         this.projectsLayer.style.opacity = projOpacity.toFixed(3);
@@ -1409,13 +1402,10 @@ export class TechSolarSystem {
         }
       }
 
-      // 4. Update Planetary Tech Nodes in 3D Orbits (Warp through glass wormhole lens: zoomProgress < 0.48)
+      // 4. Update Planetary Tech Nodes in 3D Orbits
       if (techVisible) {
-        const isTransit = this.zoomProgress >= 0.35;
-        const transitP = isTransit ? Math.min(1.0, (this.zoomProgress - 0.35) / 0.10) : 0;
-
         let minMouseDist = 9999;
-        if (!isTransit && this.pointerClientX > -1000 && this.pointerClientY > -1000) {
+        if (this.pointerClientX > -1000 && this.pointerClientY > -1000) {
           const distToCenter = Math.hypot(this.pointerClientX - centerX, this.pointerClientY - centerY);
 
           for (let i = 0; i < this.nodes.length; i++) {
@@ -1441,58 +1431,28 @@ export class TechSolarSystem {
 
         this.orbitDilation += (this.targetOrbitDilation - this.orbitDilation) * 0.08;
 
-        // When warping through wormhole, orbits accelerate rapidly into the vortex
-        const warpSpeedMultiplier = isTransit ? (1.0 + Math.pow(transitP, 1.4) * 6.0) : 1.0;
-
-        const hasLens = this.wormholeIntensity > 0.005;
-        const lensIntensity = this.wormholeIntensity;
-        const lensX = centerX + this.camRotY * 28;
-        const lensY = centerY - this.camRotX * 28;
-        const lensR = Math.min(this.stageWidth, this.stageHeight) * (0.22 + 0.16 * lensIntensity);
-
         this.nodes.forEach(node => {
           const ring = node.ring;
 
-          const baseNodeSpeed = (node.meta.id === this.hoveredNode?.id && !isTransit)
+          const baseNodeSpeed = (node.meta.id === this.hoveredNode?.id)
             ? ring.baseSpeed * 0.08
             : ring.baseSpeed * this.orbitDilation;
 
-          node.theta += baseNodeSpeed * warpSpeedMultiplier;
+          node.theta += baseNodeSpeed;
 
-          // Scaled semi-axes: collapse inward toward the glass wormhole lens during transit
-          const collapse = isTransit ? (1.0 - Math.pow(transitP, 1.2) * 0.70) : 1.0;
-          const a = ring.baseRadiusX * this.scaleRatio * collapse;
-          const b = ring.baseRadiusY * this.scaleRatio * collapse;
+          const a = ring.baseRadiusX * this.scaleRatio;
+          const b = ring.baseRadiusY * this.scaleRatio;
 
           const x0 = a * Math.cos(node.theta);
           const y0 = b * Math.sin(node.theta);
 
-          const wobbleAmp = (ring.wobbleAmp * 0.5) * this.scaleRatio * collapse;
+          const wobbleAmp = (ring.wobbleAmp * 0.5) * this.scaleRatio;
           const z0 = wobbleAmp * Math.sin(2 * node.theta + this.time * 0.015);
 
-          // Forward warp surge along Z through the wormhole
-          const forwardZ = isTransit ? Math.pow(transitP, 1.6) * 1100 : 0;
+          const proj = this.project3D(x0, y0, z0, ring, this.camRotX, this.camRotY);
 
-          const proj = this.project3D(x0, y0, z0 + forwardZ, ring, this.camRotX, this.camRotY);
-
-          // Raw 3D projected screen coordinates
-          const rawScreenX = centerX + proj.screenX;
-          const rawScreenY = centerY + proj.screenY;
-
-          let screenPosX = rawScreenX;
-          let screenPosY = rawScreenY;
-          let inGlass = false;
-
-          // Apply Heavy Optical Glass Refraction through the lens!
-          if (hasLens) {
-            const rNode = this.refractPoint(rawScreenX, rawScreenY, lensX, lensY, lensR, lensIntensity);
-            screenPosX = rNode.x;
-            screenPosY = rNode.y;
-            inGlass = rNode.inGlass;
-          }
-
-          node.projX = screenPosX - centerX;
-          node.projY = screenPosY - centerY;
+          node.projX = proj.screenX;
+          node.projY = proj.screenY;
           node.projZ = proj.depthZ;
 
           const isFront = proj.depthZ >= 0;
@@ -1504,17 +1464,7 @@ export class TechSolarSystem {
           let blurPx = 0;
           let brightness = 1.0;
 
-          if (isTransit) {
-            // Relativistic transit styling: node stretches and warps through the glass
-            zIndex = inGlass ? 92 : Math.max(52, Math.min(88, Math.round(55 + proj.depthZ / 12)));
-            scale = proj.scale * (1.0 + transitP * 1.5) * (inGlass ? 1.35 : 1.0);
-
-            // Fade out as node exits through the wormhole past the camera
-            const nodeExitFade = Math.max(0, 1.0 - Math.pow(Math.max(0, (transitP - 0.55) / 0.45), 1.5));
-            opacity = nodeExitFade;
-            brightness = inGlass ? 1.35 : (1.0 + transitP * 0.4);
-            blurPx = transitP * (inGlass ? 0.4 : 2.0);
-          } else if (isFront) {
+          if (isFront) {
             zIndex = Math.max(52, Math.min(99, Math.round(55 + node.projZ / 12)));
             scale = proj.scale * 1.15;
             opacity = 1.0;
@@ -1534,16 +1484,15 @@ export class TechSolarSystem {
             node.el.classList.remove('is-front');
           }
 
-          // Calculate radial angle from lens center for relativistic elongation
-          let transformStr;
-          if (isTransit && transitP > 0.05) {
-            const radAngle = Math.atan2(screenPosY - lensY, screenPosX - lensX);
-            const deg = (radAngle * 180 / Math.PI);
-            const stretch = 1.0 + transitP * (inGlass ? 1.4 : 0.6);
-            transformStr = `translate3d(${screenPosX.toFixed(1)}px, ${screenPosY.toFixed(1)}px, 0) translate(-50%, -50%) rotate(${deg.toFixed(1)}deg) scale(${stretch.toFixed(3)}, ${(scale / stretch).toFixed(3)}) rotate(${(-deg).toFixed(1)}deg)`;
-          } else {
-            transformStr = `translate3d(${screenPosX.toFixed(1)}px, ${screenPosY.toFixed(1)}px, 0) translate(-50%, -50%) scale(${scale.toFixed(3)})`;
-          }
+          const screenPosX = centerX + proj.screenX;
+          const screenPosY = centerY + proj.screenY;
+          const transformStr = `translate3d(${screenPosX.toFixed(1)}px, ${screenPosY.toFixed(1)}px, 0) translate(-50%, -50%) scale(${scale.toFixed(3)})`;
+
+          node.el.style.zIndex = zIndex;
+          node.el.style.opacity = opacity.toFixed(3);
+          node.el.style.transform = transformStr;
+          node.el.style.filter = blurPx > 0.4 ? `blur(${blurPx.toFixed(1)}px) brightness(${brightness.toFixed(2)})` : `brightness(${brightness.toFixed(2)})`;
+        });
 
           node.el.style.zIndex = zIndex;
           node.el.style.opacity = opacity.toFixed(3);
