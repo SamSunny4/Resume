@@ -4,17 +4,13 @@
  * Author: Sam Sunny Portfolio
  * Stack: WebGL (General Relativity Raymarching) + 3D Keplerian Mechanics + SVG Refraction
  * Description:
- *   - Ultra-Realistic Black Hole rendered in raw WebGL:
- *       1. Curved spacetime geodesic raymarching (Schwarzschild / Kerr metric).
- *       2. Warped accretion disk (upper & lower lensed arcs) glowing incandescent GREEN.
- *       3. Relativistic Doppler beaming & Keplerian differential rotation.
- *       4. Razor-sharp Einstein photon ring caustics and pitch-black event horizon shadow.
- *   - 05 Contact Telemetry Nodes (GitHub, LinkedIn, Email, Call, Resume) in 3D orbit:
- *       1. Pure borderless icons only (NO text labels on nodes, matching Tech Stack).
- *       2. Real-time gravitational deflection, Einstein ring elongation, and shadow occlusion when behind (z < 0).
- *       3. Floating holographic HUD tooltip near cursor on hover.
- *       4. Relativistic gravitational time-dilation (smooth standstill on hover).
- *       5. 1-click clipboard copy for Email and Phone with live HUD toast.
+ *   - Continuous Cosmic Narrative:
+ *       1. Tech Stack Corner: Black hole sits far in the corner, faint, with green gleaming glow (4.2 LY).
+ *       2. Zoom Scrolling: Progressing through Projects & Credentials moves closer to the black hole (still far).
+ *       3. Final Destination (Contacts): Arrives right near the monumental black hole where the 5 contact
+ *          icons revolve around it, subject to relativistic gravitational refraction & time-dilation.
+ *   - Photorealistic Kerr/Schwarzschild Shader:
+ *       Geodesic raymarching, Doppler beaming, Einstein photon ring, pitch-black shadow.
  */
 
 export const CONTACT_NODES = [
@@ -82,17 +78,17 @@ export const CONTACT_NODES = [
   },
 ];
 
-// Relativistic Orbital Configuration around Black Hole
+// Relativistic Orbital Configuration around Black Hole (Final Contacts Phase)
 const BH_ORBIT = {
   radiusX: 370,
   radiusY: 210,
   tiltX: 0.44,   // 25 deg pitch
   tiltY: -0.28,  // -16 deg yaw
   tiltZ: 0.12,   // 7 deg roll
-  baseSpeed: 0.016, // Relativistic angular velocity
-  horizonRadius: 90, // Event horizon shadow radius (px)
-  einsteinRadius: 135, // Photon ring caustic radius (px)
-  lensingInfluence: 310, // Outer limit of gravitational deflection
+  baseSpeed: 0.016,
+  horizonRadius: 90,
+  einsteinRadius: 135,
+  lensingInfluence: 310,
 };
 
 // GLSL Shaders for Ultra-Realistic Kerr/Schwarzschild Black Hole
@@ -110,14 +106,12 @@ uniform vec2 u_resolution;
 uniform float u_time;
 uniform vec2 u_mouse;
 
-// High quality 2D hash
 float hash(vec2 p) {
   p = fract(p * vec2(123.34, 456.21));
   p += dot(p, p + 45.32);
   return fract(p.x * p.y);
 }
 
-// Value noise
 float noise(vec2 p) {
   vec2 i = floor(p);
   vec2 f = fract(p);
@@ -129,7 +123,6 @@ float noise(vec2 p) {
   return mix(mix(a, b, f.x), mix(c, d, f.x), f.y);
 }
 
-// Fractional Brownian Motion for turbulent swirling plasma
 float fbm(vec2 p) {
   float v = 0.0;
   float a = 0.55;
@@ -142,7 +135,6 @@ float fbm(vec2 p) {
   return v;
 }
 
-// Accretion disk sample at 3D position p with ray velocity v
 vec4 sampleDisk(vec3 p, vec3 v, float t) {
   float r = length(p.xz);
   float r_isco = 0.90;
@@ -153,34 +145,31 @@ vec4 sampleDisk(vec3 p, vec3 v, float t) {
   }
   
   float phi = atan(p.z, p.x);
-  // Differential Keplerian rotation: inner plasma spins much faster
   float omega = 1.7 / (r * sqrt(r));
   float rotPhi = phi - omega * t * 0.85;
   
-  // Turbulent swirling plasma streamers
   vec2 uvDisk = vec2(r * 3.8 - t * 0.22, rotPhi * 3.2 + r * 1.6);
   float turb = fbm(uvDisk);
   float turb2 = fbm(uvDisk * 2.1 + vec2(t * 0.18, -t * 0.12));
   float plasma = turb * 0.62 + turb2 * 0.38;
   
-  // Radial density profile
   float radialMask = smoothstep(r_isco, r_isco + 0.32, r) * smoothstep(r_out, r_out - 0.70, r);
   float density = radialMask * (0.35 + 1.4 * plasma);
   
   // Relativistic Doppler Beaming
   vec3 vel = normalize(vec3(-p.z, 0.0, p.x));
-  float beta = clamp(0.55 / sqrt(r), 0.05, 0.72); // Fraction of speed of light
+  float beta = clamp(0.55 / sqrt(r), 0.05, 0.72);
   float cosTheta = dot(vel, -normalize(v));
   float gamma = 1.0 / sqrt(1.0 - beta * beta);
   float doppler = 1.0 / (gamma * (1.0 - beta * cosTheta));
   doppler = clamp(doppler, 0.25, 2.85);
   float boost = pow(doppler, 2.6);
   
-  // Incandescent Green Palette
-  vec3 colCaustic = vec3(0.95, 1.0, 0.92);  // Blinding white-lime
-  vec3 colHot     = vec3(0.0, 1.0, 0.55);   // Electric neon green
-  vec3 colMid     = vec3(0.03, 0.82, 0.45); // Deep emerald
-  vec3 colDark    = vec3(0.01, 0.35, 0.18); // Dark viridian
+  // Incandescent Green Color Ramp
+  vec3 colCaustic = vec3(0.95, 1.0, 0.92);
+  vec3 colHot     = vec3(0.0, 1.0, 0.55);
+  vec3 colMid     = vec3(0.03, 0.82, 0.45);
+  vec3 colDark    = vec3(0.01, 0.35, 0.18);
   
   float temp = clamp((r_out - r) / (r_out - r_isco) * 1.1 + (boost - 1.0) * 0.45, 0.0, 1.0);
   vec3 baseCol = mix(colDark, colMid, smoothstep(0.0, 0.45, temp));
@@ -196,7 +185,6 @@ vec4 sampleDisk(vec3 p, vec3 v, float t) {
 void main() {
   vec2 uv = (gl_FragCoord.xy - 0.5 * u_resolution.xy) / u_resolution.y;
   
-  // Interactive camera orientation with mouse parallax
   float camPitch = 0.35 + u_mouse.y * 0.22;
   float camYaw = u_mouse.x * 0.32;
   float camDist = 4.3;
@@ -214,11 +202,10 @@ void main() {
   
   vec3 rd = normalize(uv.x * right + uv.y * up + 1.85 * fwd);
   
-  // General Relativity Schwarzschild Raymarching
   vec3 p = ro;
   float dt = 0.12;
   vec3 v = rd * dt;
-  float r_s = 0.72; // Event horizon radius
+  float r_s = 0.72;
   
   vec3 accumColor = vec3(0.0);
   float accumAlpha = 0.0;
@@ -229,13 +216,11 @@ void main() {
     float r = length(p);
     if (r < closestDist) closestDist = r;
     
-    // Ray plunged into event horizon
     if (r < r_s) {
       swallowed = true;
       break;
     }
     
-    // Check crossing of equatorial accretion disk (y = 0)
     vec3 pNext = p + v;
     if (p.y * pNext.y <= 0.0 && abs(v.y) > 0.0001) {
       float tHit = -p.y / v.y;
@@ -248,8 +233,6 @@ void main() {
       }
     }
     
-    // Schwarzschild Geodesic Acceleration
-    // a = -1.5 * r_s * (p x v)^2 / r^5 * p
     vec3 h = cross(p, v);
     float h2 = dot(h, h);
     float r5 = r * r * r * r * r;
@@ -258,38 +241,31 @@ void main() {
     v += a;
     p += v;
     
-    // Escape condition
     if (r > 8.0 && dot(p, v) > 0.0) {
       break;
     }
   }
   
-  // Event Horizon Shadow: completely pitch-black void inside the horizon
   if (swallowed) {
     accumColor = vec3(0.0);
     accumAlpha = 1.0;
   } else {
-    // Einstein Photon Ring Caustic (razor-thin light loop boundary at photon sphere)
     float caustic = smoothstep(r_s * 1.08, r_s * 1.015, closestDist) * 3.4;
     accumColor += vec3(0.85, 1.0, 0.88) * caustic;
     
-    // Gravitational Lensing Aura / Green Atmospheric Glow
     float rScreen = length(uv);
     float halo = 0.075 / (0.28 + rScreen * rScreen * 3.8);
     accumColor += vec3(0.0, 1.0, 0.55) * halo;
     
-    // Deep Space Starfield with Gravitational Lensing Distortion
     vec3 escDir = normalize(v);
     float starGrid = sin(escDir.x * 90.0) * sin(escDir.y * 90.0) * sin(escDir.z * 90.0);
     float stars = smoothstep(0.965, 0.998, starGrid) * 0.75;
     accumColor += (1.0 - accumAlpha) * vec3(0.65, 0.95, 0.8) * stars;
   }
   
-  // Tone Mapping & Gamma Correction
   vec3 finalColor = accumColor / (1.0 + accumColor);
   finalColor = pow(finalColor, vec3(0.9));
   
-  // Canvas Edge Fade
   float rEdge = length(uv);
   float edgeFade = smoothstep(0.98, 0.75, rEdge);
   float outAlpha = clamp(length(finalColor) * 2.2 + (swallowed ? 1.0 : 0.0), 0.0, 1.0) * edgeFade;
@@ -298,6 +274,82 @@ void main() {
 }
 `;
 
+/**
+ * Reusable WebGL Shader Pass
+ */
+function createBlackHoleShaderPass(canvas) {
+  if (!canvas) return null;
+  const gl = canvas.getContext('webgl', { alpha: true, antialias: true }) ||
+             canvas.getContext('experimental-webgl', { alpha: true, antialias: true });
+  if (!gl) return null;
+
+  const vs = gl.createShader(gl.VERTEX_SHADER);
+  gl.shaderSource(vs, VERTEX_SHADER_SRC);
+  gl.compileShader(vs);
+
+  const fs = gl.createShader(gl.FRAGMENT_SHADER);
+  gl.shaderSource(fs, FRAGMENT_SHADER_SRC);
+  gl.compileShader(fs);
+
+  const program = gl.createProgram();
+  gl.attachShader(program, vs);
+  gl.attachShader(program, fs);
+  gl.linkProgram(program);
+
+  if (!gl.getProgramParameter(program, gl.LINK_STATUS)) {
+    console.error('[BlackHole] Shader link error:', gl.getProgramInfoLog(program));
+    return null;
+  }
+
+  const quadBuffer = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, quadBuffer);
+  gl.bufferData(
+    gl.ARRAY_BUFFER,
+    new Float32Array([
+      -1.0, -1.0,
+       1.0, -1.0,
+      -1.0,  1.0,
+      -1.0,  1.0,
+       1.0, -1.0,
+       1.0,  1.0,
+    ]),
+    gl.STATIC_DRAW
+  );
+
+  const posAttr = gl.getAttribLocation(program, 'a_position');
+  gl.enableVertexAttribArray(posAttr);
+  gl.vertexAttribPointer(posAttr, 2, gl.FLOAT, false, 0, 0);
+
+  const uResolution = gl.getUniformLocation(program, 'u_resolution');
+  const uTime = gl.getUniformLocation(program, 'u_time');
+  const uMouse = gl.getUniformLocation(program, 'u_mouse');
+
+  gl.enable(gl.BLEND);
+  gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+
+  return {
+    gl,
+    program,
+    canvas,
+    render(time, mouseX, mouseY) {
+      gl.useProgram(program);
+      gl.uniform2f(uResolution, canvas.width, canvas.height);
+      gl.uniform1f(uTime, time);
+      gl.uniform2f(uMouse, mouseX, mouseY);
+      gl.drawArrays(gl.TRIANGLES, 0, 6);
+    },
+    resize(w, h, dpr = 1.0) {
+      const cw = Math.floor(w * dpr);
+      const ch = Math.floor(h * dpr);
+      if (canvas.width !== cw || canvas.height !== ch) {
+        canvas.width = cw;
+        canvas.height = ch;
+        gl.viewport(0, 0, cw, ch);
+      }
+    }
+  };
+}
+
 export class BlackHoleContactEngine {
   constructor() {
     this.section = document.getElementById('contact');
@@ -305,6 +357,12 @@ export class BlackHoleContactEngine {
     this.canvas = document.getElementById('bh-webgl-canvas');
     this.container = document.getElementById('bh-orbit-container');
     this.toast = document.getElementById('bh-clipboard-toast');
+
+    // Distant Deep-Space Beacon Elements (Tech Stack Corner -> Approach)
+    this.track = document.getElementById('space-stage-track');
+    this.beacon = document.getElementById('space-blackhole-beacon');
+    this.distantCanvas = document.getElementById('bh-distant-canvas');
+    this.beaconLabel = document.getElementById('bh-beacon-label');
 
     // Holographic Floating Near-Pointer Tooltip
     this.tooltip = document.getElementById('bh-cursor-tooltip');
@@ -315,14 +373,13 @@ export class BlackHoleContactEngine {
     this.tooltipDesc = document.getElementById('bh-tooltip-desc');
     this.tooltipAction = document.getElementById('bh-tooltip-action');
 
-    if (!this.section || !this.viewport) return;
-
     this.nodes = [];
     this.hoveredNode = null;
     this.animId = null;
     this.time = 0;
     this.scaleRatio = 1.0;
     this.isInViewport = false;
+    this.spaceProgress = 0;
 
     // Relativistic Gravitational Time-Dilation
     this.speedFactor = 1.0;
@@ -351,7 +408,9 @@ export class BlackHoleContactEngine {
   }
 
   init() {
-    this.initWebGL();
+    this.contactRenderer = createBlackHoleShaderPass(this.canvas);
+    this.distantRenderer = createBlackHoleShaderPass(this.distantCanvas);
+
     this.buildNodesDOM();
     this.onResize();
     this.setupListeners();
@@ -359,83 +418,7 @@ export class BlackHoleContactEngine {
 
     // Start 60fps render loop
     this.animId = requestAnimationFrame(this.animate);
-    console.log(`[BlackHole] Ultra-Realistic Green Kerr Singularity Engine active with ${CONTACT_NODES.length} borderless icon nodes.`);
-  }
-
-  /**
-   * Initialize WebGL General Relativity Raymarching Shader
-   */
-  initWebGL() {
-    if (!this.canvas) return;
-
-    const gl = this.canvas.getContext('webgl', { alpha: true, antialias: true }) ||
-               this.canvas.getContext('experimental-webgl', { alpha: true, antialias: true });
-    
-    if (!gl) {
-      console.warn('[BlackHole] WebGL not supported on this device. Fallback mode active.');
-      return;
-    }
-
-    this.gl = gl;
-
-    // Compile Vertex Shader
-    const vs = gl.createShader(gl.VERTEX_SHADER);
-    gl.shaderSource(vs, VERTEX_SHADER_SRC);
-    gl.compileShader(vs);
-    if (!gl.getShaderParameter(vs, gl.COMPILE_STATUS)) {
-      console.error('[BlackHole] VS compile error:', gl.getShaderInfoLog(vs));
-      return;
-    }
-
-    // Compile Fragment Shader
-    const fs = gl.createShader(gl.FRAGMENT_SHADER);
-    gl.shaderSource(fs, FRAGMENT_SHADER_SRC);
-    gl.compileShader(fs);
-    if (!gl.getShaderParameter(fs, gl.COMPILE_STATUS)) {
-      console.error('[BlackHole] FS compile error:', gl.getShaderInfoLog(fs));
-      return;
-    }
-
-    // Link Program
-    const program = gl.createProgram();
-    gl.attachShader(program, vs);
-    gl.attachShader(program, fs);
-    gl.linkProgram(program);
-    if (!gl.getProgramParameter(program, gl.LINK_STATUS)) {
-      console.error('[BlackHole] Program link error:', gl.getProgramInfoLog(program));
-      return;
-    }
-
-    this.glProgram = program;
-    gl.useProgram(program);
-
-    // Full-screen Quad Buffer
-    const quadBuffer = gl.createBuffer();
-    gl.bindBuffer(gl.ARRAY_BUFFER, quadBuffer);
-    gl.bufferData(
-      gl.ARRAY_BUFFER,
-      new Float32Array([
-        -1.0, -1.0,
-         1.0, -1.0,
-        -1.0,  1.0,
-        -1.0,  1.0,
-         1.0, -1.0,
-         1.0,  1.0,
-      ]),
-      gl.STATIC_DRAW
-    );
-
-    const posAttr = gl.getAttribLocation(program, 'a_position');
-    gl.enableVertexAttribArray(posAttr);
-    gl.vertexAttribPointer(posAttr, 2, gl.FLOAT, false, 0, 0);
-
-    // Uniform Locations
-    this.uResolution = gl.getUniformLocation(program, 'u_resolution');
-    this.uTime = gl.getUniformLocation(program, 'u_time');
-    this.uMouse = gl.getUniformLocation(program, 'u_mouse');
-
-    gl.enable(gl.BLEND);
-    gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+    console.log(`[BlackHole] Green Singularity Engine active with deep-space beacon & ${CONTACT_NODES.length} relativistic contact nodes.`);
   }
 
   /**
@@ -461,7 +444,6 @@ export class BlackHoleContactEngine {
       el.setAttribute('tabindex', '0');
       el.setAttribute('aria-label', `${item.title}: ${item.handle}`);
 
-      // Pure Borderless Floating Icon Badge (Matching Tech Stack's .solar-node-badge)
       el.innerHTML = `
         <div class="bh-node-badge" style="--node-accent: ${item.accent}">
           <div class="bh-node-icon" style="color: ${item.accent}">
@@ -470,13 +452,11 @@ export class BlackHoleContactEngine {
         </div>
       `;
 
-      // Hover / Focus: Engages Gravitational Time-Dilation & Near-Pointer HUD Tooltip
       el.addEventListener('pointerenter', (e) => this.handleNodeHover(item, el, e));
       el.addEventListener('pointerleave', () => this.handleNodeLeave());
       el.addEventListener('focus', (e) => this.handleNodeHover(item, el, e));
       el.addEventListener('blur', () => this.handleNodeLeave());
 
-      // 1-Click Copy handling for Email & Phone
       if (item.isCopyable) {
         el.addEventListener('click', (e) => {
           if (item.copyValue) {
@@ -531,6 +511,20 @@ export class BlackHoleContactEngine {
   setupListeners() {
     window.addEventListener('resize', this.onResize, { passive: true });
     window.addEventListener('mousemove', this.onPointerMove, { passive: true });
+
+    // Click on distant beacon in Tech Stack/Projects to warp directly to contacts
+    if (this.beacon) {
+      this.beacon.addEventListener('click', (e) => {
+        e.preventDefault();
+        if (this.section) {
+          if (window.AppState?.lenis) {
+            window.AppState.lenis.scrollTo(this.section, { duration: 1.8 });
+          } else {
+            this.section.scrollIntoView({ behavior: 'smooth' });
+          }
+        }
+      });
+    }
   }
 
   setupIntersectionObserver() {
@@ -610,7 +604,6 @@ export class BlackHoleContactEngine {
     let targetX = this.pointerClientX + 18;
     let targetY = this.pointerClientY + 18;
 
-    // Viewport edge collision safety
     if (targetX + tooltipWidth > window.innerWidth - 16) {
       targetX = this.pointerClientX - tooltipWidth - 18;
     }
@@ -620,7 +613,6 @@ export class BlackHoleContactEngine {
     if (targetX < 16) targetX = 16;
     if (targetY < 16) targetY = 16;
 
-    // Smooth inertia lerp
     this.tooltipCurrentX += (targetX - this.tooltipCurrentX) * 0.22;
     this.tooltipCurrentY += (targetY - this.tooltipCurrentY) * 0.22;
 
@@ -642,14 +634,13 @@ export class BlackHoleContactEngine {
     this.pointerClientX = e.clientX;
     this.pointerClientY = e.clientY;
 
-    if (!this.isInViewport) return;
     const cx = window.innerWidth / 2;
     const cy = window.innerHeight / 2;
     const nx = Math.max(-1, Math.min(1, (e.clientX - cx) / cx));
     const ny = Math.max(-1, Math.min(1, (e.clientY - cy) / cy));
 
-    this.targetCamRotY = nx * 0.32; // Parallax yaw
-    this.targetCamRotX = -ny * 0.22; // Parallax pitch
+    this.targetCamRotY = nx * 0.32;
+    this.targetCamRotX = -ny * 0.22;
   }
 
   onResize() {
@@ -664,28 +655,113 @@ export class BlackHoleContactEngine {
       this.scaleRatio = Math.min(1.10, Math.max(0.92, w / 1440));
     }
 
-    // Resize WebGL Canvas
-    if (this.canvas && this.viewport) {
-      const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
-      const rect = this.viewport.getBoundingClientRect();
-      const cw = Math.floor(rect.width * dpr);
-      const ch = Math.floor(rect.height * dpr);
+    const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
 
-      if (this.canvas.width !== cw || this.canvas.height !== ch) {
-        this.canvas.width = cw;
-        this.canvas.height = ch;
-        if (this.gl) {
-          this.gl.viewport(0, 0, cw, ch);
-        }
-      }
+    // Resize Contact Canvas
+    if (this.contactRenderer && this.viewport) {
+      const rect = this.viewport.getBoundingClientRect();
+      this.contactRenderer.resize(rect.width, rect.height, dpr);
+    }
+
+    // Resize Distant Beacon Canvas
+    if (this.distantRenderer && this.distantCanvas) {
+      this.distantRenderer.resize(220, 220, dpr);
     }
   }
 
   /**
-   * 3D Rotation Math & Camera Projection Engine
+   * Continuous Cosmic Narrative: Update Distant Black Hole Beacon along Space Stage Track
+   * 1. Tech Stack (p: 0.12 -> 0.36): In the top-right corner, faint, far, glowing green.
+   * 2. Projects & Credentials (p: 0.36 -> 0.90): Zoom scrolling moves closer (still far).
+   * 3. Terminus: Fades cleanly into #contact Event Horizon view.
    */
+  updateDistantBeacon(p) {
+    if (!this.beacon) return;
+
+    const isMobile = window.innerWidth < 768;
+    const baseTop = isMobile ? 24 : 42;
+    const baseRight = isMobile ? 20 : 50;
+
+    if (p < 0.10 || p > 0.96) {
+      // Hidden in Hero and after leaving space stage
+      if (!this.beaconIsHidden) {
+        this.beacon.style.opacity = '0';
+        this.beacon.style.visibility = 'hidden';
+        this.beacon.style.pointerEvents = 'none';
+        this.beaconIsHidden = true;
+      }
+      return;
+    }
+    this.beaconIsHidden = false;
+
+    this.beacon.style.visibility = 'visible';
+    this.beacon.style.pointerEvents = 'auto';
+
+    let topPx = baseTop;
+    let rightPx = baseRight;
+    let scaleVal = 0.18;
+    let opacityVal = 0.65;
+    let labelText = 'SINGULARITY ANOMALY · 4.2 LY';
+
+    if (p <= 0.36) {
+      // PHASE 1: TECH STACK CORNER (Far, faint, green gleaming glow)
+      const enterP = Math.min(1.0, (p - 0.10) / 0.08);
+      opacityVal = 0.65 * enterP;
+      scaleVal = 0.18;
+      topPx = baseTop;
+      rightPx = baseRight;
+      labelText = 'SINGULARITY ANOMALY · 4.2 LY';
+    } else if (p <= 0.68) {
+      // PHASE 2: PROJECTS TRANSIT (Zoom scrolling moves closer, still far)
+      const t = (p - 0.36) / 0.32;
+      const easedT = Math.sin((t * Math.PI) / 2);
+
+      topPx = baseTop + easedT * (isMobile ? 35 : 55);
+      rightPx = baseRight + easedT * (isMobile ? 40 : 85);
+      scaleVal = 0.18 + easedT * 0.16; // 0.18 -> 0.34
+      opacityVal = 0.65 + easedT * 0.20; // 0.65 -> 0.85
+
+      const distLy = (4.2 - easedT * 1.8).toFixed(1);
+      labelText = `APPROACHING SINGULARITY · ${distLy} LY`;
+    } else if (p <= 0.90) {
+      // PHASE 3: CREDENTIALS TRANSIT (Closer still, gleaming brighter)
+      const t2 = (p - 0.68) / 0.22;
+      const easedT2 = Math.sin((t2 * Math.PI) / 2);
+
+      topPx = baseTop + 55 + easedT2 * (isMobile ? 30 : 50);
+      rightPx = baseRight + 85 + easedT2 * (isMobile ? 45 : 95);
+      scaleVal = 0.34 + easedT2 * 0.14; // 0.34 -> 0.48 (still far)
+      opacityVal = 0.85 + easedT2 * 0.10; // 0.85 -> 0.95
+
+      const distLy = (2.4 - easedT2 * 1.6).toFixed(1);
+      labelText = `EVENT HORIZON PROXIMITY · ${distLy} LY`;
+    } else {
+      // PHASE 4: DESCEND TO CONTACT TERMINUS
+      const exitP = (p - 0.90) / 0.06;
+      opacityVal = Math.max(0, 1.0 - exitP) * 0.95;
+      scaleVal = 0.48 + exitP * 0.15;
+      topPx = baseTop + 105 + exitP * 30;
+      rightPx = baseRight + 180 + exitP * 40;
+      labelText = 'ARRIVAL AT EVENT HORIZON ↯';
+    }
+
+    this.beacon.style.top = `${Math.round(topPx)}px`;
+    this.beacon.style.right = `${Math.round(rightPx)}px`;
+    this.beacon.style.transform = `scale(${scaleVal.toFixed(3)}) translateZ(0)`;
+    this.beacon.style.opacity = opacityVal.toFixed(3);
+
+    if (this.beaconLabel && labelText !== this.lastBeaconLabel) {
+      this.beaconLabel.textContent = labelText;
+      this.lastBeaconLabel = labelText;
+    }
+
+    // Render distant black hole canvas if visible
+    if (this.distantRenderer && opacityVal > 0.02) {
+      this.distantRenderer.render(this.time, this.camRotY * 0.5, this.camRotX * 0.5);
+    }
+  }
+
   project3D(x0, y0, z0, ring, camX, camY) {
-    // 1. Local orbital plane Euler rotation
     const y1 = y0 * Math.cos(ring.tiltX) - z0 * Math.sin(ring.tiltX);
     const z1 = y0 * Math.sin(ring.tiltX) + z0 * Math.cos(ring.tiltX);
     const x1 = x0;
@@ -698,7 +774,6 @@ export class BlackHoleContactEngine {
     const y3 = x2 * Math.sin(ring.tiltZ) + y2 * Math.cos(ring.tiltZ);
     const z3 = z2;
 
-    // 2. Camera Parallax
     const cy = y3 * Math.cos(camX) - z3 * Math.sin(camX);
     const cz1 = y3 * Math.sin(camX) + z3 * Math.cos(camX);
     const cx = x3 * Math.cos(camY) + cz1 * Math.sin(camY);
@@ -717,100 +792,91 @@ export class BlackHoleContactEngine {
   }
 
   animate(timestamp) {
-    // Smooth lerp camera parallax
     this.camRotX += (this.targetCamRotX - this.camRotX) * 0.06;
     this.camRotY += (this.targetCamRotY - this.camRotY) * 0.06;
-
-    // Smooth lerp gravitational time dilation
     this.speedFactor += (this.targetSpeedFactor - this.speedFactor) * 0.08;
-
     this.time = timestamp * 0.001;
 
-    // WebGL Shader Render
-    if (this.gl && this.glProgram && this.isInViewport) {
-      this.gl.useProgram(this.glProgram);
-      this.gl.uniform2f(this.uResolution, this.canvas.width, this.canvas.height);
-      this.gl.uniform1f(this.uTime, this.time);
-      this.gl.uniform2f(this.uMouse, this.camRotY, this.camRotX);
-      this.gl.drawArrays(this.gl.TRIANGLES, 0, 6);
+    // 1. Update Distant Deep-Space Black Hole Beacon along track
+    if (this.track) {
+      const rect = this.track.getBoundingClientRect();
+      const maxScroll = this.track.offsetHeight - window.innerHeight;
+      const rawProgress = maxScroll > 0 ? Math.max(0, Math.min(1, -rect.top / maxScroll)) : 0;
+      this.spaceProgress += (rawProgress - this.spaceProgress) * 0.16;
+      this.updateDistantBeacon(this.spaceProgress);
+    }
+
+    // 2. Render Close-Up Event Horizon Nexus (Contacts Section)
+    if (this.contactRenderer && this.isInViewport) {
+      this.contactRenderer.render(this.time, this.camRotY, this.camRotX);
     }
 
     // Update Tooltip dynamic floating position
     this.updateTooltipPosition();
 
-    const rx = BH_ORBIT.radiusX * this.scaleRatio;
-    const ry = BH_ORBIT.radiusY * this.scaleRatio;
-    const R_h = BH_ORBIT.horizonRadius * this.scaleRatio;
-    const R_e = BH_ORBIT.einsteinRadius * this.scaleRatio;
-    const R_lens = BH_ORBIT.lensingInfluence * this.scaleRatio;
+    // 3. Update 3D Revolving Contact Icons around Black Hole (Final Part)
+    if (this.isInViewport && this.nodes.length > 0) {
+      const rx = BH_ORBIT.radiusX * this.scaleRatio;
+      const ry = BH_ORBIT.radiusY * this.scaleRatio;
+      const R_h = BH_ORBIT.horizonRadius * this.scaleRatio;
+      const R_e = BH_ORBIT.einsteinRadius * this.scaleRatio;
+      const R_lens = BH_ORBIT.lensingInfluence * this.scaleRatio;
 
-    // Update each contact node's 3D orbit & gravitational refraction
-    this.nodes.forEach((node) => {
-      const isHovered = (this.hoveredNode === node.el);
+      this.nodes.forEach((node) => {
+        const isHovered = (this.hoveredNode === node.el);
 
-      if (!isHovered) {
-        node.theta += BH_ORBIT.baseSpeed * this.speedFactor;
-      }
-
-      const x0 = Math.cos(node.theta) * rx;
-      const y0 = Math.sin(node.theta) * ry;
-      const z0 = 0;
-
-      const proj = this.project3D(x0, y0, z0, BH_ORBIT, this.camRotX, this.camRotY);
-      node.projX = proj.x;
-      node.projY = proj.y;
-      node.projZ = proj.z;
-      node.scale = proj.scale;
-      node.isFront = proj.isFront;
-
-      const r = Math.sqrt(proj.x * proj.x + proj.y * proj.y);
-
-      if (isHovered) {
-        // Hover lock: elevated, luminous, unrefracted focus
-        node.el.style.zIndex = '999';
-        node.el.style.transform = `translate3d(${proj.x.toFixed(1)}px, ${proj.y.toFixed(1)}px, ${proj.z.toFixed(1)}px) translate(-50%, -50%) scale(1.25)`;
-        node.el.style.filter = 'drop-shadow(0 0 28px rgba(0, 255, 136, 0.75))';
-        node.el.style.opacity = '1.0';
-      } else if (proj.isFront) {
-        // IN FRONT OF BLACK HOLE:
-        // Positioned above the WebGL black hole canvas (z-index: 35)
-        node.el.style.zIndex = '35';
-        node.el.style.transform = `translate3d(${proj.x.toFixed(1)}px, ${proj.y.toFixed(1)}px, ${proj.z.toFixed(1)}px) translate(-50%, -50%) scale(${proj.scale.toFixed(3)})`;
-        node.el.style.filter = 'drop-shadow(0 0 16px rgba(0, 255, 136, 0.35))';
-        node.el.style.opacity = '1.0';
-        node.el.classList.add('is-front');
-        node.el.classList.remove('is-refracted');
-      } else {
-        // BEHIND BLACK HOLE:
-        // SUBJECT TO ASTROPHYSICAL GRAVITATIONAL REFRACTION & LENSING:
-        // 1. Spacetime curvature deflection: pushes apparent light rays outward away from horizon
-        let defX = proj.x;
-        let defY = proj.y;
-        if (r < R_lens && r > 2) {
-          const deflection = Math.pow(R_e / Math.max(r, R_h * 0.90), 1.5) * 16 * this.scaleRatio;
-          defX += (proj.x / r) * deflection;
-          defY += (proj.y / r) * deflection;
+        if (!isHovered) {
+          node.theta += BH_ORBIT.baseSpeed * this.speedFactor;
         }
 
-        // 2. Tangential arc elongation (Einstein ring shear)
-        const angle = Math.atan2(defY, defX);
-        const shearDeg = (Math.sin(angle * 2) * 6).toFixed(1);
-        const tangentialStretch = 1.0 + Math.min(0.35, (R_e / Math.max(r, R_h)) * 0.28);
+        const x0 = Math.cos(node.theta) * rx;
+        const y0 = Math.sin(node.theta) * ry;
+        const z0 = 0;
 
-        // 3. Occlusion by Event Horizon Shadow
-        // If directly behind the pitch-black core, it is eclipsed
-        const isBehindShadow = (r < R_h * 0.85);
+        const proj = this.project3D(x0, y0, z0, BH_ORBIT, this.camRotX, this.camRotY);
+        node.projX = proj.x;
+        node.projY = proj.y;
+        node.projZ = proj.z;
+        node.scale = proj.scale;
+        node.isFront = proj.isFront;
 
-        node.el.style.zIndex = '8'; // Behind shadow core and accretion disk
-        node.el.style.transform = `translate3d(${defX.toFixed(1)}px, ${defY.toFixed(1)}px, ${proj.z.toFixed(1)}px) translate(-50%, -50%) scale(${(proj.scale * 0.86 * tangentialStretch).toFixed(3)}) skewX(${shearDeg}deg)`;
+        const r = Math.sqrt(proj.x * proj.x + proj.y * proj.y);
 
-        // SVG Gravitational Refraction filter with green-shifted chromatic aberration
-        node.el.style.filter = 'url(#bh-refraction-filter) blur(1.2px) brightness(0.72)';
-        node.el.style.opacity = isBehindShadow ? '0.04' : (0.38 + (r / R_lens) * 0.42).toFixed(2);
-        node.el.classList.remove('is-front');
-        node.el.classList.add('is-refracted');
-      }
-    });
+        if (isHovered) {
+          node.el.style.zIndex = '999';
+          node.el.style.transform = `translate3d(${proj.x.toFixed(1)}px, ${proj.y.toFixed(1)}px, ${proj.z.toFixed(1)}px) translate(-50%, -50%) scale(1.25)`;
+          node.el.style.filter = 'drop-shadow(0 0 28px rgba(0, 255, 136, 0.75))';
+          node.el.style.opacity = '1.0';
+        } else if (proj.isFront) {
+          node.el.style.zIndex = '35';
+          node.el.style.transform = `translate3d(${proj.x.toFixed(1)}px, ${proj.y.toFixed(1)}px, ${proj.z.toFixed(1)}px) translate(-50%, -50%) scale(${proj.scale.toFixed(3)})`;
+          node.el.style.filter = 'drop-shadow(0 0 16px rgba(0, 255, 136, 0.35))';
+          node.el.style.opacity = '1.0';
+          node.el.classList.add('is-front');
+          node.el.classList.remove('is-refracted');
+        } else {
+          let defX = proj.x;
+          let defY = proj.y;
+          if (r < R_lens && r > 2) {
+            const deflection = Math.pow(R_e / Math.max(r, R_h * 0.90), 1.5) * 16 * this.scaleRatio;
+            defX += (proj.x / r) * deflection;
+            defY += (proj.y / r) * deflection;
+          }
+
+          const angle = Math.atan2(defY, defX);
+          const shearDeg = (Math.sin(angle * 2) * 6).toFixed(1);
+          const tangentialStretch = 1.0 + Math.min(0.35, (R_e / Math.max(r, R_h)) * 0.28);
+          const isBehindShadow = (r < R_h * 0.85);
+
+          node.el.style.zIndex = '8';
+          node.el.style.transform = `translate3d(${defX.toFixed(1)}px, ${defY.toFixed(1)}px, ${proj.z.toFixed(1)}px) translate(-50%, -50%) scale(${(proj.scale * 0.86 * tangentialStretch).toFixed(3)}) skewX(${shearDeg}deg)`;
+          node.el.style.filter = 'url(#bh-refraction-filter) blur(1.2px) brightness(0.72)';
+          node.el.style.opacity = isBehindShadow ? '0.04' : (0.38 + (r / R_lens) * 0.42).toFixed(2);
+          node.el.classList.remove('is-front');
+          node.el.classList.add('is-refracted');
+        }
+      });
+    }
 
     this.animId = requestAnimationFrame(this.animate);
   }

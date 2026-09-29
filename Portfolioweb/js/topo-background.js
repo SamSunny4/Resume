@@ -91,7 +91,7 @@ export class TopoBackground {
     this.container = options.container || document.getElementById('hero-topo-container') || document.getElementById('hero-space-layer');
     this.canvas = options.canvas || null;
     this.theme = options.theme || 'cyber-light'; // 'cyber-light', 'lime-mint', 'ice-cyan', 'ethereal-pearl'
-    this.cellSize = options.cellSize || 20; // Larger cells = fewer, broader contour shapes
+    this.cellSize = options.cellSize || 25; // Optimized cell density: silky curves with ~40% fewer evaluations
     this.lineLevelsCount = options.lineLevelsCount || 5; // Very few lines for maximum cleanliness
     
     // Performance & simulation state
@@ -104,6 +104,9 @@ export class TopoBackground {
     this.grid = null;
     this.levels = [];
     this.simplex = new SimplexNoise2D(0.55);
+    this.pointsMap = new Map();
+    this.adjMap = new Map();
+    this.visitedSet = new Set();
 
     // Dynamic Time & Ambient Drift
     this.time = 0;
@@ -134,12 +137,19 @@ export class TopoBackground {
     // Click Shockwave Ripples
     this.ripples = [];
 
-    // Fewer, broader, gentler peaks — prevents dense contour knots
+    // Fewer, broader, gentler peaks — precomputed squared radius & inverse factors
     this.peaks = [
       { x: 0.22, y: 0.30, vx: 0.00002, vy: 0.00001, radius: 0.50, height: 0.28 },
       { x: 0.75, y: 0.35, vx: -0.00002, vy: -0.00001, radius: 0.48, height: -0.25 },
       { x: 0.45, y: 0.72, vx: 0.00001, vy: -0.00002, radius: 0.52, height: 0.22 }
-    ];
+    ].map(p => ({
+      ...p,
+      radSq28: p.radius * p.radius * 2.8,
+      inv2RadSq: 1 / (2 * p.radius * p.radius)
+    }));
+
+    this.mouseCutoff = this.mouse.radius * this.mouse.radius * 2.8;
+    this.inv2MouseRadSq = 1 / (2 * this.mouse.radius * this.mouse.radius);
 
     // Bind event handlers
     this.onResize = this.onResize.bind(this);
@@ -209,8 +219,8 @@ export class TopoBackground {
       this.levels.push({
         val: val,
         isIndex: isIndex,
-        lineWidth: isIndex ? 0.9 : 0.55,
-        alpha: isIndex ? 0.30 : 0.16
+        lineWidth: isIndex ? 1.4 : 0.95,
+        alpha: isIndex ? 0.65 : 0.42
       });
     }
   }
@@ -218,7 +228,7 @@ export class TopoBackground {
   updateDimensions() {
     this.width = window.innerWidth;
     this.height = window.innerHeight;
-    this.dpr = Math.min(window.devicePixelRatio || 1, 2);
+    this.dpr = Math.min(window.devicePixelRatio || 1, 1.25);
 
     this.canvas.width = Math.floor(this.width * this.dpr);
     this.canvas.height = Math.floor(this.height * this.dpr);
@@ -286,9 +296,8 @@ export class TopoBackground {
       const dx = normX - p.x;
       const dy = normY - p.y;
       const distSq = dx * dx + dy * dy;
-      const radSq = p.radius * p.radius;
-      if (distSq < radSq * 2.8) {
-        h += p.height * Math.exp(-distSq / (2 * radSq));
+      if (distSq < p.radSq28) {
+        h += p.height * Math.exp(-distSq * p.inv2RadSq);
       }
     }
 
@@ -297,9 +306,8 @@ export class TopoBackground {
       const dx = px - this.mouse.x;
       const dy = py - this.mouse.y;
       const distSq = dx * dx + dy * dy;
-      const mRadSq = this.mouse.radius * this.mouse.radius;
-      if (distSq < mRadSq * 2.8) {
-        const mouseFactor = Math.exp(-distSq / (2 * mRadSq));
+      if (distSq < this.mouseCutoff) {
+        const mouseFactor = Math.exp(-distSq * this.inv2MouseRadSq);
         h += this.mouse.strength * mouseFactor;
       }
     }
@@ -327,9 +335,9 @@ export class TopoBackground {
     if (!this.isRunning) return;
 
     // Topographic background is strictly for the landing page.
-    // When user scrolls into deep space (p > 0.20), pause heavy marching squares computation.
+    // When user scrolls into deep space (p > 0.18) or down the page, pause heavy marching squares computation.
     const p = window.AppState?.techSolar?.zoomProgress ?? 0;
-    if (p > 0.20) {
+    if (p > 0.18 || window.scrollY > window.innerHeight * 0.85) {
       this.animId = requestAnimationFrame(this.animate);
       return;
     }
@@ -400,6 +408,7 @@ export class TopoBackground {
     // 5. Extract Contours via Exact Edge-Graph Marching Squares + Spline Smoothing
     ctx.lineCap = 'round';
     ctx.lineJoin = 'round';
+    ctx.shadowBlur = 0; // Disable CPU raster blur filter for max 60fps throughput
 
     for (let l = 0; l < this.levels.length; l++) {
       const lvl = this.levels[l];
@@ -407,18 +416,20 @@ export class TopoBackground {
 
       if (polylines.length > 0) {
         ctx.strokeStyle = lineGradient;
+
+        // High-performance dual-pass stroke: outer luminous aura + inner crisp core
+        // Replaces heavy CPU/GPU raster shadowBlur with instant hardware vector passes
+        const outerWidth = lvl.lineWidth * (lvl.isIndex ? 2.6 : 2.0);
+        const outerAlpha = lvl.alpha * (lvl.isIndex ? 0.38 : 0.22);
+
+        // Pass 1: Soft luminous outer halo
+        ctx.lineWidth = outerWidth;
+        ctx.globalAlpha = outerAlpha;
+        this.renderSmoothedPolylines(ctx, polylines);
+
+        // Pass 2: Crisp inner core filament
         ctx.lineWidth = lvl.lineWidth;
         ctx.globalAlpha = lvl.alpha;
-
-        // Minimal glow — barely perceptible halo
-        if (lvl.isIndex) {
-          ctx.shadowColor = 'rgba(210, 255, 0, 0.12)';
-          ctx.shadowBlur = 4;
-        } else {
-          ctx.shadowColor = 'rgba(210, 255, 0, 0.06)';
-          ctx.shadowBlur = 2;
-        }
-
         this.renderSmoothedPolylines(ctx, polylines);
       }
     }
@@ -441,8 +452,12 @@ export class TopoBackground {
     const hEdge = (i, j) => j * cols + i;
     const vEdge = (i, j) => hOffset + j * (cols + 1) + i;
 
-    const points = new Map();
-    const adj = new Map();
+    const points = this.pointsMap;
+    const adj = this.adjMap;
+    const visited = this.visitedSet;
+    points.clear();
+    adj.clear();
+    visited.clear();
 
     const addPoint = (edgeId, x, y) => {
       if (!points.has(edgeId)) points.set(edgeId, { x, y });
@@ -547,7 +562,6 @@ export class TopoBackground {
       }
     }
 
-    const visited = new Set();
     const polylines = [];
 
     // 1. Trace open paths (starting at boundary/terminal nodes with degree 1)
@@ -639,8 +653,8 @@ export class TopoBackground {
 
     for (let k = 0; k < polylines.length; k++) {
       const item = polylines[k];
-      // 2-pass Chaikin smoothing
-      const pts = this.chaikinSmooth(item.points, item.isClosed, 2);
+      // 1-pass Chaikin smoothing (combined with midpoint splines for silky smooth curves with half the points)
+      const pts = this.chaikinSmooth(item.points, item.isClosed, 1);
       const len = pts.length;
 
       if (item.isClosed) {
@@ -746,12 +760,12 @@ export class TopoBackground {
       case 'cyber-light':
       case 'cyber':
       default: {
-        // Monochromatic dim lime — whispers behind content
+        // Monochromatic luminous lime — weaves elegantly behind hero content
         grad = ctx.createLinearGradient(0, 0, w, h);
-        grad.addColorStop(0.0, 'rgba(210, 255, 0, 0.35)');   // Dim lime
-        grad.addColorStop(0.40, 'rgba(180, 230, 50, 0.28)');  // Muted olive-lime
-        grad.addColorStop(0.75, 'rgba(150, 210, 80, 0.22)');  // Faded sage
-        grad.addColorStop(1.0, 'rgba(130, 200, 100, 0.18)');  // Whisper green
+        grad.addColorStop(0.0, 'rgba(210, 255, 0, 0.75)');   // Radiant lime
+        grad.addColorStop(0.35, 'rgba(180, 240, 60, 0.60)');  // Warm lime
+        grad.addColorStop(0.70, 'rgba(130, 220, 90, 0.45)');  // Sage emerald
+        grad.addColorStop(1.0, 'rgba(90, 200, 130, 0.35)');   // Deep emerald
         break;
       }
     }

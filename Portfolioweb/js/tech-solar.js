@@ -1376,8 +1376,8 @@ export class TechSolarSystem {
       const centerX = this.stageWidth / 2;
       const centerY = this.stageHeight / 2;
 
-      // Performance: skip heavy node/canvas work when layer is fully hidden
-      const techVisible = this.zoomProgress < 0.48;
+      // Performance: skip heavy node/canvas work when layer is fully hidden (e.g. Landing Page)
+      const techVisible = this.zoomProgress > 0.08 && this.zoomProgress < 0.52;
 
       // 3. Update Monumental 3D Center Text Parallax (Tech Stack)
       if (this.centerText && techVisible) {
@@ -1493,20 +1493,16 @@ export class TechSolarSystem {
           node.el.style.transform = transformStr;
           node.el.style.filter = blurPx > 0.4 ? `blur(${blurPx.toFixed(1)}px) brightness(${brightness.toFixed(2)})` : `brightness(${brightness.toFixed(2)})`;
         });
-
-          node.el.style.zIndex = zIndex;
-          node.el.style.opacity = opacity.toFixed(3);
-          node.el.style.transform = transformStr;
-          node.el.style.filter = blurPx > 0.4 ? `blur(${blurPx.toFixed(1)}px) brightness(${brightness.toFixed(2)})` : `brightness(${brightness.toFixed(2)})`;
-        });
       }
 
-      // 5. Draw Canvas Background (Wormhole, Rings & Stars)
-      if (techVisible || this.warpSpeed > 0.1) {
+      // 5. Draw Canvas Background (Wormhole, Rings & Stars) only when needed
+      if (techVisible || (this.warpSpeed > 0.1 && this.zoomProgress > 0.04)) {
         this.renderCanvas(this.camRotX, this.camRotY);
-      } else if (this.ctx) {
-        // Clear canvas when not rendering to free GPU memory
+        this.wasCanvasDrawn = true;
+      } else if (this.ctx && this.wasCanvasDrawn) {
+        // Clear canvas once when exiting view to free GPU memory
         this.ctx.clearRect(0, 0, this.stageWidth, this.stageHeight);
+        this.wasCanvasDrawn = false;
       }
 
       // 8. Update Near-Pointer Tooltip

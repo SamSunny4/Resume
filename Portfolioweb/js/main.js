@@ -55,16 +55,22 @@ export function initMouseTracking() {
 
   const portraitCard = document.getElementById('hero-portrait-card');
 
+  let lastTransform = '';
+
   // Smooth lerp update loop
   function updateMouseCoords() {
     AppState.mouse.x += (AppState.mouse.targetX - AppState.mouse.x) * 0.08;
     AppState.mouse.y += (AppState.mouse.targetY - AppState.mouse.y) * 0.08;
 
-    // Subtle 3D parallax tilt for hero portrait card
-    if (portraitCard && window.innerWidth >= 992) {
+    // Subtle 3D parallax tilt for hero portrait card (only on Landing Page when visible)
+    if (portraitCard && window.innerWidth >= 992 && window.scrollY < window.innerHeight * 0.6) {
       const rotY = (AppState.mouse.x * 6.5).toFixed(2);
       const rotX = (-AppState.mouse.y * 6.5).toFixed(2);
-      portraitCard.style.transform = `perspective(1000px) rotateY(${rotY}deg) rotateX(${rotX}deg) translateZ(0)`;
+      const newTransform = `perspective(1000px) rotateY(${rotY}deg) rotateX(${rotX}deg) translateZ(0)`;
+      if (newTransform !== lastTransform) {
+        portraitCard.style.transform = newTransform;
+        lastTransform = newTransform;
+      }
     }
 
     requestAnimationFrame(updateMouseCoords);
@@ -100,7 +106,7 @@ function bootstrap() {
   const topoBg = initTopoBackground({
     container: heroTopoContainer,
     theme: 'cyber-light',
-    cellSize: 22,
+    cellSize: 28,
     lineLevelsCount: 5,
     speed: 0.00018,
     mouseRadius: 280,

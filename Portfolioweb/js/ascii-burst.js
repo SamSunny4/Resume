@@ -130,6 +130,16 @@ class AsciiBurstEngine {
   }
 
   updateBounds() {
+    if (this.container) {
+      const cr = this.container.getBoundingClientRect();
+      const pad = this.PROXIMITY_RADIUS + 15;
+      this.containerBox = {
+        left: cr.left - pad,
+        right: cr.right + pad,
+        top: cr.top - pad,
+        bottom: cr.bottom + pad
+      };
+    }
     this.particles.forEach(p => {
       const r = p.el.getBoundingClientRect();
       p.cx = r.left + r.width / 2;
@@ -145,8 +155,20 @@ class AsciiBurstEngine {
     // If scrolled past hero during space zoom, skip physics
     if (window.scrollY > window.innerHeight * 0.25) return;
 
-    this.mouseX = e.clientX;
-    this.mouseY = e.clientY;
+    const mx = e.clientX;
+    const my = e.clientY;
+
+    // Fast-path O(1) early rejection: skip checking 50+ individual particle distances
+    // whenever the cursor is outside the expanded proximity envelope
+    if (this.containerBox) {
+      if (mx < this.containerBox.left || mx > this.containerBox.right ||
+          my < this.containerBox.top  || my > this.containerBox.bottom) {
+        return;
+      }
+    }
+
+    this.mouseX = mx;
+    this.mouseY = my;
     this.hasMoved = true;
 
     let activatedAny = false;
