@@ -186,17 +186,6 @@
             </section>
           </div>
 
-          <!-- DISTANT DEEP-SPACE BLACK HOLE BEACON (Gleaming green singularity visible from Tech Stack, approaches during zoom scrolling) -->
-          <div id="space-blackhole-beacon" class="space-blackhole-beacon" role="button" tabindex="0" title="Click to warp to Black Hole Singularity" aria-label="Distant Gravitational Singularity Anomaly">
-            <div class="bh-beacon-aura" aria-hidden="true"></div>
-            <canvas id="bh-distant-canvas" class="bh-distant-canvas"></canvas>
-            <div class="bh-beacon-hud font-mono">
-              <span class="bh-beacon-dot"></span>
-              <span class="bh-beacon-label" id="bh-beacon-label">SINGULARITY ANOMALY · 4.2 LY</span>
-              <span class="bh-beacon-warp-hint">[CLICK TO WARP ↯]</span>
-            </div>
-          </div>
-
         </div>
       </div>
 
@@ -249,94 +238,189 @@
         </div>
       </div>
 
-      <!-- CONTACT SINGULARITY & REALISTIC GREEN BLACK HOLE (End of Website) -->
-      <section id="contact" class="blackhole-contact-section" aria-label="Black Hole Event Horizon Contact Protocol">
+      <!-- CONTACT & TRANSMISSION PROTOCOL -->
+      <section id="contact" class="contact-section" aria-label="Contact and Transmission Protocol">
         
-        <!-- SVG Gravitational Lensing & Refraction Filter -->
-        <svg class="bh-svg-filters" aria-hidden="true" style="position: absolute; width: 0; height: 0; pointer-events: none;">
-          <defs>
-            <filter id="bh-refraction-filter" x="-50%" y="-50%" width="200%" height="200%">
-              <feTurbulence type="fractalNoise" baseFrequency="0.02 0.04" numOctaves="3" result="noise" />
-              <feDisplacementMap in="SourceGraphic" in2="noise" scale="22" xChannelSelector="R" yChannelSelector="G" result="displaced" />
-              <feColorMatrix type="matrix" values="
-                0.7 0   0   0 0
-                0   1.3 0   0 0
-                0   0   0.8 0 0
-                0   0   0   1 0" result="greenShift" />
-              <feGaussianBlur in="greenShift" stdDeviation="0.8" result="blurred" />
-              <feMerge>
-                <feMergeNode in="blurred" />
-                <feMergeNode in="SourceGraphic" opacity="0.35" />
-              </feMerge>
-            </filter>
-          </defs>
-        </svg>
+        <!-- Subtle Ambient Background Glow -->
+        <div class="contact-bg-glow" aria-hidden="true"></div>
 
-        <div class="container blackhole-stage-container">
+        <div class="container contact-container">
           
-          <!-- Section Cosmic Header -->
-          <div class="blackhole-header text-center">
-            <div class="bh-header-badge font-mono">
-              <span class="bh-badge-dot"></span>
-              <span>// FINAL GRAVITATIONAL ANOMALY · EVENT HORIZON NEXUS</span>
+          <!-- Section Header -->
+          <div class="contact-header text-center">
+            <div class="contact-badge font-mono">
+              <span class="contact-badge-dot"></span>
+              <span>// TRANSMISSION MATRIX · INITIATE CONTACT</span>
             </div>
-            <h2 class="blackhole-title font-display">SINGULARITY COMMS</h2>
-            <p class="blackhole-subtitle font-mono text-muted">
-              05 ORBITING CONTACT NODES SUBJECT TO RELATIVISTIC GRAVITATIONAL REFRACTION · HOVER TO ENGAGE TIME DILATION
+            <h2 class="contact-title font-display">LET'S BUILD TOGETHER</h2>
+            <p class="contact-subtitle font-sans text-editorial-muted">
+              Seeking high-impact collaborations in Applied AI, Autonomous Agent Systems, and Scalable Full-Stack Engineering. Open for inquiries, advisory, and engineering roles.
             </p>
           </div>
 
-          <!-- 3D Black Hole & Orbiting Contact Nodes Viewport -->
-          <div class="blackhole-viewport" id="blackhole-viewport">
+          <!-- Contact Cards Grid -->
+          <div class="contact-grid">
             
-            <!-- Ultra-Realistic Photorealistic Relativistic Shader Canvas (General Relativity Raymarching) -->
-            <canvas id="bh-webgl-canvas" class="bh-webgl-canvas"></canvas>
-
-            <!-- Orbiting Contact Icons Container (Nodes pass in front & behind with refraction) -->
-            <div class="bh-orbit-container" id="bh-orbit-container">
-              <!-- Dynamically populated by js/blackhole.js with pure icon badges (no text) -->
-            </div>
-
-          </div>
-
-          <!-- Direct Comms Protocol Quick-Action Bar & Clipboard Toast -->
-          <div class="blackhole-footer-actions font-mono">
-            <div class="bh-direct-links">
-              <a href="mailto:samsunnymodern12@gmail.com" class="bh-action-pill" id="bh-copy-email-btn" title="Click to copy email">
-                <span class="bh-pill-icon">✉</span>
-                <span class="bh-pill-text">samsunnymodern12@gmail.com</span>
-                <span class="bh-pill-tag text-lime">[COPY]</span>
-              </a>
-              <a href="assets/Sam_Sunny_Resume.pdf" target="_blank" class="bh-action-pill" title="View Curriculum Vitae">
-                <span class="bh-pill-icon">↗</span>
-                <span class="bh-pill-text">Sam_Sunny_Resume.pdf</span>
-                <span class="bh-pill-tag text-lime">[PDF]</span>
-              </a>
-              <button id="bh-return-hero-btn" class="bh-action-pill" title="Return to Hero Launchpad">
-                <span class="bh-pill-icon">⤾</span>
-                <span class="bh-pill-text">RETURN TO LAUNCHPAD</span>
-              </button>
-            </div>
-            <div id="bh-clipboard-toast" class="bh-clipboard-toast font-mono" aria-live="polite">
-              ✓ TELEMETRY COPIED TO CLIPBOARD
-            </div>
-          </div>
-
-          <!-- Holographic Floating Near-Pointer Tooltip (Tech-Stack Style) -->
-          <div id="bh-cursor-tooltip" class="bh-cursor-tooltip" aria-hidden="true">
-            <div class="bh-tooltip-badge-row">
-              <div class="bh-tooltip-icon-wrap" id="bh-tooltip-icon-wrap"></div>
-              <div class="bh-tooltip-meta">
-                <span class="bh-tooltip-badge font-mono" id="bh-tooltip-badge">CONTACT PROTOCOL</span>
-                <h4 class="bh-tooltip-title font-display" id="bh-tooltip-title">GITHUB</h4>
+            <!-- Email Card (Primary Feature Card) -->
+            <div class="contact-card contact-card-featured" id="card-email">
+              <div class="contact-card-top">
+                <div class="contact-card-icon" style="color: var(--color-lime);">
+                  <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                    <polyline points="22,6 12,13 2,6"/>
+                  </svg>
+                </div>
+                <span class="contact-card-tag font-mono">// DIRECT TRANSMISSION</span>
+              </div>
+              <div class="contact-card-body">
+                <h3 class="contact-card-title font-display">Direct Dispatch</h3>
+                <p class="contact-card-desc font-sans">Primary inbox for project proposals, technical architecture discussions, and engineering opportunities.</p>
+                <div class="contact-card-value font-mono">samsunnymodern12@gmail.com</div>
+              </div>
+              <div class="contact-card-actions font-mono">
+                <a href="mailto:samsunnymodern12@gmail.com" class="btn-contact-action primary" id="contact-email-link" title="Open email client">
+                  <span>SEND EMAIL ↗</span>
+                </a>
+                <button type="button" class="btn-contact-action secondary copy-btn" data-copy="samsunnymodern12@gmail.com" id="contact-copy-email-btn" title="Copy email address to clipboard">
+                  <span class="copy-label">COPY ADDRESS</span>
+                </button>
               </div>
             </div>
-            <p class="bh-tooltip-handle font-mono" id="bh-tooltip-handle">@SamSunny4</p>
-            <p class="bh-tooltip-desc" id="bh-tooltip-desc">Production repositories, AI models & systems architecture</p>
-            <div class="bh-tooltip-footer font-mono">
-              <span id="bh-tooltip-action" class="text-lime">TRANSMIT PROTOCOL ↗</span>
-              <span class="bh-tooltip-shortcut">[TIME DILATION LOCKED]</span>
+
+            <!-- GitHub Card -->
+            <div class="contact-card" id="card-github">
+              <div class="contact-card-top">
+                <div class="contact-card-icon" style="color: #00FF88;">
+                  <svg viewBox="0 0 24 24" width="26" height="26" fill="currentColor">
+                    <path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/>
+                  </svg>
+                </div>
+                <span class="contact-card-tag font-mono">// SOURCE CODE</span>
+              </div>
+              <div class="contact-card-body">
+                <h3 class="contact-card-title font-display">GitHub</h3>
+                <p class="contact-card-desc font-sans">Open-source repositories, agent architectures, and autonomous AI systems.</p>
+                <div class="contact-card-value font-mono">github.com/SamSunny4</div>
+              </div>
+              <div class="contact-card-actions font-mono">
+                <a href="https://github.com/SamSunny4" target="_blank" rel="noopener noreferrer" class="btn-contact-action primary" id="contact-github-link">
+                  <span>VIEW REPOSITORIES ↗</span>
+                </a>
+              </div>
             </div>
+
+            <!-- LinkedIn Card -->
+            <div class="contact-card" id="card-linkedin">
+              <div class="contact-card-top">
+                <div class="contact-card-icon" style="color: #38BDF8;">
+                  <svg viewBox="0 0 24 24" width="26" height="26" fill="currentColor">
+                    <path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.28 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.75M6.88 8.56a1.68 1.68 0 0 0 1.68-1.68c0-.93-.75-1.69-1.68-1.69a1.69 1.69 0 0 0-1.69 1.69c0 .93.76 1.68 1.69 1.68m1.39 9.94v-8.37H5.5v8.37h2.77z"/>
+                  </svg>
+                </div>
+                <span class="contact-card-tag font-mono">// NETWORK NEXUS</span>
+              </div>
+              <div class="contact-card-body">
+                <h3 class="contact-card-title font-display">LinkedIn</h3>
+                <p class="contact-card-desc font-sans">Professional career network, industry connections, and engineering updates.</p>
+                <div class="contact-card-value font-mono">in/sam-sunny-36b4772bb</div>
+              </div>
+              <div class="contact-card-actions font-mono">
+                <a href="https://www.linkedin.com/in/sam-sunny-36b4772bb/" target="_blank" rel="noopener noreferrer" class="btn-contact-action primary" id="contact-linkedin-link">
+                  <span>CONNECT ON LINKEDIN ↗</span>
+                </a>
+              </div>
+            </div>
+
+            <!-- Resume / CV Card -->
+            <div class="contact-card" id="card-resume">
+              <div class="contact-card-top">
+                <div class="contact-card-icon" style="color: #A7F3D0;">
+                  <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                    <polyline points="14 2 14 8 20 8"/>
+                    <line x1="16" y1="13" x2="8" y2="13"/>
+                    <line x1="16" y1="17" x2="8" y2="17"/>
+                    <polyline points="10 9 9 9 8 9"/>
+                  </svg>
+                </div>
+                <span class="contact-card-tag font-mono">// VERIFIED CREDENTIAL</span>
+              </div>
+              <div class="contact-card-body">
+                <h3 class="contact-card-title font-display">Curriculum Vitae</h3>
+                <p class="contact-card-desc font-sans">Comprehensive overview of systems architecture, hackathon awards, and production skills.</p>
+                <div class="contact-card-value font-mono">Sam_Sunny_Resume.pdf</div>
+              </div>
+              <div class="contact-card-actions font-mono">
+                <a href="assets/Sam_Sunny_Resume.pdf" target="_blank" rel="noopener noreferrer" class="btn-contact-action primary" id="contact-resume-link">
+                  <span>VIEW PDF ↗</span>
+                </a>
+                <a href="assets/Sam_Sunny_Resume.pdf" download="Sam_Sunny_Resume.pdf" class="btn-contact-action secondary" id="contact-download-resume-btn" title="Download resume PDF">
+                  <span>DOWNLOAD</span>
+                </a>
+              </div>
+            </div>
+
+            <!-- Voice / Telemetry Card -->
+            <div class="contact-card" id="card-call">
+              <div class="contact-card-top">
+                <div class="contact-card-icon" style="color: #10B981;">
+                  <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+                  </svg>
+                </div>
+                <span class="contact-card-tag font-mono">// VOICE LINK</span>
+              </div>
+              <div class="contact-card-body">
+                <h3 class="contact-card-title font-display">Voice Telemetry</h3>
+                <p class="contact-card-desc font-sans">Direct line for consultations, strategy conversations, and high-priority contact.</p>
+                <div class="contact-card-value font-mono">+91 8848419770</div>
+              </div>
+              <div class="contact-card-actions font-mono">
+                <a href="tel:+918848419770" class="btn-contact-action primary" id="contact-call-link">
+                  <span>CALL DIRECT ↗</span>
+                </a>
+                <button type="button" class="btn-contact-action secondary copy-btn" data-copy="+918848419770" id="contact-copy-phone-btn" title="Copy phone number to clipboard">
+                  <span class="copy-label">COPY NUMBER</span>
+                </button>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Telemetry Status Bar -->
+          <div class="contact-telemetry font-mono">
+            <div class="telemetry-item">
+              <span class="telemetry-label">// LOCATION:</span>
+              <span class="telemetry-val">KERALA, INDIA [UTC+5:30]</span>
+            </div>
+            <div class="telemetry-separator">/</div>
+            <div class="telemetry-item">
+              <span class="telemetry-label">// STATUS:</span>
+              <span class="telemetry-val text-lime">AVAILABLE FOR HIRE / ADVISORY</span>
+            </div>
+            <div class="telemetry-separator">/</div>
+            <div class="telemetry-item">
+              <span class="telemetry-label">// RESPONSE:</span>
+              <span class="telemetry-val">&lt; 12 HOURS</span>
+            </div>
+          </div>
+
+          <!-- Bottom Footer Navigation & Copyright -->
+          <div class="contact-footer">
+            <button id="contact-return-top-btn" class="stage-nav-btn font-mono" title="Return to Launchpad">
+              ⤾ RETURN TO LAUNCHPAD
+            </button>
+            <div class="contact-copyright font-mono text-muted">
+              <span>DESIGNED & ARCHITECTED BY SAM SUNNY</span>
+              <span class="copyright-dot">·</span>
+              <span>© 2026 ALL RIGHTS RESERVED</span>
+            </div>
+          </div>
+
+          <!-- Toast Notification for Clipboard Copy -->
+          <div id="contact-toast" class="contact-toast font-mono" role="status" aria-live="polite">
+            <span class="toast-dot"></span>
+            <span id="contact-toast-text">COPIED TO CLIPBOARD</span>
           </div>
 
         </div>
@@ -349,6 +433,6 @@
   <!-- Lenis Momentum Smooth Scroll Library -->
   <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.9/dist/lenis.min.js"></script>
   <!-- Main ES6 Module Entry -->
-  <script type="module" src="js/main.js?v=44"></script>
+  <script type="module" src="js/main.js?v=45"></script>
 </body>
 </html>

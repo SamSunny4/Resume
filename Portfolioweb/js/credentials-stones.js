@@ -202,7 +202,7 @@ export class CredentialsStonesEngine {
         <!-- Quick Jump Navigation HUD -->
         <div class="stage-nav-hud">
           <button id="cred-return-projects-btn" class="stage-nav-btn font-mono" title="Return to flagship projects">⤾ RETURN TO PROJECTS</button>
-          <a href="#contact" class="stage-nav-btn font-mono text-lime" id="cred-to-contact-btn" title="Descend to Black Hole Singularity at end of website">DESCEND TO EVENT HORIZON: CONTACT SINGULARITY ↓</a>
+          <a href="#contact" class="stage-nav-btn font-mono text-lime" id="cred-to-contact-btn" title="Proceed to Contact and Transmission Protocol">INITIATE CONTACT PROTOCOL ↓</a>
         </div>
       </div>
 
