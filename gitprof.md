@@ -51,6 +51,11 @@ AI-assisted developmental screening platform combining browser-based computer vi
 🥈 **National 2nd Prize — AI Samasya Hackathon**
 
 
+**[LateLoggy](https://github.com/SamSunny4/LateLoggy)**
+Campus-wide digital late-entry verification system implemented at Muthoot Institute of Technology and Science. Features a tamper-proof live pass with dynamic 15-minute color cycling, real-time clock sync, single-use zero-width watermarking, and role-based faculty dashboards with automated daily digest crons.
+
+`Next.js 16 · Prisma v7 · Supabase · PostgreSQL · Tailwind CSS`
+
 **[InfoGrid](https://github.com/SamSunny4/InfoGrid)**
 Digital signage CMS designed for 43-inch vertical displays. Supports dynamic content publishing, automated feed rotation, QR generation, media management, and an administrative dashboard backed by cloud object storage.
 
@@ -59,10 +64,12 @@ Digital signage CMS designed for 43-inch vertical displays. Supports dynamic con
 
 ### Achievements
 
-🥈 **National 2nd Prize** — AI Samasya Hackathon
+🏆 **NPTEL Elite + Top 2% Topper (92%)** — Introduction to Machine Learning (IIT Kharagpur)
+🥈 **National 2nd Prize** — AI Samasya Hackathon (ICGAIFE 3.0)
+💼 **Commercial Software Sale** — KeyBase v4.0 deployed in retail firm
 🚀 **Bharatiya Antariksh Hackathon 2025** — ISRO × Hack2Skill
 🏢 **Program Representative** — CSE (AI), MITS College Union
-🎓 **NPTEL Elite** — Python for Data Science
+🎓 **NPTEL Elite** — Python for Data Science (IIT Madras)
 
 
 > **Building useful things with AI and software.**

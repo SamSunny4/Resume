@@ -1,0 +1,125 @@
+% ATS-friendly resume for Sam Sunny
+\documentclass[a4paper,10pt]{article}
+
+\usepackage[margin=0.58in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[sfdefault]{roboto}
+\usepackage[english]{babel}
+\usepackage{titlesec}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+\usepackage{iftex}
+\ifPDFTeX
+  \input{glyphtounicode}
+  \pdfgentounicode=1
+\fi
+
+\pagestyle{empty}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0pt}
+\urlstyle{same}
+\raggedright
+
+\titleformat{\section}{\large\bfseries}{}{0em}{}[\titlerule]
+\titlespacing*{\section}{0pt}{8pt}{4pt}
+
+\setlist[itemize]{leftmargin=0.17in, itemsep=1pt, topsep=2pt, parsep=0pt, partopsep=0pt}
+
+\newcommand{\project}[3]{%
+  \noindent\textbf{#1}\hfill{\small #2}\par
+  {\small\emph{#3}}\par\vspace{-2pt}%
+}
+\newcommand{\entry}[2]{%
+  \noindent\textbf{#1}\hfill{\small #2}\par
+}
+
+\begin{document}
+
+\begin{center}
+  {\LARGE\textbf{Sam Sunny}}\\[3pt]
+  {\small AI and Software Developer}\\[4pt]
+  {\small
+    +91-8078748831 \textbar{}
+    \href{mailto:samsunnymodern12@gmail.com}{samsunnymodern12@gmail.com} \textbar{}
+    Kerala, India\\[2pt]
+    \href{https://www.linkedin.com/in/sam-sunny-36b4772bb/}{linkedin.com/in/sam-sunny} \textbar{}
+    \href{https://github.com/SamSunny4}{github.com/SamSunny4}
+  }
+\end{center}
+\vspace{-7pt}
+
+\section{Summary}
+Computer Science and Engineering (Artificial Intelligence) undergraduate building AI, web, and systems software, with deployed projects in campus verification and retail operations.
+
+\section{Education}
+\entry{Muthoot Institute of Technology and Science (MITS)}{Kochi, Kerala}
+{B.Tech. in Computer Science and Engineering (Artificial Intelligence) \hfill 2024--2028}\par
+{CGPA: 8.92/10 (through Semester 4)}\par
+\entry{CBSE Class XII, Science}{2024}
+{95\%}\par
+
+\section{Technical Skills}
+\small
+\textbf{Languages:} Rust, Kotlin, Java, Python, JavaScript, TypeScript, C\#, C, SQL, HTML, CSS\\
+\textbf{Frameworks:} Next.js, React, Prisma ORM, Node.js, Express.js, Jetpack Compose, Flask, Fastify, Tailwind CSS, MediaPipe, Three.js\\
+\textbf{Databases:} PostgreSQL (Supabase), Neo4j, MongoDB, H2, SQLite\\
+\textbf{Tools and protocols:} Git, GitHub, VS Code, Docker, Wi-Fi Direct, BLE, Vercel, REST APIs, Linux, Windows\\
+\textbf{Focus areas:} Artificial intelligence, full-stack development, systems programming, data analytics
+\normalsize
+
+\section{Projects}
+\project{LateLoggy -- Campus Late Entry Verification System}{2026}{Next.js, Prisma, Supabase, Tailwind CSS}
+\begin{itemize}
+  \item Deployed a campus verification platform at MITS, replacing paper late-entry registers with QR check-ins for students and faculty.
+  \item Built rotating QR passes with 15-minute color changes, synchronized verification, and institutional Google sign-in; added faculty filters, CSV exports, and scheduled email digests.
+\end{itemize}
+
+\project{KeyBase -- Key Management System}{Version 4.0, deployed}{Java, Swing, H2, ZXing}
+\begin{itemize}
+  \item Built and commercially sold a desktop system used by a retail key shop for customer records, key-tag tracking, and webcam photo capture, backed by an embedded H2 database.
+  \item Added sales charts, payment filters, CSV exports, and thermal report printing; packaged a portable installer with a bundled Java runtime.
+\end{itemize}
+
+\project{ShareDash -- Multipath File Transfer}{August 2026}{Rust, Kotlin, Android, Windows Runtime, BLE}
+\begin{itemize}
+  \item Built a local Windows-to-Android transfer system using USB 3.x and Wi-Fi Direct concurrently, with reported transfer speeds of 78--100+ MB/s and no cloud relay.
+  \item Developed BLE-based SoftAP setup and connection negotiation; implemented adaptive chunking, AES-256-GCM encryption, BLAKE3 checksums, and direct-offset file writes.
+\end{itemize}
+
+\project{Leadis -- AI Developmental Screening Platform}{2025}{Next.js, MediaPipe, Flask, scikit-learn}
+\begin{itemize}
+  \item Built an AI-assisted early-childhood screening prototype combining speech, pose, and gamified motor tasks.
+  \item Integrated browser-based MediaPipe with a Flask machine-learning service for behavioral scoring and adaptive task paths.
+\end{itemize}
+
+\project{Blockchain Transaction Graph Explorer}{}{Next.js, Fastify, Neo4j, Cytoscape.js, Three.js}
+\begin{itemize}
+  \item Built a transaction investigation tool to trace multi-hop token transfers and inspect entity clusters through 2D and 3D graph views.
+  \item Implemented graph analysis to surface cyclic flows, unusual transfer velocity, wallet risk signals, and shortest paths.
+\end{itemize}
+
+\section{Awards and Achievements}
+\begin{itemize}
+  \item \textbf{NPTEL Elite + Top 2\% -- Introduction to Machine Learning} (September 2026): 92\% overall; ranked in the top 2\% of 8,541 certified candidates, IIT Kharagpur.
+  \item \textbf{Second Prize, ICGAIFE 3.0 AI Samasya National Hackathon} (January 2026): placed among 30 finalist teams; INR 30,000 award.
+  \item \textbf{Bharatiya Antariksh Hackathon 2025}: Certificate of Acknowledgement from ISRO and Hack2Skill.
+  \item \textbf{KEAM 2024}: State Rank 3331 in the Kerala Engineering Architecture Medical entrance examination.
+\end{itemize}
+
+\section{Certifications}
+\begin{itemize}
+  \item Introduction to Machine Learning -- NPTEL, IIT Kharagpur; Elite + Top 2\% (92\%, September 2026).
+  \item Python for Data Science -- NPTEL, IIT Madras; Elite grade (73\%).
+  \item MERN Stack -- End-to-End Project Lifecycle -- Zero Pixels Technologies (July 2026).
+  \item Cambridge Linguaskill English -- CEFR B2 (score: 175).
+\end{itemize}
+
+\section{Leadership and Activities}
+\begin{itemize}
+  \item \textbf{Program Representative, CSE (AI), MITS College Union} (2025--2026): represented the program; received a Certificate of Appreciation from the Principal.
+  \item \textbf{Class Representative, S3 and S4} (2025--2026): coordinated academic communication and student feedback between students and faculty.
+  \item \textbf{Organizer, Synergia Hackathon} (2026): coordinated registrations, teams, judging logistics, and event execution.
+  \item \textbf{Industrial Visit Coordinator, MITS} (2025): co-coordinated a three-day visit, including student logistics and schedules.
+\end{itemize}
+
+\end{document}
