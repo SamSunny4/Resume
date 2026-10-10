@@ -83,42 +83,43 @@ export function initContactSection() {
     });
   });
 
-  // Return to top / Launchpad handler
-  const returnTopBtn = document.getElementById('contact-return-top-btn');
-  if (returnTopBtn) {
-    returnTopBtn.addEventListener('click', (e) => {
-      e.preventDefault();
-      if (window.AppState && window.AppState.lenis) {
-        window.AppState.lenis.scrollTo(0, { duration: 1.4 });
-      } else {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-      }
-    });
-  }
 
-  // Interactive subtle 3D card tilt on desktop
-  const cards = contactSection.querySelectorAll('.contact-card');
+
+  // Interactive subtle 3D cartridge tilt on desktop (Matching high-end editorial feel)
+  const cartridges = contactSection.querySelectorAll('.contact-cartridge');
   if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
-    cards.forEach((card) => {
-      card.addEventListener('mousemove', (e) => {
-        const rect = card.getBoundingClientRect();
+    cartridges.forEach((cartridge) => {
+      cartridge.addEventListener('mousemove', (e) => {
+        const rect = cartridge.getBoundingClientRect();
         const x = e.clientX - rect.left;
         const y = e.clientY - rect.top;
         const centerX = rect.width / 2;
         const centerY = rect.height / 2;
-        const rotateX = ((y - centerY) / centerY) * -4;
-        const rotateY = ((x - centerX) / centerX) * 5;
+        const rotateX = ((y - centerY) / centerY) * -6;
+        const rotateY = ((x - centerX) / centerX) * 6;
 
-        card.style.transform = `perspective(1000px) rotateX(${rotateX.toFixed(2)}deg) rotateY(${rotateY.toFixed(2)}deg) translateY(-4px)`;
+        cartridge.style.transform = `perspective(900px) rotateX(${rotateX.toFixed(2)}deg) rotateY(${rotateY.toFixed(2)}deg) translateY(-5px) scale3d(1.015, 1.015, 1.015)`;
       });
 
-      card.addEventListener('mouseleave', () => {
-        card.style.transform = '';
+      cartridge.addEventListener('mouseleave', () => {
+        cartridge.style.transform = '';
       });
     });
+
+    // Subtle cursor magnetic parallax for the monumental title
+    const title = document.getElementById('contact-monumental-heading');
+    if (title) {
+      window.addEventListener('mousemove', (e) => {
+        if (contactSection.getBoundingClientRect().top < window.innerHeight && contactSection.getBoundingClientRect().bottom > 0) {
+          const normX = (e.clientX / window.innerWidth) * 2 - 1;
+          const normY = (e.clientY / window.innerHeight) * 2 - 1;
+          title.style.transform = `translate3d(${(normX * 6).toFixed(1)}px, ${(normY * 4).toFixed(1)}px, 0)`;
+        }
+      }, { passive: true });
+    }
   }
 
-  console.log('[Contact] Transmission protocol initialized.');
+  console.log('[Contact] Monumental transmission protocol initialized.');
 
   return {
     showToast,

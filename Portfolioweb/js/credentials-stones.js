@@ -195,11 +195,20 @@ export class CredentialsMobiusEngine {
     this.isInViewport  = true;
     this.isTriggered   = false;
 
-    // ── 3D Circular Orbit Geometry (Viewed at an isometric perspective angle) ──
-    this.orbitRadiusX   = 530;   // Wide horizontal radius in 3D space
-    this.orbitRadiusZ   = 290;   // Deep Z distance into space
-    this.orbitPitchDeg  = 26.0;  // Isometric camera elevation pitch angle (~26°)
-    this.orbitYawDeg    = -6.0;  // Subtle artistic yaw tilt
+    // ── 3D Infinity Lemniscate Belt Geometry (Matching Reference Image) ──
+    this.orbitRadiusX   = 540;   // Infinity belt width radius
+    this.orbitRadiusZ   = 340;   // Infinity belt depth radius
+    this.orbitPitchDeg  = 18.0;  // Isometric camera elevation pitch angle (~18°)
+    this.orbitYawDeg    = 0.0;   // Clean horizontal belt alignment
+
+    // ── Infinity Circuit Belt Canvas References & Geometry ──
+    this.beltCanvas    = null;
+    this.beltCtx       = null;
+    this.beltWidth     = 0;
+    this.beltHeight    = 0;
+    this.curvePoints   = [];
+    this.arcLengths    = [0];
+    this.totalCurveLen = 2600;
 
     // ── Dynamics & Momentum ──
     this.autoAngle      = 0;
@@ -207,7 +216,7 @@ export class CredentialsMobiusEngine {
     this.dragVelocity   = 0;
     this.isDragging     = false;
     this.touchStartX    = 0;
-    this.baseSpeed      = 0.0032; // Natural celestial speed
+    this.baseSpeed      = 0.0028; // Smooth cybernetic conveyor speed
 
     // ── Time-Dilation (Speed Control) ──
     this.speedFactor       = 1.0;
@@ -262,13 +271,15 @@ export class CredentialsMobiusEngine {
 
         <!-- 3D Isometric Orbit Viewport Stage -->
         <div class="orbit3d-stage" id="orbit3d-stage" role="region" aria-label="3D Credentials Orbit Carousel">
+          <!-- Luminous Glowing Infinity Circuit Belt Canvas (Matches Reference Image) -->
+          <canvas id="orbit3d-belt-canvas" class="orbit3d-belt-canvas" aria-hidden="true"></canvas>
           <div class="orbit3d-ring" id="orbit3d-ring"></div>
         </div>
 
         <!-- Navigation HUD -->
         <div class="stage-nav-hud">
           <button id="cred-return-projects-btn" class="stage-nav-btn font-mono" title="Return to flagship projects">⤾ RETURN TO PROJECTS</button>
-          <a href="#contact" class="stage-nav-btn font-mono text-lime" id="cred-to-contact-btn" title="Proceed to Contact">INITIATE CONTACT PROTOCOL ↓</a>
+          <button id="cred-to-contact-btn" class="stage-nav-btn font-mono text-lime" title="Zoom warp to Contact">WARP TO TRANSMISSION MATRIX ↯</button>
         </div>
       </div>
 
@@ -301,6 +312,8 @@ export class CredentialsMobiusEngine {
     this.stage        = document.getElementById('orbit3d-stage');
     this.stageWrapper = document.getElementById('orbit3d-wrapper');
     this.orbitRing    = document.getElementById('orbit3d-ring');
+    this.beltCanvas   = document.getElementById('orbit3d-belt-canvas');
+    this.beltCtx      = this.beltCanvas ? this.beltCanvas.getContext('2d') : null;
 
     this.lightbox          = document.getElementById('orbit3d-lightbox');
     this.lightboxImg       = document.getElementById('orbit3d-lightbox-img');
@@ -328,10 +341,11 @@ export class CredentialsMobiusEngine {
     if (contactBtn) {
       contactBtn.addEventListener('click', (e) => {
         e.preventDefault();
-        const cs = document.getElementById('contact');
-        if (cs) {
-          if (window.AppState?.lenis) window.AppState.lenis.scrollTo(cs, { duration: 1.8 });
-          else cs.scrollIntoView({ behavior: 'smooth' });
+        if (window.AppState?.techSolar) {
+          window.AppState.techSolar.triggerContactZoom();
+        } else {
+          const cs = document.getElementById('contact');
+          if (cs) cs.scrollIntoView({ behavior: 'smooth' });
         }
       });
     }
@@ -364,7 +378,7 @@ export class CredentialsMobiusEngine {
       // Render actual certificate logos
       const logosHTML = cert.logos.map(k => renderCertificateLogo(k)).join('');
 
-      el.innerHTML = `
+      const cardContent = `
         <div class="orbit3d-card-inner">
           <!-- Top Row: Authentic Analyzed Logos + Verified Status Pill -->
           <div class="orbit3d-card-top">
@@ -394,7 +408,7 @@ export class CredentialsMobiusEngine {
               </div>
             </div>
 
-            <!-- Right: Golden Rosette Seal Stamp (Matches reference image) -->
+            <!-- Right: Golden Rosette Seal Stamp -->
             <div class="orbit3d-rosette-wrap" title="Verified Credential Seal">
               <svg class="rosette-svg" viewBox="0 0 36 36" fill="none" aria-hidden="true" style="color: ${cert.accent};">
                 <circle cx="18" cy="18" r="16" stroke="currentColor" stroke-width="1.2" stroke-dasharray="2.5 2" opacity="0.6"/>
@@ -416,6 +430,12 @@ export class CredentialsMobiusEngine {
             <span>CLICK TO REVEAL FULL CERTIFICATE ↗</span>
           </div>
         </div>
+      `;
+
+      // Two-sided card with identical content on both faces (no flip needed when orbiting to back)
+      el.innerHTML = `
+        <div class="orbit3d-card-face orbit3d-card-front">${cardContent}</div>
+        <div class="orbit3d-card-face orbit3d-card-back">${cardContent}</div>
       `;
 
       const basePhase = (index / total) * Math.PI * 2;
@@ -527,22 +547,225 @@ export class CredentialsMobiusEngine {
     const w = window.innerWidth;
 
     if (w < 480) {
-      this.orbitRadiusX  = 230;
-      this.orbitRadiusZ  = 145;
-      this.orbitPitchDeg = 24.0;
+      this.orbitRadiusX  = 260;
+      this.orbitRadiusZ  = 180;
+      this.orbitPitchDeg = 18.0;
     } else if (w < 768) {
-      this.orbitRadiusX  = 340;
-      this.orbitRadiusZ  = 195;
-      this.orbitPitchDeg = 25.0;
+      this.orbitRadiusX  = 360;
+      this.orbitRadiusZ  = 240;
+      this.orbitPitchDeg = 18.0;
     } else if (w < 1200) {
       this.orbitRadiusX  = 460;
-      this.orbitRadiusZ  = 250;
-      this.orbitPitchDeg = 26.0;
+      this.orbitRadiusZ  = 300;
+      this.orbitPitchDeg = 18.0;
     } else {
       this.orbitRadiusX  = 540;
-      this.orbitRadiusZ  = 295;
-      this.orbitPitchDeg = 27.0;
+      this.orbitRadiusZ  = 350;
+      this.orbitPitchDeg = 18.0;
     }
+
+    if (this.beltCanvas && this.stage) {
+      const rect = this.stage.getBoundingClientRect();
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      this.beltWidth = rect.width || window.innerWidth;
+      this.beltHeight = rect.height || 620;
+      this.beltCanvas.width = Math.round(this.beltWidth * dpr);
+      this.beltCanvas.height = Math.round(this.beltHeight * dpr);
+      if (this.beltCtx) {
+        this.beltCtx.setTransform(1, 0, 0, 1, 0, 0);
+        this.beltCtx.scale(dpr, dpr);
+      }
+    }
+
+    this.computeInfinityCurve();
+  }
+
+  /* ================================================================
+   *  3D INFINITY LEMNISCATE CURVE & 3D PROJECTION ENGINE
+   * ================================================================ */
+
+  computeInfinityCurve() {
+    const N = 400;
+    this.curvePoints = [];
+    this.arcLengths = [0];
+    let totalLen = 0;
+
+    for (let i = 0; i < N; i++) {
+      const u = (i / N) * Math.PI * 2;
+      const x = this.orbitRadiusX * Math.sin(u);
+      const z = (this.orbitRadiusZ * 0.52) * Math.sin(2 * u);
+      const y = 20 * Math.cos(u); // 3D overpass/underpass height at center crossing
+
+      const dx = this.orbitRadiusX * Math.cos(u);
+      const dz = (this.orbitRadiusZ * 0.52) * 2 * Math.cos(2 * u);
+
+      // Normal perpendicular to track
+      const nx = dz;
+      const nz = -dx;
+      const rotY = Math.atan2(nx, nz) * (180 / Math.PI);
+
+      this.curvePoints.push({ x, y, z, rotY });
+
+      if (i > 0) {
+        const prev = this.curvePoints[i - 1];
+        totalLen += Math.hypot(x - prev.x, z - prev.z);
+        this.arcLengths.push(totalLen);
+      }
+    }
+
+    const p0 = this.curvePoints[0];
+    const pLast = this.curvePoints[N - 1];
+    totalLen += Math.hypot(p0.x - pLast.x, p0.z - pLast.z);
+    this.arcLengths.push(totalLen);
+    this.totalCurveLen = totalLen;
+  }
+
+  getPointAtDistance(dist) {
+    if (!this.curvePoints || this.curvePoints.length === 0) return { x: 0, y: 0, z: 0, rotY: 0 };
+    const N = this.curvePoints.length;
+    let d = ((dist % this.totalCurveLen) + this.totalCurveLen) % this.totalCurveLen;
+
+    let low = 0, high = N;
+    while (low < high) {
+      const mid = (low + high) >> 1;
+      if (this.arcLengths[mid] < d) low = mid + 1;
+      else high = mid;
+    }
+    const idx = Math.max(0, Math.min(N - 1, low));
+    const p1 = this.curvePoints[idx];
+    const p0 = this.curvePoints[(idx - 1 + N) % N];
+    const len0 = this.arcLengths[(idx - 1 + N) % N];
+    const len1 = this.arcLengths[idx];
+    const span = len1 - len0 || 1;
+    const factor = Math.max(0, Math.min(1, (d - len0) / span));
+
+    return {
+      x: p0.x + (p1.x - p0.x) * factor,
+      y: p0.y + (p1.y - p0.y) * factor,
+      z: p0.z + (p1.z - p0.z) * factor,
+      rotY: p0.rotY + (p1.rotY - p0.rotY) * factor,
+    };
+  }
+
+  project(x, y, z, cx, cy, pitchRad, yawRad) {
+    const cosY = Math.cos(yawRad);
+    const sinY = Math.sin(yawRad);
+    const cosX = Math.cos(pitchRad);
+    const sinX = Math.sin(pitchRad);
+
+    const x1 = x * cosY + z * sinY;
+    const y1 = y;
+    const z1 = -x * sinY + z * cosY;
+
+    const x2 = x1;
+    const y2 = y1 * cosX - z1 * sinX;
+    const z2 = y1 * sinX + z1 * cosX;
+
+    const scale = 1400 / (1400 - z2);
+    return {
+      x: cx + x2 * scale,
+      y: cy + y2 * scale,
+      z: z2,
+      scale
+    };
+  }
+
+  drawInfinityBelt(pitchDeg, yawDeg, time) {
+    if (!this.beltCtx || !this.beltWidth || !this.beltHeight) return;
+    const ctx = this.beltCtx;
+    const W = this.beltWidth;
+    const H = this.beltHeight;
+    const cx = W / 2;
+    const cy = H / 2;
+
+    ctx.clearRect(0, 0, W, H);
+
+    const pitchRad = (pitchDeg * Math.PI) / 180;
+    const yawRad   = (yawDeg * Math.PI) / 180;
+
+    // 5 parallel glowing neon circuit bus lanes (matches reference image)
+    const lanes = [-20, -10, 0, 10, 20];
+    const N = 100;
+
+    ctx.save();
+    ctx.lineCap = 'round';
+    ctx.lineJoin = 'round';
+
+    // 1. Multi-lane continuous glowing circuit bus tracks
+    lanes.forEach((laneOffset, laneIdx) => {
+      ctx.beginPath();
+      for (let i = 0; i <= N; i++) {
+        const u = (i / N) * Math.PI * 2;
+        const x = this.orbitRadiusX * Math.sin(u);
+        const z = (this.orbitRadiusZ * 0.52) * Math.sin(2 * u);
+        const y = 20 * Math.cos(u) + laneOffset;
+
+        const p = this.project(x, y, z, cx, cy, pitchRad, yawRad);
+        if (i === 0) ctx.moveTo(p.x, p.y);
+        else ctx.lineTo(p.x, p.y);
+      }
+      ctx.closePath();
+
+      const isCenter = (laneIdx === 2);
+      ctx.strokeStyle = isCenter ? 'rgba(210, 255, 0, 0.85)' : 'rgba(210, 255, 0, 0.48)';
+      ctx.lineWidth = isCenter ? 2.2 : 1.4;
+      ctx.shadowColor = '#D2FF00';
+      ctx.shadowBlur = isCenter ? 12 : 6;
+      ctx.stroke();
+    });
+
+    // 2. PCB Circuit Solder Vias / circular pads along the tracks
+    const viaCount = 18;
+    for (let v = 0; v < viaCount; v++) {
+      const u = (v / viaCount) * Math.PI * 2;
+      const x = this.orbitRadiusX * Math.sin(u);
+      const z = (this.orbitRadiusZ * 0.52) * Math.sin(2 * u);
+      const laneOffset = lanes[v % lanes.length];
+      const y = 20 * Math.cos(u) + laneOffset;
+
+      const p = this.project(x, y, z, cx, cy, pitchRad, yawRad);
+
+      // Outer metallic pad ring
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, Math.max(2, 4.0 * p.scale), 0, Math.PI * 2);
+      ctx.fillStyle = 'rgba(10, 20, 12, 0.95)';
+      ctx.fill();
+      ctx.strokeStyle = '#D2FF00';
+      ctx.lineWidth = 1.2;
+      ctx.shadowColor = '#D2FF00';
+      ctx.shadowBlur = 6;
+      ctx.stroke();
+
+      // Solder hole core
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, Math.max(1, 1.8 * p.scale), 0, Math.PI * 2);
+      ctx.fillStyle = '#D2FF00';
+      ctx.shadowBlur = 10;
+      ctx.fill();
+    }
+
+    // 3. Animated electric signal pulses running along the ribbon
+    const pulseCount = 8;
+    const pulseSpeed = 0.00032;
+    for (let p = 0; p < pulseCount; p++) {
+      const pulseU = ((time * pulseSpeed + (p / pulseCount) * Math.PI * 2) % (Math.PI * 2));
+      const laneOffset = lanes[p % lanes.length];
+      const x = this.orbitRadiusX * Math.sin(pulseU);
+      const z = (this.orbitRadiusZ * 0.52) * Math.sin(2 * pulseU);
+      const y = 20 * Math.cos(pulseU) + laneOffset;
+
+      const pt = this.project(x, y, z, cx, cy, pitchRad, yawRad);
+
+      ctx.beginPath();
+      ctx.arc(pt.x, pt.y, Math.max(2, 3.2 * pt.scale), 0, Math.PI * 2);
+      ctx.fillStyle = '#FFFFFF';
+      ctx.shadowColor = '#D2FF00';
+      ctx.shadowBlur = 14;
+      ctx.fill();
+    }
+
+    ctx.restore();
+  }
   }
 
   trigger(forceImmediate = false) {
@@ -603,77 +826,53 @@ export class CredentialsMobiusEngine {
     let closestCard = null;
     let maxZ = -Infinity;
 
-    // ── 3D Circular Orbit Geometry (Not Tidally Locked) ──
-    this.cards.forEach((card) => {
-      const angle = card.theta + totalAngle;
+    // ── 3D Infinity Belt Geometry (Arc-length Parameterized) ──
+    this.cards.forEach((card, i) => {
+      // Uniform distance spacing along the infinity loop
+      const phaseOffset = (i / this.cards.length) * this.totalCurveLen;
+      const angleDist   = (totalAngle * this.totalCurveLen) / (2 * Math.PI);
+      const targetDist  = phaseOffset + angleDist;
 
-      const sinA = Math.sin(angle);
-      const cosA = Math.cos(angle);
+      const pt = this.getPointAtDistance(targetDist);
 
-      // Positions on circular 3D plane
-      const x = sinA * this.orbitRadiusX;
-      const z = cosA * this.orbitRadiusZ;
+      card.x    = pt.x;
+      card.y    = pt.y;
+      card.z    = pt.z;
+      card.rotY = pt.rotY;
 
-      // Vertical stadium contour: front is lower, back is higher
-      const y = -cosA * (this.orbitRadiusZ * 0.22);
-
-      // NON-TIDALLY LOCKED:
-      // Cards stand upright along the curve of the circle and turn with the circle's curvature!
-      // In front (sinA ≈ 0): card faces forward toward the camera.
-      // On sides (sinA ≈ ±1): card angles sharply inward following the ring curve.
-      // In back (cosA ≈ -1): card curves around the far perimeter.
-      const rotY = -sinA * 64;
-      const rotX = -cosA * 14;
-
-      card.x    = x;
-      card.y    = y;
-      card.z    = z;
-      card.rotY = rotY;
-      card.rotX = rotX;
-
-      if (z > maxZ) {
-        maxZ = z;
+      if (pt.z > maxZ) {
+        maxZ = pt.z;
         closestCard = card;
       }
     });
 
-    // ── Render 3D Cards with Far-Side Depth-Of-Field Blur ──
+    // ── Render 3D Smoked Glass Cards (Double-sided with Identical Content) ──
+    const maxZBound = this.orbitRadiusZ * 0.52;
     this.cards.forEach((card) => {
       const z = card.z;
-
-      // Depth normalization: 0 (far-side back) to 1 (front spotlight)
-      const depthNorm = (z + this.orbitRadiusZ) / (2 * this.orbitRadiusZ);
+      const depthNorm = Math.max(0, Math.min(1, (z + maxZBound) / (2 * maxZBound)));
 
       const isHovered = (this.hoveredCard === card);
-      const isFront   = (card === closestCard && depthNorm > 0.88);
+      const isFront   = (card === closestCard && depthNorm > 0.80);
 
-      // Scale: 0.62 in far back → 1.18 in front spotlight
-      const baseScale  = 0.62 + depthNorm * 0.54;
-      const finalScale = isHovered ? baseScale * 1.15 : baseScale;
+      const baseScale  = 0.88 + depthNorm * 0.22;
+      const finalScale = isHovered ? baseScale * 1.12 : (isFront ? baseScale * 1.05 : baseScale);
 
-      // Opacity: 0.22 far back → 1.0 front
-      const opacity = isHovered ? 1.0 : (0.22 + Math.pow(depthNorm, 1.4) * 0.78);
+      const opacity = isHovered ? 1.0 : (0.76 + depthNorm * 0.24);
+      const zIndex  = isHovered ? 999 : Math.round(10 + depthNorm * 90);
 
-      // Z-Index layering
-      const zIndex = isHovered ? 999 : Math.round(10 + depthNorm * 90);
-
-      // FAR-SIDE BLURRED AWAY:
-      // Cards on the far side (depthNorm < 0.45) receive heavy atmospheric depth-of-field blur!
-      let blurPx = 0;
-      if (!isHovered && depthNorm < 0.45) {
-        blurPx = ((0.45 - depthNorm) * 20).toFixed(1);
-      }
-
-      // Electric-lime glowing spotlight on the front active card
+      // Highlight radiant electric-lime glowing border on front active card
       if (isFront) card.el.classList.add('is-front');
       else card.el.classList.remove('is-front');
 
-      // 3D Matrix Transform
-      card.el.style.transform = `translate3d(${card.x.toFixed(1)}px, ${card.y.toFixed(1)}px, ${card.z.toFixed(1)}px) rotateY(${card.rotY.toFixed(1)}deg) rotateX(${card.rotX.toFixed(1)}deg) scale(${finalScale.toFixed(3)})`;
+      card.el.style.transform = `translate3d(${card.x.toFixed(1)}px, ${card.y.toFixed(1)}px, ${card.z.toFixed(1)}px) rotateY(${card.rotY.toFixed(1)}deg) scale(${finalScale.toFixed(3)})`;
       card.el.style.zIndex    = zIndex;
       card.el.style.opacity   = opacity.toFixed(3);
-      card.el.style.filter    = blurPx > 0 ? `blur(${blurPx}px)` : 'none';
+      card.el.style.filter    = 'none';
     });
+
+    // Draw glowing 3D circuit tracks and electron pulses on the infinity belt canvas
+    this.drawInfinityBelt(totalPitch, totalYaw, this.time);
 
     this.animId = requestAnimationFrame(this.animate);
   }

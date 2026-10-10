@@ -102,6 +102,8 @@ html {
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
   scroll-behavior: auto; /* Lenis controls smooth scrolling */
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
 }
 
 body {
@@ -112,6 +114,24 @@ body {
   color: var(--color-text-white);
   selection-background-color: var(--color-lime);
   selection-color: var(--color-card-black);
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+}
+
+/* Globally Hide Scrollbar while keeping full scroll functionality */
+html,
+body,
+* {
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+}
+
+html::-webkit-scrollbar,
+body::-webkit-scrollbar,
+*::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
 }
 
 ::selection {
@@ -1196,11 +1216,11 @@ html.lenis, html.lenis body {
    Architectural Stage: Deep space zoom from Hero into 3D Solar Tech Universe
    ========================================================================== */
 
-/* Outer scroll track for smooth cosmic travel through space, wormhole, projects & credentials (700vh scroll distance) */
+/* Outer scroll track for smooth cosmic travel through space, wormhole, projects, credentials & contact (920vh scroll distance) */
 .space-stage-track {
   position: relative;
   width: 100%;
-  height: 700vh;
+  height: 920vh;
 }
 
 /* Sticky 100vh spatial viewport stage */
@@ -2009,7 +2029,8 @@ html.lenis, html.lenis body {
     .hero-space-layer,
     .tech-space-layer,
     .projects-space-layer,
-    .credentials-space-layer {
+    .credentials-space-layer,
+    .contact-space-layer {
       height: 100dvh !important;
       min-height: 100dvh !important;
     }
@@ -2261,6 +2282,17 @@ html.lenis, html.lenis body {
   cursor: grabbing;
 }
 
+/* Glowing 3D Infinity Circuit Belt Canvas */
+.orbit3d-belt-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+}
+
 /* 3D Ring Anchor (Tilted at isometric camera angle) */
 .orbit3d-ring {
   position: absolute;
@@ -2271,9 +2303,10 @@ html.lenis, html.lenis body {
   transform-style: preserve-3d;
   will-change: transform;
   pointer-events: none;
+  z-index: 2;
 }
 
-/* Individual 3D Certification Card (Not Tidally Locked - Curves with Ring) */
+/* Individual 3D Certification Card (Infinity belt conveyor cartridge) */
 .orbit3d-card {
   position: absolute;
   top: 0;
@@ -2282,37 +2315,59 @@ html.lenis, html.lenis body {
   height: 165px;
   margin-left: -127px;
   margin-top:  -82px;
-  border-radius: 16px;
-  background: linear-gradient(145deg, rgba(16, 26, 16, 0.94) 0%, rgba(8, 13, 8, 0.97) 100%);
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  box-shadow: 0 16px 45px rgba(0, 0, 0, 0.85);
   transform-style: preserve-3d;
-  backface-visibility: hidden;
   cursor: pointer;
   pointer-events: auto;
+  overflow: visible;
+  will-change: transform, opacity;
+  transition: opacity 0.25s ease;
+}
+
+/* Two-sided Smoked Glass Card Faces (Matches Reference Image) */
+.orbit3d-card-face {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 20px;
+  background: linear-gradient(135deg, rgba(14, 22, 16, 0.90) 0%, rgba(6, 10, 7, 0.97) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  box-shadow: 0 16px 45px rgba(0, 0, 0, 0.88), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  transform-style: preserve-3d;
   overflow: hidden;
-  will-change: transform, opacity, filter, box-shadow;
-  transition: box-shadow 0.25s ease, border-color 0.25s ease;
+  transition: box-shadow 0.28s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.28s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* Front Spotlight Card — Radiant Electric-Lime Glowing Border (Matches Screenshot) */
-.orbit3d-card.is-front {
-  border: 2px solid #D2FF00;
+.orbit3d-card-front {
+  transform: rotateY(0deg) translateZ(1px);
+}
+
+.orbit3d-card-back {
+  transform: rotateY(180deg) translateZ(1px);
+}
+
+/* Front Spotlight Card — Radiant Luminous Electric-Lime Glowing Border (Matches Reference Image) */
+.orbit3d-card.is-front .orbit3d-card-face {
+  border: 2.5px solid #D2FF00;
   box-shadow:
-    0 0 38px rgba(210, 255, 0, 0.55),
-    0 20px 55px rgba(0, 0, 0, 0.95),
-    inset 0 0 18px rgba(210, 255, 0, 0.12);
+    0 0 35px rgba(210, 255, 0, 0.80),
+    0 0 70px rgba(210, 255, 0, 0.40),
+    0 22px 60px rgba(0, 0, 0, 0.95),
+    inset 0 0 18px rgba(210, 255, 0, 0.22);
 }
 
-.orbit3d-card:hover,
-.orbit3d-card.is-hovered {
+.orbit3d-card:hover .orbit3d-card-face,
+.orbit3d-card.is-hovered .orbit3d-card-face {
   border-color: #D2FF00;
   box-shadow:
-    0 0 50px rgba(210, 255, 0, 0.70),
+    0 0 45px rgba(210, 255, 0, 0.85),
+    0 0 85px rgba(210, 255, 0, 0.45),
     0 24px 65px rgba(0, 0, 0, 0.95),
-    inset 0 0 22px rgba(210, 255, 0, 0.18);
+    inset 0 0 22px rgba(210, 255, 0, 0.25);
 }
 
 /* Card Internal Layout */
@@ -2702,283 +2757,288 @@ html.lenis, html.lenis body {
 }
 
 /* ==========================================================================
-   14. CONTACT & TRANSMISSION PROTOCOL SECTION
-   High-end dark cyber-editorial design system with glassmorphic cards,
-   micro-interactions, clipboard telemetry, and responsive grid layout.
+   14. CONTACT UNIVERSE LAYER & MONUMENTAL EDITORIAL SECTION
+   5th Celestial Destination: 3D zoom warp arrival from credentials matrix.
+   Features the live interactive 2D topography canvas from the landing page!
    ========================================================================== */
 
-.contact-section {
+/* Contact Universe Layer (5th Celestial Destination & Ground Station Landing) */
+.contact-space-layer {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 35;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  will-change: transform, opacity, filter;
+  transform-origin: center center;
+  opacity: 0;
+  pointer-events: none;
+  visibility: hidden;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+/* Dedicated Interactive Topography Background Container (Matching Landing Page) */
+.contact-topo-container {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.contact-topo-container canvas {
+  position: absolute !important;
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  pointer-events: none !important;
+  z-index: 0 !important;
+}
+
+.contact-monumental-section {
   position: relative;
   width: 100%;
-  min-height: 90vh;
-  padding: 6.5rem 1.5rem 4rem 1.5rem;
-  background: radial-gradient(circle at 50% 12%, rgba(20, 36, 22, 0.45) 0%, rgba(6, 12, 8, 0.95) 45%, #020402 100%);
+  min-height: 100%;
+  padding: 4.5rem 1.5rem 3.5rem 1.5rem;
+  background: transparent;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  overflow: hidden;
-  border-top: 1px solid rgba(210, 255, 0, 0.16);
-  box-shadow: inset 0 60px 100px rgba(0, 0, 0, 0.95);
+  overflow: visible;
+  border-top: none;
+  box-shadow: none;
+  z-index: 2;
 }
 
-/* Ambient Radial Glow */
-.contact-bg-glow {
+/* Ambient Green Floor Radiance Glow Behind Cartridges */
+.contact-monumental-glow {
   position: absolute;
-  top: 15%;
+  bottom: 18%;
   left: 50%;
   transform: translateX(-50%);
-  width: min(800px, 90vw);
-  height: 400px;
-  background: radial-gradient(ellipse at center, rgba(210, 255, 0, 0.08) 0%, rgba(0, 255, 136, 0.04) 40%, transparent 70%);
-  filter: blur(50px);
+  width: min(960px, 92vw);
+  height: 280px;
+  background: radial-gradient(ellipse at center, rgba(210, 255, 0, 0.15) 0%, rgba(0, 255, 136, 0.05) 40%, transparent 70%);
+  filter: blur(55px);
   pointer-events: none;
   z-index: 1;
 }
 
-.contact-container {
+.contact-monumental-container {
   position: relative;
   width: 100%;
-  max-width: 1180px;
+  max-width: 1280px;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
   align-items: center;
+  text-align: center;
   z-index: 5;
 }
 
-/* Section Header */
-.contact-header {
-  margin-bottom: 3rem;
-  position: relative;
-  z-index: 5;
-}
-
-.contact-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.35rem 0.9rem;
-  border-radius: 999px;
-  background: rgba(210, 255, 0, 0.06);
-  border: 1px solid rgba(210, 255, 0, 0.25);
-  color: var(--color-lime);
-  font-size: 0.68rem;
-  letter-spacing: 0.12em;
-  margin-bottom: 0.85rem;
-}
-
-.contact-badge-dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: var(--color-lime);
-  box-shadow: 0 0 10px var(--color-lime);
-  animation: contactDotPulse 1.4s ease-in-out infinite alternate;
-}
-
-@keyframes contactDotPulse {
-  0% { transform: scale(0.85); opacity: 0.5; }
-  100% { transform: scale(1.3); opacity: 1; box-shadow: 0 0 14px var(--color-lime); }
-}
-
-.contact-title {
-  font-size: clamp(2.4rem, 5.2vw, 4.2rem);
-  font-weight: 900;
+/* Monospace Minimalist Overline */
+.contact-overline-tag {
+  font-size: 0.72rem;
+  letter-spacing: 0.22em;
   text-transform: uppercase;
-  letter-spacing: -0.03em;
-  line-height: 1.05;
-  color: #FFFFFF;
-  background: linear-gradient(180deg, #FFFFFF 0%, #E6FFE6 50%, #D2FF00 100%);
+  color: #8E9F88;
+  margin-bottom: 1.1rem;
+  font-weight: 600;
+  opacity: 0.85;
+}
+
+/* Monumental Gradient Display Headline (Matching Reference Image) */
+.contact-monumental-title {
+  font-family: var(--font-display, 'Syne', sans-serif);
+  font-size: clamp(3.8rem, 10vw, 9.4rem);
+  font-weight: 900;
+  line-height: 0.96;
+  letter-spacing: -0.035em;
+  text-transform: uppercase;
+  margin: 0 0 1.2rem 0;
+  background: linear-gradient(90deg, #FFFFFF 0%, #D8ECD0 42%, #D2FF00 88%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  filter: drop-shadow(0 0 30px rgba(210, 255, 0, 0.25));
-  margin: 0;
+  filter: drop-shadow(0 0 38px rgba(210, 255, 0, 0.22));
+  user-select: none;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), filter 0.3s ease;
 }
 
-.contact-subtitle {
-  font-size: clamp(0.85rem, 1.1vw, 1.02rem);
+.contact-monumental-title:hover {
+  filter: drop-shadow(0 0 50px rgba(210, 255, 0, 0.38));
+}
+
+/* Editorial Sub-tagline */
+.contact-monumental-subtitle {
+  font-size: clamp(0.88rem, 1.1vw, 1.05rem);
   line-height: 1.6;
   max-width: 680px;
-  margin: 1rem auto 0;
-  color: #A3B899;
+  margin: 0 auto 3.4rem auto;
+  color: #8E9F88;
 }
 
-/* Contact Grid */
-.contact-grid {
+/* 4-Column Floating Cartridge Dock */
+.contact-cartridges-row {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1.25rem;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.35rem;
   width: 100%;
-  margin-bottom: 2.5rem;
+  max-width: 1220px;
+  margin-bottom: 3.2rem;
 }
 
-/* Featured Card (Email) Spans 2 Columns on Desktop */
-.contact-card-featured {
-  grid-column: span 2;
-  background: linear-gradient(135deg, rgba(14, 24, 16, 0.85) 0%, rgba(8, 14, 10, 0.75) 100%) !important;
-  border-color: rgba(210, 255, 0, 0.22) !important;
-}
-
-/* Base Contact Card */
-.contact-card {
+/* Magnetic Cartridge Card */
+.contact-cartridge {
   position: relative;
-  background: rgba(10, 16, 12, 0.72);
-  border: 1px solid rgba(255, 255, 255, 0.09);
-  border-radius: 12px;
-  padding: 1.6rem 1.6rem;
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+  background: rgba(9, 15, 11, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.11);
+  border-radius: 14px;
+  padding: 1.35rem 1.35rem;
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.72);
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  transition: border-color 0.28s ease, box-shadow 0.28s ease, transform 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+  align-items: flex-start;
+  gap: 0.9rem;
+  transition: transform 0.26s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.26s ease, box-shadow 0.26s ease;
   will-change: transform;
 }
 
-.contact-card:hover {
-  border-color: rgba(210, 255, 0, 0.38);
-  box-shadow: 0 18px 45px rgba(0, 0, 0, 0.85), 0 0 25px rgba(210, 255, 0, 0.14);
+/* Ambient Neon Underglow Beneath Each Cartridge */
+.contact-cartridge::after {
+  content: '';
+  position: absolute;
+  left: 12%;
+  right: 12%;
+  bottom: -10px;
+  height: 24px;
+  background: rgba(210, 255, 0, 0.36);
+  filter: blur(14px);
+  border-radius: 50%;
+  opacity: 0.6;
+  transition: opacity 0.26s ease, filter 0.26s ease;
+  pointer-events: none;
+  z-index: -1;
 }
 
-.contact-card-top {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 1.1rem;
+.contact-cartridge:hover {
+  transform: translateY(-4px);
+  border-color: rgba(210, 255, 0, 0.45);
+  box-shadow: 0 24px 50px rgba(0, 0, 0, 0.88), 0 0 28px rgba(210, 255, 0, 0.18);
 }
 
-.contact-card-icon {
-  width: 44px;
-  height: 44px;
-  border-radius: 10px;
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: transform 0.25s ease, background 0.25s ease;
+.contact-cartridge:hover::after {
+  opacity: 1;
+  filter: blur(18px);
 }
 
-.contact-card:hover .contact-card-icon {
-  transform: scale(1.08);
-  background: rgba(210, 255, 0, 0.08);
-}
-
-.contact-card-tag {
-  font-size: 0.62rem;
-  color: var(--color-text-muted);
-  letter-spacing: 0.1em;
-  padding: 0.2rem 0.5rem;
-  border-radius: 4px;
-  background: rgba(0, 0, 0, 0.4);
-  border: 1px solid rgba(255, 255, 255, 0.06);
-}
-
-.contact-card-title {
-  font-size: 1.25rem;
-  font-weight: 700;
-  color: #FFFFFF;
-  margin: 0 0 0.4rem 0;
+/* Cartridge Top Label */
+.cartridge-top-label {
+  font-size: 0.82rem;
+  color: #8E9F88;
+  font-weight: 500;
   letter-spacing: -0.01em;
 }
 
-.contact-card-desc {
-  font-size: 0.84rem;
-  line-height: 1.5;
-  color: #8E9F88;
-  margin: 0 0 1rem 0;
-}
-
-.contact-card-value {
-  font-size: 0.84rem;
-  letter-spacing: 0.03em;
-  color: var(--color-lime);
-  background: rgba(210, 255, 0, 0.05);
-  border: 1px solid rgba(210, 255, 0, 0.18);
-  padding: 0.45rem 0.8rem;
-  border-radius: 6px;
-  word-break: break-all;
-  margin-bottom: 1.2rem;
-  user-select: all;
-}
-
-/* Card Action Buttons */
-.contact-card-actions {
+/* Dark Inset Capsule */
+.cartridge-capsule {
+  width: 100%;
   display: flex;
   align-items: center;
-  gap: 0.7rem;
-  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 0.6rem;
+  padding: 0.45rem 0.5rem 0.45rem 1.05rem;
+  border-radius: 9999px;
+  background: rgba(18, 25, 20, 0.96);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  transition: border-color 0.22s ease, background 0.22s ease;
 }
 
-.btn-contact-action {
-  font-size: 0.70rem;
-  letter-spacing: 0.08em;
-  padding: 0.55rem 1.05rem;
-  border-radius: 6px;
+.cartridge-capsule:hover {
+  border-color: rgba(210, 255, 0, 0.32);
+  background: rgba(22, 32, 24, 0.98);
+}
+
+/* Capsule Main Action Link */
+.cartridge-link {
+  color: #E3E8DC;
   text-decoration: none;
+  font-size: 0.88rem;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex: 1;
+  text-align: left;
+  transition: color 0.2s ease;
+}
+
+.cartridge-link:hover {
+  color: #FFFFFF;
+}
+
+/* Vibrant Neon-Lime Pill Badge Button */
+.cartridge-pill-badge {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  cursor: pointer;
-  transition: all 0.22s ease;
-  font-weight: 600;
-}
-
-.btn-contact-action.primary {
-  background: var(--color-lime);
+  padding: 0.42rem 0.9rem;
+  border-radius: 9999px;
+  background: #D2FF00;
   color: #000000;
-  border: 1px solid var(--color-lime);
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 0.74rem;
+  line-height: 1;
+  transition: all 0.22s ease;
+  box-shadow: 0 0 12px rgba(210, 255, 0, 0.38);
+  flex-shrink: 0;
 }
 
-.btn-contact-action.primary:hover {
+.cartridge-pill-badge:hover {
+  transform: scale(1.05);
   background: #E2FF4D;
-  box-shadow: 0 0 16px rgba(210, 255, 0, 0.45);
-  transform: translateY(-2px);
+  box-shadow: 0 0 18px rgba(210, 255, 0, 0.6);
 }
 
-.btn-contact-action.secondary {
-  background: rgba(255, 255, 255, 0.05);
-  color: #FFFFFF;
-  border: 1px solid rgba(255, 255, 255, 0.16);
+.cartridge-pill-badge.is-copied {
+  background: #00FF88 !important;
+  color: #000000 !important;
+  box-shadow: 0 0 16px rgba(0, 255, 136, 0.6) !important;
 }
 
-.btn-contact-action.secondary:hover {
-  background: rgba(210, 255, 0, 0.12);
-  border-color: var(--color-lime);
-  color: var(--color-lime);
-  transform: translateY(-2px);
-}
-
-.btn-contact-action.is-copied {
-  background: rgba(0, 255, 136, 0.2) !important;
-  border-color: #00FF88 !important;
-  color: #00FF88 !important;
-}
-
-/* Telemetry Status Bar */
-.contact-telemetry {
+/* Unified Telemetry Status Dock */
+.contact-telemetry-dock {
   display: flex;
   align-items: center;
   justify-content: center;
   flex-wrap: wrap;
-  gap: 1.2rem;
-  padding: 0.75rem 1.6rem;
-  border-radius: 999px;
+  gap: 1rem;
+  padding: 0.75rem 1.8rem;
+  border-radius: 9999px;
   background: rgba(8, 14, 10, 0.88);
   border: 1px solid rgba(255, 255, 255, 0.09);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
   font-size: 0.68rem;
   letter-spacing: 0.08em;
-  margin-bottom: 2.5rem;
+  margin-bottom: 2.8rem;
 }
 
-.telemetry-item {
+.telemetry-pill {
   display: flex;
   align-items: center;
-  gap: 0.4rem;
+  gap: 0.45rem;
 }
 
 .telemetry-label {
@@ -2989,20 +3049,47 @@ html.lenis, html.lenis body {
   color: #FFFFFF;
 }
 
-.telemetry-separator {
+.telemetry-val.hover-underline {
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.telemetry-val.hover-underline:hover {
+  text-decoration: underline;
+  color: #E2FF4D;
+}
+
+.telemetry-copy-icon {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 0.7rem;
+  opacity: 0.7;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+}
+
+.telemetry-copy-icon:hover {
+  opacity: 1;
+  transform: scale(1.15);
+}
+
+.telemetry-dot-sep {
   color: rgba(255, 255, 255, 0.2);
 }
 
-/* Footer & Copyright */
-.contact-footer {
+/* Footer Navigation & Copyright */
+.contact-monumental-footer {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 1.3rem;
+  gap: 1.4rem;
   width: 100%;
 }
 
-.contact-copyright {
+.contact-copyright-line {
   font-size: 0.65rem;
   letter-spacing: 0.09em;
   display: flex;
@@ -3053,32 +3140,28 @@ html.lenis, html.lenis body {
 }
 
 /* Responsive Media Queries */
-@media (max-width: 1024px) {
-  .contact-grid {
+@media (max-width: 1080px) {
+  .contact-cartridges-row {
     grid-template-columns: repeat(2, 1fr);
-  }
-  .contact-card-featured {
-    grid-column: span 2;
+    max-width: 720px;
   }
 }
 
-@media (max-width: 680px) {
-  .contact-section {
-    padding: 4.5rem 1rem 3rem 1rem;
+@media (max-width: 640px) {
+  .contact-monumental-section {
+    padding: 5rem 1rem 3.5rem 1rem;
   }
-  .contact-grid {
+  .contact-cartridges-row {
     grid-template-columns: 1fr;
+    max-width: 380px;
   }
-  .contact-card-featured {
-    grid-column: span 1;
-  }
-  .contact-telemetry {
+  .contact-telemetry-dock {
     flex-direction: column;
-    gap: 0.4rem;
-    border-radius: 12px;
+    gap: 0.45rem;
+    border-radius: 14px;
     padding: 0.9rem 1.2rem;
   }
-  .telemetry-separator {
+  .telemetry-dot-sep {
     display: none;
   }
   .contact-toast {
@@ -3204,8 +3287,8 @@ html.lenis, html.lenis body {
 
 /* Off-screen layout skipping: prevents CPU/GPU cost until section is near viewport */
 #projects-space-layer,
-#credentials,
-#contact {
+#credentials-space-layer,
+#contact-space-layer {
   content-visibility: auto;
   contain-intrinsic-size: 900px;
 }
@@ -3215,6 +3298,7 @@ html.lenis, html.lenis body {
 .orbit3d-ring,
 .solar-node-badge,
 .project-world-node,
+.contact-cartridge,
 .space-star,
 .ascii-particle,
 .sticky-brand-container {

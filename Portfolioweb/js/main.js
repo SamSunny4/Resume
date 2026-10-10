@@ -123,12 +123,18 @@ function bootstrap() {
   document.addEventListener('visibilitychange', () => {
     const isHidden = document.hidden;
     if (window.AppState.topoBg) window.AppState.topoBg.isRunning = !isHidden;
-    if (!isHidden && window.AppState.topoBg && !window.AppState.topoBg.animId) {
-      window.AppState.topoBg.animId = requestAnimationFrame(window.AppState.topoBg.animate);
+    if (window.AppState.contactTopoBg) window.AppState.contactTopoBg.isRunning = !isHidden;
+    if (!isHidden) {
+      if (window.AppState.topoBg && !window.AppState.topoBg.animId) {
+        window.AppState.topoBg.animId = requestAnimationFrame(window.AppState.topoBg.animate);
+      }
+      if (window.AppState.contactTopoBg && !window.AppState.contactTopoBg.animId) {
+        window.AppState.contactTopoBg.animId = requestAnimationFrame(window.AppState.contactTopoBg.animate);
+      }
     }
   }, { passive: true });
 
-  // Initialize Ultra-Minimal Topographic Background (STRICTLY on Landing Page)
+  // Initialize Ultra-Minimal Topographic Background on Landing Page
   const heroTopoContainer = document.getElementById('hero-topo-container') || document.getElementById('hero-space-layer');
   const topoBg = initTopoBackground({
     container: heroTopoContainer,
@@ -141,6 +147,22 @@ function bootstrap() {
     parallaxFactor: 20
   });
   window.AppState.topoBg = topoBg;
+
+  // Initialize Interactive Topographic Background in Contact Section (Matching Landing Page)
+  const contactTopoContainer = document.getElementById('contact-topo-container');
+  if (contactTopoContainer) {
+    const contactTopoBg = initTopoBackground({
+      container: contactTopoContainer,
+      theme: 'cyber-light',
+      cellSize: 28,
+      lineLevelsCount: 5,
+      speed: 0.00018,
+      mouseRadius: 280,
+      mouseStrength: 0.35,
+      parallaxFactor: 20
+    });
+    window.AppState.contactTopoBg = contactTopoBg;
+  }
 
   const techSolar = initTechSolarSystem();
   const projectSolar = initProjectSolarSystem();
@@ -174,6 +196,11 @@ function bootstrap() {
         e.preventDefault();
         if (techSolar) techSolar.triggerCredentialsZoom();
         else if (projectSolar) projectSolar.triggerCredentialsZoom();
+        return;
+      }
+      if (targetId === '#contact' || targetId === '#transmission') {
+        e.preventDefault();
+        if (techSolar) techSolar.triggerContactZoom();
         return;
       }
       const targetEl = document.querySelector(targetId);
