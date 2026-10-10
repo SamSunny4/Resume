@@ -687,7 +687,13 @@ export class ProjectSolarSystem {
 
       this.updateSpaceZoom();
 
-      // Smooth lerp camera angles (mouse parallax)
+      // Blend mobile gyroscope if active and no active touch drag
+      if (window.AppState && window.AppState.gyro && window.AppState.gyro.active) {
+        this.targetCamRotY = window.AppState.gyro.x * 0.44;
+        this.targetCamRotX = -window.AppState.gyro.y * 0.35;
+      }
+
+      // Smooth lerp camera angles (mouse / gyro parallax)
       this.camRotX += (this.targetCamRotX - this.camRotX) * 0.07;
       this.camRotY += (this.targetCamRotY - this.camRotY) * 0.07;
 

@@ -85,6 +85,7 @@ import { initProjectSolarSystem } from './project-solar.js';
 import { initTopoBackground } from './topo-background.js';
 import { initCredentialsStones } from './credentials-stones.js';
 import { initContactSection } from './contact.js';
+import { initGyroParallax } from './gyro-parallax.js';
 
 /**
  * Main System Bootstrap
@@ -98,6 +99,7 @@ function bootstrap() {
 
   initSmoothScroll();
   initMouseTracking();
+  initGyroParallax();
   initHeroAsciiBurst();
   initStickyBrandLogo();
 

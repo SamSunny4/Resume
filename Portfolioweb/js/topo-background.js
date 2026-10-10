@@ -91,7 +91,7 @@ export class TopoBackground {
     this.container = options.container || document.getElementById('hero-topo-container') || document.getElementById('hero-space-layer');
     this.canvas = options.canvas || null;
     this.theme = options.theme || 'cyber-light'; // 'cyber-light', 'lime-mint', 'ice-cyan', 'ethereal-pearl'
-    this.cellSize = options.cellSize || 25; // Optimized cell density: silky curves with ~40% fewer evaluations
+    this.cellSize = options.cellSize || (typeof window !== 'undefined' && window.innerWidth < 768 ? 32 : 25);
     this.lineLevelsCount = options.lineLevelsCount || 5; // Very few lines for maximum cleanliness
     
     // Performance & simulation state
@@ -353,7 +353,12 @@ export class TopoBackground {
       this.mouse.y += (-9999 - this.mouse.y) * 0.04;
     }
 
-    // Smooth lerp for parallax
+    // Smooth lerp for parallax (blend mobile gyroscope if active)
+    if (window.AppState && window.AppState.gyro && window.AppState.gyro.active) {
+      this.parallax.targetX = window.AppState.gyro.x * this.parallax.factor;
+      this.parallax.targetY = window.AppState.gyro.y * this.parallax.factor;
+    }
+
     this.parallax.x += (this.parallax.targetX - this.parallax.x) * 0.05;
     this.parallax.y += (this.parallax.targetY - this.parallax.y) * 0.05;
 

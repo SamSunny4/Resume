@@ -549,8 +549,10 @@ export class TechSolarSystem {
   }
 
   generateStardust(count) {
+    const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
+    const finalCount = isMobile ? Math.min(count, 35) : count;
     const stars = [];
-    for (let i = 0; i < count; i++) {
+    for (let i = 0; i < finalCount; i++) {
       stars.push({
         x: (Math.random() - 0.5) * 1600,
         y: (Math.random() - 0.5) * 1000,
@@ -761,6 +763,8 @@ export class TechSolarSystem {
   updateTooltipPosition() {
     if (!this.isTooltipActive || !this.tooltip) return;
     if (this.isTooltipHovered || this.isPinned) return;
+    // On mobile viewports, CSS bottom-sheet dock handles placement
+    if (window.innerWidth <= 768) return;
 
     const tooltipRect = this.tooltip.getBoundingClientRect();
     const tooltipWidth = tooltipRect.width || 200;
@@ -972,7 +976,9 @@ export class TechSolarSystem {
     const heightScale = this.stageHeight / 850;
     const uniformScale = Math.min(widthScale, heightScale);
 
-    if (this.stageWidth < 600) {
+    if (this.stageWidth < 480) {
+      this.scaleRatio = Math.max(0.30, uniformScale * 0.82);
+    } else if (this.stageWidth < 600) {
       this.scaleRatio = Math.max(0.35, uniformScale * 0.90);
     } else if (this.stageWidth < 900) {
       this.scaleRatio = Math.max(0.50, uniformScale * 0.95);
@@ -1542,7 +1548,13 @@ export class TechSolarSystem {
       // 1. Process Continuous Space Warp Zoom across all 4 phases
       this.updateSpaceZoom();
 
-      // 2. Smooth lerp camera angles (mouse parallax)
+      // Blend mobile gyroscope if active and no active touch drag
+      if (window.AppState && window.AppState.gyro && window.AppState.gyro.active) {
+        this.targetCamRotY = window.AppState.gyro.x * 0.44;
+        this.targetCamRotX = -window.AppState.gyro.y * 0.35;
+      }
+
+      // 2. Smooth lerp camera angles (mouse / gyro parallax)
       this.camRotX += (this.targetCamRotX - this.camRotX) * 0.07;
       this.camRotY += (this.targetCamRotY - this.camRotY) * 0.07;
 

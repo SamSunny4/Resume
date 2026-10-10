@@ -2003,30 +2003,129 @@ html.lenis, html.lenis body {
   text-align: center;
 }
 
-/* Mobile & Tablet Adjustments */
+/* Dynamic Viewport Unit (dvh) Support for Mobile Browsers */
+@supports (height: 100dvh) {
+  @media (max-width: 768px) {
+    .space-stage-viewport,
+    .hero-space-layer,
+    .tech-space-layer,
+    .projects-space-layer,
+    .credentials-space-layer {
+      height: 100dvh !important;
+      min-height: 100dvh !important;
+    }
+  }
+}
+
+/* Mobile & Tablet Ergonomic & Sizing Optimizations (Strictly max-width: 768px) */
 @media (max-width: 768px) {
-  .solar-text-monumental {
-    font-size: 2.8rem;
+  .sticky-brand-container {
+    top: calc(0.75rem + env(safe-area-inset-top, 0px));
+    left: 0.85rem;
   }
-  .projects-text-monumental {
-    font-size: 2.4rem;
-  }
-  .solar-node-badge {
+  .sticky-brand-img {
     width: 38px;
     height: 38px;
   }
-  .project-node-badge {
-    width: 190px;
-    padding: 0.65rem 0.85rem;
+
+  .solar-text-monumental {
+    font-size: clamp(2.2rem, 9.5vw, 3.8rem);
+    letter-spacing: 0.02em;
   }
-  .solar-cursor-tooltip {
-    width: 320px;
-    max-width: 92vw;
-    padding: 0.75rem 0.95rem;
+  .projects-text-monumental {
+    font-size: clamp(1.9rem, 8.5vw, 3.2rem);
+    letter-spacing: 0.02em;
+  }
+
+  /* Touch hit area and badge scaling */
+  .solar-node {
+    padding: 6px;
+    margin: -6px;
+    touch-action: pan-y;
+  }
+  .solar-node-badge {
+    width: 34px;
+    height: 34px;
+  }
+  .solar-node-img {
+    width: 18px;
+    height: 18px;
+  }
+
+  /* Flagship Projects Card */
+  .project-node-badge {
+    width: 175px;
+    padding: 0.55rem 0.75rem;
+    touch-action: pan-y;
+  }
+  .project-node-title {
+    font-size: 0.82rem;
+  }
+  .project-node-tech {
+    font-size: 0.58rem;
+  }
+
+  /* Mobile Bottom-Sheet Dossier Card (Fixed at bottom to prevent thumb obstruction) */
+  .solar-cursor-tooltip.is-pinned,
+  .solar-cursor-tooltip.is-visible {
+    position: fixed !important;
+    top: auto !important;
+    bottom: calc(1rem + env(safe-area-inset-bottom, 0px)) !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    width: calc(100% - 2rem) !important;
+    max-width: 420px !important;
+    z-index: 1000 !important;
+    background: rgba(10, 14, 8, 0.94) !important;
+    backdrop-filter: blur(24px) saturate(180%) !important;
+    -webkit-backdrop-filter: blur(24px) saturate(180%) !important;
+    border: 1px solid rgba(210, 255, 0, 0.35) !important;
+    box-shadow: 0 12px 48px rgba(0, 0, 0, 0.95), 0 0 25px rgba(210, 255, 0, 0.25) !important;
+    border-radius: 14px !important;
+    padding: 1rem 1.15rem !important;
+    pointer-events: auto !important;
+  }
+  .solar-cursor-tooltip .tooltip-close-btn {
+    display: flex !important;
+    width: 32px !important;
+    height: 32px !important;
+    font-size: 14px !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+
+  /* Stage Nav Controls */
+  .stage-nav-hud {
+    bottom: calc(1rem + env(safe-area-inset-bottom, 0px));
   }
   .stage-nav-btn {
-    font-size: 0.62rem;
-    padding: 0.45rem 0.95rem;
+    font-size: 0.65rem;
+    padding: 0.5rem 1rem;
+    letter-spacing: 0.1em;
+    min-height: 40px;
+    touch-action: manipulation;
+  }
+}
+
+/* Extra Compact Mobile Screens (Phones under 480px) */
+@media (max-width: 480px) {
+  .solar-node-badge {
+    width: 32px;
+    height: 32px;
+  }
+  .solar-node-img {
+    width: 17px;
+    height: 17px;
+  }
+  .solar-text-monumental {
+    font-size: clamp(1.9rem, 9vw, 2.7rem);
+  }
+  .projects-text-monumental {
+    font-size: clamp(1.7rem, 8vw, 2.3rem);
+  }
+  .project-node-badge {
+    width: 155px;
+    padding: 0.45rem 0.65rem;
   }
 }
 
