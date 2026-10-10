@@ -94,7 +94,7 @@ export const PROJECT_NODES = [
     orbitPhase: 1.3,
     speedFactor: 1.05,
     tech: ['Python', 'OpenCV', 'MediaPipe', 'PyTorch', 'FastAPI'],
-    github: 'https://github.com/SamSunny4',
+    github: 'https://github.com/SamSunny4/MovSense',
     stats: ['33 3D POSE LANDMARKS', 'REAL-TIME KINEMATICS', 'JOINT ANGLE GEOMETRY', 'LOW-LATENCY 60FPS'],
   },
   {
@@ -109,7 +109,7 @@ export const PROJECT_NODES = [
     orbitPhase: 1.3 + Math.PI,
     speedFactor: 0.95,
     tech: ['C++', 'WebGL', 'Linear Algebra', 'Shader Pipeline'],
-    github: 'https://github.com/SamSunny4',
+    github: 'https://github.com/SamSunny4/3DS',
     stats: ['POINT CLOUD RECONSTRUCTION', 'PERSPECTIVE MATRICES', 'HARDWARE SHADER PIPELINE', 'DEPTH MESHES'],
   },
 ];

@@ -1483,24 +1483,30 @@ html.lenis, html.lenis body {
   left: 0;
   pointer-events: none;
   z-index: 99999;
-  width: 320px;
-  max-width: 88vw;
-  background: rgba(10, 14, 6, 0.95);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
+  width: 360px;
+  max-width: 90vw;
+  background: rgba(10, 14, 8, 0.96);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
   border: 1px solid var(--tooltip-accent, rgba(210, 255, 0, 0.35));
-  border-radius: 8px;
-  padding: 0.85rem 1.1rem;
-  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.92), 0 0 16px rgba(210, 255, 0, 0.12);
+  border-radius: 10px;
+  padding: 0.95rem 1.15rem;
+  box-shadow: 0 20px 48px rgba(0, 0, 0, 0.95), 0 0 24px var(--tooltip-glow, rgba(210, 255, 0, 0.15));
   opacity: 0;
   transform: scale(0.92);
   will-change: transform, opacity;
-  transition: opacity 0.18s var(--ease-expo), transform 0.18s var(--ease-expo), border-color 0.2s, box-shadow 0.2s;
+  transition: opacity 0.2s var(--ease-expo), transform 0.2s var(--ease-expo), border-color 0.2s, box-shadow 0.2s;
 }
 
 .solar-cursor-tooltip.is-visible {
   opacity: 1;
   transform: scale(1);
+  pointer-events: auto;
+}
+
+.solar-cursor-tooltip.is-pinned {
+  border-color: var(--tooltip-accent, var(--color-lime));
+  box-shadow: 0 24px 56px rgba(0, 0, 0, 0.98), 0 0 32px var(--tooltip-glow, rgba(210, 255, 0, 0.3));
 }
 
 .tooltip-badge-row {
@@ -1511,11 +1517,11 @@ html.lenis, html.lenis body {
 }
 
 .tooltip-icon-wrap {
-  width: 36px;
-  height: 36px;
+  width: 38px;
+  height: 38px;
   border-radius: 8px;
   background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.14);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1523,34 +1529,189 @@ html.lenis, html.lenis body {
 }
 
 .tooltip-icon-img {
-  width: 22px;
-  height: 22px;
+  width: 24px;
+  height: 24px;
   object-fit: contain;
 }
 
 .tooltip-title-wrap {
   display: flex;
   flex-direction: column;
+  flex: 1;
+  min-width: 0;
 }
 
 .tooltip-category {
   font-size: 0.65rem;
   letter-spacing: 0.12em;
   color: var(--tooltip-accent, var(--color-lime));
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .tooltip-name {
-  font-size: 1.05rem;
+  font-size: 1.1rem;
   font-weight: 700;
   color: #FFFFFF;
   line-height: 1.2;
 }
 
+.tooltip-close-btn {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  color: var(--color-text-dim);
+  border-radius: 6px;
+  width: 26px;
+  height: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 0.72rem;
+  transition: all 0.18s ease;
+  flex-shrink: 0;
+}
+
+.tooltip-close-btn:hover {
+  background: rgba(255, 60, 60, 0.2);
+  border-color: rgba(255, 80, 80, 0.6);
+  color: #FFFFFF;
+}
+
 .tooltip-desc {
-  font-size: 0.78rem;
+  font-size: 0.8rem;
   line-height: 1.45;
   color: var(--color-text-editorial);
-  margin-bottom: 0.45rem;
+  margin-bottom: 0.6rem;
+}
+
+/* Tooltip Projects & Git Repositories Section */
+.tooltip-projects-section {
+  margin-top: 0.6rem;
+  padding-top: 0.6rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+
+.tooltip-projects-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.63rem;
+  letter-spacing: 0.1em;
+  color: var(--tooltip-accent, var(--color-lime));
+  margin-bottom: 0.2rem;
+}
+
+.tooltip-projects-count {
+  font-size: 0.58rem;
+  padding: 0.12rem 0.4rem;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #FFFFFF;
+  letter-spacing: 0.08em;
+}
+
+.tooltip-projects-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  max-height: 195px;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+/* Tactical scrollbar for projects list */
+.tooltip-projects-list::-webkit-scrollbar {
+  width: 4px;
+}
+.tooltip-projects-list::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: 2px;
+}
+.tooltip-projects-list::-webkit-scrollbar-thumb {
+  background: var(--tooltip-accent, var(--color-lime));
+  border-radius: 2px;
+}
+
+.tooltip-project-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.65rem;
+  padding: 0.45rem 0.6rem;
+  background: rgba(255, 255, 255, 0.035);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 6px;
+  transition: all 0.18s ease;
+}
+
+.tooltip-project-item:hover {
+  background: rgba(255, 255, 255, 0.07);
+  border-color: var(--tooltip-accent, rgba(210, 255, 0, 0.45));
+  transform: translateX(3px);
+}
+
+.tooltip-project-info {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  flex: 1;
+}
+
+.tooltip-project-title {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #FFFFFF;
+  line-height: 1.25;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.tooltip-project-role {
+  font-size: 0.68rem;
+  color: var(--color-text-editorial);
+  line-height: 1.35;
+  margin-top: 0.15rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.tooltip-git-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.3rem 0.6rem;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: #0A0E08;
+  background: var(--tooltip-accent, var(--color-lime));
+  border-radius: 4px;
+  text-decoration: none;
+  flex-shrink: 0;
+  transition: all 0.18s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+}
+
+.tooltip-git-link:hover {
+  transform: translateY(-1px) scale(1.04);
+  box-shadow: 0 4px 14px var(--tooltip-glow, rgba(210, 255, 0, 0.4));
+  filter: brightness(1.12);
+  color: #000000;
+}
+
+.tooltip-git-link svg {
+  width: 12px;
+  height: 12px;
+  fill: currentColor;
+  flex-shrink: 0;
 }
 
 .tooltip-footer {
@@ -1558,7 +1719,8 @@ html.lenis, html.lenis body {
   letter-spacing: 0.08em;
   color: var(--color-text-dim);
   border-top: 1px solid rgba(255, 255, 255, 0.08);
-  padding-top: 0.35rem;
+  padding-top: 0.45rem;
+  margin-top: 0.45rem;
 }
 
 /* ==========================================================================
@@ -1976,8 +2138,9 @@ html.lenis, html.lenis body {
     padding: 0.65rem 0.85rem;
   }
   .solar-cursor-tooltip {
-    width: 280px;
-    padding: 0.7rem 0.9rem;
+    width: 320px;
+    max-width: 92vw;
+    padding: 0.75rem 0.95rem;
   }
   .stage-nav-btn {
     font-size: 0.62rem;

@@ -10,6 +10,18 @@
  */
 
 // 28 Verified Tech Stack Nodes with authentic project context
+function escapeHtml(str) {
+  if (!str) return '';
+  return String(str).replace(/[&<>"']/g, (m) => ({
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#39;'
+  }[m]));
+}
+
+// 28 Verified Tech Stack Nodes with authentic project context & direct Git repositories
 export const TECH_NODES = [
   // --- RING 0: AI & COMPUTER VISION CORE (Inner Fast Track) ---
   {
@@ -23,6 +35,18 @@ export const TECH_NODES = [
     ringIndex: 0,
     orbitPhase: 0,
     speedFactor: 1.15,
+    projects: [
+      {
+        name: 'Leadis / AiSam',
+        role: 'AI developmental screening & ML inference backend',
+        github: 'https://github.com/SamSunny4/Leadis',
+      },
+      {
+        name: 'MovSense (Fitman)',
+        role: 'Computer vision joint kinematics & posture evaluation',
+        github: 'https://github.com/SamSunny4/MovSense',
+      },
+    ],
   },
   {
     id: 'mediapipe',
@@ -35,6 +59,18 @@ export const TECH_NODES = [
     ringIndex: 0,
     orbitPhase: Math.PI * 0.5,
     speedFactor: 1.05,
+    projects: [
+      {
+        name: 'Leadis / AiSam',
+        role: '33-point real-time pose estimation & motor risk tracking',
+        github: 'https://github.com/SamSunny4/Leadis',
+      },
+      {
+        name: 'MovSense (Fitman)',
+        role: '3D landmark angle calculations & 60fps kinetic analysis',
+        github: 'https://github.com/SamSunny4/MovSense',
+      },
+    ],
   },
   {
     id: 'fastapi',
@@ -47,6 +83,13 @@ export const TECH_NODES = [
     ringIndex: 0,
     orbitPhase: Math.PI,
     speedFactor: 1.1,
+    projects: [
+      {
+        name: 'MovSense (Fitman)',
+        role: 'High-throughput async REST microservices for model telemetry',
+        github: 'https://github.com/SamSunny4/MovSense',
+      },
+    ],
   },
   {
     id: 'flask',
@@ -59,6 +102,13 @@ export const TECH_NODES = [
     ringIndex: 0,
     orbitPhase: Math.PI * 1.5,
     speedFactor: 0.95,
+    projects: [
+      {
+        name: 'Leadis / AiSam',
+        role: 'Flask machine learning API for behavioral scoring pipelines',
+        github: 'https://github.com/SamSunny4/Leadis',
+      },
+    ],
   },
 
   // --- RING 1: SYSTEMS, LOW-LEVEL & ENTERPRISE ARCHITECTURE ---
@@ -73,6 +123,13 @@ export const TECH_NODES = [
     ringIndex: 1,
     orbitPhase: 0.2,
     speedFactor: 1.0,
+    projects: [
+      {
+        name: 'PresisionTouchTile',
+        role: 'Precision desktop touch & tile coordinate calibration',
+        github: 'https://github.com/SamSunny4/PresisionTouchTile',
+      },
+    ],
   },
   {
     id: 'dotnet',
@@ -85,6 +142,13 @@ export const TECH_NODES = [
     ringIndex: 1,
     orbitPhase: 0.2 + (Math.PI * 2 / 6),
     speedFactor: 0.95,
+    projects: [
+      {
+        name: 'PresisionTouchTile',
+        role: 'Multi-threaded asynchronous runtime services & I/O',
+        github: 'https://github.com/SamSunny4/PresisionTouchTile',
+      },
+    ],
   },
   {
     id: 'c',
@@ -97,6 +161,18 @@ export const TECH_NODES = [
     ringIndex: 1,
     orbitPhase: 0.2 + (Math.PI * 4 / 6),
     speedFactor: 1.05,
+    projects: [
+      {
+        name: 'Evade',
+        role: 'Memory-constrained obstacle evasion & game mechanics',
+        github: 'https://github.com/SamSunny4/Evade',
+      },
+      {
+        name: 'FOC_C_PROJECT_S2',
+        role: 'Foundations of computing low-level algorithmic kernels',
+        github: 'https://github.com/SamSunny4/FOC_C_PROJECT_S2',
+      },
+    ],
   },
   {
     id: 'rust',
@@ -109,6 +185,13 @@ export const TECH_NODES = [
     ringIndex: 1,
     orbitPhase: 0.2 + (Math.PI * 6 / 6),
     speedFactor: 1.08,
+    projects: [
+      {
+        name: 'ShareDash',
+        role: 'High-speed multipath engine, AES-256-GCM & BLAKE3 checksums',
+        github: 'https://github.com/SamSunny4/ShareDash',
+      },
+    ],
   },
   {
     id: 'java',
@@ -121,6 +204,18 @@ export const TECH_NODES = [
     ringIndex: 1,
     orbitPhase: 0.2 + (Math.PI * 8 / 6),
     speedFactor: 0.92,
+    projects: [
+      {
+        name: 'KeyBase',
+        role: 'Commercial retail key records system deployed in production',
+        github: 'https://github.com/SamSunny4/KeyBase',
+      },
+      {
+        name: 'J.A.V.A (Just A Volunteer Away)',
+        role: 'Community-driven volunteer assistance dispatch platform',
+        github: 'https://github.com/SamSunny4/J.A.V.A-Just-A-Volunteer-Away',
+      },
+    ],
   },
   {
     id: 'kotlin',
@@ -133,6 +228,23 @@ export const TECH_NODES = [
     ringIndex: 1,
     orbitPhase: 0.2 + (Math.PI * 10 / 6),
     speedFactor: 1.02,
+    projects: [
+      {
+        name: 'ShareDash',
+        role: 'Android Wi-Fi Direct socket receiver & BLE radar discovery',
+        github: 'https://github.com/SamSunny4/ShareDash',
+      },
+      {
+        name: 'Haptok',
+        role: 'Haptic feedback engine & Android sensor interactions',
+        github: 'https://github.com/SamSunny4/Haptok',
+      },
+      {
+        name: 'VerticalLock',
+        role: 'Android system orientation lock & background service',
+        github: 'https://github.com/SamSunny4/VerticalLock',
+      },
+    ],
   },
 
   // --- RING 2: MODERN WEB & INTERACTIVE UI ---
@@ -147,6 +259,18 @@ export const TECH_NODES = [
     ringIndex: 2,
     orbitPhase: 0.5,
     speedFactor: 1.05,
+    projects: [
+      {
+        name: 'InfoGrid',
+        role: 'Full-stack 43" vertical laboratory signage CMS & typed APIs',
+        github: 'https://github.com/SamSunny4/InfoGrid',
+      },
+      {
+        name: 'Demomenu',
+        role: 'Interactive UI state machines & dynamic menu components',
+        github: 'https://github.com/SamSunny4/Demomenu',
+      },
+    ],
   },
   {
     id: 'javascript',
@@ -159,6 +283,23 @@ export const TECH_NODES = [
     ringIndex: 2,
     orbitPhase: 0.5 + (Math.PI * 2 / 5),
     speedFactor: 1.0,
+    projects: [
+      {
+        name: 'Resume / Portfolioweb',
+        role: 'Celestial 3D WebGL space engine & relativistic warp shaders',
+        github: 'https://github.com/SamSunny4/Resume',
+      },
+      {
+        name: 'DBMS (Graph Explorer)',
+        role: 'Blockchain transaction graph monitoring & Cytoscape.js rendering',
+        github: 'https://github.com/SamSunny4/DBMS',
+      },
+      {
+        name: 'FakePaste',
+        role: 'Natural human typing simulation engine with cadence jitter',
+        github: 'https://github.com/SamSunny4/FakePaste',
+      },
+    ],
   },
   {
     id: 'react',
@@ -171,6 +312,18 @@ export const TECH_NODES = [
     ringIndex: 2,
     orbitPhase: 0.5 + (Math.PI * 4 / 5),
     speedFactor: 0.96,
+    projects: [
+      {
+        name: 'Rainiest',
+        role: 'Kerala civic rainfall radar & District Collector leave tracker',
+        github: 'https://github.com/SamSunny4/Rainiest',
+      },
+      {
+        name: 'Leadis / AiSam',
+        role: 'Interactive pediatric motor screening & assessment interface',
+        github: 'https://github.com/SamSunny4/Leadis',
+      },
+    ],
   },
   {
     id: 'nextjs',
@@ -183,6 +336,23 @@ export const TECH_NODES = [
     ringIndex: 2,
     orbitPhase: 0.5 + (Math.PI * 6 / 5),
     speedFactor: 1.08,
+    projects: [
+      {
+        name: 'InfoGrid',
+        role: 'Next.js 16 App Router signage display & admin panel',
+        github: 'https://github.com/SamSunny4/InfoGrid',
+      },
+      {
+        name: 'Rainiest',
+        role: 'Next.js 15 SSR public weather intelligence dashboard',
+        github: 'https://github.com/SamSunny4/Rainiest',
+      },
+      {
+        name: 'DBMS (Graph Explorer)',
+        role: 'Next.js forensic blockchain explorer & investigation UI',
+        github: 'https://github.com/SamSunny4/DBMS',
+      },
+    ],
   },
   {
     id: 'tailwind',
@@ -195,6 +365,23 @@ export const TECH_NODES = [
     ringIndex: 2,
     orbitPhase: 0.5 + (Math.PI * 8 / 5),
     speedFactor: 0.94,
+    projects: [
+      {
+        name: 'InfoGrid',
+        role: 'Vertical screen layout tokens & responsive admin dashboard',
+        github: 'https://github.com/SamSunny4/InfoGrid',
+      },
+      {
+        name: 'Rainiest',
+        role: 'Glassmorphism meteorological UI & live status telemetry',
+        github: 'https://github.com/SamSunny4/Rainiest',
+      },
+      {
+        name: 'Leadis',
+        role: 'Clinical screening design tokens & accessible child UI',
+        github: 'https://github.com/SamSunny4/Leadis',
+      },
+    ],
   },
 
   // --- RING 3: CLOUD, DATA ARCHITECTURE & DEVOPS ---
@@ -209,6 +396,13 @@ export const TECH_NODES = [
     ringIndex: 3,
     orbitPhase: 0.1,
     speedFactor: 0.98,
+    projects: [
+      {
+        name: 'LateLoggy (Campus Verification)',
+        role: 'PostgreSQL & Supabase rotating QR check-in records',
+        github: 'https://github.com/SamSunny4/Resume',
+      },
+    ],
   },
   {
     id: 'mongodb',
@@ -221,6 +415,13 @@ export const TECH_NODES = [
     ringIndex: 3,
     orbitPhase: 0.1 + (Math.PI * 2 / 7),
     speedFactor: 1.04,
+    projects: [
+      {
+        name: 'InfoGrid',
+        role: 'MongoDB Atlas document storage for news, events & carousels',
+        github: 'https://github.com/SamSunny4/InfoGrid',
+      },
+    ],
   },
   {
     id: 'sqlite',
@@ -233,6 +434,13 @@ export const TECH_NODES = [
     ringIndex: 3,
     orbitPhase: 0.1 + (Math.PI * 4 / 7),
     speedFactor: 1.0,
+    projects: [
+      {
+        name: 'KeyBase',
+        role: 'Zero-config embedded ACID storage for retail customer records',
+        github: 'https://github.com/SamSunny4/KeyBase',
+      },
+    ],
   },
   {
     id: 'neo4j',
@@ -245,6 +453,13 @@ export const TECH_NODES = [
     ringIndex: 3,
     orbitPhase: 0.1 + (Math.PI * 6 / 7),
     speedFactor: 0.95,
+    projects: [
+      {
+        name: 'DBMS (Graph Explorer)',
+        role: 'Cypher queries tracing multi-hop token transfers & wallet clusters',
+        github: 'https://github.com/SamSunny4/DBMS',
+      },
+    ],
   },
   {
     id: 'docker',
@@ -257,6 +472,13 @@ export const TECH_NODES = [
     ringIndex: 3,
     orbitPhase: 0.1 + (Math.PI * 8 / 7),
     speedFactor: 1.02,
+    projects: [
+      {
+        name: 'DBMS (Graph Explorer)',
+        role: 'Containerized Neo4j database & Fastify API microservices',
+        github: 'https://github.com/SamSunny4/DBMS',
+      },
+    ],
   },
   {
     id: 'linux',
@@ -269,6 +491,13 @@ export const TECH_NODES = [
     ringIndex: 3,
     orbitPhase: 0.1 + (Math.PI * 10 / 7),
     speedFactor: 0.93,
+    projects: [
+      {
+        name: 'ShareDash',
+        role: 'POSIX socket networking, daemon management & transfer performance',
+        github: 'https://github.com/SamSunny4/ShareDash',
+      },
+    ],
   },
   {
     id: 'cloudflare',
@@ -281,6 +510,13 @@ export const TECH_NODES = [
     ringIndex: 3,
     orbitPhase: 0.1 + (Math.PI * 12 / 7),
     speedFactor: 1.06,
+    projects: [
+      {
+        name: 'InfoGrid',
+        role: 'Cloudflare R2 object storage for high-res vertical signage posters',
+        github: 'https://github.com/SamSunny4/InfoGrid',
+      },
+    ],
   },
 
   // --- RING 4: HARDWARE PROTOCOLS, PLATFORMS & COMETS (Chaotic Polar Orbit) ---
@@ -295,6 +531,13 @@ export const TECH_NODES = [
     ringIndex: 4,
     orbitPhase: 0.8,
     speedFactor: 1.12,
+    projects: [
+      {
+        name: 'SamSunny4 GitHub Hub',
+        role: 'Branching hygiene, atomic commits & releases across 30+ repos',
+        github: 'https://github.com/SamSunny4',
+      },
+    ],
   },
   {
     id: 'android',
@@ -307,6 +550,23 @@ export const TECH_NODES = [
     ringIndex: 4,
     orbitPhase: 0.8 + (Math.PI * 2 / 6),
     speedFactor: 0.97,
+    projects: [
+      {
+        name: 'ShareDash',
+        role: 'Native Android Wi-Fi Direct P2P sockets & BLE GATT server',
+        github: 'https://github.com/SamSunny4/ShareDash',
+      },
+      {
+        name: 'VerticalLock',
+        role: 'Android background services & system window orientation locks',
+        github: 'https://github.com/SamSunny4/VerticalLock',
+      },
+      {
+        name: 'Haptok',
+        role: 'Android hardware vibration motor & sensor controllers',
+        github: 'https://github.com/SamSunny4/Haptok',
+      },
+    ],
   },
   {
     id: 'windows',
@@ -319,6 +579,18 @@ export const TECH_NODES = [
     ringIndex: 4,
     orbitPhase: 0.8 + (Math.PI * 4 / 6),
     speedFactor: 1.04,
+    projects: [
+      {
+        name: 'KeyBase',
+        role: 'Win32 receipt printer drivers, camera capture & portable bundle',
+        github: 'https://github.com/SamSunny4/KeyBase',
+      },
+      {
+        name: 'ShareDash',
+        role: 'Windows Runtime USB 3.x controller & multipath socket networking',
+        github: 'https://github.com/SamSunny4/ShareDash',
+      },
+    ],
   },
   {
     id: 'ble',
@@ -331,6 +603,13 @@ export const TECH_NODES = [
     ringIndex: 4,
     orbitPhase: 0.8 + (Math.PI * 6 / 6),
     speedFactor: 1.08,
+    projects: [
+      {
+        name: 'ShareDash',
+        role: 'Quick Share BLE radar discovery & peer connection negotiation',
+        github: 'https://github.com/SamSunny4/ShareDash',
+      },
+    ],
   },
   {
     id: 'wifi',
@@ -343,6 +622,13 @@ export const TECH_NODES = [
     ringIndex: 4,
     orbitPhase: 0.8 + (Math.PI * 8 / 6),
     speedFactor: 0.95,
+    projects: [
+      {
+        name: 'ShareDash',
+        role: 'Direct P2P socket communication reaching 78-100+ MB/s transfers',
+        github: 'https://github.com/SamSunny4/ShareDash',
+      },
+    ],
   },
   {
     id: 'swing',
@@ -355,6 +641,13 @@ export const TECH_NODES = [
     ringIndex: 4,
     orbitPhase: 0.8 + (Math.PI * 10 / 6),
     speedFactor: 1.01,
+    projects: [
+      {
+        name: 'KeyBase',
+        role: 'Commercial retail POS desktop GUI with live webcam preview',
+        github: 'https://github.com/SamSunny4/KeyBase',
+      },
+    ],
   },
 ];
 
@@ -446,6 +739,11 @@ export class TechSolarSystem {
     this.tooltipCategory = document.getElementById('tooltip-category');
     this.tooltipDesc = document.getElementById('tooltip-desc');
     this.tooltipFooter = document.getElementById('tooltip-footer');
+    this.tooltipProjectsSection = document.getElementById('tooltip-projects-section');
+    this.tooltipProjectsHeaderLabel = document.getElementById('tooltip-projects-header-label');
+    this.tooltipProjectsCount = document.getElementById('tooltip-projects-count');
+    this.tooltipProjectsList = document.getElementById('tooltip-projects-list');
+    this.tooltipCloseBtn = document.getElementById('tooltip-close-btn');
 
     if (!this.stage || !this.container) {
       console.warn('[Solar] Solar stage or container not found in DOM.');
@@ -467,12 +765,15 @@ export class TechSolarSystem {
     this.targetCamRotX = 0;
     this.targetCamRotY = 0;
 
-    // Pointer Coordinates for Tooltip & Parallax
+    // Pointer Coordinates & Interaction State for Tooltip
     this.pointerClientX = -9999;
     this.pointerClientY = -9999;
     this.tooltipCurrentX = -9999;
     this.tooltipCurrentY = -9999;
     this.isTooltipActive = false;
+    this.isTooltipHovered = false;
+    this.isPinned = false;
+    this.leaveTimeout = null;
 
     // Space Zoom, Warp Travel & Wormhole State
     this.zoomProgress = 0;
@@ -494,6 +795,8 @@ export class TechSolarSystem {
     this.onPointerMove = this.onPointerMove.bind(this);
     this.triggerSpaceZoom = this.triggerSpaceZoom.bind(this);
     this.triggerProjectsZoom = this.triggerProjectsZoom.bind(this);
+    this.unpinTooltip = this.unpinTooltip.bind(this);
+    this.handleNodeClick = this.handleNodeClick.bind(this);
 
     this.init();
   }
@@ -565,11 +868,12 @@ export class TechSolarSystem {
           </div>
         `;
 
-        // Hover / Focus interactions
+        // Hover / Focus / Click interactions
         el.addEventListener('pointerenter', (e) => this.handleNodeHover(tech, el, e));
         el.addEventListener('pointerleave', () => this.handleNodeLeave());
         el.addEventListener('focus', (e) => this.handleNodeHover(tech, el, e));
         el.addEventListener('blur', () => this.handleNodeLeave());
+        el.addEventListener('click', (e) => this.handleNodeClick(tech, el, e));
 
         this.container.appendChild(el);
 
@@ -588,9 +892,49 @@ export class TechSolarSystem {
     });
   }
 
+  handleNodeClick(tech, el, e) {
+    if (e) e.stopPropagation();
+    this.isPinned = true;
+    this.handleNodeHover(tech, el);
+    if (this.tooltipCloseBtn) {
+      this.tooltipCloseBtn.style.display = 'flex';
+    }
+    if (this.tooltip) {
+      this.tooltip.classList.add('is-pinned');
+    }
+  }
+
+  unpinTooltip() {
+    this.isPinned = false;
+    this.isTooltipHovered = false;
+    if (this.tooltipCloseBtn) {
+      this.tooltipCloseBtn.style.display = 'none';
+    }
+    if (this.tooltip) {
+      this.tooltip.classList.remove('is-pinned');
+      this.tooltip.classList.remove('is-visible');
+      this.isTooltipActive = false;
+    }
+    if (this.hoveredNode) {
+      const el = this.container?.querySelector(`[data-id="${this.hoveredNode.id}"]`);
+      if (el) el.classList.remove('is-hovered');
+      this.hoveredNode = null;
+    }
+  }
+
   handleNodeHover(tech, el) {
+    if (this.leaveTimeout) {
+      clearTimeout(this.leaveTimeout);
+      this.leaveTimeout = null;
+    }
+
     this.hoveredNode = tech;
-    el.classList.add('is-hovered');
+    const allNodes = this.container?.querySelectorAll('.solar-node');
+    if (allNodes) {
+      allNodes.forEach(nodeEl => {
+        nodeEl.classList.toggle('is-hovered', nodeEl.dataset.id === tech.id);
+      });
+    }
 
     if (this.tooltip) {
       if (this.tooltipIcon) {
@@ -609,17 +953,66 @@ export class TechSolarSystem {
         this.tooltipDesc.textContent = tech.desc;
       }
       if (this.tooltipFooter) {
-        this.tooltipFooter.textContent = `ORBIT RING ${tech.ringIndex + 1} • REALTIME 3D SPATIAL`;
+        this.tooltipFooter.textContent = this.isPinned
+          ? `PINNED DOSSIER • CLICK ✕ OR OUTSIDE TO DISMISS`
+          : `ORBIT RING ${tech.ringIndex + 1} • CLICK NODE TO PIN TELEMETRY`;
+      }
+
+      // Populate verified projects & Git repositories
+      if (this.tooltipProjectsList) {
+        this.tooltipProjectsList.innerHTML = '';
+        const projects = tech.projects || [];
+
+        if (this.tooltipProjectsHeaderLabel) {
+          this.tooltipProjectsHeaderLabel.textContent = '// DEPLOYED IN PROJECTS';
+        }
+        if (this.tooltipProjectsCount) {
+          this.tooltipProjectsCount.textContent = `${projects.length} ${projects.length === 1 ? 'REPO' : 'REPOS'}`;
+        }
+
+        if (projects.length > 0) {
+          if (this.tooltipProjectsSection) {
+            this.tooltipProjectsSection.style.display = 'flex';
+          }
+          projects.forEach(proj => {
+            const item = document.createElement('div');
+            item.className = 'tooltip-project-item';
+            item.innerHTML = `
+              <div class="tooltip-project-info">
+                <span class="tooltip-project-title font-mono">${escapeHtml(proj.name)}</span>
+                <span class="tooltip-project-role font-sans">${escapeHtml(proj.role)}</span>
+              </div>
+              <a href="${proj.github}" target="_blank" rel="noopener noreferrer" class="tooltip-git-link font-mono" title="Open ${escapeHtml(proj.name)} on GitHub">
+                <svg viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+                <span>GIT ↗</span>
+              </a>
+            `;
+            this.tooltipProjectsList.appendChild(item);
+          });
+        } else if (this.tooltipProjectsSection) {
+          this.tooltipProjectsSection.style.display = 'none';
+        }
       }
 
       this.tooltip.style.setProperty('--tooltip-accent', tech.color);
       this.tooltip.style.setProperty('--tooltip-glow', `${tech.color}44`);
 
-      // Initialize position if not set
-      if (this.pointerClientX > -1000) {
-        this.tooltipCurrentX = this.pointerClientX + 18;
-        this.tooltipCurrentY = this.pointerClientY + 18;
-        this.tooltip.style.transform = `translate3d(${this.tooltipCurrentX}px, ${this.tooltipCurrentY}px, 0)`;
+      // Initialize position if not pinned
+      if (!this.isPinned && this.pointerClientX > -1000) {
+        const tooltipRect = this.tooltip.getBoundingClientRect();
+        const tooltipWidth = tooltipRect.width || 360;
+        const tooltipHeight = tooltipRect.height || 260;
+        let initX = this.pointerClientX + 18;
+        let initY = this.pointerClientY + 18;
+        if (initX + tooltipWidth > window.innerWidth - 16) {
+          initX = this.pointerClientX - tooltipWidth - 18;
+        }
+        if (initY + tooltipHeight > window.innerHeight - 16) {
+          initY = this.pointerClientY - tooltipHeight - 18;
+        }
+        this.tooltipCurrentX = Math.max(12, initX);
+        this.tooltipCurrentY = Math.max(12, initY);
+        this.tooltip.style.transform = `translate3d(${this.tooltipCurrentX.toFixed(1)}px, ${this.tooltipCurrentY.toFixed(1)}px, 0)`;
       }
 
       this.tooltip.classList.add('is-visible');
@@ -628,27 +1021,35 @@ export class TechSolarSystem {
   }
 
   handleNodeLeave() {
-    if (this.hoveredNode) {
-      const el = this.container.querySelector(`[data-id="${this.hoveredNode.id}"]`);
-      if (el) el.classList.remove('is-hovered');
-      this.hoveredNode = null;
+    if (this.isPinned) return;
+
+    if (this.leaveTimeout) {
+      clearTimeout(this.leaveTimeout);
     }
 
-    if (this.tooltip) {
-      this.tooltip.classList.remove('is-visible');
-      this.isTooltipActive = false;
-    }
+    this.leaveTimeout = setTimeout(() => {
+      if (!this.isTooltipHovered && !this.isPinned) {
+        if (this.hoveredNode) {
+          const el = this.container?.querySelector(`[data-id="${this.hoveredNode.id}"]`);
+          if (el) el.classList.remove('is-hovered');
+          this.hoveredNode = null;
+        }
+
+        if (this.tooltip) {
+          this.tooltip.classList.remove('is-visible');
+          this.isTooltipActive = false;
+        }
+      }
+    }, 280);
   }
-
-
-
-
 
   updateTooltipPosition() {
     if (!this.isTooltipActive || !this.tooltip) return;
+    if (this.isTooltipHovered || this.isPinned) return;
 
-    const tooltipWidth = 320;
-    const tooltipHeight = 150;
+    const tooltipRect = this.tooltip.getBoundingClientRect();
+    const tooltipWidth = tooltipRect.width || 360;
+    const tooltipHeight = tooltipRect.height || 260;
     let targetX = this.pointerClientX + 18;
     let targetY = this.pointerClientY + 18;
 
@@ -660,6 +1061,8 @@ export class TechSolarSystem {
     if (targetY + tooltipHeight > window.innerHeight - 16) {
       targetY = this.pointerClientY - tooltipHeight - 18;
     }
+    targetX = Math.max(12, targetX);
+    targetY = Math.max(12, targetY);
 
     // Smooth lerp
     this.tooltipCurrentX += (targetX - this.tooltipCurrentX) * 0.24;
@@ -677,6 +1080,43 @@ export class TechSolarSystem {
       this.pointerClientY = -9999;
       this.targetOrbitDilation = 1.0;
       this.targetProjectsDilation = 1.0;
+    });
+
+    // Tooltip hover & pin controls
+    if (this.tooltipCloseBtn) {
+      this.tooltipCloseBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        this.unpinTooltip();
+      });
+    }
+
+    if (this.tooltip) {
+      this.tooltip.addEventListener('pointerenter', () => {
+        if (this.leaveTimeout) {
+          clearTimeout(this.leaveTimeout);
+          this.leaveTimeout = null;
+        }
+        this.isTooltipHovered = true;
+      });
+
+      this.tooltip.addEventListener('pointerleave', () => {
+        this.isTooltipHovered = false;
+        if (!this.isPinned) {
+          this.handleNodeLeave();
+        }
+      });
+    }
+
+    document.addEventListener('pointerdown', (e) => {
+      if (this.isPinned && this.tooltip && !this.tooltip.contains(e.target) && !this.container?.contains(e.target)) {
+        this.unpinTooltip();
+      }
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && this.isPinned) {
+        this.unpinTooltip();
+      }
     });
 
     // Smooth space zoom button in hero

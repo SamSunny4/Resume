@@ -19,7 +19,7 @@
 
   
   <!-- Design System Stylesheet -->
-  <link rel="stylesheet" href="style.css?v=45">
+  <link rel="stylesheet" href="style.css?v=46">
   <link rel="icon" type="image/png" href="assets/me.png">
 </head>
 <body>
@@ -199,8 +199,21 @@
             <span class="tooltip-category font-mono" id="tooltip-category">// DOMAIN</span>
             <h4 class="tooltip-name font-display" id="tooltip-title">TECH NAME</h4>
           </div>
+          <button id="tooltip-close-btn" class="tooltip-close-btn font-mono" aria-label="Close Telemetry Dossier" title="Close [ESC]">✕</button>
         </div>
         <p class="tooltip-desc font-sans" id="tooltip-desc">Description...</p>
+        
+        <!-- Verified Projects & GitHub Repositories Container -->
+        <div class="tooltip-projects-section" id="tooltip-projects-section">
+          <div class="tooltip-projects-header font-mono">
+            <span id="tooltip-projects-header-label">// DEPLOYED IN PROJECTS</span>
+            <span class="tooltip-projects-count font-mono" id="tooltip-projects-count">0 REPOS</span>
+          </div>
+          <div class="tooltip-projects-list" id="tooltip-projects-list">
+            <!-- Dynamically populated with project dossiers and Git repository links -->
+          </div>
+        </div>
+
         <div class="tooltip-footer font-mono" id="tooltip-footer">ORBIT: REALTIME 3D SPATIAL</div>
       </div>
 
@@ -433,6 +446,6 @@
   <!-- Lenis Momentum Smooth Scroll Library -->
   <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.9/dist/lenis.min.js"></script>
   <!-- Main ES6 Module Entry -->
-  <script type="module" src="js/main.js?v=45"></script>
+  <script type="module" src="js/main.js?v=46"></script>
 </body>
 </html>
