@@ -76,6 +76,24 @@ export const CERTIFICATES = [
     ]
   },
   {
+    id: 'nptel-ml',
+    title: 'Machine Learning (Elite 92%)',
+    subtitle: 'NPTEL Online Certification · Top 2% Topper',
+    org: 'Indian Institute of Technology Kharagpur',
+    issuerTag: 'IIT Kharagpur · SWAYAM · MoE',
+    code: 'NPTEL26CS119S255301233',
+    date: 'JUL-SEP 2026',
+    accent: '#10B981',
+    badge: '🥇 TOP 2% · 92%',
+    score: 'Score: 92% (Top 2% Topper)',
+    image: 'assets/certificates/Nptelmachinelearning.png',
+    logos: [
+      { name: 'iit-kharagpur', label: 'IIT Kharagpur' },
+      { name: 'nptel', label: 'NPTEL' },
+      { name: 'swayam', label: 'SWAYAM' }
+    ]
+  },
+  {
     id: 'energya-hackathon',
     title: 'Eneryia Hackathon Finalist',
     subtitle: 'Shreshta \'25 Techno-Cultural Conclave',
@@ -254,7 +272,7 @@ export class CredentialsMobiusEngine {
         <div class="orbit3d-header">
           <span class="font-mono text-lime orbit3d-badge">// VERIFIED CREDENTIALS &amp; AWARDS</span>
           <h2 class="orbit3d-title font-display">CREDENTIALS MATRIX</h2>
-          <p class="font-mono text-muted orbit3d-sub">08 VERIFIED ARTIFACTS IN 3D ORBIT · CLICK TO REVEAL FULL CERTIFICATE</p>
+          <p class="font-mono text-muted orbit3d-sub">${String(CERTIFICATES.length).padStart(2, '0')} VERIFIED ARTIFACTS IN 3D ORBIT · CLICK TO REVEAL FULL CERTIFICATE</p>
         </div>
 
         <!-- 3D Isometric Orbit Viewport Stage -->
@@ -666,8 +684,11 @@ export class CredentialsMobiusEngine {
       if (isFront) card.el.classList.add('is-front');
       else card.el.classList.remove('is-front');
 
-      // ANGLE EVERYTHING UNIFORMLY: Counter-rotate stage pitch & yaw so cards face the viewer upright without distortion
-      card.el.style.transform = `translate3d(${card.x.toFixed(1)}px, ${card.y.toFixed(1)}px, ${card.z.toFixed(1)}px) rotateY(${-totalYaw.toFixed(2)}deg) rotateX(${-totalPitch.toFixed(2)}deg) scale(${finalScale.toFixed(3)})`;
+      // BELT ARRANGEMENT: Cards mounted tangent to the circular belt track, hugging curvature as the belt spins
+      const tangentYaw = -Math.sin(angle) * 48.0;
+      const cardPitch  = -totalPitch * 0.45;
+
+      card.el.style.transform = `translate3d(${card.x.toFixed(1)}px, ${card.y.toFixed(1)}px, ${card.z.toFixed(1)}px) rotateY(${(tangentYaw - totalYaw).toFixed(2)}deg) rotateX(${cardPitch.toFixed(2)}deg) scale(${finalScale.toFixed(3)})`;
       card.el.style.zIndex    = zIndex;
       card.el.style.opacity   = opacity.toFixed(3);
       card.el.style.filter    = blurPx > 0.4

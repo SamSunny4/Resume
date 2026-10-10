@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100">
+  <!-- Outer deep navy circle -->
+  <circle cx="50" cy="50" r="46" fill="#0C2340" stroke="#E5A823" stroke-width="3"/>
+  <!-- Inner gold emblem ring -->
+  <circle cx="50" cy="50" r="38" fill="none" stroke="#E5A823" stroke-width="1.5" stroke-dasharray="3 2"/>
+  <!-- Classic IIT Kharagpur Cogwheel & Torch Motif -->
+  <circle cx="50" cy="46" r="18" fill="none" stroke="#E5A823" stroke-width="2.5"/>
+  <path d="M50 24 L50 68 M28 46 L72 46 M34 30 L66 62 M34 62 L66 30" stroke="#E5A823" stroke-width="1.5"/>
+  <circle cx="50" cy="46" r="8" fill="#0C2340" stroke="#E5A823" stroke-width="2"/>
+  <path d="M50 36 L54 44 L46 44 Z" fill="#E5A823"/>
+  <!-- Sanskrit ribbon base -->
+  <path d="M24 76 Q50 85 76 76" stroke="#E5A823" stroke-width="2.5" fill="none"/>
+  <text x="50" y="86" font-family="'Segoe UI', Roboto, sans-serif" font-size="9" font-weight="900" fill="#E5A823" text-anchor="middle" letter-spacing="1">IIT KGP</text>
+</svg>
