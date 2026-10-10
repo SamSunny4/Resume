@@ -174,24 +174,25 @@ export class QuantumAssetPreloader {
   preloadSingleAsset(url) {
     return new Promise((resolve) => {
       const img = new Image();
-      img.src = url;
-
+      let done = false;
       const finish = () => {
+        if (done) return;
+        done = true;
         this.advanceProgress(1);
         resolve();
       };
 
+      // Failsafe per-asset timeout (1200ms) so no slow image blocks progress
+      const timer = setTimeout(finish, 1200);
+
+      img.onload = () => { clearTimeout(timer); finish(); };
+      img.onerror = () => { clearTimeout(timer); finish(); };
+      img.src = url;
+
       if ('decode' in img) {
         img.decode()
-          .then(finish)
-          .catch(() => {
-            // If decode fails (e.g. svg on certain engines), still count as loaded once cached
-            img.onload = finish;
-            img.onerror = finish;
-          });
-      } else {
-        img.onload = finish;
-        img.onerror = finish;
+          .then(() => { clearTimeout(timer); finish(); })
+          .catch(() => { clearTimeout(timer); finish(); });
       }
     });
   }

@@ -513,8 +513,8 @@ export class ProjectSolarSystem {
         this.projectsLayer.style.pointerEvents = 'none';
         this.projectsLayer.style.transform = 'scale(0.18) translateZ(0)';
         this.projectsLayer.style.filter = 'blur(16px)';
-      } else if (p <= 0.70) {
-        // Enters from deep space & remains actively interactive (0.44 -> 0.56 -> 0.70)
+      } else if (p <= 0.58) {
+        // Enters from deep space & remains actively interactive
         this.projectsLayer.style.visibility = 'visible';
         const projP = Math.min(1, Math.max(0, (p - 0.44) / 0.12));
         const easedProj = Math.sin((projP * Math.PI) / 2);
@@ -527,10 +527,10 @@ export class ProjectSolarSystem {
         this.projectsLayer.style.opacity = projOpacity.toFixed(3);
         this.projectsLayer.style.filter = projBlur > 0.4 ? `blur(${projBlur.toFixed(1)}px)` : 'none';
         this.projectsLayer.style.pointerEvents = projP > 0.85 ? 'auto' : 'none';
-      } else if (p <= 0.84) {
+      } else if (p <= 0.70) {
         // Warps forward past camera as user journeys to Credentials
         this.projectsLayer.style.visibility = 'visible';
-        const exitP = Math.min(1, Math.max(0, (p - 0.70) / 0.14));
+        const exitP = Math.min(1, Math.max(0, (p - 0.58) / 0.12));
         const projScale = 1.0 + exitP * 2.2;
         const projOpacity = Math.max(0, 1.0 - exitP * 1.45);
         const projBlur = exitP * 18;

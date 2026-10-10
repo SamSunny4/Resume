@@ -195,20 +195,17 @@ export class CredentialsMobiusEngine {
     this.isInViewport  = true;
     this.isTriggered   = false;
 
-    // ── 3D Infinity Lemniscate Belt Geometry (Matching Reference Image) ──
-    this.orbitRadiusX   = 540;   // Infinity belt width radius
-    this.orbitRadiusZ   = 340;   // Infinity belt depth radius
-    this.orbitPitchDeg  = 18.0;  // Isometric camera elevation pitch angle (~18°)
+    // ── 3D Circular Belt Geometry (True Top-Down Angle View) ──
+    this.orbitRadiusX   = 440;   // Circular belt radius in X (calibrated for full viewport clearance)
+    this.orbitRadiusZ   = 240;   // Circular belt radius in Z
+    this.orbitPitchDeg  = -24.0; // Top-angle elevated camera view looking down onto the belt (-24°)
     this.orbitYawDeg    = 0.0;   // Clean horizontal belt alignment
 
-    // ── Infinity Circuit Belt Canvas References & Geometry ──
+    // ── Circular Circuit Belt Canvas References ──
     this.beltCanvas    = null;
     this.beltCtx       = null;
     this.beltWidth     = 0;
     this.beltHeight    = 0;
-    this.curvePoints   = [];
-    this.arcLengths    = [0];
-    this.totalCurveLen = 2600;
 
     // ── Dynamics & Momentum ──
     this.autoAngle      = 0;
@@ -216,7 +213,7 @@ export class CredentialsMobiusEngine {
     this.dragVelocity   = 0;
     this.isDragging     = false;
     this.touchStartX    = 0;
-    this.baseSpeed      = 0.0028; // Smooth cybernetic conveyor speed
+    this.baseSpeed      = 0.0030; // Smooth cybernetic conveyor speed
 
     // ── Time-Dilation (Speed Control) ──
     this.speedFactor       = 1.0;
@@ -509,6 +506,15 @@ export class CredentialsMobiusEngine {
       if (this.isDragging) moveDrag(e.clientX);
     }, { passive: true });
     window.addEventListener('mouseup', endDrag, { passive: true });
+
+    // Enable mouse wheel scrolling on the stage to drive zoom in / zoom out
+    this.stage.addEventListener('wheel', (e) => {
+      if (window.AppState?.lenis) {
+        window.AppState.lenis.scrollTo(window.scrollY + e.deltaY * 1.4, { immediate: true });
+      } else {
+        window.scrollBy({ top: e.deltaY * 1.4, behavior: 'auto' });
+      }
+    }, { passive: true });
   }
 
   setupIntersectionObserver() {
@@ -547,28 +553,28 @@ export class CredentialsMobiusEngine {
     const w = window.innerWidth;
 
     if (w < 480) {
-      this.orbitRadiusX  = 260;
-      this.orbitRadiusZ  = 180;
-      this.orbitPitchDeg = 18.0;
+      this.orbitRadiusX  = 200;
+      this.orbitRadiusZ  = 120;
+      this.orbitPitchDeg = -24.0;
     } else if (w < 768) {
-      this.orbitRadiusX  = 360;
-      this.orbitRadiusZ  = 240;
-      this.orbitPitchDeg = 18.0;
+      this.orbitRadiusX  = 290;
+      this.orbitRadiusZ  = 160;
+      this.orbitPitchDeg = -24.0;
     } else if (w < 1200) {
-      this.orbitRadiusX  = 460;
-      this.orbitRadiusZ  = 300;
-      this.orbitPitchDeg = 18.0;
+      this.orbitRadiusX  = 380;
+      this.orbitRadiusZ  = 200;
+      this.orbitPitchDeg = -24.0;
     } else {
-      this.orbitRadiusX  = 540;
-      this.orbitRadiusZ  = 350;
-      this.orbitPitchDeg = 18.0;
+      this.orbitRadiusX  = 440;
+      this.orbitRadiusZ  = 240;
+      this.orbitPitchDeg = -24.0;
     }
 
     if (this.beltCanvas && this.stage) {
       const rect = this.stage.getBoundingClientRect();
       const dpr = Math.min(window.devicePixelRatio || 1, 2);
       this.beltWidth = rect.width || window.innerWidth;
-      this.beltHeight = rect.height || 620;
+      this.beltHeight = rect.height || window.innerHeight;
       this.beltCanvas.width = Math.round(this.beltWidth * dpr);
       this.beltCanvas.height = Math.round(this.beltHeight * dpr);
       if (this.beltCtx) {
@@ -576,76 +582,11 @@ export class CredentialsMobiusEngine {
         this.beltCtx.scale(dpr, dpr);
       }
     }
-
-    this.computeInfinityCurve();
   }
 
   /* ================================================================
-   *  3D INFINITY LEMNISCATE CURVE & 3D PROJECTION ENGINE
+   *  3D CIRCULAR BELT & 3D PROJECTION ENGINE
    * ================================================================ */
-
-  computeInfinityCurve() {
-    const N = 400;
-    this.curvePoints = [];
-    this.arcLengths = [0];
-    let totalLen = 0;
-
-    for (let i = 0; i < N; i++) {
-      const u = (i / N) * Math.PI * 2;
-      const x = this.orbitRadiusX * Math.sin(u);
-      const z = (this.orbitRadiusZ * 0.52) * Math.sin(2 * u);
-      const y = 20 * Math.cos(u); // 3D overpass/underpass height at center crossing
-
-      const dx = this.orbitRadiusX * Math.cos(u);
-      const dz = (this.orbitRadiusZ * 0.52) * 2 * Math.cos(2 * u);
-
-      // Normal perpendicular to track
-      const nx = dz;
-      const nz = -dx;
-      const rotY = Math.atan2(nx, nz) * (180 / Math.PI);
-
-      this.curvePoints.push({ x, y, z, rotY });
-
-      if (i > 0) {
-        const prev = this.curvePoints[i - 1];
-        totalLen += Math.hypot(x - prev.x, z - prev.z);
-        this.arcLengths.push(totalLen);
-      }
-    }
-
-    const p0 = this.curvePoints[0];
-    const pLast = this.curvePoints[N - 1];
-    totalLen += Math.hypot(p0.x - pLast.x, p0.z - pLast.z);
-    this.arcLengths.push(totalLen);
-    this.totalCurveLen = totalLen;
-  }
-
-  getPointAtDistance(dist) {
-    if (!this.curvePoints || this.curvePoints.length === 0) return { x: 0, y: 0, z: 0, rotY: 0 };
-    const N = this.curvePoints.length;
-    let d = ((dist % this.totalCurveLen) + this.totalCurveLen) % this.totalCurveLen;
-
-    let low = 0, high = N;
-    while (low < high) {
-      const mid = (low + high) >> 1;
-      if (this.arcLengths[mid] < d) low = mid + 1;
-      else high = mid;
-    }
-    const idx = Math.max(0, Math.min(N - 1, low));
-    const p1 = this.curvePoints[idx];
-    const p0 = this.curvePoints[(idx - 1 + N) % N];
-    const len0 = this.arcLengths[(idx - 1 + N) % N];
-    const len1 = this.arcLengths[idx];
-    const span = len1 - len0 || 1;
-    const factor = Math.max(0, Math.min(1, (d - len0) / span));
-
-    return {
-      x: p0.x + (p1.x - p0.x) * factor,
-      y: p0.y + (p1.y - p0.y) * factor,
-      z: p0.z + (p1.z - p0.z) * factor,
-      rotY: p0.rotY + (p1.rotY - p0.rotY) * factor,
-    };
-  }
 
   project(x, y, z, cx, cy, pitchRad, yawRad) {
     const cosY = Math.cos(yawRad);
@@ -670,7 +611,7 @@ export class CredentialsMobiusEngine {
     };
   }
 
-  drawInfinityBelt(pitchDeg, yawDeg, time) {
+  drawCircularBelt(pitchDeg, yawDeg, time, scaleMul = 1.0) {
     if (!this.beltCtx || !this.beltWidth || !this.beltHeight) return;
     const ctx = this.beltCtx;
     const W = this.beltWidth;
@@ -683,22 +624,25 @@ export class CredentialsMobiusEngine {
     const pitchRad = (pitchDeg * Math.PI) / 180;
     const yawRad   = (yawDeg * Math.PI) / 180;
 
-    // 5 parallel glowing neon circuit bus lanes (matches reference image)
-    const lanes = [-20, -10, 0, 10, 20];
+    const curRx = this.orbitRadiusX * scaleMul;
+    const curRz = this.orbitRadiusZ * scaleMul;
+
+    // 5 parallel glowing circular neon circuit bus lanes
+    const lanes = [-18, -9, 0, 9, 18];
     const N = 100;
 
     ctx.save();
     ctx.lineCap = 'round';
     ctx.lineJoin = 'round';
 
-    // 1. Multi-lane continuous glowing circuit bus tracks
+    // 1. Multi-lane continuous glowing circular circuit bus tracks
     lanes.forEach((laneOffset, laneIdx) => {
       ctx.beginPath();
       for (let i = 0; i <= N; i++) {
-        const u = (i / N) * Math.PI * 2;
-        const x = this.orbitRadiusX * Math.sin(u);
-        const z = (this.orbitRadiusZ * 0.52) * Math.sin(2 * u);
-        const y = 20 * Math.cos(u) + laneOffset;
+        const theta = (i / N) * Math.PI * 2;
+        const x = curRx * Math.sin(theta);
+        const z = curRz * Math.cos(theta);
+        const y = laneOffset * scaleMul;
 
         const p = this.project(x, y, z, cx, cy, pitchRad, yawRad);
         if (i === 0) ctx.moveTo(p.x, p.y);
@@ -707,27 +651,27 @@ export class CredentialsMobiusEngine {
       ctx.closePath();
 
       const isCenter = (laneIdx === 2);
-      ctx.strokeStyle = isCenter ? 'rgba(210, 255, 0, 0.85)' : 'rgba(210, 255, 0, 0.48)';
+      ctx.strokeStyle = isCenter ? 'rgba(210, 255, 0, 0.85)' : 'rgba(210, 255, 0, 0.45)';
       ctx.lineWidth = isCenter ? 2.2 : 1.4;
       ctx.shadowColor = '#D2FF00';
       ctx.shadowBlur = isCenter ? 12 : 6;
       ctx.stroke();
     });
 
-    // 2. PCB Circuit Solder Vias / circular pads along the tracks
-    const viaCount = 18;
+    // 2. PCB Circuit Solder Vias / circular pads around the circular belt
+    const viaCount = 20;
     for (let v = 0; v < viaCount; v++) {
-      const u = (v / viaCount) * Math.PI * 2;
-      const x = this.orbitRadiusX * Math.sin(u);
-      const z = (this.orbitRadiusZ * 0.52) * Math.sin(2 * u);
+      const theta = (v / viaCount) * Math.PI * 2;
+      const x = curRx * Math.sin(theta);
+      const z = curRz * Math.cos(theta);
       const laneOffset = lanes[v % lanes.length];
-      const y = 20 * Math.cos(u) + laneOffset;
+      const y = laneOffset * scaleMul;
 
       const p = this.project(x, y, z, cx, cy, pitchRad, yawRad);
 
       // Outer metallic pad ring
       ctx.beginPath();
-      ctx.arc(p.x, p.y, Math.max(2, 4.0 * p.scale), 0, Math.PI * 2);
+      ctx.arc(p.x, p.y, Math.max(2, 3.8 * p.scale), 0, Math.PI * 2);
       ctx.fillStyle = 'rgba(10, 20, 12, 0.95)';
       ctx.fill();
       ctx.strokeStyle = '#D2FF00';
@@ -738,26 +682,26 @@ export class CredentialsMobiusEngine {
 
       // Solder hole core
       ctx.beginPath();
-      ctx.arc(p.x, p.y, Math.max(1, 1.8 * p.scale), 0, Math.PI * 2);
+      ctx.arc(p.x, p.y, Math.max(1, 1.6 * p.scale), 0, Math.PI * 2);
       ctx.fillStyle = '#D2FF00';
       ctx.shadowBlur = 10;
       ctx.fill();
     }
 
-    // 3. Animated electric signal pulses running along the ribbon
+    // 3. Animated electric signal pulses orbiting along the circular ribbon
     const pulseCount = 8;
-    const pulseSpeed = 0.00032;
+    const pulseSpeed = 0.00035;
     for (let p = 0; p < pulseCount; p++) {
-      const pulseU = ((time * pulseSpeed + (p / pulseCount) * Math.PI * 2) % (Math.PI * 2));
+      const pulseTheta = ((time * pulseSpeed + (p / pulseCount) * Math.PI * 2) % (Math.PI * 2));
       const laneOffset = lanes[p % lanes.length];
-      const x = this.orbitRadiusX * Math.sin(pulseU);
-      const z = (this.orbitRadiusZ * 0.52) * Math.sin(2 * pulseU);
-      const y = 20 * Math.cos(pulseU) + laneOffset;
+      const x = curRx * Math.sin(pulseTheta);
+      const z = curRz * Math.cos(pulseTheta);
+      const y = laneOffset * scaleMul;
 
       const pt = this.project(x, y, z, cx, cy, pitchRad, yawRad);
 
       ctx.beginPath();
-      ctx.arc(pt.x, pt.y, Math.max(2, 3.2 * pt.scale), 0, Math.PI * 2);
+      ctx.arc(pt.x, pt.y, Math.max(2, 3.0 * pt.scale), 0, Math.PI * 2);
       ctx.fillStyle = '#FFFFFF';
       ctx.shadowColor = '#D2FF00';
       ctx.shadowBlur = 14;
@@ -765,7 +709,6 @@ export class CredentialsMobiusEngine {
     }
 
     ctx.restore();
-  }
   }
 
   trigger(forceImmediate = false) {
@@ -785,7 +728,7 @@ export class CredentialsMobiusEngine {
       (layer.style.opacity !== '' && parseFloat(layer.style.opacity) < 0.02)
     );
     const p = window.AppState?.techSolar?.zoomProgress ?? 0;
-    const isAway = (p > 0 && p < 0.60);
+    const isAway = (p > 0 && p < 0.58);
 
     if (document.hidden || isLayerHidden || isAway || !this.isInViewport) {
       this.animId = requestAnimationFrame(this.animate);
@@ -806,10 +749,21 @@ export class CredentialsMobiusEngine {
     this.camTiltX += (this.targetCamTiltX - this.camTiltX) * 0.06;
     this.camTiltY += (this.targetCamTiltY - this.camTiltY) * 0.06;
 
-    // Apply isometric angle tilt to the stage ring
+    // ── Continuous Scroll-Driven 3D Zoom ──
+    const zoomP = window.AppState?.techSolar?.zoomProgress ?? 0.74;
+    let scrollScale = 1.0;
+    if (zoomP >= 0.58 && zoomP <= 0.82) {
+      const pNorm = (zoomP - 0.58) / 0.24;
+      scrollScale = 0.90 + pNorm * 0.20;
+    } else if (zoomP > 0.82 && zoomP <= 0.94) {
+      const exitNorm = (zoomP - 0.82) / 0.12;
+      scrollScale = 1.10 + exitNorm * 0.8;
+    }
+
+    // Apply top-down isometric angle tilt and scroll zoom to the stage ring
     const totalPitch = this.orbitPitchDeg + this.camTiltX;
     const totalYaw   = this.orbitYawDeg   + this.camTiltY;
-    this.orbitRing.style.transform = `rotateX(${totalPitch.toFixed(2)}deg) rotateY(${totalYaw.toFixed(2)}deg)`;
+    this.orbitRing.style.transform = `rotateX(${totalPitch.toFixed(2)}deg) rotateY(${totalYaw.toFixed(2)}deg) scale(${scrollScale.toFixed(3)})`;
 
     // ── Rotation Lerping & Inertia ──
     this.speedFactor += (this.targetSpeedFactor - this.speedFactor) * 0.08;
@@ -826,42 +780,48 @@ export class CredentialsMobiusEngine {
     let closestCard = null;
     let maxZ = -Infinity;
 
-    // ── 3D Infinity Belt Geometry (Arc-length Parameterized) ──
-    this.cards.forEach((card, i) => {
-      // Uniform distance spacing along the infinity loop
-      const phaseOffset = (i / this.cards.length) * this.totalCurveLen;
-      const angleDist   = (totalAngle * this.totalCurveLen) / (2 * Math.PI);
-      const targetDist  = phaseOffset + angleDist;
+    // ── 3D Circular Belt Geometry (Viewed from Top Angle) ──
+    this.cards.forEach((card) => {
+      const angle = card.theta + totalAngle;
 
-      const pt = this.getPointAtDistance(targetDist);
+      const sinA = Math.sin(angle);
+      const cosA = Math.cos(angle);
 
-      card.x    = pt.x;
-      card.y    = pt.y;
-      card.z    = pt.z;
-      card.rotY = pt.rotY;
+      // Positions on circular 3D plane
+      const x = sinA * this.orbitRadiusX;
+      const z = cosA * this.orbitRadiusZ;
+      const y = 0; // Pure level circular belt viewed from top angle
 
-      if (pt.z > maxZ) {
-        maxZ = pt.z;
+      // Naturally rotate with respect to position and centre (tangent/radial to circle):
+      const rotY = (angle * (180 / Math.PI));
+
+      card.x    = x;
+      card.y    = y;
+      card.z    = z;
+      card.rotY = rotY;
+
+      if (z > maxZ) {
+        maxZ = z;
         closestCard = card;
       }
     });
 
     // ── Render 3D Smoked Glass Cards (Double-sided with Identical Content) ──
-    const maxZBound = this.orbitRadiusZ * 0.52;
     this.cards.forEach((card) => {
       const z = card.z;
-      const depthNorm = Math.max(0, Math.min(1, (z + maxZBound) / (2 * maxZBound)));
+      const depthNorm = (z + this.orbitRadiusZ) / (2 * this.orbitRadiusZ);
 
       const isHovered = (this.hoveredCard === card);
-      const isFront   = (card === closestCard && depthNorm > 0.80);
+      const isFront   = (card === closestCard && depthNorm > 0.82);
 
-      const baseScale  = 0.88 + depthNorm * 0.22;
-      const finalScale = isHovered ? baseScale * 1.12 : (isFront ? baseScale * 1.05 : baseScale);
+      const baseScale  = 0.88 + depthNorm * 0.18;
+      const finalScale = isHovered ? baseScale * 1.10 : (isFront ? baseScale * 1.04 : baseScale);
 
-      const opacity = isHovered ? 1.0 : (0.76 + depthNorm * 0.24);
+      // Back cards have high opacity so they remain crisp and visible
+      const opacity = isHovered ? 1.0 : (0.84 + depthNorm * 0.16);
       const zIndex  = isHovered ? 999 : Math.round(10 + depthNorm * 90);
 
-      // Highlight radiant electric-lime glowing border on front active card
+      // Front card indicator (liquid glass highlight)
       if (isFront) card.el.classList.add('is-front');
       else card.el.classList.remove('is-front');
 
@@ -871,8 +831,8 @@ export class CredentialsMobiusEngine {
       card.el.style.filter    = 'none';
     });
 
-    // Draw glowing 3D circuit tracks and electron pulses on the infinity belt canvas
-    this.drawInfinityBelt(totalPitch, totalYaw, this.time);
+    // Draw glowing 3D circular circuit tracks and electron pulses on the canvas
+    this.drawCircularBelt(totalPitch, totalYaw, this.time, scrollScale);
 
     this.animId = requestAnimationFrame(this.animate);
   }

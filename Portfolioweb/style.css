@@ -2180,23 +2180,26 @@ html.lenis, html.lenis body {
   display: flex;
   align-items: center;
   justify-content: center;
-  overflow: hidden;
-  padding: 1rem 1.5rem;
+  overflow: visible;
+  padding: 0.5rem 1rem;
+  box-sizing: border-box;
 }
 
 .orbit3d-wrapper {
   position: relative;
   width: 100%;
   height: 100%;
-  max-width: 1440px;
-  margin: 0 auto;
+  max-width: 100%;
+  margin: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
-  padding: 1.5rem 1.5rem 1rem 1.5rem;
+  padding: 1.2rem 2rem 1rem 2rem;
+  box-sizing: border-box;
   z-index: 10;
   pointer-events: none;
+  overflow: visible;
 }
 
 .orbit3d-header,
@@ -2227,7 +2230,7 @@ html.lenis, html.lenis body {
 /* Section Header */
 .orbit3d-header {
   text-align: center;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.35rem;
   z-index: 2;
   position: relative;
 }
@@ -2255,21 +2258,22 @@ html.lenis, html.lenis body {
   font-size: clamp(0.55rem, 1vw, 0.68rem);
   letter-spacing: 0.12em;
   color: var(--color-text-muted);
-  margin-top: 0.3rem;
+  margin-top: 0.25rem;
 }
 
 /* 3D Isometric Orbit Viewport Stage */
 .orbit3d-stage {
   position: relative;
   width: 100%;
+  height: 100%;
   flex: 1;
-  min-height: clamp(450px, 62vh, 670px);
+  min-height: 0;
   display: flex;
   align-items: center;
   justify-content: center;
   overflow: visible;
   perspective: 1400px;
-  perspective-origin: 50% 48%;
+  perspective-origin: 50% 50%;
   transform-style: preserve-3d;
   z-index: 2;
   user-select: none;
@@ -2323,23 +2327,45 @@ html.lenis, html.lenis body {
   transition: opacity 0.25s ease;
 }
 
-/* Two-sided Smoked Glass Card Faces (Matches Reference Image) */
+/* Two-sided Smoked Glass Card Faces with Pure Liquid Glass Border */
 .orbit3d-card-face {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
   border-radius: 20px;
-  background: linear-gradient(135deg, rgba(14, 22, 16, 0.90) 0%, rgba(6, 10, 7, 0.97) 100%);
-  border: 1px solid rgba(255, 255, 255, 0.16);
+  background: linear-gradient(135deg, rgba(14, 22, 16, 0.85) 0%, rgba(6, 10, 8, 0.94) 100%);
+  border: 1.5px solid rgba(255, 255, 255, 0.22);
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
-  box-shadow: 0 16px 45px rgba(0, 0, 0, 0.88), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+  box-shadow:
+    inset 0 1.5px 2px rgba(255, 255, 255, 0.60),  /* Liquid glass specular top ridge */
+    inset 0 -1px 2px rgba(255, 255, 255, 0.12),   /* Liquid glass bottom reflection */
+    inset 1.5px 0 2px rgba(255, 255, 255, 0.24),  /* Liquid glass left edge */
+    inset -1.5px 0 2px rgba(255, 255, 255, 0.18), /* Liquid glass right edge */
+    0 16px 45px rgba(0, 0, 0, 0.88);
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
   transform-style: preserve-3d;
   overflow: hidden;
-  transition: box-shadow 0.28s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Liquid Glass Border Rim Gradient Overlay */
+.orbit3d-card-face::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 20px;
+  padding: 1.5px;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.55) 0%, rgba(255, 255, 255, 0.06) 45%, rgba(255, 255, 255, 0.28) 100%);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+  z-index: 3;
+  opacity: 0.85;
+  transition: opacity 0.3s ease, background 0.3s ease;
 }
 
 .orbit3d-card-front {
@@ -2350,24 +2376,39 @@ html.lenis, html.lenis body {
   transform: rotateY(180deg) translateZ(1px);
 }
 
-/* Front Spotlight Card — Radiant Luminous Electric-Lime Glowing Border (Matches Reference Image) */
+/* Front Spotlight Card — Luminous Liquid Glass Specular Shimmer (No painted colored border) */
 .orbit3d-card.is-front .orbit3d-card-face {
-  border: 2.5px solid #D2FF00;
+  border-color: rgba(255, 255, 255, 0.48);
   box-shadow:
-    0 0 35px rgba(210, 255, 0, 0.80),
-    0 0 70px rgba(210, 255, 0, 0.40),
-    0 22px 60px rgba(0, 0, 0, 0.95),
-    inset 0 0 18px rgba(210, 255, 0, 0.22);
+    inset 0 2px 3px rgba(255, 255, 255, 0.85),
+    inset 0 -1.5px 2px rgba(255, 255, 255, 0.20),
+    inset 2px 0 2.5px rgba(255, 255, 255, 0.40),
+    inset -2px 0 2.5px rgba(255, 255, 255, 0.35),
+    0 0 26px rgba(255, 255, 255, 0.12),
+    0 22px 55px rgba(0, 0, 0, 0.92);
+}
+
+.orbit3d-card.is-front .orbit3d-card-face::before {
+  opacity: 1;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.92) 0%, rgba(255, 255, 255, 0.16) 45%, rgba(255, 255, 255, 0.55) 100%);
 }
 
 .orbit3d-card:hover .orbit3d-card-face,
 .orbit3d-card.is-hovered .orbit3d-card-face {
-  border-color: #D2FF00;
+  border-color: rgba(255, 255, 255, 0.65);
   box-shadow:
-    0 0 45px rgba(210, 255, 0, 0.85),
-    0 0 85px rgba(210, 255, 0, 0.45),
-    0 24px 65px rgba(0, 0, 0, 0.95),
-    inset 0 0 22px rgba(210, 255, 0, 0.25);
+    inset 0 2.5px 4px rgba(255, 255, 255, 0.95),
+    inset 0 -2px 3px rgba(255, 255, 255, 0.28),
+    inset 2px 0 3px rgba(255, 255, 255, 0.48),
+    inset -2px 0 3px rgba(255, 255, 255, 0.42),
+    0 0 32px rgba(255, 255, 255, 0.18),
+    0 26px 65px rgba(0, 0, 0, 0.95);
+}
+
+.orbit3d-card:hover .orbit3d-card-face::before,
+.orbit3d-card.is-hovered .orbit3d-card-face::before {
+  opacity: 1;
+  background: linear-gradient(135deg, #ffffff 0%, rgba(255, 255, 255, 0.24) 45%, rgba(255, 255, 255, 0.78) 100%);
 }
 
 /* Card Internal Layout */
