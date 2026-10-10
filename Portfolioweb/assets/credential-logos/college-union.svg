@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 140 50" width="140" height="50">
+  <polygon points="25 8 30 18 41 20 33 28 35 39 25 34 15 39 17 28 9 20 20 18" fill="#FFB800" stroke="#FFD700" stroke-width="1.5"/>
+  <text x="50" y="32" font-family="'Orbitron', sans-serif" font-weight="900" font-size="15" fill="#FFB800" letter-spacing="1">UNION</text>
+  <text x="50" y="44" font-family="monospace" font-size="7" fill="#E0E8DC" letter-spacing="1">STUDENT COUNCIL</text>
+</svg>

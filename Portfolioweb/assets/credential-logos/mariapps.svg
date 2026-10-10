@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 60" width="160" height="60">
+  <rect x="4" y="5" width="50" height="50" rx="10" fill="#005B94"/>
+  <path d="M10 28 Q22 20 34 28 T50 28" stroke="#FFFFFF" stroke-width="3" fill="none"/>
+  <path d="M10 38 Q22 30 34 38 T50 38" stroke="#38BDF8" stroke-width="2.2" fill="none"/>
+  <text x="62" y="32" font-family="'Orbitron', sans-serif" font-weight="900" font-size="14" fill="#FFFFFF" letter-spacing="1">MARIAPPS</text>
+  <text x="62" y="47" font-family="monospace" font-size="8" fill="#38BDF8" letter-spacing="1">MARINE SOL.</text>
+</svg>

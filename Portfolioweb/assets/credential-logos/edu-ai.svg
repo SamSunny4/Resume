@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 80" width="160" height="80">
+  <defs>
+    <linearGradient id="aiGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FF5722"/>
+      <stop offset="35%" stop-color="#E91E63"/>
+      <stop offset="70%" stop-color="#9C27B0"/>
+      <stop offset="100%" stop-color="#00BCD4"/>
+    </linearGradient>
+  </defs>
+  <!-- Colorful human/AI head profile -->
+  <circle cx="36" cy="40" r="30" fill="url(#aiGrad)" opacity="0.25"/>
+  <path d="M26 20 Q44 20 46 36 Q48 46 40 52 L40 60 L28 60 Q20 54 20 40 Q20 20 26 20 Z" fill="url(#aiGrad)"/>
+  <circle cx="36" cy="32" r="3.5" fill="#FFFFFF"/>
+  <circle cx="42" cy="40" r="2.8" fill="#00FFFF"/>
+  <line x1="36" y1="32" x2="42" y2="40" stroke="#FFFFFF" stroke-width="1.5"/>
+  <!-- Text edu@ai 3.0 -->
+  <text x="76" y="38" font-family="'Orbitron', sans-serif" font-weight="900" font-size="18" fill="#FFFFFF" letter-spacing="1">edu@ai</text>
+  <text x="76" y="60" font-family="'Orbitron', sans-serif" font-weight="900" font-size="20" fill="#00E5FF" letter-spacing="1">3.0</text>
+</svg>

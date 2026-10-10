@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 80" width="160" height="80">
+  <defs>
+    <linearGradient id="rocketGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FF6B00"/>
+      <stop offset="100%" stop-color="#FF3D00"/>
+    </linearGradient>
+  </defs>
+  <!-- ISRO upward satellite thrust arrow -->
+  <polygon points="80,4 73,48 87,48" fill="url(#rocketGrad)"/>
+  <polygon points="80,10 76,46 84,46" fill="#FFA500"/>
+  <!-- Solar panels / satellite wing -->
+  <rect x="42" y="24" width="76" height="5" rx="1.5" fill="#00C0FF" transform="rotate(-10 80 26)"/>
+  <!-- Hindi text इसरो -->
+  <text x="32" y="70" font-family="'Segoe UI', Roboto, sans-serif" font-weight="900" font-size="22" fill="#FF7700" letter-spacing="1">इसरो</text>
+  <!-- English text isro -->
+  <text x="94" y="70" font-family="'Segoe UI', Roboto, sans-serif" font-weight="900" font-size="22" fill="#00C0FF" letter-spacing="1">isro</text>
+</svg>

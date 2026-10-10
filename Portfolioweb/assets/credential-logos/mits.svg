@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 140 60" width="140" height="60">
+  <!-- Muthoot MITS red emblem -->
+  <rect x="4" y="4" width="52" height="52" rx="10" fill="#800000"/>
+  <!-- Two stylized gold elephant crest circles -->
+  <circle cx="18" cy="18" r="3.5" fill="#FFD700"/>
+  <circle cx="42" cy="18" r="3.5" fill="#FFD700"/>
+  <!-- 'M' lettermark -->
+  <text x="30" y="44" font-family="'Orbitron', sans-serif" font-weight="900" font-size="28" fill="#FFFFFF" text-anchor="middle">M</text>
+  <!-- Text MITS KOCHI -->
+  <text x="66" y="32" font-family="'Orbitron', sans-serif" font-weight="900" font-size="20" fill="#FFFFFF" letter-spacing="1">MITS</text>
+  <text x="66" y="48" font-family="monospace" font-weight="700" font-size="9" fill="#FFD700" letter-spacing="1">KOCHI</text>
+</svg>

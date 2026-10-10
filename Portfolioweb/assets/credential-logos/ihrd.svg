@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 50" width="160" height="50">
+  <rect x="2" y="2" width="156" height="46" rx="8" fill="#0A120D" stroke="#D2FF00" stroke-width="1.2" stroke-opacity="0.4"/>
+  <text x="80" y="32" font-family="'Orbitron', sans-serif" font-weight="900" font-size="18" fill="#D2FF00" letter-spacing="2" text-anchor="middle">IHRD</text>
+  <text x="80" y="44" font-family="monospace" font-size="7" fill="#E0E8DC" letter-spacing="1" text-anchor="middle">GOVT OF KERALA</text>
+</svg>

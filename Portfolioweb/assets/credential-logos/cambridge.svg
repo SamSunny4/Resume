@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 60" width="160" height="60">
+  <rect x="4" y="5" width="50" height="50" rx="10" fill="#002147" stroke="#D2FF00" stroke-width="1.2"/>
+  <path d="M29 12 L43 18 V30 C43 38 29 44 29 44 C29 44 15 38 15 30 V18 Z" fill="#002147" stroke="#FFFFFF" stroke-width="2"/>
+  <path d="M22 24 H36 M29 18 V36" stroke="#FFD700" stroke-width="2"/>
+  <text x="60" y="32" font-family="'Orbitron', sans-serif" font-weight="900" font-size="12" fill="#FFFFFF" letter-spacing="1">CAMBRIDGE</text>
+  <text x="60" y="46" font-family="monospace" font-size="8" fill="#D2FF00" letter-spacing="1">ASSESSMENT</text>
+</svg>

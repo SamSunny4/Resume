@@ -34,7 +34,11 @@ export const CERTIFICATES = [
     badge: '🥈 2ND PLACE',
     score: 'National Second',
     image: 'assets/certificates/nationalhackathon.jpg',
-    logos: ['edu-ai', 'ihrd', 'mits']
+    logos: [
+      { name: 'edu-ai', label: 'edu@ai 3.0' },
+      { name: 'ihrd', label: 'IHRD Kerala' },
+      { name: 'mits', label: 'MITS' }
+    ]
   },
   {
     id: 'isro-hackathon',
@@ -48,7 +52,10 @@ export const CERTIFICATES = [
     badge: '🚀 ISRO',
     score: 'Verified Participant',
     image: 'assets/certificates/isrohackathon.png',
-    logos: ['isro', 'h2s']
+    logos: [
+      { name: 'isro', label: 'ISRO' },
+      { name: 'hack2skill', label: 'Hack2Skill' }
+    ]
   },
   {
     id: 'nptel',
@@ -62,7 +69,11 @@ export const CERTIFICATES = [
     badge: '📜 ELITE 73%',
     score: 'Score: 73% (Elite)',
     image: 'assets/certificates/nptel.png',
-    logos: ['iit-madras', 'nptel', 'swayam']
+    logos: [
+      { name: 'iit-madras', label: 'IIT Madras' },
+      { name: 'nptel', label: 'NPTEL' },
+      { name: 'swayam', label: 'SWAYAM' }
+    ]
   },
   {
     id: 'energya-hackathon',
@@ -76,7 +87,10 @@ export const CERTIFICATES = [
     badge: '⚡ ENERGYA',
     score: 'Active Participant',
     image: 'assets/certificates/Eneryahackathon.png',
-    logos: ['mits', 'nba']
+    logos: [
+      { name: 'mits', label: 'MITS' },
+      { name: 'nba', label: 'NBA' }
+    ]
   },
   {
     id: 'mern-stack',
@@ -90,7 +104,11 @@ export const CERTIFICATES = [
     badge: '🛠️ FULL-STACK',
     score: 'Course Complete',
     image: 'assets/certificates/mernstack.jpg',
-    logos: ['zeropixels', 'react', 'nodejs']
+    logos: [
+      { name: 'zeropixels', label: 'Zero Pixels' },
+      { name: 'react', label: 'React' },
+      { name: 'nodejs', label: 'Node.js' }
+    ]
   },
   {
     id: 'program-rep',
@@ -104,7 +122,10 @@ export const CERTIFICATES = [
     badge: '🎓 LEADERSHIP',
     score: 'Appreciation Award',
     image: 'assets/certificates/programrep.jpg',
-    logos: ['mits', 'union']
+    logos: [
+      { name: 'mits', label: 'MITS' },
+      { name: 'union', label: 'College Union' }
+    ]
   },
   {
     id: 'industry-immersion',
@@ -118,7 +139,10 @@ export const CERTIFICATES = [
     badge: '🏭 INDUSTRY',
     score: 'Participation Award',
     image: 'assets/certificates/industryvisit.jpeg',
-    logos: ['mariapps', 'mits']
+    logos: [
+      { name: 'mariapps', label: 'MariApps' },
+      { name: 'mits', label: 'MITS' }
+    ]
   },
   {
     id: 'linguaskill',
@@ -132,184 +156,29 @@ export const CERTIFICATES = [
     badge: '🌐 CAMBRIDGE',
     score: 'C1/B2 Proficient',
     image: 'assets/certificates/liguaskill.PDF',
-    logos: ['cambridge']
+    logos: [
+      { name: 'cambridge', label: 'Cambridge' }
+    ]
   },
 ];
 
-// Helper to render high-fidelity, colored brand vector marks analyzed from certificates
-function renderCertificateLogo(logoKey) {
-  switch (logoKey) {
-    case 'isro':
-      // Official ISRO orange upward rocket arrow & blue isro emblem
-      return `
-        <div class="cred-brand-mark isro-mark" title="Indian Space Research Organisation (ISRO)">
-          <svg viewBox="0 0 100 48" class="logo-svg isro-svg" aria-hidden="true">
-            <!-- Central orange rocket spear & satellite panels -->
-            <polygon points="50,2 45,36 55,36" fill="#FF6B00"/>
-            <polygon points="50,8 48,34 52,34" fill="#FFA500"/>
-            <!-- Solar panels -->
-            <rect x="24" y="16" width="52" height="4" rx="1" fill="#00C0FF" transform="rotate(-12 50 18)"/>
-            <!-- Hindi text इसरो in orange -->
-            <text x="18" y="44" font-family="'Orbitron', sans-serif" font-weight="900" font-size="14" fill="#FF7700" letter-spacing="1">इसरो</text>
-            <!-- English text isro in cyan -->
-            <text x="56" y="44" font-family="'Orbitron', sans-serif" font-weight="900" font-size="14" fill="#00E5FF" letter-spacing="1">isro</text>
-          </svg>
-        </div>`;
+// Dynamically renders certificate logos loaded from assets/credential-logos/
+// Gracefully checks SVG -> PNG -> JPG -> WebP -> Text Badge fallback
+function renderCertificateLogo(logo) {
+  const name = typeof logo === 'string' ? logo : logo.name;
+  const label = typeof logo === 'string' ? logo : (logo.label || logo.name);
 
-    case 'h2s':
-      return `
-        <div class="cred-brand-mark h2s-mark" title="Hack2Skill">
-          <span class="h2s-tag font-mono">H2S</span>
-        </div>`;
-
-    case 'iit-madras':
-      // Official IIT Madras maroon & gold crest
-      return `
-        <div class="cred-brand-mark iit-mark" title="Indian Institute of Technology Madras">
-          <svg viewBox="0 0 40 40" class="logo-svg" aria-hidden="true">
-            <circle cx="20" cy="20" r="18" fill="#800000" stroke="#FFD700" stroke-width="1.8"/>
-            <path d="M20 7 L27 15 L24 28 L16 28 L13 15 Z" fill="#FFD700" opacity="0.9"/>
-            <circle cx="20" cy="21" r="3" fill="#800000"/>
-            <path d="M12 32 Q20 35 28 32" stroke="#FFD700" stroke-width="1.5" fill="none"/>
-            <text x="20" y="27" font-family="monospace" font-size="6" font-weight="bold" fill="#800000" text-anchor="middle">IIT</text>
-          </svg>
-          <span class="iit-text font-mono">IITM</span>
-        </div>`;
-
-    case 'nptel':
-      // Official NPTEL 8-petal mandala emblem in Indian tricolor
-      return `
-        <div class="cred-brand-mark nptel-mark" title="National Programme on Technology Enhanced Learning">
-          <svg viewBox="0 0 32 32" class="logo-svg" aria-hidden="true">
-            <circle cx="16" cy="16" r="14" fill="#0D1F12" stroke="#E65100" stroke-width="1.4"/>
-            <circle cx="16" cy="16" r="8" fill="none" stroke="#2E7D32" stroke-width="1.4" stroke-dasharray="3 1.5"/>
-            <circle cx="16" cy="16" r="3.5" fill="#E65100"/>
-            <path d="M16 4 L16 28 M4 16 L28 16" stroke="#FFFFFF" stroke-width="0.8" opacity="0.6"/>
-          </svg>
-          <span class="nptel-text font-mono">NPTEL</span>
-        </div>`;
-
-    case 'swayam':
-      return `
-        <div class="cred-brand-mark swayam-mark" title="SWAYAM Govt of India">
-          <span class="swayam-text font-mono">SWAYAM</span>
-        </div>`;
-
-    case 'edu-ai':
-      // edu@ai 3.0 colorful human-AI profile silhouette with rainbow neural glow
-      return `
-        <div class="cred-brand-mark edu-ai-mark" title="International Conclave on Generative AI 3.0">
-          <svg viewBox="0 0 36 36" class="logo-svg" aria-hidden="true">
-            <defs>
-              <linearGradient id="aiHeadGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stop-color="#FF5722"/>
-                <stop offset="35%" stop-color="#E91E63"/>
-                <stop offset="70%" stop-color="#9C27B0"/>
-                <stop offset="100%" stop-color="#00BCD4"/>
-              </linearGradient>
-            </defs>
-            <circle cx="18" cy="18" r="16" fill="url(#aiHeadGrad)" opacity="0.25"/>
-            <path d="M14 8 Q23 8 24 16 Q25 21 21 24 L21 28 L15 28 Q11 25 11 18 Q11 8 14 8 Z" fill="url(#aiHeadGrad)"/>
-            <circle cx="19" cy="14" r="1.8" fill="#FFFFFF"/>
-            <circle cx="22" cy="18" r="1.4" fill="#00FFFF"/>
-            <line x1="19" y1="14" x2="22" y2="18" stroke="#FFFFFF" stroke-width="0.8"/>
-          </svg>
-          <span class="edu-ai-text font-mono">edu@ai</span>
-        </div>`;
-
-    case 'ihrd':
-      return `
-        <div class="cred-brand-mark ihrd-mark" title="Institute of Human Resources Development (IHRD) Govt of Kerala">
-          <span class="ihrd-text font-mono">IHRD</span>
-        </div>`;
-
-    case 'mits':
-      // Muthoot MITS red logo with two elephants flanking the 'M'
-      return `
-        <div class="cred-brand-mark mits-mark" title="Muthoot Institute of Technology and Science">
-          <svg viewBox="0 0 32 32" class="logo-svg" aria-hidden="true">
-            <rect x="2" y="2" width="28" height="28" rx="6" fill="#800000" opacity="0.9"/>
-            <text x="16" y="22" font-family="'Orbitron', sans-serif" font-weight="900" font-size="13" fill="#FFFFFF" text-anchor="middle">M</text>
-            <circle cx="10" cy="10" r="1.8" fill="#FFD700"/>
-            <circle cx="22" cy="10" r="1.8" fill="#FFD700"/>
-          </svg>
-          <span class="mits-text font-mono">MITS</span>
-        </div>`;
-
-    case 'nba':
-      return `
-        <div class="cred-brand-mark nba-mark" title="National Board of Accreditation">
-          <span class="nba-text font-mono">NBA</span>
-        </div>`;
-
-    case 'zeropixels':
-      // Zero Pixels Technologies red angular 'Z' logo
-      return `
-        <div class="cred-brand-mark zeropixels-mark" title="Zero Pixels Technologies Pvt Ltd">
-          <svg viewBox="0 0 32 32" class="logo-svg" aria-hidden="true">
-            <rect x="2" y="2" width="28" height="28" rx="6" fill="#111111" stroke="#E50914" stroke-width="1.5"/>
-            <path d="M8 8 L24 8 L10 24 L24 24" stroke="#E50914" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-          </svg>
-          <span class="zp-text font-mono">ZERO PIXELS</span>
-        </div>`;
-
-    case 'react':
-      return `
-        <div class="cred-brand-mark tech-mini-mark" title="React.js Architecture">
-          <svg viewBox="0 0 24 24" class="logo-svg" fill="none" stroke="#00D8FF" stroke-width="1.8">
-            <circle cx="12" cy="12" r="2.2" fill="#00D8FF"/>
-            <ellipse cx="12" cy="12" rx="9" ry="3.5"/>
-            <ellipse cx="12" cy="12" rx="9" ry="3.5" transform="rotate(60 12 12)"/>
-            <ellipse cx="12" cy="12" rx="9" ry="3.5" transform="rotate(120 12 12)"/>
-          </svg>
-        </div>`;
-
-    case 'nodejs':
-      return `
-        <div class="cred-brand-mark tech-mini-mark" title="Node.js Engine">
-          <svg viewBox="0 0 24 24" class="logo-svg" fill="none" stroke="#22C55E" stroke-width="1.8">
-            <polygon points="12 2 21 7 21 17 12 22 3 17 3 7 12 2"/>
-            <polyline points="12 2 12 12 21 17"/>
-            <line x1="12" y1="12" x2="3" y2="17"/>
-          </svg>
-        </div>`;
-
-    case 'union':
-      return `
-        <div class="cred-brand-mark union-mark" title="College Union Leadership">
-          <svg viewBox="0 0 24 24" class="logo-svg" fill="#FFB800">
-            <polygon points="12 2 15 8.5 22 9.5 17 14.5 18.5 21.5 12 18 5.5 21.5 7 14.5 2 9.5 9 8.5 12 2"/>
-          </svg>
-          <span class="union-text font-mono">UNION</span>
-        </div>`;
-
-    case 'mariapps':
-      // MariApps Marine Solutions blue wave flag logo
-      return `
-        <div class="cred-brand-mark mariapps-mark" title="MariApps Marine Solutions">
-          <svg viewBox="0 0 32 32" class="logo-svg" aria-hidden="true">
-            <rect x="2" y="2" width="28" height="28" rx="6" fill="#005B94"/>
-            <path d="M6 16 Q12 11 18 16 T30 16" stroke="#FFFFFF" stroke-width="2" fill="none"/>
-            <path d="M6 21 Q12 16 18 21 T30 21" stroke="#38BDF8" stroke-width="1.5" fill="none"/>
-          </svg>
-          <span class="mariapps-text font-mono">MARIAPPS</span>
-        </div>`;
-
-    case 'cambridge':
-      // Cambridge Assessment English crest
-      return `
-        <div class="cred-brand-mark cambridge-mark" title="Cambridge Assessment English · University of Cambridge">
-          <svg viewBox="0 0 32 32" class="logo-svg" aria-hidden="true">
-            <rect x="2" y="2" width="28" height="28" rx="6" fill="#002147" stroke="#D2FF00" stroke-width="1"/>
-            <path d="M16 6 L24 10 V18 C24 23 16 26 16 26 C16 26 8 23 8 18 V10 Z" fill="#002147" stroke="#FFFFFF" stroke-width="1.4"/>
-            <path d="M12 14 H20 M16 10 V22" stroke="#FFD700" stroke-width="1.4"/>
-          </svg>
-          <span class="cambridge-text font-mono">CAMBRIDGE</span>
-        </div>`;
-
-    default:
-      return '';
-  }
+  return `
+    <div class="cred-brand-mark" title="${label}">
+      <img
+        src="assets/credential-logos/${name}.svg"
+        alt="${label}"
+        class="cred-logo-img"
+        loading="lazy"
+        onerror="if(!this.dataset.triedPng){this.dataset.triedPng='1';this.src='assets/credential-logos/${name}.png';}else if(!this.dataset.triedJpg){this.dataset.triedJpg='1';this.src='assets/credential-logos/${name}.jpg';}else if(!this.dataset.triedWebp){this.dataset.triedWebp='1';this.src='assets/credential-logos/${name}.webp';}else{this.style.display='none';const s=this.nextElementSibling;if(s)s.style.display='inline';}"
+      />
+      <span class="cred-logo-fallback-text font-mono" style="display:none;">${label}</span>
+    </div>`;
 }
 
 export class CredentialsMobiusEngine {

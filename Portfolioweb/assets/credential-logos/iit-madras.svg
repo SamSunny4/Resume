@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100">
+  <!-- Outer maroon circle -->
+  <circle cx="50" cy="50" r="46" fill="#800000" stroke="#FFD700" stroke-width="3"/>
+  <!-- Inner gold emblem ring -->
+  <circle cx="50" cy="50" r="38" fill="none" stroke="#FFD700" stroke-width="1.5" stroke-dasharray="3 2"/>
+  <!-- Traditional Gopuram & lamp motif -->
+  <path d="M50 20 L66 38 L60 68 L40 68 L34 38 Z" fill="#FFD700" opacity="0.95"/>
+  <circle cx="50" cy="52" r="6" fill="#800000"/>
+  <!-- Sanskrit ribbon base -->
+  <path d="M26 76 Q50 84 74 76" stroke="#FFD700" stroke-width="3" fill="none"/>
+  <text x="50" y="66" font-family="'Segoe UI', Roboto, sans-serif" font-size="11" font-weight="900" fill="#800000" text-anchor="middle">IITM</text>
+  <text x="50" y="93" font-family="monospace" font-size="8" font-weight="bold" fill="#FFD700" text-anchor="middle">MADRAS</text>
+</svg>
