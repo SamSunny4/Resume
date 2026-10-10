@@ -648,6 +648,7 @@ export class CredentialsMobiusEngine {
       card.x = x;
       card.y = y;
       card.z = z;
+      card.angle = angle;
 
       if (z > maxZ) {
         maxZ = z;
@@ -658,6 +659,7 @@ export class CredentialsMobiusEngine {
     // ── Render 3D Cards with Uniform Camera Orientation & TechSolar Far-Side Effects ──
     this.cards.forEach((card) => {
       const z = card.z;
+      const angle = card.angle;
       // depthNorm: 0.0 at far side (back of orbit), 1.0 at front (closest to camera)
       const depthNorm = (z + this.orbitRadiusZ) / (2 * this.orbitRadiusZ);
 
