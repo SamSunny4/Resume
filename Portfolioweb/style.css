@@ -47,6 +47,7 @@
   /* Typography Stacks */
   --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   --font-display: 'Syne', sans-serif;
+  --font-headline: 'Anton', 'Bebas Neue', sans-serif;
   --font-editorial: 'Instrument Serif', Georgia, serif;
   --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
 
@@ -2286,17 +2287,6 @@ html.lenis, html.lenis body {
   cursor: grabbing;
 }
 
-/* Glowing 3D Infinity Circuit Belt Canvas */
-.orbit3d-belt-canvas {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  z-index: 1;
-}
-
 /* 3D Ring Anchor (Tilted at isometric camera angle) */
 .orbit3d-ring {
   position: absolute;
@@ -2319,10 +2309,13 @@ html.lenis, html.lenis body {
   height: 165px;
   margin-left: -127px;
   margin-top:  -82px;
-  transform-style: preserve-3d;
+  transform-style: preserve-3d !important;
+  -webkit-transform-style: preserve-3d !important;
+  backface-visibility: visible !important;
+  -webkit-backface-visibility: visible !important;
   cursor: pointer;
   pointer-events: auto;
-  overflow: visible;
+  overflow: visible !important;
   will-change: transform, opacity;
   transition: opacity 0.25s ease;
 }
@@ -2334,7 +2327,7 @@ html.lenis, html.lenis body {
   width: 100%;
   height: 100%;
   border-radius: 20px;
-  background: linear-gradient(135deg, rgba(14, 22, 16, 0.85) 0%, rgba(6, 10, 8, 0.94) 100%);
+  background: linear-gradient(135deg, rgba(14, 22, 16, 0.88) 0%, rgba(6, 10, 8, 0.94) 100%);
   border: 1.5px solid rgba(255, 255, 255, 0.22);
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
@@ -2347,7 +2340,7 @@ html.lenis, html.lenis body {
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
   transform-style: preserve-3d;
-  overflow: hidden;
+  -webkit-transform-style: preserve-3d;
   transition: box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
@@ -2369,11 +2362,11 @@ html.lenis, html.lenis body {
 }
 
 .orbit3d-card-front {
-  transform: rotateY(0deg) translateZ(1px);
+  transform: rotateY(0deg) translateZ(1.5px);
 }
 
 .orbit3d-card-back {
-  transform: rotateY(180deg) translateZ(1px);
+  transform: rotateY(180deg) translateZ(1.5px);
 }
 
 /* Front Spotlight Card — Luminous Liquid Glass Specular Shimmer (No painted colored border) */
@@ -2897,23 +2890,40 @@ html.lenis, html.lenis body {
 
 /* Monumental Gradient Display Headline (Matching Reference Image) */
 .contact-monumental-title {
-  font-family: var(--font-display, 'Syne', sans-serif);
-  font-size: clamp(3.8rem, 10vw, 9.4rem);
-  font-weight: 900;
-  line-height: 0.96;
-  letter-spacing: -0.035em;
+  font-family: var(--font-headline, 'Anton', 'Bebas Neue', sans-serif);
+  font-size: clamp(2.4rem, 9.4vw, 9.8rem);
+  font-weight: 400;
+  line-height: 0.95;
+  letter-spacing: 0.01em;
   text-transform: uppercase;
+  white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.22em;
   margin: 0 0 1.2rem 0;
-  background: linear-gradient(90deg, #FFFFFF 0%, #D8ECD0 42%, #D2FF00 88%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  filter: drop-shadow(0 0 38px rgba(210, 255, 0, 0.22));
   user-select: none;
   transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), filter 0.3s ease;
 }
 
+.contact-monumental-title .title-word-silver {
+  background: linear-gradient(180deg, #FFFFFF 0%, #E8ECE6 48%, #C4CCC1 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 0 24px rgba(255, 255, 255, 0.28));
+  display: inline-block;
+}
+
+.contact-monumental-title .title-word-lime {
+  background: linear-gradient(180deg, #EAFF62 0%, #D2FF00 50%, #B2E600 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 0 38px rgba(210, 255, 0, 0.38));
+  display: inline-block;
+}
+
 .contact-monumental-title:hover {
-  filter: drop-shadow(0 0 50px rgba(210, 255, 0, 0.38));
+  filter: drop-shadow(0 0 52px rgba(210, 255, 0, 0.45));
 }
 
 /* Editorial Sub-tagline */
@@ -3192,6 +3202,10 @@ html.lenis, html.lenis body {
   .contact-monumental-section {
     padding: 5rem 1rem 3.5rem 1rem;
   }
+  .contact-monumental-title {
+    font-size: clamp(2.0rem, 8.8vw, 3.8rem);
+    gap: 0.18em;
+  }
   .contact-cartridges-row {
     grid-template-columns: 1fr;
     max-width: 380px;
@@ -3335,8 +3349,6 @@ html.lenis, html.lenis body {
 }
 
 /* Force GPU compositing for fast 3D transforms */
-.orbit3d-card,
-.orbit3d-ring,
 .solar-node-badge,
 .project-world-node,
 .contact-cartridge,

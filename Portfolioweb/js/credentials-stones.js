@@ -201,12 +201,6 @@ export class CredentialsMobiusEngine {
     this.orbitPitchDeg  = -24.0; // Top-angle elevated camera view looking down onto the belt (-24°)
     this.orbitYawDeg    = 0.0;   // Clean horizontal belt alignment
 
-    // ── Circular Circuit Belt Canvas References ──
-    this.beltCanvas    = null;
-    this.beltCtx       = null;
-    this.beltWidth     = 0;
-    this.beltHeight    = 0;
-
     // ── Dynamics & Momentum ──
     this.autoAngle      = 0;
     this.manualAngle    = 0;
@@ -268,8 +262,6 @@ export class CredentialsMobiusEngine {
 
         <!-- 3D Isometric Orbit Viewport Stage -->
         <div class="orbit3d-stage" id="orbit3d-stage" role="region" aria-label="3D Credentials Orbit Carousel">
-          <!-- Luminous Glowing Infinity Circuit Belt Canvas (Matches Reference Image) -->
-          <canvas id="orbit3d-belt-canvas" class="orbit3d-belt-canvas" aria-hidden="true"></canvas>
           <div class="orbit3d-ring" id="orbit3d-ring"></div>
         </div>
 
@@ -309,8 +301,6 @@ export class CredentialsMobiusEngine {
     this.stage        = document.getElementById('orbit3d-stage');
     this.stageWrapper = document.getElementById('orbit3d-wrapper');
     this.orbitRing    = document.getElementById('orbit3d-ring');
-    this.beltCanvas   = document.getElementById('orbit3d-belt-canvas');
-    this.beltCtx      = this.beltCanvas ? this.beltCanvas.getContext('2d') : null;
 
     this.lightbox          = document.getElementById('orbit3d-lightbox');
     this.lightboxImg       = document.getElementById('orbit3d-lightbox-img');
@@ -569,146 +559,6 @@ export class CredentialsMobiusEngine {
       this.orbitRadiusZ  = 240;
       this.orbitPitchDeg = -24.0;
     }
-
-    if (this.beltCanvas && this.stage) {
-      const rect = this.stage.getBoundingClientRect();
-      const dpr = Math.min(window.devicePixelRatio || 1, 2);
-      this.beltWidth = rect.width || window.innerWidth;
-      this.beltHeight = rect.height || window.innerHeight;
-      this.beltCanvas.width = Math.round(this.beltWidth * dpr);
-      this.beltCanvas.height = Math.round(this.beltHeight * dpr);
-      if (this.beltCtx) {
-        this.beltCtx.setTransform(1, 0, 0, 1, 0, 0);
-        this.beltCtx.scale(dpr, dpr);
-      }
-    }
-  }
-
-  /* ================================================================
-   *  3D CIRCULAR BELT & 3D PROJECTION ENGINE
-   * ================================================================ */
-
-  project(x, y, z, cx, cy, pitchRad, yawRad) {
-    const cosY = Math.cos(yawRad);
-    const sinY = Math.sin(yawRad);
-    const cosX = Math.cos(pitchRad);
-    const sinX = Math.sin(pitchRad);
-
-    const x1 = x * cosY + z * sinY;
-    const y1 = y;
-    const z1 = -x * sinY + z * cosY;
-
-    const x2 = x1;
-    const y2 = y1 * cosX - z1 * sinX;
-    const z2 = y1 * sinX + z1 * cosX;
-
-    const scale = 1400 / (1400 - z2);
-    return {
-      x: cx + x2 * scale,
-      y: cy + y2 * scale,
-      z: z2,
-      scale
-    };
-  }
-
-  drawCircularBelt(pitchDeg, yawDeg, time, scaleMul = 1.0) {
-    if (!this.beltCtx || !this.beltWidth || !this.beltHeight) return;
-    const ctx = this.beltCtx;
-    const W = this.beltWidth;
-    const H = this.beltHeight;
-    const cx = W / 2;
-    const cy = H / 2;
-
-    ctx.clearRect(0, 0, W, H);
-
-    const pitchRad = (pitchDeg * Math.PI) / 180;
-    const yawRad   = (yawDeg * Math.PI) / 180;
-
-    const curRx = this.orbitRadiusX * scaleMul;
-    const curRz = this.orbitRadiusZ * scaleMul;
-
-    // 5 parallel glowing circular neon circuit bus lanes
-    const lanes = [-18, -9, 0, 9, 18];
-    const N = 100;
-
-    ctx.save();
-    ctx.lineCap = 'round';
-    ctx.lineJoin = 'round';
-
-    // 1. Multi-lane continuous glowing circular circuit bus tracks
-    lanes.forEach((laneOffset, laneIdx) => {
-      ctx.beginPath();
-      for (let i = 0; i <= N; i++) {
-        const theta = (i / N) * Math.PI * 2;
-        const x = curRx * Math.sin(theta);
-        const z = curRz * Math.cos(theta);
-        const y = laneOffset * scaleMul;
-
-        const p = this.project(x, y, z, cx, cy, pitchRad, yawRad);
-        if (i === 0) ctx.moveTo(p.x, p.y);
-        else ctx.lineTo(p.x, p.y);
-      }
-      ctx.closePath();
-
-      const isCenter = (laneIdx === 2);
-      ctx.strokeStyle = isCenter ? 'rgba(210, 255, 0, 0.85)' : 'rgba(210, 255, 0, 0.45)';
-      ctx.lineWidth = isCenter ? 2.2 : 1.4;
-      ctx.shadowColor = '#D2FF00';
-      ctx.shadowBlur = isCenter ? 12 : 6;
-      ctx.stroke();
-    });
-
-    // 2. PCB Circuit Solder Vias / circular pads around the circular belt
-    const viaCount = 20;
-    for (let v = 0; v < viaCount; v++) {
-      const theta = (v / viaCount) * Math.PI * 2;
-      const x = curRx * Math.sin(theta);
-      const z = curRz * Math.cos(theta);
-      const laneOffset = lanes[v % lanes.length];
-      const y = laneOffset * scaleMul;
-
-      const p = this.project(x, y, z, cx, cy, pitchRad, yawRad);
-
-      // Outer metallic pad ring
-      ctx.beginPath();
-      ctx.arc(p.x, p.y, Math.max(2, 3.8 * p.scale), 0, Math.PI * 2);
-      ctx.fillStyle = 'rgba(10, 20, 12, 0.95)';
-      ctx.fill();
-      ctx.strokeStyle = '#D2FF00';
-      ctx.lineWidth = 1.2;
-      ctx.shadowColor = '#D2FF00';
-      ctx.shadowBlur = 6;
-      ctx.stroke();
-
-      // Solder hole core
-      ctx.beginPath();
-      ctx.arc(p.x, p.y, Math.max(1, 1.6 * p.scale), 0, Math.PI * 2);
-      ctx.fillStyle = '#D2FF00';
-      ctx.shadowBlur = 10;
-      ctx.fill();
-    }
-
-    // 3. Animated electric signal pulses orbiting along the circular ribbon
-    const pulseCount = 8;
-    const pulseSpeed = 0.00035;
-    for (let p = 0; p < pulseCount; p++) {
-      const pulseTheta = ((time * pulseSpeed + (p / pulseCount) * Math.PI * 2) % (Math.PI * 2));
-      const laneOffset = lanes[p % lanes.length];
-      const x = curRx * Math.sin(pulseTheta);
-      const z = curRz * Math.cos(pulseTheta);
-      const y = laneOffset * scaleMul;
-
-      const pt = this.project(x, y, z, cx, cy, pitchRad, yawRad);
-
-      ctx.beginPath();
-      ctx.arc(pt.x, pt.y, Math.max(2, 3.0 * pt.scale), 0, Math.PI * 2);
-      ctx.fillStyle = '#FFFFFF';
-      ctx.shadowColor = '#D2FF00';
-      ctx.shadowBlur = 14;
-      ctx.fill();
-    }
-
-    ctx.restore();
   }
 
   trigger(forceImmediate = false) {
@@ -830,9 +680,6 @@ export class CredentialsMobiusEngine {
       card.el.style.opacity   = opacity.toFixed(3);
       card.el.style.filter    = 'none';
     });
-
-    // Draw glowing 3D circular circuit tracks and electron pulses on the canvas
-    this.drawCircularBelt(totalPitch, totalYaw, this.time, scrollScale);
 
     this.animId = requestAnimationFrame(this.animate);
   }

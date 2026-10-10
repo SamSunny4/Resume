@@ -512,11 +512,14 @@ export class TechSolarSystem {
     this.isPinned = false;
     this.leaveTimeout = null;
 
-    // Space Zoom, Warp Travel & Wormhole State
+    // Space Zoom, Dynamic Warp Travel & Inertia State
     this.zoomProgress = 0;
     this.targetZoomProgress = 0;
     this.warpSpeed = 0;
+    this.warpDirection = 1; // +1 = forward (down), -1 = backward (up)
     this.wormholeIntensity = 0;
+    this.lastScrollY = typeof window !== 'undefined' ? window.scrollY : 0;
+    this.lastTime = typeof performance !== 'undefined' ? performance.now() : 0;
 
     // Drifting 3D Stardust
     this.stardust = this.generateStardust(65);
@@ -1124,19 +1127,57 @@ export class TechSolarSystem {
     }
 
     // -----------------------------------------------------------------
-    // Dynamic Hyperspace Star Warp Speeds (Surging during cosmic layer transits)
+    // Dynamic Hyperspace Velocity Physics (Streaks ONLY when scrolling)
     // -----------------------------------------------------------------
-    // 1. Hero -> Tech Stack Warp Surge
-    const heroWarp = (p > 0.02 && p < 0.14) ? Math.sin((p / 0.14) * Math.PI) * 2.5 : 0;
-    // 2. Tech Stack -> Projects Warp Surge
-    const techToProjWarp = (p > 0.30 && p < 0.44) ? Math.sin(((p - 0.30) / 0.14) * Math.PI) * 2.5 : 0;
-    // 3. Projects -> Credentials Warp Surge
-    const projToCredWarp = (p > 0.58 && p < 0.70) ? Math.sin(((p - 0.58) / 0.12) * Math.PI) * 2.5 : 0;
-    // 4. Credentials -> Contact Transmission Ground Station Warp Surge
-    const credToContactWarp = (p > 0.80 && p < 0.92) ? Math.sin(((p - 0.80) / 0.12) * Math.PI) * 2.8 : 0;
+    const now = typeof performance !== 'undefined' ? performance.now() : Date.now();
+    const dt = Math.max(1, now - (this.lastTime || now));
+    this.lastTime = now;
 
-    this.wormholeIntensity = 0; // Disable obsolete dark bubble
-    this.warpSpeed = Math.max(0, deltaP * 24 + heroWarp + techToProjWarp + projToCredWarp + credToContactWarp);
+    let currentVelocity = 0;
+    let currentDirection = 1;
+
+    // 1. Detect live scroll velocity from Lenis smooth scroll
+    if (window.AppState?.lenis && typeof window.AppState.lenis.velocity === 'number') {
+      const lenisVel = window.AppState.lenis.velocity;
+      currentVelocity = Math.abs(lenisVel) * 0.14;
+      if (Math.abs(lenisVel) > 0.02) {
+        currentDirection = lenisVel >= 0 ? 1 : -1;
+      }
+    } else {
+      const curY = window.scrollY;
+      const dy = curY - this.lastScrollY;
+      this.lastScrollY = curY;
+      currentVelocity = (Math.abs(dy) / dt) * 2.2;
+      if (Math.abs(dy) > 0.4) {
+        currentDirection = dy >= 0 ? 1 : -1;
+      }
+    }
+
+    // 2. Also factor zoom progress delta (camera movement from scroll & HUD jump buttons)
+    const deltaProgress = this.targetZoomProgress - this.zoomProgress;
+    const progressSpeed = Math.abs(deltaProgress) * 36;
+    if (Math.abs(deltaProgress) > 0.001) {
+      currentDirection = deltaProgress >= 0 ? 1 : -1;
+    }
+
+    const instantSpeed = Math.max(currentVelocity, progressSpeed);
+    this.warpDirection = currentDirection;
+
+    // 3. Dynamic momentum physics:
+    // - Fast attack when accelerating into scroll
+    // - Smooth exponential decay when scroll slows and stops ("looses speed and return to particle")
+    if (instantSpeed > this.warpSpeed) {
+      this.warpSpeed += (instantSpeed - this.warpSpeed) * 0.25;
+    } else {
+      this.warpSpeed += (instantSpeed - this.warpSpeed) * 0.09;
+    }
+
+    // Clamp tiny jitters to true 0 when stationary
+    if (this.warpSpeed < 0.015) {
+      this.warpSpeed = 0;
+    }
+
+    this.wormholeIntensity = 0;
 
     // -----------------------------------------------------------------
     // Phase 3: Projects Solar System Layer [0.36 -> 0.70]
@@ -1344,8 +1385,9 @@ export class TechSolarSystem {
 
     ctx.clearRect(0, 0, w, h);
 
-    const isWarping = this.warpSpeed > 0.35;
-    const warpStreakLength = Math.min(140, this.warpSpeed * 32);
+    const isWarping = this.warpSpeed > 0.04;
+    const warpStreakLength = Math.min(130, this.warpSpeed * 34);
+    const streakIntensity = Math.min(1.0, this.warpSpeed / 1.5);
 
     const hasLens = this.wormholeIntensity > 0.005;
     const lensIntensity = this.wormholeIntensity;
@@ -1355,9 +1397,10 @@ export class TechSolarSystem {
 
     // 1. Draw 3D Stardust with Space Warp Streaks & Heavy Optical Glass Refraction
     this.stardust.forEach(star => {
-      // Advance star along Z toward camera
-      star.z -= (star.speed + this.warpSpeed * 7);
+      // Advance star along Z according to camera speed and direction
+      star.z -= (star.speed + this.warpSpeed * 7.5) * this.warpDirection;
       if (star.z < -400) star.z += 1200;
+      else if (star.z > 800) star.z -= 1200;
 
       const xCam = star.x * Math.cos(camY) + star.z * Math.sin(camY);
       const zCam1 = -star.x * Math.sin(camY) + star.z * Math.cos(camY);
@@ -1388,8 +1431,8 @@ export class TechSolarSystem {
         let starAlpha = Math.min(1, star.alpha * pulse * Math.min(1.2, s));
 
         if (isWarping) {
-          // Draw clean hyperspace warp speed streak line backwards into space
-          const tailZ = star.z + warpStreakLength;
+          // Dynamic streak line extending backwards along motion trajectory
+          const tailZ = star.z + (warpStreakLength * this.warpDirection);
           const xTail = star.x * Math.cos(camY) + tailZ * Math.sin(camY);
           const zTail1 = -star.x * Math.sin(camY) + tailZ * Math.cos(camY);
           const yTail = star.y * Math.cos(camX) - zTail1 * Math.sin(camX);
@@ -1420,7 +1463,7 @@ export class TechSolarSystem {
               }
             }
 
-            const streakAlpha = Math.min(0.95, starAlpha * (inGlass ? 2.0 : 1.6));
+            const streakAlpha = Math.min(0.95, starAlpha * (0.5 + streakIntensity * 1.5) * (inGlass ? 1.8 : 1.3));
             ctx.beginPath();
             ctx.moveTo(pTailX, pTailY);
             if (hasLens) {
@@ -1430,17 +1473,17 @@ export class TechSolarSystem {
               ctx.lineTo(px, py);
             }
             ctx.strokeStyle = `rgba(255, 255, 255, ${streakAlpha.toFixed(3)})`;
-            ctx.lineWidth = Math.max(1, star.size * s * (inGlass ? 1.2 : 0.85));
+            ctx.lineWidth = Math.max(0.7, star.size * s * (0.5 + streakIntensity * 0.6) * (inGlass ? 1.2 : 0.85));
             ctx.stroke();
           }
-        } else {
-          // Normal point stardust (subtle cyber lime celestial tint)
-          const pointAlpha = inGlass ? Math.min(1.0, starAlpha * 1.5) : starAlpha;
-          ctx.fillStyle = `rgba(200, 255, 170, ${pointAlpha.toFixed(3)})`;
-          ctx.beginPath();
-          ctx.arc(px, py, star.size * Math.min(3, s * (inGlass ? 1.6 : 1.0)), 0, Math.PI * 2);
-          ctx.fill();
         }
+
+        // Normal point stardust (subtle cyber lime celestial tint, always active)
+        const pointAlpha = inGlass ? Math.min(1.0, starAlpha * 1.5) : starAlpha;
+        ctx.fillStyle = `rgba(200, 255, 170, ${pointAlpha.toFixed(3)})`;
+        ctx.beginPath();
+        ctx.arc(px, py, star.size * Math.min(3, s * (inGlass ? 1.6 : 1.0)), 0, Math.PI * 2);
+        ctx.fill();
       }
     });
 
@@ -1744,12 +1787,12 @@ export class TechSolarSystem {
         });
       }
 
-      // 5. Draw Canvas Background (Wormhole, Rings & Stars) only when needed
-      if (techVisible || (this.warpSpeed > 0.1 && this.zoomProgress > 0.04)) {
+      // 5. Draw Global Cosmic Stardust & Rings Canvas (Always active across space stage)
+      if (this.isInViewport) {
         this.renderCanvas(this.camRotX, this.camRotY);
         this.wasCanvasDrawn = true;
       } else if (this.ctx && this.wasCanvasDrawn) {
-        // Clear canvas once when exiting view to free GPU memory
+        // Clear canvas once when completely out of viewport
         this.ctx.clearRect(0, 0, this.stageWidth, this.stageHeight);
         this.wasCanvasDrawn = false;
       }
