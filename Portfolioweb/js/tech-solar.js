@@ -1346,14 +1346,32 @@ export class TechSolarSystem {
             } else {
               ctx.lineTo(px, py);
             }
-            ctx.strokeStyle = `rgba(255, 255, 255, ${streakAlpha.toFixed(3)})`;
-            ctx.lineWidth = Math.max(1, star.size * s * (inGlass ? 1.2 : 0.85));
+
+            // Electric Lime / Neon Cyber Green Streak Gradient (#D2FF00 / #00FF66)
+            const streakGrad = ctx.createLinearGradient(pTailX, pTailY, px, py);
+            streakGrad.addColorStop(0, `rgba(0, 255, 102, 0)`);
+            streakGrad.addColorStop(0.4, `rgba(0, 255, 102, ${(streakAlpha * 0.75).toFixed(3)})`);
+            streakGrad.addColorStop(0.8, `rgba(210, 255, 0, ${streakAlpha.toFixed(3)})`);
+            streakGrad.addColorStop(1, `rgba(240, 255, 220, ${Math.min(1, streakAlpha * 1.3).toFixed(3)})`);
+
+            ctx.save();
+            ctx.strokeStyle = streakGrad;
+            ctx.lineWidth = Math.max(1.2, star.size * s * (inGlass ? 1.4 : 0.95));
+            ctx.shadowColor = 'rgba(210, 255, 0, 0.75)';
+            ctx.shadowBlur = 8 * (inGlass ? 1.6 : 1.0);
             ctx.stroke();
+            ctx.restore();
+
+            // Luminous green photon head at the leading point of the streak
+            ctx.beginPath();
+            ctx.arc(px, py, star.size * Math.min(3, s * (inGlass ? 1.5 : 1.0)), 0, Math.PI * 2);
+            ctx.fillStyle = `rgba(210, 255, 0, ${Math.min(1, streakAlpha * 1.4).toFixed(3)})`;
+            ctx.fill();
           }
         } else {
-          // Normal point stardust (pure neutral starlight)
+          // Normal point stardust (subtle cyber lime celestial tint)
           const pointAlpha = inGlass ? Math.min(1.0, starAlpha * 1.5) : starAlpha;
-          ctx.fillStyle = `rgba(242, 245, 255, ${pointAlpha.toFixed(3)})`;
+          ctx.fillStyle = `rgba(200, 255, 170, ${pointAlpha.toFixed(3)})`;
           ctx.beginPath();
           ctx.arc(px, py, star.size * Math.min(3, s * (inGlass ? 1.6 : 1.0)), 0, Math.PI * 2);
           ctx.fill();
