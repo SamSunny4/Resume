@@ -90,7 +90,7 @@ export function initMouseTracking() {
 import { initQuantumPreloader } from './loader.js';
 import { initHeroAsciiBurst } from './ascii-burst.js';
 import { initStickyBrandLogo } from './sticky-logo.js';
-import { initTechSolarSystem } from './tech-solar.js?v=69';
+import { initTechSolarSystem } from './tech-solar.js?v=70';
 import { initProjectSolarSystem } from './project-solar.js?v=65';
 import { initTopoBackground } from './topo-background.js';
 import { initCredentialsStones } from './credentials-stones.js?v=69';

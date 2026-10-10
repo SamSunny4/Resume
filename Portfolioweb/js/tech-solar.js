@@ -1165,15 +1165,16 @@ export class TechSolarSystem {
 
     // 3. Dynamic momentum physics:
     // - Fast attack when accelerating into scroll
-    // - Smooth exponential decay when scroll slows and stops ("looses speed and return to particle")
+    // - Increased damping when scroll slows and stops ("looses speed and return to particle")
+    //   Deceleration damping rate increased from 0.09 to 0.24 for crisp, responsive settling
     if (instantSpeed > this.warpSpeed) {
-      this.warpSpeed += (instantSpeed - this.warpSpeed) * 0.25;
+      this.warpSpeed += (instantSpeed - this.warpSpeed) * 0.28;
     } else {
-      this.warpSpeed += (instantSpeed - this.warpSpeed) * 0.09;
+      this.warpSpeed += (instantSpeed - this.warpSpeed) * 0.24;
     }
 
     // Clamp tiny jitters to true 0 when stationary
-    if (this.warpSpeed < 0.015) {
+    if (this.warpSpeed < 0.02) {
       this.warpSpeed = 0;
     }
 
@@ -1386,9 +1387,10 @@ export class TechSolarSystem {
 
     ctx.clearRect(0, 0, w, h);
 
-    const isWarping = this.warpSpeed > 0.04;
-    const warpStreakLength = Math.min(130, this.warpSpeed * 34);
-    const streakIntensity = Math.min(1.0, this.warpSpeed / 1.5);
+    const isWarping = this.warpSpeed > 0.03;
+    // Damped max streak length so streaks don't overstretch
+    const warpStreakLength = Math.min(80, this.warpSpeed * 22);
+    const streakIntensity = Math.min(1.0, this.warpSpeed / 1.1);
 
     const hasLens = this.wormholeIntensity > 0.005;
     const lensIntensity = this.wormholeIntensity;
@@ -1399,7 +1401,7 @@ export class TechSolarSystem {
     // 1. Draw 3D Stardust with Space Warp Streaks & Heavy Optical Glass Refraction
     this.stardust.forEach(star => {
       // Advance star along Z according to camera speed and direction
-      star.z -= (star.speed + this.warpSpeed * 7.5) * this.warpDirection;
+      star.z -= (star.speed + this.warpSpeed * 6.0) * this.warpDirection;
       if (star.z < -400) star.z += 1200;
       else if (star.z > 800) star.z -= 1200;
 
@@ -1430,6 +1432,11 @@ export class TechSolarSystem {
       if (px >= -80 && px <= w + 80 && py >= -80 && py <= h + 80) {
         const pulse = 0.6 + 0.4 * Math.sin(this.time * star.pulseSpeed + star.phase);
         let starAlpha = Math.min(1, star.alpha * pulse * Math.min(1.2, s));
+
+        // Exact matching size: uniform starRadius and starDiameter across particle and streak
+        const starRadius = Math.max(0.75, star.size * Math.min(2.2, s * (inGlass ? 1.4 : 1.0)));
+        const starDiameter = starRadius * 2;
+        const pointAlpha = inGlass ? Math.min(1.0, starAlpha * 1.5) : starAlpha;
 
         if (isWarping) {
           // Dynamic streak line extending backwards along motion trajectory
@@ -1464,7 +1471,7 @@ export class TechSolarSystem {
               }
             }
 
-            const streakAlpha = Math.min(0.95, starAlpha * (0.5 + streakIntensity * 1.5) * (inGlass ? 1.8 : 1.3));
+            const streakAlpha = Math.min(0.95, starAlpha * (0.6 + streakIntensity * 1.2) * (inGlass ? 1.6 : 1.2));
             ctx.beginPath();
             ctx.moveTo(pTailX, pTailY);
             if (hasLens) {
@@ -1473,17 +1480,18 @@ export class TechSolarSystem {
             } else {
               ctx.lineTo(px, py);
             }
-            ctx.strokeStyle = `rgba(255, 255, 255, ${streakAlpha.toFixed(3)})`;
-            ctx.lineWidth = Math.max(0.7, star.size * s * (0.5 + streakIntensity * 0.6) * (inGlass ? 1.2 : 0.85));
+            ctx.lineCap = 'round';
+            // EXACT SAME SIZE: line width matches particle diameter exactly!
+            ctx.lineWidth = starDiameter;
+            ctx.strokeStyle = `rgba(200, 255, 170, ${streakAlpha.toFixed(3)})`;
             ctx.stroke();
           }
         }
 
         // Normal point stardust (subtle cyber lime celestial tint, always active)
-        const pointAlpha = inGlass ? Math.min(1.0, starAlpha * 1.5) : starAlpha;
         ctx.fillStyle = `rgba(200, 255, 170, ${pointAlpha.toFixed(3)})`;
         ctx.beginPath();
-        ctx.arc(px, py, star.size * Math.min(3, s * (inGlass ? 1.6 : 1.0)), 0, Math.PI * 2);
+        ctx.arc(px, py, starRadius, 0, Math.PI * 2);
         ctx.fill();
       }
     });
