@@ -1189,7 +1189,7 @@ export class TechSolarSystem {
         this.projectsLayer.style.pointerEvents = 'none';
         this.projectsLayer.style.transform = 'scale(0.18) translateZ(0)';
         this.projectsLayer.style.filter = 'blur(16px)';
-      } else if (p <= 0.58) {
+      } else if (p <= 0.52) {
         // Enters from deep space & remains actively interactive
         this.projectsLayer.style.visibility = 'visible';
         const projP = Math.min(1, Math.max(0, (p - 0.36) / 0.10));
@@ -1203,10 +1203,11 @@ export class TechSolarSystem {
         this.projectsLayer.style.opacity = projOpacity.toFixed(3);
         this.projectsLayer.style.filter = projBlur > 0.4 ? `blur(${projBlur.toFixed(1)}px)` : 'none';
         this.projectsLayer.style.pointerEvents = projP > 0.85 ? 'auto' : 'none';
-      } else if (p <= 0.70) {
-        // Warps forward past camera as user journeys to Credentials
+      } else if (p <= 0.65) {
+        // EXACT SAME AS LANDING PAGE (HERO) EXIT:
+        // Zooms forward straight past the camera (scale 1.0 -> 3.2), blurs (0 -> 18px), and fades out into space!
         this.projectsLayer.style.visibility = 'visible';
-        const exitP = Math.min(1, Math.max(0, (p - 0.58) / 0.12));
+        const exitP = Math.min(1, Math.max(0, (p - 0.52) / 0.13));
         const projScale = 1.0 + exitP * 2.2;
         const projOpacity = Math.max(0, 1.0 - exitP * 1.45);
         const projBlur = exitP * 18;
@@ -1215,6 +1216,7 @@ export class TechSolarSystem {
         this.projectsLayer.style.opacity = projOpacity.toFixed(3);
         this.projectsLayer.style.filter = projBlur > 0.4 ? `blur(${projBlur.toFixed(1)}px)` : 'none';
         this.projectsLayer.style.pointerEvents = 'none';
+        this.projectsLayer.style.visibility = projOpacity <= 0.005 ? 'hidden' : 'visible';
       } else {
         this.projectsLayer.style.opacity = '0';
         this.projectsLayer.style.visibility = 'hidden';
@@ -1223,36 +1225,35 @@ export class TechSolarSystem {
     }
 
     // -----------------------------------------------------------------
-    // Phase 4: Credentials Infinity Stones Celestial Nexus [0.58 -> 0.94]
+    // Phase 4: Credentials Infinity Stones Celestial Nexus [0.52 -> 0.94]
     // -----------------------------------------------------------------
     if (this.credentialsLayer) {
-      if (p <= 0.58) {
+      if (p <= 0.52) {
         this.credentialsLayer.style.opacity = '0';
         this.credentialsLayer.style.visibility = 'hidden';
         this.credentialsLayer.style.pointerEvents = 'none';
         this.credentialsLayer.style.transform = 'scale(0.18) translateZ(0)';
-        this.credentialsLayer.style.filter = 'blur(16px)';
+        this.credentialsLayer.style.filter = 'blur(18px)';
       } else if (p <= 0.82) {
         this.credentialsLayer.style.visibility = 'visible';
-        const credP = Math.min(1, Math.max(0, (p - 0.58) / 0.14));
-        const easedCred = Math.sin((credP * Math.PI) / 2);
+        const enterCred = Math.min(1, Math.max(0, (p - 0.52) / 0.14));
+        const easedCred = Math.sin((enterCred * Math.PI) / 2);
 
-        // Continuous scroll-driven zoom:
-        // As you scroll in from deep space: zooms in 0.18 -> 1.00
-        // While browsing within section: responsive continuous scale with scroll
-        const credScale = p < 0.72
+        // Continuous camera fly-in from distant stardust (matching Landing Page -> TechSolar):
+        // Emerges from distant space (scale 0.18 -> 1.00, blur 18px -> 0)
+        const credScale = p < 0.66
           ? (0.18 + easedCred * 0.82)
-          : (1.00 + (p - 0.72) * 0.95);
-        const credOpacity = Math.min(1, credP * 1.35);
-        const credBlur = p < 0.72 ? (1 - easedCred) * 16 : 0;
+          : (1.00 + (p - 0.66) * 0.65);
+        const credOpacity = Math.min(1, enterCred * 1.35);
+        const credBlur = p < 0.66 ? (1 - easedCred) * 18 : 0;
 
         this.credentialsLayer.style.transform = `scale(${credScale.toFixed(3)}) translateZ(0)`;
         this.credentialsLayer.style.opacity = credOpacity.toFixed(3);
         this.credentialsLayer.style.filter = credBlur > 0.4 ? `blur(${credBlur.toFixed(1)}px)` : 'none';
-        this.credentialsLayer.style.pointerEvents = credP > 0.75 ? 'auto' : 'none';
+        this.credentialsLayer.style.pointerEvents = enterCred > 0.85 ? 'auto' : 'none';
 
-        // Trigger Infinity Stones assembly right as we arrive via space journey
-        if (p >= 0.62 && window.AppState && window.AppState.credStones && !window.AppState.credStones.isTriggered) {
+        // Trigger cards assembly as camera approaches in space
+        if (p >= 0.54 && window.AppState && window.AppState.credStones && !window.AppState.credStones.isTriggered) {
           window.AppState.credStones.trigger();
         }
       } else if (p <= 0.94) {

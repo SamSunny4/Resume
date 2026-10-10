@@ -2209,25 +2209,6 @@ html.lenis, html.lenis body {
   pointer-events: auto;
 }
 
-/* Deep Space Cosmic Stardust Void (Clean cosmos without green lines) */
-.orbit3d-cosmic-void {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: min(800px, 92vw);
-  height: min(480px, 60vh);
-  transform: translate(-50%, -50%);
-  background: radial-gradient(ellipse at center,
-    rgba(210, 255, 0, 0.03) 0%,
-    rgba(0, 240, 255, 0.02) 40%,
-    transparent 72%
-  );
-  border-radius: 50%;
-  pointer-events: none;
-  z-index: 0;
-  filter: blur(90px);
-}
-
 /* Section Header */
 .orbit3d-header {
   text-align: center;
@@ -2316,7 +2297,7 @@ html.lenis, html.lenis body {
   cursor: pointer;
   pointer-events: auto;
   overflow: visible !important;
-  will-change: transform, opacity;
+  will-change: transform, opacity, filter;
   transition: opacity 0.25s ease;
 }
 
@@ -2359,14 +2340,6 @@ html.lenis, html.lenis body {
   z-index: 3;
   opacity: 0.85;
   transition: opacity 0.3s ease, background 0.3s ease;
-}
-
-.orbit3d-card-front {
-  transform: rotateY(0deg) translateZ(1.5px);
-}
-
-.orbit3d-card-back {
-  transform: rotateY(180deg) translateZ(1.5px);
 }
 
 /* Front Spotlight Card — Luminous Liquid Glass Specular Shimmer (No painted colored border) */

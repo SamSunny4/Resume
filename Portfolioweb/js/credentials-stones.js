@@ -250,9 +250,6 @@ export class CredentialsMobiusEngine {
   buildDOM() {
     this.section.innerHTML = `
       <div class="orbit3d-wrapper" id="orbit3d-wrapper">
-        <!-- Deep Space Cosmic Stardust Void (No green lines) -->
-        <div class="orbit3d-cosmic-void" aria-hidden="true"></div>
-
         <!-- Section Header -->
         <div class="orbit3d-header">
           <span class="font-mono text-lime orbit3d-badge">// VERIFIED CREDENTIALS &amp; AWARDS</span>
@@ -419,10 +416,9 @@ export class CredentialsMobiusEngine {
         </div>
       `;
 
-      // Two-sided card with identical content on both faces (no flip needed when orbiting to back)
+      // Clean uniform card face — all cards angle uniformly facing the camera
       el.innerHTML = `
-        <div class="orbit3d-card-face orbit3d-card-front">${cardContent}</div>
-        <div class="orbit3d-card-face orbit3d-card-back">${cardContent}</div>
+        <div class="orbit3d-card-face">${cardContent}</div>
       `;
 
       const basePhase = (index / total) * Math.PI * 2;
@@ -578,7 +574,7 @@ export class CredentialsMobiusEngine {
       (layer.style.opacity !== '' && parseFloat(layer.style.opacity) < 0.02)
     );
     const p = window.AppState?.techSolar?.zoomProgress ?? 0;
-    const isAway = (p > 0 && p < 0.58);
+    const isAway = (p > 0 && (p < 0.48 || p > 0.96));
 
     if (document.hidden || isLayerHidden || isAway || !this.isInViewport) {
       this.animId = requestAnimationFrame(this.animate);
@@ -599,21 +595,10 @@ export class CredentialsMobiusEngine {
     this.camTiltX += (this.targetCamTiltX - this.camTiltX) * 0.06;
     this.camTiltY += (this.targetCamTiltY - this.camTiltY) * 0.06;
 
-    // ── Continuous Scroll-Driven 3D Zoom ──
-    const zoomP = window.AppState?.techSolar?.zoomProgress ?? 0.74;
-    let scrollScale = 1.0;
-    if (zoomP >= 0.58 && zoomP <= 0.82) {
-      const pNorm = (zoomP - 0.58) / 0.24;
-      scrollScale = 0.90 + pNorm * 0.20;
-    } else if (zoomP > 0.82 && zoomP <= 0.94) {
-      const exitNorm = (zoomP - 0.82) / 0.12;
-      scrollScale = 1.10 + exitNorm * 0.8;
-    }
-
-    // Apply top-down isometric angle tilt and scroll zoom to the stage ring
+    // Apply top-down isometric angle tilt to the stage ring
     const totalPitch = this.orbitPitchDeg + this.camTiltX;
     const totalYaw   = this.orbitYawDeg   + this.camTiltY;
-    this.orbitRing.style.transform = `rotateX(${totalPitch.toFixed(2)}deg) rotateY(${totalYaw.toFixed(2)}deg) scale(${scrollScale.toFixed(3)})`;
+    this.orbitRing.style.transform = `rotateX(${totalPitch.toFixed(2)}deg) rotateY(${totalYaw.toFixed(2)}deg)`;
 
     // ── Rotation Lerping & Inertia ──
     this.speedFactor += (this.targetSpeedFactor - this.speedFactor) * 0.08;
@@ -630,7 +615,7 @@ export class CredentialsMobiusEngine {
     let closestCard = null;
     let maxZ = -Infinity;
 
-    // ── 3D Circular Belt Geometry (Viewed from Top Angle) ──
+    // ── 3D Circular Orbit Geometry (Viewed from Top Angle) ──
     this.cards.forEach((card) => {
       const angle = card.theta + totalAngle;
 
@@ -642,13 +627,9 @@ export class CredentialsMobiusEngine {
       const z = cosA * this.orbitRadiusZ;
       const y = 0; // Pure level circular belt viewed from top angle
 
-      // Naturally rotate with respect to position and centre (tangent/radial to circle):
-      const rotY = (angle * (180 / Math.PI));
-
-      card.x    = x;
-      card.y    = y;
-      card.z    = z;
-      card.rotY = rotY;
+      card.x = x;
+      card.y = y;
+      card.z = z;
 
       if (z > maxZ) {
         maxZ = z;
@@ -656,29 +637,42 @@ export class CredentialsMobiusEngine {
       }
     });
 
-    // ── Render 3D Smoked Glass Cards (Double-sided with Identical Content) ──
+    // ── Render 3D Cards with Uniform Camera Orientation & TechSolar Far-Side Effects ──
     this.cards.forEach((card) => {
       const z = card.z;
+      // depthNorm: 0.0 at far side (back of orbit), 1.0 at front (closest to camera)
       const depthNorm = (z + this.orbitRadiusZ) / (2 * this.orbitRadiusZ);
 
       const isHovered = (this.hoveredCard === card);
-      const isFront   = (card === closestCard && depthNorm > 0.82);
+      const isFront   = (card === closestCard && depthNorm > 0.85);
 
-      const baseScale  = 0.88 + depthNorm * 0.18;
-      const finalScale = isHovered ? baseScale * 1.10 : (isFront ? baseScale * 1.04 : baseScale);
+      // TechSolar-style depth scale
+      const baseScale  = 0.78 + depthNorm * 0.28;
+      const finalScale = isHovered ? baseScale * 1.15 : (isFront ? baseScale * 1.06 : baseScale);
 
-      // Back cards have high opacity so they remain crisp and visible
-      const opacity = isHovered ? 1.0 : (0.84 + depthNorm * 0.16);
-      const zIndex  = isHovered ? 999 : Math.round(10 + depthNorm * 90);
+      // TechSolar-style far-side opacity: 0.55 on far side -> 1.0 on front
+      const opacity = isHovered ? 1.0 : (0.55 + depthNorm * 0.45);
+
+      // TechSolar-style far-side blur: up to 2.8px on far side, 0 on front
+      const blurPx = isHovered ? 0 : Math.max(0, (1 - depthNorm) * 2.8);
+
+      // TechSolar-style far-side brightness: dimmed on far side, bright on front
+      const brightness = isHovered ? 1.08 : (0.72 + depthNorm * 0.33);
+
+      // Depth z-index
+      const zIndex = isHovered ? 999 : Math.round(15 + depthNorm * 80);
 
       // Front card indicator (liquid glass highlight)
       if (isFront) card.el.classList.add('is-front');
       else card.el.classList.remove('is-front');
 
-      card.el.style.transform = `translate3d(${card.x.toFixed(1)}px, ${card.y.toFixed(1)}px, ${card.z.toFixed(1)}px) rotateY(${card.rotY.toFixed(1)}deg) scale(${finalScale.toFixed(3)})`;
+      // ANGLE EVERYTHING UNIFORMLY: Counter-rotate stage pitch & yaw so cards face the viewer upright without distortion
+      card.el.style.transform = `translate3d(${card.x.toFixed(1)}px, ${card.y.toFixed(1)}px, ${card.z.toFixed(1)}px) rotateY(${-totalYaw.toFixed(2)}deg) rotateX(${-totalPitch.toFixed(2)}deg) scale(${finalScale.toFixed(3)})`;
       card.el.style.zIndex    = zIndex;
       card.el.style.opacity   = opacity.toFixed(3);
-      card.el.style.filter    = 'none';
+      card.el.style.filter    = blurPx > 0.4
+        ? `blur(${blurPx.toFixed(1)}px) brightness(${brightness.toFixed(2)})`
+        : `brightness(${brightness.toFixed(2)})`;
     });
 
     this.animId = requestAnimationFrame(this.animate);
