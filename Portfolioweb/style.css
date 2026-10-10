@@ -2163,11 +2163,11 @@ html.lenis, html.lenis body {
   padding: 1rem 1.5rem;
 }
 
-.mobius-stage-wrapper {
+.cred-round-wrapper {
   position: relative;
   width: 100%;
   height: 100%;
-  max-width: 1320px;
+  max-width: 1360px;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
@@ -2178,47 +2178,40 @@ html.lenis, html.lenis body {
   pointer-events: none;
 }
 
-.mobius-header,
+.cred-round-header,
 .stage-nav-hud,
 .stage-nav-btn {
   pointer-events: auto;
 }
 
-/* Ambient Lemniscate Singularity Glow */
-.mobius-singularity {
+/* Ambient Cosmic Backdrop Void (Clean dark cosmos without green lines) */
+.cred-ambient-depth {
   position: absolute;
   top: 50%;
   left: 50%;
-  width: min(700px, 90vw);
-  height: min(450px, 60vh);
+  width: min(720px, 92vw);
+  height: min(440px, 58vh);
   transform: translate(-50%, -50%);
   background: radial-gradient(ellipse at center,
-    rgba(210, 255, 0, 0.06) 0%,
-    rgba(0, 240, 255, 0.04) 28%,
-    rgba(168, 85, 247, 0.03) 50%,
-    transparent 72%
+    rgba(210, 255, 0, 0.03) 0%,
+    rgba(0, 240, 255, 0.02) 35%,
+    transparent 70%
   );
   border-radius: 50%;
   pointer-events: none;
   z-index: 0;
-  filter: blur(60px);
-  animation: mobiusSingularityPulse 6s ease-in-out infinite alternate;
+  filter: blur(80px);
 }
 
-@keyframes mobiusSingularityPulse {
-  0% { transform: translate(-50%, -50%) scale(0.92); opacity: 0.6; }
-  100% { transform: translate(-50%, -50%) scale(1.12); opacity: 0.95; filter: blur(75px); }
-}
-
-/* Header */
-.mobius-header {
+/* Section Header */
+.cred-round-header {
   text-align: center;
   margin-bottom: 0.6rem;
   z-index: 2;
   position: relative;
 }
 
-.mobius-header-badge {
+.cred-header-badge {
   font-size: 0.72rem;
   letter-spacing: 0.16em;
   color: var(--color-lime);
@@ -2227,7 +2220,7 @@ html.lenis, html.lenis body {
   text-shadow: 0 0 12px rgba(210, 255, 0, 0.4);
 }
 
-.mobius-title {
+.cred-round-title {
   font-size: clamp(1.4rem, 2.8vw, 2.2rem);
   font-weight: 800;
   letter-spacing: -0.02em;
@@ -2237,24 +2230,26 @@ html.lenis, html.lenis body {
   text-shadow: 0 0 25px rgba(210, 255, 0, 0.22);
 }
 
-.mobius-header-sub {
+.cred-header-sub {
   font-size: clamp(0.55rem, 1vw, 0.68rem);
   letter-spacing: 0.12em;
   color: var(--color-text-muted);
   margin-top: 0.3rem;
 }
 
-/* 3D Möbius Viewport Stage */
-.mobius-stage {
+/* 3D Round Orbit Stage */
+.cred-round-stage {
   position: relative;
   width: 100%;
   flex: 1;
-  min-height: clamp(400px, 60vh, 620px);
+  min-height: clamp(420px, 60vh, 640px);
   display: flex;
   align-items: center;
   justify-content: center;
   overflow: visible;
-  perspective: 1200px;
+  perspective: 1300px;
+  perspective-origin: 50% 50%;
+  transform-style: preserve-3d;
   z-index: 2;
   user-select: none;
   pointer-events: auto;
@@ -2262,230 +2257,243 @@ html.lenis, html.lenis body {
   touch-action: pan-y;
 }
 
-.mobius-stage:active {
+.cred-round-stage:active {
   cursor: grabbing;
 }
 
-/* Dual Depth-Sorted Canvases */
-.mobius-canvas {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-}
-
-.mobius-canvas-back {
-  z-index: 2;
-}
-
-.mobius-canvas-front {
-  z-index: 45;
-}
-
-/* Cards Container */
-.mobius-cards-container {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  z-index: auto;
-}
-
-/* Individual Holographic Möbius Card */
-.mobius-card {
+/* 3D Orbit Ring Anchor */
+.cred-round-ring {
   position: absolute;
   top: 50%;
   left: 50%;
-  width: clamp(175px, 14vw, 215px);
-  border-radius: 12px;
-  background: rgba(8, 12, 8, 0.92);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  overflow: hidden;
-  box-shadow:
-    0 10px 30px rgba(0, 0, 0, 0.8),
-    0 0 1px rgba(255, 255, 255, 0.2);
-  pointer-events: auto;
-  cursor: pointer;
-  will-change: transform, opacity, filter;
-  transform-origin: center center;
-  transition: box-shadow 0.25s ease, border-color 0.25s ease;
+  width: 0;
+  height: 0;
+  transform-style: preserve-3d;
+  pointer-events: none;
 }
 
-/* Subtle Holographic Shimmer Border on Card Hover */
-.mobius-card-holo {
+/* Individual 3D Obsidian-Glass Certification Card */
+.cred-round-card {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: clamp(260px, 22vw, 320px);
+  height: clamp(162px, 14vw, 195px);
+  margin-left: calc(-0.5 * clamp(260px, 22vw, 320px));
+  margin-top:  calc(-0.5 * clamp(162px, 14vw, 195px));
+  border-radius: 18px;
+  background: linear-gradient(145deg, rgba(16, 26, 16, 0.94) 0%, rgba(8, 13, 8, 0.96) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  box-shadow: 0 16px 45px rgba(0, 0, 0, 0.85);
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
+  cursor: pointer;
+  pointer-events: auto;
+  overflow: hidden;
+  will-change: transform, opacity, filter, box-shadow;
+  transition: box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+/* Holographic glass surface sheen */
+.cred-card-sheen {
   position: absolute;
   inset: 0;
   pointer-events: none;
-  opacity: 0;
   background: linear-gradient(
     135deg,
-    transparent 0%,
-    rgba(255, 255, 255, 0.08) 45%,
-    var(--card-accent, rgba(210, 255, 0, 0.18)) 50%,
-    transparent 55%
+    rgba(255, 255, 255, 0.08) 0%,
+    transparent 38%,
+    rgba(210, 255, 0, 0.04) 75%,
+    transparent 100%
   );
-  transition: opacity 0.3s ease;
-  z-index: 6;
+  z-index: 1;
 }
 
-.mobius-card:hover .mobius-card-holo,
-.mobius-card.is-hovered .mobius-card-holo {
-  opacity: 1;
-}
-
-.mobius-card:hover,
-.mobius-card.is-hovered {
-  border-color: var(--card-accent, var(--color-lime));
+/* Front Spotlight Card — Radiant Electric-Lime Glowing Border (Matches Screenshot) */
+.cred-round-card.is-front {
+  border: 2px solid #D2FF00;
   box-shadow:
-    0 18px 45px rgba(0, 0, 0, 0.95),
-    0 0 32px var(--card-accent, rgba(210, 255, 0, 0.45)),
-    inset 0 0 16px rgba(255, 255, 255, 0.08);
+    0 0 35px rgba(210, 255, 0, 0.45),
+    0 22px 60px rgba(0, 0, 0, 0.95),
+    inset 0 0 20px rgba(210, 255, 0, 0.08);
 }
 
-.mobius-card-inner {
-  padding: 0;
+.cred-round-card:hover,
+.cred-round-card.is-hovered {
+  border-color: #D2FF00;
+  box-shadow:
+    0 0 45px rgba(210, 255, 0, 0.65),
+    0 26px 70px rgba(0, 0, 0, 0.95),
+    inset 0 0 25px rgba(210, 255, 0, 0.14);
+}
+
+/* Card Internal Layout */
+.cred-card-inner {
+  padding: 1.1rem 1.25rem 0.95rem 1.25rem;
   display: flex;
   flex-direction: column;
-  position: relative;
-}
-
-/* Accent Badge */
-.mobius-card-badge {
-  position: absolute;
-  top: 0.35rem;
-  right: 0.35rem;
-  font-size: 0.50rem;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  padding: 0.14rem 0.38rem;
-  background: rgba(4, 7, 3, 0.94);
-  border: 1px solid var(--card-accent, rgba(210, 255, 0, 0.4));
-  color: var(--card-accent, var(--color-lime));
-  border-radius: 4px;
-  z-index: 5;
-  backdrop-filter: blur(8px);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
-}
-
-/* Thumbnail */
-.mobius-card-thumb {
-  width: 100%;
-  height: clamp(75px, 6.8vw, 94px);
-  overflow: hidden;
-  position: relative;
-  background: rgba(0, 0, 0, 0.7);
-}
-
-.mobius-card-thumb img {
-  width: 100%;
+  justify-content: space-between;
   height: 100%;
-  object-fit: cover;
-  display: block;
-  transition: transform 0.4s var(--ease-expo);
+  position: relative;
+  z-index: 2;
 }
 
-.mobius-card:hover .mobius-card-thumb img,
-.mobius-card.is-hovered .mobius-card-thumb img {
-  transform: scale(1.08);
-}
-
-.mobius-card-inspect {
-  position: absolute;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.58);
+/* Top Row: Brand Pills & Verified Status */
+.cred-card-top {
   display: flex;
   align-items: center;
-  justify-content: center;
-  color: var(--card-accent, var(--color-lime));
-  font-size: 0.58rem;
-  letter-spacing: 0.12em;
-  opacity: 0;
-  transition: opacity 0.25s ease;
-  backdrop-filter: blur(2px);
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-bottom: 0.4rem;
+}
+
+.cred-brands-row {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.cred-brand-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.22rem 0.55rem;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  backdrop-filter: blur(8px);
+}
+
+.cred-brand-text {
+  font-size: 0.62rem;
   font-weight: 700;
+  letter-spacing: 0.04em;
 }
 
-.mobius-card:hover .mobius-card-inspect,
-.mobius-card.is-hovered .mobius-card-inspect {
-  opacity: 1;
-}
-
-.mobius-card-thumb-pdf {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: rgba(34, 197, 94, 0.08);
-  border-bottom: 1px solid rgba(34, 197, 94, 0.2);
-}
-
-.mobius-card-pdf {
-  font-size: 0.72rem;
-  color: #22C55E;
+.cred-badge-pill {
+  font-size: 0.52rem;
+  font-weight: 700;
   letter-spacing: 0.08em;
-  font-weight: 700;
+  padding: 0.18rem 0.45rem;
+  border-radius: 5px;
+  background: rgba(0, 0, 0, 0.65);
+  border: 1px solid var(--card-accent, #D2FF00);
+  color: var(--card-accent, #D2FF00);
 }
 
-/* Card Info */
-.mobius-card-info {
-  padding: 0.45rem 0.65rem 0.55rem;
+/* Card Body / Main Title */
+.cred-card-main {
+  margin: 0.25rem 0;
 }
 
-.mobius-card-title {
-  font-size: 0.74rem;
-  font-weight: 700;
-  color: var(--color-text-white);
-  margin-bottom: 0.12rem;
+.cred-card-title {
+  font-size: clamp(0.94rem, 1.25vw, 1.15rem);
+  font-weight: 800;
+  color: #FFFFFF;
   line-height: 1.25;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  margin: 0 0 0.2rem 0;
+  letter-spacing: -0.01em;
 }
 
-.mobius-card-subtitle {
-  font-size: 0.58rem;
-  letter-spacing: 0.06em;
-  color: var(--card-accent, var(--color-lime));
-  margin-bottom: 0.14rem;
+.cred-card-sub {
+  font-size: 0.62rem;
+  letter-spacing: 0.05em;
+  color: var(--card-accent, #D2FF00);
   text-transform: uppercase;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  margin: 0;
 }
 
-.mobius-card-org {
-  font-size: 0.53rem;
-  letter-spacing: 0.04em;
-  color: var(--color-text-muted);
+/* Card Footer: Shield, ID, and Rosette Seal */
+.cred-card-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  padding-top: 0.5rem;
+  margin-top: auto;
+  gap: 0.6rem;
+}
+
+.cred-shield-wrap {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  overflow: hidden;
+}
+
+.cred-shield-icon {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+}
+
+.cred-meta-block {
+  display: flex;
+  flex-direction: column;
+  gap: 0.08rem;
+  overflow: hidden;
+}
+
+.cred-meta-id {
+  font-size: 0.54rem;
+  color: #E0E8D8;
+  letter-spacing: 0.06em;
+  font-weight: 700;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
-/* Accent glow stripe on bottom of card */
-.mobius-card::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 10%;
-  right: 10%;
-  height: 2px;
-  background: var(--card-accent, var(--color-lime));
-  opacity: 0.5;
-  transition: opacity 0.3s ease, height 0.3s ease;
-  border-radius: 2px;
-  filter: blur(1px);
+.cred-meta-org {
+  font-size: 0.50rem;
+  color: var(--color-text-muted);
+  letter-spacing: 0.03em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-.mobius-card:hover::after,
-.mobius-card.is-hovered::after {
-  opacity: 1.0;
-  height: 3px;
-  filter: blur(2px) drop-shadow(0 0 6px var(--card-accent));
+.cred-seal-wrap {
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.cred-rosette-seal {
+  width: 28px;
+  height: 28px;
+  filter: drop-shadow(0 0 6px currentColor);
+}
+
+/* Click to Reveal Indicator Overlay */
+.cred-card-reveal-hint {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(to top, rgba(210, 255, 0, 0.22), transparent);
+  padding: 0.3rem 0.6rem;
+  font-size: 0.52rem;
+  letter-spacing: 0.12em;
+  text-align: center;
+  color: var(--color-lime);
+  opacity: 0;
+  transition: opacity 0.22s ease;
+  font-weight: 700;
+  pointer-events: none;
+}
+
+.cred-round-card:hover .cred-card-reveal-hint,
+.cred-round-card.is-hovered .cred-card-reveal-hint {
+  opacity: 1;
 }
 
 /* Navigation HUD */
@@ -2523,8 +2531,8 @@ html.lenis, html.lenis body {
   box-shadow: 0 0 16px rgba(210, 255, 0, 0.3);
 }
 
-/* High-Resolution Lightbox Modal */
-.mobius-lightbox {
+/* High-Resolution Document Lightbox Modal */
+.cred-round-lightbox {
   position: fixed;
   inset: 0;
   z-index: 200;
@@ -2536,20 +2544,20 @@ html.lenis, html.lenis body {
   transition: opacity 0.35s ease;
 }
 
-.mobius-lightbox.is-open {
+.cred-round-lightbox.is-open {
   opacity: 1;
   pointer-events: auto;
 }
 
-.mobius-lightbox-backdrop {
+.cred-lightbox-backdrop {
   position: absolute;
   inset: 0;
-  background: rgba(0, 0, 0, 0.88);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
+  background: rgba(0, 0, 0, 0.90);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
 }
 
-.mobius-lightbox-content {
+.cred-lightbox-content {
   position: relative;
   max-width: 90vw;
   max-height: 90vh;
@@ -2560,13 +2568,13 @@ html.lenis, html.lenis body {
   z-index: 1;
 }
 
-.mobius-lightbox-header {
+.cred-lightbox-header {
   display: flex;
   align-items: center;
   gap: 0.75rem;
 }
 
-.mobius-lightbox-badge {
+.cred-lightbox-badge {
   font-size: 0.65rem;
   letter-spacing: 0.08em;
   padding: 0.2rem 0.5rem;
@@ -2576,18 +2584,18 @@ html.lenis, html.lenis body {
   color: var(--color-lime);
 }
 
-.mobius-lightbox-title {
+.cred-lightbox-title {
   font-size: 1.15rem;
   color: #FFFFFF;
   margin: 0;
 }
 
-.mobius-lightbox-media-wrap {
+.cred-lightbox-media-wrap {
   position: relative;
   max-width: 100%;
 }
 
-.mobius-lightbox-img {
+.cred-lightbox-img {
   max-width: 100%;
   max-height: 72vh;
   object-fit: contain;
@@ -2596,7 +2604,7 @@ html.lenis, html.lenis body {
   box-shadow: 0 0 60px rgba(0, 0, 0, 0.9), 0 0 40px rgba(210, 255, 0, 0.15);
 }
 
-.mobius-lightbox-footer {
+.cred-lightbox-footer {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -2604,12 +2612,24 @@ html.lenis, html.lenis body {
   gap: 1.5rem;
 }
 
-.mobius-lightbox-org {
+.cred-lightbox-meta {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.cred-lightbox-org {
   font-size: 0.72rem;
   letter-spacing: 0.05em;
 }
 
-.mobius-lightbox-close {
+.cred-lightbox-code {
+  font-size: 0.70rem;
+  letter-spacing: 0.08em;
+  font-weight: 700;
+}
+
+.cred-lightbox-close {
   padding: 0.45rem 1.1rem;
   background: rgba(255, 255, 255, 0.08);
   border: 1px solid rgba(255, 255, 255, 0.2);
@@ -2621,24 +2641,30 @@ html.lenis, html.lenis body {
   transition: all 0.25s ease;
 }
 
-.mobius-lightbox-close:hover {
+.cred-lightbox-close:hover {
   background: rgba(210, 255, 0, 0.15);
   border-color: var(--color-lime);
   color: var(--color-lime);
 }
 
 /* Mobile Responsive Adjustments */
-@media (max-width: 600px) {
-  .mobius-stage {
-    min-height: 380px;
+@media (max-width: 768px) {
+  .cred-round-stage {
+    min-height: 390px;
   }
-  .mobius-card {
-    width: 155px;
+  .cred-round-card {
+    width: 250px;
+    height: 156px;
+    margin-left: -125px;
+    margin-top: -78px;
   }
-  .mobius-card-thumb {
-    height: 68px;
+  .cred-card-inner {
+    padding: 0.9rem 1rem 0.8rem 1rem;
   }
-  .mobius-title {
+  .cred-card-title {
+    font-size: 0.88rem;
+  }
+  .cred-round-title {
     font-size: 1.25rem;
   }
   .stage-nav-hud {
