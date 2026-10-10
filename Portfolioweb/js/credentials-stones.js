@@ -564,7 +564,7 @@ export class CredentialsMobiusEngine {
     const p = window.AppState?.techSolar?.zoomProgress ?? 0;
     const isAway = (p > 0 && p < 0.60);
 
-    if (isLayerHidden || isAway) {
+    if (document.hidden || isLayerHidden || isAway || !this.isInViewport) {
       this.animId = requestAnimationFrame(this.animate);
       return;
     }

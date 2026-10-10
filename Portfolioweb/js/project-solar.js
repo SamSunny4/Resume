@@ -682,6 +682,11 @@ export class ProjectSolarSystem {
   }
 
   animate() {
+    if (document.hidden) {
+      requestAnimationFrame(this.animate);
+      return;
+    }
+
     if (this.isInViewport) {
       this.time += 1.0;
 

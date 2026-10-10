@@ -335,9 +335,9 @@ export class TopoBackground {
     if (!this.isRunning) return;
 
     // Topographic background is strictly for the landing page.
-    // When user scrolls into deep space (p > 0.18) or down the page, pause heavy marching squares computation.
+    // When user scrolls into deep space (p > 0.18), tab is hidden, or scrolled down, pause heavy marching squares computation.
     const p = window.AppState?.techSolar?.zoomProgress ?? 0;
-    if (p > 0.18 || window.scrollY > window.innerHeight * 0.85) {
+    if (document.hidden || p > 0.18 || window.scrollY > window.innerHeight * 0.85) {
       this.animId = requestAnimationFrame(this.animate);
       return;
     }

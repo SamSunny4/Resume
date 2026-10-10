@@ -3088,4 +3088,282 @@ html.lenis, html.lenis body {
   }
 }
 
+/* ==========================================================================
+   FUTURISTIC CYBERNETIC ASSET PRELOADER SCREEN & HUD
+   ========================================================================== */
+
+#app-preloader {
+  position: fixed;
+  inset: 0;
+  z-index: 999999;
+  background: radial-gradient(circle at center, #0B1309 0%, #030603 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  font-family: var(--font-mono, 'JetBrains Mono', monospace);
+  color: #E3E8DC;
+  opacity: 1;
+  transform: scale(1);
+  filter: blur(0);
+  transition: opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1), transform 0.85s cubic-bezier(0.16, 1, 0.3, 1), filter 0.85s ease;
+  will-change: opacity, transform, filter;
+}
+
+#app-preloader.preloader-hidden {
+  opacity: 0;
+  transform: scale(1.06);
+  filter: blur(6px);
+  pointer-events: none;
+}
+
+.preloader-backdrop {
+  position: absolute;
+  inset: 0;
+  background-image: 
+    linear-gradient(rgba(210, 255, 0, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(210, 255, 0, 0.03) 1px, transparent 1px);
+  background-size: 48px 48px;
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+.preloader-content {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.8rem;
+  padding: 1.5rem;
+}
+
+/* Holographic Core Reactor */
+.preloader-core-wrap {
+  position: relative;
+  width: 110px;
+  height: 110px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.preloader-reticle-outer {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 1.5px dashed rgba(210, 255, 0, 0.45);
+  animation: preloader-reticle-spin 14s linear infinite;
+}
+
+.preloader-gyro-inner {
+  position: absolute;
+  inset: 15px;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  border-top-color: #D2FF00;
+  border-bottom-color: #00F0FF;
+  animation: preloader-gyro-reverse 4s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+.preloader-brand-monogram {
+  position: relative;
+  z-index: 3;
+  font-family: var(--font-display, 'Syne', sans-serif);
+  font-size: 1.6rem;
+  font-weight: 900;
+  letter-spacing: -0.04em;
+  color: #D2FF00;
+  text-shadow: 0 0 20px rgba(210, 255, 0, 0.7);
+  animation: preloader-pulse 2.2s ease-in-out infinite;
+}
+
+/* Telemetry Box */
+.preloader-telemetry-box {
+  width: min(90vw, 420px);
+  background: rgba(9, 14, 10, 0.85);
+  border: 1px solid rgba(210, 255, 0, 0.22);
+  border-radius: 12px;
+  padding: 1.3rem 1.6rem;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.8), 0 0 24px rgba(210, 255, 0, 0.08);
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.preloader-status-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.preloader-sys-tag {
+  font-size: 0.68rem;
+  letter-spacing: 0.12em;
+  font-weight: 700;
+}
+
+.preloader-percent-display {
+  font-size: 2rem;
+  font-weight: 900;
+  letter-spacing: 0.02em;
+  line-height: 1;
+  text-shadow: 0 0 16px rgba(210, 255, 0, 0.5);
+  transition: color 0.3s ease, text-shadow 0.3s ease;
+}
+
+.preloader-percent-display.is-ready {
+  color: #00F0FF;
+  text-shadow: 0 0 20px rgba(0, 240, 255, 0.8);
+}
+
+/* Laser Energy Progress Bar */
+.preloader-bar-track {
+  position: relative;
+  width: 100%;
+  height: 6px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 3px;
+  overflow: visible;
+}
+
+.preloader-bar-fill {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 0%;
+  background: linear-gradient(90deg, #00F0FF, #D2FF00);
+  border-radius: 3px;
+  box-shadow: 0 0 12px rgba(210, 255, 0, 0.85);
+  transition: width 0.08s linear;
+}
+
+.preloader-bar-glow {
+  position: absolute;
+  top: -4px;
+  left: 0%;
+  width: 14px;
+  height: 14px;
+  margin-left: -7px;
+  background: #D2FF00;
+  border-radius: 50%;
+  box-shadow: 0 0 16px #D2FF00;
+  pointer-events: none;
+  opacity: 0.85;
+}
+
+/* Real-Time Activity Log */
+.preloader-log-row {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 0.64rem;
+  letter-spacing: 0.06em;
+  color: #D6E0D0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.preloader-log-indicator {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #00F0FF;
+  box-shadow: 0 0 8px #00F0FF;
+  animation: preloader-indicator-blink 1s ease-in-out infinite;
+  flex-shrink: 0;
+}
+
+.preloader-meta-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.58rem;
+  letter-spacing: 0.05em;
+  border-top: 1px solid rgba(255, 255, 255, 0.07);
+  padding-top: 0.6rem;
+}
+
+/* Bypass Link */
+.preloader-bypass-btn {
+  background: transparent;
+  border: none;
+  color: rgba(227, 232, 220, 0.45);
+  font-size: 0.62rem;
+  letter-spacing: 0.08em;
+  cursor: pointer;
+  transition: color 0.2s ease, transform 0.2s ease;
+  padding: 0.3rem 0.6rem;
+}
+
+.preloader-bypass-btn:hover {
+  color: #D2FF00;
+  transform: translateY(-1px);
+}
+
+/* Animations */
+@keyframes preloader-reticle-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes preloader-gyro-reverse {
+  0%   { transform: rotate(0deg); }
+  50%  { transform: rotate(-180deg) scale(0.96); }
+  100% { transform: rotate(-360deg); }
+}
+
+@keyframes preloader-pulse {
+  0%, 100% { opacity: 0.9; transform: scale(1); }
+  50%      { opacity: 1; transform: scale(1.05); }
+}
+
+@keyframes preloader-indicator-blink {
+  0%, 100% { opacity: 0.4; }
+  50%      { opacity: 1; }
+}
+
+/* ==========================================================================
+   HIGH-PERFORMANCE PRE-RENDER & HARDWARE ACCELERATION TUNING
+   ========================================================================== */
+
+/* Off-screen layout skipping: prevents CPU/GPU cost until section is near viewport */
+#projects-space-layer,
+#credentials,
+#contact {
+  content-visibility: auto;
+  contain-intrinsic-size: 900px;
+}
+
+/* Force GPU compositing for fast 3D transforms */
+.orbit3d-card,
+.orbit3d-ring,
+.solar-node-badge,
+.project-world-node,
+.space-star,
+.ascii-particle,
+.sticky-brand-container {
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+  will-change: transform;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+/* Smooth hero reveal when loaded */
+body:not(.is-loaded) .hero-content,
+body:not(.is-loaded) #hero-portrait-card {
+  opacity: 0.85;
+}
+
+body.is-loaded .hero-content,
+body.is-loaded #hero-portrait-card {
+  opacity: 1;
+  transition: opacity 0.6s ease;
+}
+
 

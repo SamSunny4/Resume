@@ -1524,6 +1524,11 @@ export class TechSolarSystem {
    * Main Animation Loop (60-120fps)
    */
   animate() {
+    if (document.hidden) {
+      requestAnimationFrame(this.animate);
+      return;
+    }
+
     if (this.isInViewport) {
       this.time += 1.0;
 

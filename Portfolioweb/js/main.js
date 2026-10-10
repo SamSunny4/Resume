@@ -57,10 +57,19 @@ export function initMouseTracking() {
 
   let lastTransform = '';
 
-  // Smooth lerp update loop
+  // Smooth lerp update loop with delta thresholding
   function updateMouseCoords() {
-    AppState.mouse.x += (AppState.mouse.targetX - AppState.mouse.x) * 0.08;
-    AppState.mouse.y += (AppState.mouse.targetY - AppState.mouse.y) * 0.08;
+    if (document.hidden) {
+      requestAnimationFrame(updateMouseCoords);
+      return;
+    }
+
+    const dx = AppState.mouse.targetX - AppState.mouse.x;
+    const dy = AppState.mouse.targetY - AppState.mouse.y;
+    if (Math.abs(dx) > 0.0001 || Math.abs(dy) > 0.0001) {
+      AppState.mouse.x += dx * 0.08;
+      AppState.mouse.y += dy * 0.08;
+    }
 
     // Subtle 3D parallax tilt for hero portrait card (only on Landing Page when visible)
     if (portraitCard && window.innerWidth >= 992 && window.scrollY < window.innerHeight * 0.6) {
@@ -78,6 +87,7 @@ export function initMouseTracking() {
   requestAnimationFrame(updateMouseCoords);
 }
 
+import { initQuantumPreloader } from './loader.js';
 import { initHeroAsciiBurst } from './ascii-burst.js';
 import { initStickyBrandLogo } from './sticky-logo.js';
 import { initTechSolarSystem } from './tech-solar.js';
@@ -97,11 +107,26 @@ function bootstrap() {
     'background: #0E1309; color: #E3E8DC; padding: 4px 8px; border-radius: 2px;'
   );
 
+  // Initialize Quantum Asset Preloader & GPU Cache Warming
+  const preloader = initQuantumPreloader(() => {
+    console.log('[System] All assets downloaded, pre-decoded & GPU pre-warmed.');
+  });
+  window.AppState.preloader = preloader;
+
   initSmoothScroll();
   initMouseTracking();
   initGyroParallax();
   initHeroAsciiBurst();
   initStickyBrandLogo();
+
+  // Tab visibility power-saving: pause animations when tab is in background
+  document.addEventListener('visibilitychange', () => {
+    const isHidden = document.hidden;
+    if (window.AppState.topoBg) window.AppState.topoBg.isRunning = !isHidden;
+    if (!isHidden && window.AppState.topoBg && !window.AppState.topoBg.animId) {
+      window.AppState.topoBg.animId = requestAnimationFrame(window.AppState.topoBg.animate);
+    }
+  }, { passive: true });
 
   // Initialize Ultra-Minimal Topographic Background (STRICTLY on Landing Page)
   const heroTopoContainer = document.getElementById('hero-topo-container') || document.getElementById('hero-space-layer');

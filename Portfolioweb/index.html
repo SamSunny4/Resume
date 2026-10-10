@@ -18,11 +18,76 @@
   <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@700;800&family=MedievalSharp&family=Orbitron:wght@800;900&family=Oxanium:wght@700;800&family=Pixelify+Sans:wght@700&family=Press+Start+2P&family=Syne:wght@800&display=swap" rel="stylesheet">
 
   
+  <!-- Preload Critical Above-The-Fold Assets -->
+  <link rel="preload" href="assets/me.png" as="image" type="image/png">
+  <link rel="preload" href="assets/Samlogo.png" as="image" type="image/png">
+  
+  <!-- Critical Zero-FOUC Preloader Staging CSS -->
+  <style>
+    #app-preloader {
+      position: fixed;
+      inset: 0;
+      z-index: 999999;
+      background: #040704;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      color: #E3E8DC;
+    }
+  </style>
+
   <!-- Design System Stylesheet -->
-  <link rel="stylesheet" href="style.css?v=51">
+  <link rel="stylesheet" href="style.css?v=52">
   <link rel="icon" type="image/png" href="assets/me.png">
 </head>
 <body>
+
+  <!-- High-Precision Cybernetic Asset Preloader Screen -->
+  <div id="app-preloader" class="app-preloader" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" aria-label="Downloading Assets and Pre-rendering Graphics">
+    <div class="preloader-backdrop" aria-hidden="true"></div>
+    
+    <div class="preloader-content">
+      <!-- Holographic Core Reactor -->
+      <div class="preloader-core-wrap">
+        <div class="preloader-reticle-outer" aria-hidden="true"></div>
+        <div class="preloader-gyro-inner" aria-hidden="true"></div>
+        <div class="preloader-brand-monogram">
+          <span class="font-display">SS</span>
+        </div>
+      </div>
+
+      <!-- Live Digital Telemetry Stream -->
+      <div class="preloader-telemetry-box">
+        <div class="preloader-status-row font-mono">
+          <span class="preloader-sys-tag text-lime">// QUANTUM_CORE_V52</span>
+          <span class="preloader-percent-display font-display text-lime" id="preloader-percent-display">00%</span>
+        </div>
+
+        <!-- Laser Energy Progress Bar -->
+        <div class="preloader-bar-track">
+          <div class="preloader-bar-fill" id="preloader-bar-fill"></div>
+          <div class="preloader-bar-glow" id="preloader-bar-glow"></div>
+        </div>
+
+        <!-- Real-Time Activity Log -->
+        <div class="preloader-log-row font-mono">
+          <span class="preloader-log-indicator"></span>
+          <span class="preloader-log-text" id="preloader-log-text">INITIALIZING QUANTUM RUNTIME...</span>
+        </div>
+
+        <div class="preloader-meta-row font-mono text-muted">
+          <span id="preloader-assets-count">PREFETCHING 0 / 56 ARTIFACTS</span>
+          <span class="preloader-latency">GPU WARM: ACTIVE</span>
+        </div>
+      </div>
+
+      <!-- Quick Bypass Button -->
+      <button id="preloader-bypass-btn" class="preloader-bypass-btn font-mono" title="Skip directly to interface">
+        [PROCEED TO INTERFACE ↗]
+      </button>
+    </div>
+  </div>
 
   <!-- Floating Sticky Brand Logo (Appears when scrolled away from Hero) -->
   <header id="sticky-header-brand" class="sticky-brand-container" aria-label="Sam Sunny Brand">
@@ -435,6 +500,6 @@
   <!-- Lenis Momentum Smooth Scroll Library -->
   <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.9/dist/lenis.min.js"></script>
   <!-- Main ES6 Module Entry -->
-  <script type="module" src="js/main.js?v=51"></script>
+  <script type="module" src="js/main.js?v=52"></script>
 </body>
 </html>
