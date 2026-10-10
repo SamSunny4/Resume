@@ -1355,21 +1355,20 @@ html.lenis, html.lenis body {
 }
 
 .solar-text-monumental {
-  font-family: 'Orbitron', var(--font-display);
-  font-size: clamp(3.2rem, 7.5vw, 6.8rem);
+  font-family: var(--font-display);
+  font-size: clamp(3.4rem, 8vw, 7.5rem);
   font-weight: 900;
   line-height: 0.95;
-  letter-spacing: 0.04em;
+  letter-spacing: -0.04em;
   text-transform: uppercase;
   color: #FFFFFF;
-  background: linear-gradient(180deg, #FFFFFF 0%, #D2FF00 42%, #00FF66 76%, #0a401a 100%);
+  background: linear-gradient(180deg, #FFFFFF 0%, #E6E8E3 45%, #888E82 80%, #252822 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  /* Layered 3D Depth Shadows with intense electric green cyber aura */
+  /* Layered 3D Depth Shadows with subtle ambient aura */
   filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.9))
           drop-shadow(0 8px 24px rgba(0, 0, 0, 0.95))
-          drop-shadow(0 0 25px rgba(210, 255, 0, 0.45))
-          drop-shadow(0 0 50px rgba(0, 255, 102, 0.25));
+          drop-shadow(0 0 20px rgba(255, 255, 255, 0.08));
   margin: 0;
   user-select: none;
 }
