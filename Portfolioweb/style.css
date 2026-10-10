@@ -1477,25 +1477,34 @@ html.lenis, html.lenis body {
    Follows cursor tip dynamically when inspecting any tech node
    ========================================================================== */
 
+/* ==========================================================================
+   MINIMAL NEAR-POINTER TELEMETRY TOOLTIP
+   Clean, compact pill badges: Tech Name + Projects [Name <gitsymbol>]
+   ========================================================================== */
+
 .solar-cursor-tooltip {
   position: fixed;
   top: 0;
   left: 0;
   pointer-events: none;
   z-index: 99999;
-  width: 360px;
-  max-width: 90vw;
-  background: rgba(10, 14, 8, 0.96);
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
+  width: max-content;
+  max-width: 380px;
+  min-width: 170px;
+  background: rgba(10, 14, 8, 0.94);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
   border: 1px solid var(--tooltip-accent, rgba(210, 255, 0, 0.35));
-  border-radius: 10px;
-  padding: 0.95rem 1.15rem;
-  box-shadow: 0 20px 48px rgba(0, 0, 0, 0.95), 0 0 24px var(--tooltip-glow, rgba(210, 255, 0, 0.15));
+  border-radius: 8px;
+  padding: 0.65rem 0.85rem;
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.95), 0 0 16px var(--tooltip-glow, rgba(210, 255, 0, 0.15));
   opacity: 0;
   transform: scale(0.92);
   will-change: transform, opacity;
-  transition: opacity 0.2s var(--ease-expo), transform 0.2s var(--ease-expo), border-color 0.2s, box-shadow 0.2s;
+  transition: opacity 0.16s var(--ease-expo), transform 0.16s var(--ease-expo), border-color 0.2s, box-shadow 0.2s;
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
 }
 
 .solar-cursor-tooltip.is-visible {
@@ -1504,24 +1513,18 @@ html.lenis, html.lenis body {
   pointer-events: auto;
 }
 
-.solar-cursor-tooltip.is-pinned {
-  border-color: var(--tooltip-accent, var(--color-lime));
-  box-shadow: 0 24px 56px rgba(0, 0, 0, 0.98), 0 0 32px var(--tooltip-glow, rgba(210, 255, 0, 0.3));
-}
-
-.tooltip-badge-row {
+.tooltip-header-simple {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
-  margin-bottom: 0.5rem;
+  gap: 0.5rem;
 }
 
 .tooltip-icon-wrap {
-  width: 38px;
-  height: 38px;
-  border-radius: 8px;
+  width: 24px;
+  height: 24px;
+  border-radius: 5px;
   background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.14);
+  border: 1px solid rgba(255, 255, 255, 0.12);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1529,198 +1532,76 @@ html.lenis, html.lenis body {
 }
 
 .tooltip-icon-img {
-  width: 24px;
-  height: 24px;
+  width: 15px;
+  height: 15px;
   object-fit: contain;
 }
 
-.tooltip-title-wrap {
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-  min-width: 0;
-}
-
-.tooltip-category {
-  font-size: 0.65rem;
-  letter-spacing: 0.12em;
-  color: var(--tooltip-accent, var(--color-lime));
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
 .tooltip-name {
-  font-size: 1.1rem;
+  font-size: 0.95rem;
   font-weight: 700;
   color: #FFFFFF;
-  line-height: 1.2;
+  line-height: 1.1;
+  letter-spacing: 0.02em;
 }
 
-.tooltip-close-btn {
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.16);
-  color: var(--color-text-dim);
-  border-radius: 6px;
-  width: 26px;
-  height: 26px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  font-size: 0.72rem;
-  transition: all 0.18s ease;
-  flex-shrink: 0;
-}
-
-.tooltip-close-btn:hover {
-  background: rgba(255, 60, 60, 0.2);
-  border-color: rgba(255, 80, 80, 0.6);
-  color: #FFFFFF;
-}
-
-.tooltip-desc {
-  font-size: 0.8rem;
-  line-height: 1.45;
-  color: var(--color-text-editorial);
-  margin-bottom: 0.6rem;
-}
-
-/* Tooltip Projects & Git Repositories Section */
 .tooltip-projects-section {
-  margin-top: 0.6rem;
-  padding-top: 0.6rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
   display: flex;
   flex-direction: column;
-  gap: 0.45rem;
+  gap: 0.35rem;
+  margin-top: 0.1rem;
 }
 
-.tooltip-projects-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  font-size: 0.63rem;
-  letter-spacing: 0.1em;
-  color: var(--tooltip-accent, var(--color-lime));
-  margin-bottom: 0.2rem;
-}
-
-.tooltip-projects-count {
-  font-size: 0.58rem;
-  padding: 0.12rem 0.4rem;
-  border-radius: 4px;
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  color: #FFFFFF;
-  letter-spacing: 0.08em;
-}
-
-.tooltip-projects-list {
-  display: flex;
-  flex-direction: column;
-  gap: 0.45rem;
-  max-height: 195px;
-  overflow-y: auto;
-  padding-right: 4px;
-}
-
-/* Tactical scrollbar for projects list */
-.tooltip-projects-list::-webkit-scrollbar {
-  width: 4px;
-}
-.tooltip-projects-list::-webkit-scrollbar-track {
-  background: rgba(255, 255, 255, 0.04);
-  border-radius: 2px;
-}
-.tooltip-projects-list::-webkit-scrollbar-thumb {
-  background: var(--tooltip-accent, var(--color-lime));
-  border-radius: 2px;
-}
-
-.tooltip-project-item {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 0.65rem;
-  padding: 0.45rem 0.6rem;
-  background: rgba(255, 255, 255, 0.035);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 6px;
-  transition: all 0.18s ease;
-}
-
-.tooltip-project-item:hover {
-  background: rgba(255, 255, 255, 0.07);
-  border-color: var(--tooltip-accent, rgba(210, 255, 0, 0.45));
-  transform: translateX(3px);
-}
-
-.tooltip-project-info {
-  display: flex;
-  flex-direction: column;
-  min-width: 0;
-  flex: 1;
-}
-
-.tooltip-project-title {
-  font-size: 0.78rem;
-  font-weight: 700;
-  color: #FFFFFF;
-  line-height: 1.25;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.tooltip-project-role {
+.tooltip-projects-label {
   font-size: 0.68rem;
-  color: var(--color-text-editorial);
-  line-height: 1.35;
-  margin-top: 0.15rem;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  color: rgba(255, 255, 255, 0.6);
 }
 
-.tooltip-git-link {
+.tooltip-projects-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  align-items: center;
+}
+
+.tooltip-project-chip {
   display: inline-flex;
   align-items: center;
   gap: 0.35rem;
-  padding: 0.3rem 0.6rem;
-  font-size: 0.65rem;
-  font-weight: 700;
-  letter-spacing: 0.06em;
-  color: #0A0E08;
-  background: var(--tooltip-accent, var(--color-lime));
-  border-radius: 4px;
+  padding: 0.25rem 0.55rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 5px;
+  color: #FFFFFF;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
   text-decoration: none;
-  flex-shrink: 0;
-  transition: all 0.18s ease;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+  white-space: nowrap;
+  transition: all 0.16s ease;
+  cursor: pointer;
 }
 
-.tooltip-git-link:hover {
-  transform: translateY(-1px) scale(1.04);
-  box-shadow: 0 4px 14px var(--tooltip-glow, rgba(210, 255, 0, 0.4));
-  filter: brightness(1.12);
-  color: #000000;
+.tooltip-project-chip:hover {
+  background: var(--tooltip-accent, var(--color-lime));
+  border-color: var(--tooltip-accent, var(--color-lime));
+  color: #0A0E08;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px var(--tooltip-glow, rgba(210, 255, 0, 0.35));
 }
 
-.tooltip-git-link svg {
+.tooltip-project-chip:hover .chip-git-icon {
+  fill: #0A0E08;
+}
+
+.chip-git-icon {
   width: 12px;
   height: 12px;
-  fill: currentColor;
+  fill: var(--tooltip-accent, var(--color-lime));
+  transition: fill 0.16s ease;
   flex-shrink: 0;
-}
-
-.tooltip-footer {
-  font-size: 0.62rem;
-  letter-spacing: 0.08em;
-  color: var(--color-text-dim);
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
-  padding-top: 0.45rem;
-  margin-top: 0.45rem;
 }
 
 /* ==========================================================================

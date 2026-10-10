@@ -26,224 +26,130 @@ export const TECH_NODES = [
   // --- RING 0: AI & COMPUTER VISION CORE (Inner Fast Track) ---
   {
     id: 'python',
-    name: 'Python 3.12',
-    category: 'ai',
-    categoryLabel: 'AI & VISION CORE',
-    desc: 'Deep learning pipelines, MediaPipe landmark engineering, and algorithmic system architecture.',
+    name: 'Python',
     icon: 'assets/tech-icons/python.svg',
     color: '#387EB8',
     ringIndex: 0,
     orbitPhase: 0,
     speedFactor: 1.15,
     projects: [
-      {
-        name: 'Leadis / AiSam',
-        role: 'AI developmental screening & ML inference backend',
-        github: 'https://github.com/SamSunny4/Leadis',
-      },
-      {
-        name: 'MovSense (Fitman)',
-        role: 'Computer vision joint kinematics & posture evaluation',
-        github: 'https://github.com/SamSunny4/MovSense',
-      },
+      { name: 'Leadis', github: 'https://github.com/SamSunny4/Leadis' },
+      { name: 'MovSense', github: 'https://github.com/SamSunny4/MovSense' },
     ],
   },
   {
     id: 'mediapipe',
-    name: 'MediaPipe Vision',
-    category: 'ai',
-    categoryLabel: 'COMPUTER VISION',
-    desc: 'Real-time 33-point pose estimation and kinematic angle tracking in Leadis / AiSam (National 2nd Prize).',
+    name: 'MediaPipe',
     icon: 'assets/tech-icons/mediapipe.svg',
     color: '#00F0FF',
     ringIndex: 0,
     orbitPhase: Math.PI * 0.5,
     speedFactor: 1.05,
     projects: [
-      {
-        name: 'Leadis / AiSam',
-        role: '33-point real-time pose estimation & motor risk tracking',
-        github: 'https://github.com/SamSunny4/Leadis',
-      },
-      {
-        name: 'MovSense (Fitman)',
-        role: '3D landmark angle calculations & 60fps kinetic analysis',
-        github: 'https://github.com/SamSunny4/MovSense',
-      },
+      { name: 'Leadis', github: 'https://github.com/SamSunny4/Leadis' },
+      { name: 'MovSense', github: 'https://github.com/SamSunny4/MovSense' },
     ],
   },
   {
     id: 'fastapi',
     name: 'FastAPI',
-    category: 'ai',
-    categoryLabel: 'ASYNC AI SERVICES',
-    desc: 'High-throughput asynchronous REST microservices for low-latency AI model inference.',
     icon: 'assets/tech-icons/fastapi.svg',
     color: '#059669',
     ringIndex: 0,
     orbitPhase: Math.PI,
     speedFactor: 1.1,
     projects: [
-      {
-        name: 'MovSense (Fitman)',
-        role: 'High-throughput async REST microservices for model telemetry',
-        github: 'https://github.com/SamSunny4/MovSense',
-      },
+      { name: 'MovSense', github: 'https://github.com/SamSunny4/MovSense' },
     ],
   },
   {
     id: 'flask',
     name: 'Flask',
-    category: 'ai',
-    categoryLabel: 'BACKEND SERVICES',
-    desc: 'Lightweight web microservices and local diagnostic interfaces for embedded telemetry.',
     icon: 'assets/tech-icons/flask.svg',
     color: '#D2FF00',
     ringIndex: 0,
     orbitPhase: Math.PI * 1.5,
     speedFactor: 0.95,
     projects: [
-      {
-        name: 'Leadis / AiSam',
-        role: 'Flask machine learning API for behavioral scoring pipelines',
-        github: 'https://github.com/SamSunny4/Leadis',
-      },
+      { name: 'Leadis', github: 'https://github.com/SamSunny4/Leadis' },
     ],
   },
 
   // --- RING 1: SYSTEMS, LOW-LEVEL & ENTERPRISE ARCHITECTURE ---
   {
     id: 'cs',
-    name: 'C# (.NET 8)',
-    category: 'systems',
-    categoryLabel: 'ENTERPRISE ARCHITECTURE',
-    desc: 'Core architecture of KeyBase commercial software running live in business retail operations.',
+    name: 'C#',
     icon: 'assets/tech-icons/cs.svg',
     color: '#A179DC',
     ringIndex: 1,
     orbitPhase: 0.2,
     speedFactor: 1.0,
     projects: [
-      {
-        name: 'PresisionTouchTile',
-        role: 'Precision desktop touch & tile coordinate calibration',
-        github: 'https://github.com/SamSunny4/PresisionTouchTile',
-      },
+      { name: 'PresisionTouchTile', github: 'https://github.com/SamSunny4/PresisionTouchTile' },
     ],
   },
   {
     id: 'dotnet',
-    name: '.NET Core Runtime',
-    category: 'systems',
-    categoryLabel: 'SYSTEMS RUNTIME',
-    desc: 'High-performance multi-threaded business logic, asynchronous I/O, and secure desktop services.',
+    name: '.NET',
     icon: 'assets/tech-icons/dotnet.svg',
     color: '#512BD4',
     ringIndex: 1,
     orbitPhase: 0.2 + (Math.PI * 2 / 6),
     speedFactor: 0.95,
     projects: [
-      {
-        name: 'PresisionTouchTile',
-        role: 'Multi-threaded asynchronous runtime services & I/O',
-        github: 'https://github.com/SamSunny4/PresisionTouchTile',
-      },
+      { name: 'PresisionTouchTile', github: 'https://github.com/SamSunny4/PresisionTouchTile' },
     ],
   },
   {
     id: 'c',
-    name: 'C Language',
-    category: 'systems',
-    categoryLabel: 'LOW-LEVEL COMPUTING',
-    desc: 'Memory-constrained low-level data structures, hardware interfacing, and performance kernels.',
+    name: 'C',
     icon: 'assets/tech-icons/c.svg',
     color: '#659AD2',
     ringIndex: 1,
     orbitPhase: 0.2 + (Math.PI * 4 / 6),
     speedFactor: 1.05,
     projects: [
-      {
-        name: 'Evade',
-        role: 'Memory-constrained obstacle evasion & game mechanics',
-        github: 'https://github.com/SamSunny4/Evade',
-      },
-      {
-        name: 'FOC_C_PROJECT_S2',
-        role: 'Foundations of computing low-level algorithmic kernels',
-        github: 'https://github.com/SamSunny4/FOC_C_PROJECT_S2',
-      },
+      { name: 'Evade', github: 'https://github.com/SamSunny4/Evade' },
+      { name: 'FOC_C_PROJECT', github: 'https://github.com/SamSunny4/FOC_C_PROJECT_S2' },
     ],
   },
   {
     id: 'rust',
-    name: 'Rust Systems',
-    category: 'systems',
-    categoryLabel: 'SAFE CONCURRENCY',
-    desc: 'Memory-safe systems programming, concurrency patterns, and high-performance utilities.',
+    name: 'Rust',
     icon: 'assets/tech-icons/rust.svg',
     color: '#DEA584',
     ringIndex: 1,
     orbitPhase: 0.2 + (Math.PI * 6 / 6),
     speedFactor: 1.08,
     projects: [
-      {
-        name: 'ShareDash',
-        role: 'High-speed multipath engine, AES-256-GCM & BLAKE3 checksums',
-        github: 'https://github.com/SamSunny4/ShareDash',
-      },
+      { name: 'ShareDash', github: 'https://github.com/SamSunny4/ShareDash' },
     ],
   },
   {
     id: 'java',
-    name: 'Java Platform',
-    category: 'systems',
-    categoryLabel: 'OBJECT SYSTEMS',
-    desc: 'Robust enterprise patterns, OOP modular abstractions, and cross-platform runtime engineering.',
+    name: 'Java',
     icon: 'assets/tech-icons/java.svg',
     color: '#F89820',
     ringIndex: 1,
     orbitPhase: 0.2 + (Math.PI * 8 / 6),
     speedFactor: 0.92,
     projects: [
-      {
-        name: 'KeyBase',
-        role: 'Commercial retail key records system deployed in production',
-        github: 'https://github.com/SamSunny4/KeyBase',
-      },
-      {
-        name: 'J.A.V.A (Just A Volunteer Away)',
-        role: 'Community-driven volunteer assistance dispatch platform',
-        github: 'https://github.com/SamSunny4/J.A.V.A-Just-A-Volunteer-Away',
-      },
+      { name: 'KeyBase', github: 'https://github.com/SamSunny4/KeyBase' },
+      { name: 'J.A.V.A', github: 'https://github.com/SamSunny4/J.A.V.A-Just-A-Volunteer-Away' },
     ],
   },
   {
     id: 'kotlin',
     name: 'Kotlin',
-    category: 'systems',
-    categoryLabel: 'MODERN MOBILE/JVM',
-    desc: 'Modern expressive mobile architecture and coroutine-based asynchronous event handling.',
     icon: 'assets/tech-icons/kotlin.svg',
     color: '#7F52FF',
     ringIndex: 1,
     orbitPhase: 0.2 + (Math.PI * 10 / 6),
     speedFactor: 1.02,
     projects: [
-      {
-        name: 'ShareDash',
-        role: 'Android Wi-Fi Direct socket receiver & BLE radar discovery',
-        github: 'https://github.com/SamSunny4/ShareDash',
-      },
-      {
-        name: 'Haptok',
-        role: 'Haptic feedback engine & Android sensor interactions',
-        github: 'https://github.com/SamSunny4/Haptok',
-      },
-      {
-        name: 'VerticalLock',
-        role: 'Android system orientation lock & background service',
-        github: 'https://github.com/SamSunny4/VerticalLock',
-      },
+      { name: 'ShareDash', github: 'https://github.com/SamSunny4/ShareDash' },
+      { name: 'Haptok', github: 'https://github.com/SamSunny4/Haptok' },
+      { name: 'VerticalLock', github: 'https://github.com/SamSunny4/VerticalLock' },
     ],
   },
 
@@ -251,136 +157,69 @@ export const TECH_NODES = [
   {
     id: 'typescript',
     name: 'TypeScript',
-    category: 'web',
-    categoryLabel: 'TYPE SYSTEMS',
-    desc: 'Strict type contracts, scalable frontend abstractions, and complex reactive state models.',
     icon: 'assets/tech-icons/typescript.svg',
     color: '#3178C6',
     ringIndex: 2,
     orbitPhase: 0.5,
     speedFactor: 1.05,
     projects: [
-      {
-        name: 'InfoGrid',
-        role: 'Full-stack 43" vertical laboratory signage CMS & typed APIs',
-        github: 'https://github.com/SamSunny4/InfoGrid',
-      },
-      {
-        name: 'Demomenu',
-        role: 'Interactive UI state machines & dynamic menu components',
-        github: 'https://github.com/SamSunny4/Demomenu',
-      },
+      { name: 'InfoGrid', github: 'https://github.com/SamSunny4/InfoGrid' },
+      { name: 'Demomenu', github: 'https://github.com/SamSunny4/Demomenu' },
     ],
   },
   {
     id: 'javascript',
-    name: 'JavaScript ES6+',
-    category: 'web',
-    categoryLabel: 'CORE WEB ENGINE',
-    desc: 'High-speed DOM manipulation, WebGL canvases, real-time audio/sensor pipelines, and animation.',
+    name: 'JavaScript',
     icon: 'assets/tech-icons/javascript.svg',
     color: '#F7DF1E',
     ringIndex: 2,
     orbitPhase: 0.5 + (Math.PI * 2 / 5),
     speedFactor: 1.0,
     projects: [
-      {
-        name: 'Resume / Portfolioweb',
-        role: 'Celestial 3D WebGL space engine & relativistic warp shaders',
-        github: 'https://github.com/SamSunny4/Resume',
-      },
-      {
-        name: 'DBMS (Graph Explorer)',
-        role: 'Blockchain transaction graph monitoring & Cytoscape.js rendering',
-        github: 'https://github.com/SamSunny4/DBMS',
-      },
-      {
-        name: 'FakePaste',
-        role: 'Natural human typing simulation engine with cadence jitter',
-        github: 'https://github.com/SamSunny4/FakePaste',
-      },
+      { name: 'Resume', github: 'https://github.com/SamSunny4/Resume' },
+      { name: 'DBMS', github: 'https://github.com/SamSunny4/DBMS' },
+      { name: 'FakePaste', github: 'https://github.com/SamSunny4/FakePaste' },
     ],
   },
   {
     id: 'react',
-    name: 'React Ecosystem',
-    category: 'web',
-    categoryLabel: 'REACTIVE UI',
-    desc: 'Component architecture, custom hooks, virtual DOM optimization, and interactive client apps.',
+    name: 'React',
     icon: 'assets/tech-icons/react.svg',
     color: '#00D8FF',
     ringIndex: 2,
     orbitPhase: 0.5 + (Math.PI * 4 / 5),
     speedFactor: 0.96,
     projects: [
-      {
-        name: 'Rainiest',
-        role: 'Kerala civic rainfall radar & District Collector leave tracker',
-        github: 'https://github.com/SamSunny4/Rainiest',
-      },
-      {
-        name: 'Leadis / AiSam',
-        role: 'Interactive pediatric motor screening & assessment interface',
-        github: 'https://github.com/SamSunny4/Leadis',
-      },
+      { name: 'Rainiest', github: 'https://github.com/SamSunny4/Rainiest' },
+      { name: 'Leadis', github: 'https://github.com/SamSunny4/Leadis' },
     ],
   },
   {
     id: 'nextjs',
-    name: 'Next.js 14',
-    category: 'web',
-    categoryLabel: 'FULL-STACK FRAMEWORK',
-    desc: 'Server-side rendering, App Router edge computing, dynamic caching, and zero-bundle UI.',
+    name: 'Next.js',
     icon: 'assets/tech-icons/nextjs.svg',
     color: '#FFFFFF',
     ringIndex: 2,
     orbitPhase: 0.5 + (Math.PI * 6 / 5),
     speedFactor: 1.08,
     projects: [
-      {
-        name: 'InfoGrid',
-        role: 'Next.js 16 App Router signage display & admin panel',
-        github: 'https://github.com/SamSunny4/InfoGrid',
-      },
-      {
-        name: 'Rainiest',
-        role: 'Next.js 15 SSR public weather intelligence dashboard',
-        github: 'https://github.com/SamSunny4/Rainiest',
-      },
-      {
-        name: 'DBMS (Graph Explorer)',
-        role: 'Next.js forensic blockchain explorer & investigation UI',
-        github: 'https://github.com/SamSunny4/DBMS',
-      },
+      { name: 'InfoGrid', github: 'https://github.com/SamSunny4/InfoGrid' },
+      { name: 'Rainiest', github: 'https://github.com/SamSunny4/Rainiest' },
+      { name: 'DBMS', github: 'https://github.com/SamSunny4/DBMS' },
     ],
   },
   {
     id: 'tailwind',
     name: 'Tailwind CSS',
-    category: 'web',
-    categoryLabel: 'TOKEN STYLING',
-    desc: 'Design tokens, responsive layouts, micro-animations, and fluid visual architectures.',
     icon: 'assets/tech-icons/tailwind.svg',
     color: '#38BDF8',
     ringIndex: 2,
     orbitPhase: 0.5 + (Math.PI * 8 / 5),
     speedFactor: 0.94,
     projects: [
-      {
-        name: 'InfoGrid',
-        role: 'Vertical screen layout tokens & responsive admin dashboard',
-        github: 'https://github.com/SamSunny4/InfoGrid',
-      },
-      {
-        name: 'Rainiest',
-        role: 'Glassmorphism meteorological UI & live status telemetry',
-        github: 'https://github.com/SamSunny4/Rainiest',
-      },
-      {
-        name: 'Leadis',
-        role: 'Clinical screening design tokens & accessible child UI',
-        github: 'https://github.com/SamSunny4/Leadis',
-      },
+      { name: 'InfoGrid', github: 'https://github.com/SamSunny4/InfoGrid' },
+      { name: 'Rainiest', github: 'https://github.com/SamSunny4/Rainiest' },
+      { name: 'Leadis', github: 'https://github.com/SamSunny4/Leadis' },
     ],
   },
 
@@ -388,265 +227,162 @@ export const TECH_NODES = [
   {
     id: 'postgres',
     name: 'PostgreSQL',
-    category: 'cloud',
-    categoryLabel: 'RELATIONAL DATABASE',
-    desc: 'ACID-compliant relational design, indexing strategies, complex joins, and query optimization.',
     icon: 'assets/tech-icons/postgres.svg',
     color: '#336791',
     ringIndex: 3,
     orbitPhase: 0.1,
     speedFactor: 0.98,
     projects: [
-      {
-        name: 'LateLoggy (Campus Verification)',
-        role: 'PostgreSQL & Supabase rotating QR check-in records',
-        github: 'https://github.com/SamSunny4/Resume',
-      },
+      { name: 'LateLoggy', github: 'https://github.com/SamSunny4/Resume' },
     ],
   },
   {
     id: 'mongodb',
     name: 'MongoDB',
-    category: 'cloud',
-    categoryLabel: 'NOSQL DOCUMENT STORE',
-    desc: 'Flexible schema documents, aggregation pipelines, and high-velocity distributed persistence.',
     icon: 'assets/tech-icons/mongodb.svg',
     color: '#47A248',
     ringIndex: 3,
     orbitPhase: 0.1 + (Math.PI * 2 / 7),
     speedFactor: 1.04,
     projects: [
-      {
-        name: 'InfoGrid',
-        role: 'MongoDB Atlas document storage for news, events & carousels',
-        github: 'https://github.com/SamSunny4/InfoGrid',
-      },
+      { name: 'InfoGrid', github: 'https://github.com/SamSunny4/InfoGrid' },
     ],
   },
   {
     id: 'sqlite',
-    name: 'SQLite Engine',
-    category: 'cloud',
-    categoryLabel: 'EMBEDDED STORAGE',
-    desc: 'Zero-configuration embedded ACID storage powering KeyBase local retail records.',
+    name: 'SQLite',
     icon: 'assets/tech-icons/sqlite.svg',
     color: '#003B57',
     ringIndex: 3,
     orbitPhase: 0.1 + (Math.PI * 4 / 7),
     speedFactor: 1.0,
     projects: [
-      {
-        name: 'KeyBase',
-        role: 'Zero-config embedded ACID storage for retail customer records',
-        github: 'https://github.com/SamSunny4/KeyBase',
-      },
+      { name: 'KeyBase', github: 'https://github.com/SamSunny4/KeyBase' },
     ],
   },
   {
     id: 'neo4j',
-    name: 'Neo4j Graph DB',
-    category: 'cloud',
-    categoryLabel: 'GRAPH KNOWLEDGE',
-    desc: 'Cypher query graph traversal, entity relationship graphs, and semantic network pipelines.',
+    name: 'Neo4j',
     icon: 'assets/tech-icons/neo4j.svg',
     color: '#018BFF',
     ringIndex: 3,
     orbitPhase: 0.1 + (Math.PI * 6 / 7),
     speedFactor: 0.95,
     projects: [
-      {
-        name: 'DBMS (Graph Explorer)',
-        role: 'Cypher queries tracing multi-hop token transfers & wallet clusters',
-        github: 'https://github.com/SamSunny4/DBMS',
-      },
+      { name: 'DBMS', github: 'https://github.com/SamSunny4/DBMS' },
     ],
   },
   {
     id: 'docker',
-    name: 'Docker Containers',
-    category: 'cloud',
-    categoryLabel: 'CONTAINERIZATION',
-    desc: 'Multi-stage container builds, microservice orchestration, and reproducible runtime environments.',
+    name: 'Docker',
     icon: 'assets/tech-icons/docker.svg',
     color: '#2496ED',
     ringIndex: 3,
     orbitPhase: 0.1 + (Math.PI * 8 / 7),
     speedFactor: 1.02,
     projects: [
-      {
-        name: 'DBMS (Graph Explorer)',
-        role: 'Containerized Neo4j database & Fastify API microservices',
-        github: 'https://github.com/SamSunny4/DBMS',
-      },
+      { name: 'DBMS', github: 'https://github.com/SamSunny4/DBMS' },
     ],
   },
   {
     id: 'linux',
-    name: 'Linux / POSIX',
-    category: 'cloud',
-    categoryLabel: 'OPERATING SYSTEM',
-    desc: 'Shell scripting, daemon management, system performance profiling, and server administration.',
+    name: 'Linux',
     icon: 'assets/tech-icons/linux.svg',
     color: '#FCC624',
     ringIndex: 3,
     orbitPhase: 0.1 + (Math.PI * 10 / 7),
     speedFactor: 0.93,
     projects: [
-      {
-        name: 'ShareDash',
-        role: 'POSIX socket networking, daemon management & transfer performance',
-        github: 'https://github.com/SamSunny4/ShareDash',
-      },
+      { name: 'ShareDash', github: 'https://github.com/SamSunny4/ShareDash' },
     ],
   },
   {
     id: 'cloudflare',
-    name: 'Cloudflare Edge',
-    category: 'cloud',
-    categoryLabel: 'EDGE INFRASTRUCTURE',
-    desc: 'Edge caching, DNS management, WebSockets, and global distributed routing.',
+    name: 'Cloudflare',
     icon: 'assets/tech-icons/cloudflare.svg',
     color: '#F38020',
     ringIndex: 3,
     orbitPhase: 0.1 + (Math.PI * 12 / 7),
     speedFactor: 1.06,
     projects: [
-      {
-        name: 'InfoGrid',
-        role: 'Cloudflare R2 object storage for high-res vertical signage posters',
-        github: 'https://github.com/SamSunny4/InfoGrid',
-      },
+      { name: 'InfoGrid', github: 'https://github.com/SamSunny4/InfoGrid' },
     ],
   },
 
-  // --- RING 4: HARDWARE PROTOCOLS, PLATFORMS & COMETS (Chaotic Polar Orbit) ---
+  // --- RING 4: HARDWARE PROTOCOLS & PLATFORMS ---
   {
     id: 'git',
-    name: 'Git SCM',
-    category: 'protocols',
-    categoryLabel: 'VERSION CONTROL',
-    desc: 'Branching strategies, atomic commit architecture, rebase hygiene, and CI/CD triggers.',
+    name: 'Git',
     icon: 'assets/tech-icons/git.svg',
     color: '#F05032',
     ringIndex: 4,
     orbitPhase: 0.8,
     speedFactor: 1.12,
     projects: [
-      {
-        name: 'SamSunny4 GitHub Hub',
-        role: 'Branching hygiene, atomic commits & releases across 30+ repos',
-        github: 'https://github.com/SamSunny4',
-      },
+      { name: 'All Repos', github: 'https://github.com/SamSunny4' },
     ],
   },
   {
     id: 'android',
-    name: 'Android Native',
-    category: 'protocols',
-    categoryLabel: 'MOBILE PLATFORM',
-    desc: 'Native sensor APIs, background camera capture, Bluetooth permissions, and Android SDK.',
+    name: 'Android',
     icon: 'assets/tech-icons/android.svg',
     color: '#3DDC84',
     ringIndex: 4,
     orbitPhase: 0.8 + (Math.PI * 2 / 6),
     speedFactor: 0.97,
     projects: [
-      {
-        name: 'ShareDash',
-        role: 'Native Android Wi-Fi Direct P2P sockets & BLE GATT server',
-        github: 'https://github.com/SamSunny4/ShareDash',
-      },
-      {
-        name: 'VerticalLock',
-        role: 'Android background services & system window orientation locks',
-        github: 'https://github.com/SamSunny4/VerticalLock',
-      },
-      {
-        name: 'Haptok',
-        role: 'Android hardware vibration motor & sensor controllers',
-        github: 'https://github.com/SamSunny4/Haptok',
-      },
+      { name: 'ShareDash', github: 'https://github.com/SamSunny4/ShareDash' },
+      { name: 'VerticalLock', github: 'https://github.com/SamSunny4/VerticalLock' },
+      { name: 'Haptok', github: 'https://github.com/SamSunny4/Haptok' },
     ],
   },
   {
     id: 'windows',
-    name: 'Windows Win32',
-    category: 'protocols',
-    categoryLabel: 'DESKTOP OS',
-    desc: 'Win32 APIs, retail receipt printer drivers, hardware key readers, and registry services.',
+    name: 'Windows',
     icon: 'assets/tech-icons/windows.svg',
     color: '#0078D6',
     ringIndex: 4,
     orbitPhase: 0.8 + (Math.PI * 4 / 6),
     speedFactor: 1.04,
     projects: [
-      {
-        name: 'KeyBase',
-        role: 'Win32 receipt printer drivers, camera capture & portable bundle',
-        github: 'https://github.com/SamSunny4/KeyBase',
-      },
-      {
-        name: 'ShareDash',
-        role: 'Windows Runtime USB 3.x controller & multipath socket networking',
-        github: 'https://github.com/SamSunny4/ShareDash',
-      },
+      { name: 'KeyBase', github: 'https://github.com/SamSunny4/KeyBase' },
+      { name: 'ShareDash', github: 'https://github.com/SamSunny4/ShareDash' },
     ],
   },
   {
     id: 'ble',
-    name: 'Bluetooth Low Energy',
-    category: 'protocols',
-    categoryLabel: 'HARDWARE PROTOCOL',
-    desc: 'GATT services, characteristic subscriptions, RSSI distance calculations, and IoT telemetry.',
+    name: 'BLE',
     icon: 'assets/tech-icons/ble.svg',
     color: '#0082FC',
     ringIndex: 4,
     orbitPhase: 0.8 + (Math.PI * 6 / 6),
     speedFactor: 1.08,
     projects: [
-      {
-        name: 'ShareDash',
-        role: 'Quick Share BLE radar discovery & peer connection negotiation',
-        github: 'https://github.com/SamSunny4/ShareDash',
-      },
+      { name: 'ShareDash', github: 'https://github.com/SamSunny4/ShareDash' },
     ],
   },
   {
     id: 'wifi',
-    name: 'Wi-Fi Direct / Sockets',
-    category: 'protocols',
-    categoryLabel: 'NETWORKING',
-    desc: 'Low-latency peer-to-peer device interconnectivity and raw TCP/UDP socket synchronization.',
+    name: 'Wi-Fi Direct',
     icon: 'assets/tech-icons/wifi.svg',
     color: '#D2FF00',
     ringIndex: 4,
     orbitPhase: 0.8 + (Math.PI * 8 / 6),
     speedFactor: 0.95,
     projects: [
-      {
-        name: 'ShareDash',
-        role: 'Direct P2P socket communication reaching 78-100+ MB/s transfers',
-        github: 'https://github.com/SamSunny4/ShareDash',
-      },
+      { name: 'ShareDash', github: 'https://github.com/SamSunny4/ShareDash' },
     ],
   },
   {
     id: 'swing',
-    name: 'Java Swing GUI',
-    category: 'protocols',
-    categoryLabel: 'DESKTOP UI',
-    desc: 'Custom UI component rendering, graphics 2D painting, and legacy desktop architectures.',
+    name: 'Swing',
     icon: 'assets/tech-icons/swing.svg',
     color: '#E76F00',
     ringIndex: 4,
     orbitPhase: 0.8 + (Math.PI * 10 / 6),
     speedFactor: 1.01,
     projects: [
-      {
-        name: 'KeyBase',
-        role: 'Commercial retail POS desktop GUI with live webcam preview',
-        github: 'https://github.com/SamSunny4/KeyBase',
-      },
+      { name: 'KeyBase', github: 'https://github.com/SamSunny4/KeyBase' },
     ],
   },
 ];
@@ -943,72 +679,51 @@ export class TechSolarSystem {
       }
       if (this.tooltipTitle) {
         this.tooltipTitle.textContent = tech.name;
-        this.tooltipTitle.style.color = tech.color;
-      }
-      if (this.tooltipCategory) {
-        this.tooltipCategory.textContent = `// ${tech.categoryLabel}`;
-        this.tooltipCategory.style.color = tech.color;
-      }
-      if (this.tooltipDesc) {
-        this.tooltipDesc.textContent = tech.desc;
-      }
-      if (this.tooltipFooter) {
-        this.tooltipFooter.textContent = this.isPinned
-          ? `PINNED DOSSIER • CLICK ✕ OR OUTSIDE TO DISMISS`
-          : `ORBIT RING ${tech.ringIndex + 1} • CLICK NODE TO PIN TELEMETRY`;
+        this.tooltipTitle.style.color = tech.color || '#FFFFFF';
       }
 
-      // Populate verified projects & Git repositories
+      // Populate verified projects as clean minimal chips with Git links: [ ProjectName <gitsymbol> ]
       if (this.tooltipProjectsList) {
         this.tooltipProjectsList.innerHTML = '';
         const projects = tech.projects || [];
-
-        if (this.tooltipProjectsHeaderLabel) {
-          this.tooltipProjectsHeaderLabel.textContent = '// DEPLOYED IN PROJECTS';
-        }
-        if (this.tooltipProjectsCount) {
-          this.tooltipProjectsCount.textContent = `${projects.length} ${projects.length === 1 ? 'REPO' : 'REPOS'}`;
-        }
 
         if (projects.length > 0) {
           if (this.tooltipProjectsSection) {
             this.tooltipProjectsSection.style.display = 'flex';
           }
           projects.forEach(proj => {
-            const item = document.createElement('div');
-            item.className = 'tooltip-project-item';
-            item.innerHTML = `
-              <div class="tooltip-project-info">
-                <span class="tooltip-project-title font-mono">${escapeHtml(proj.name)}</span>
-                <span class="tooltip-project-role font-sans">${escapeHtml(proj.role)}</span>
-              </div>
-              <a href="${proj.github}" target="_blank" rel="noopener noreferrer" class="tooltip-git-link font-mono" title="Open ${escapeHtml(proj.name)} on GitHub">
-                <svg viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
-                <span>GIT ↗</span>
-              </a>
+            const chip = document.createElement('a');
+            chip.className = 'tooltip-project-chip font-mono';
+            chip.href = proj.github;
+            chip.target = '_blank';
+            chip.rel = 'noopener noreferrer';
+            chip.title = `Open ${escapeHtml(proj.name)} on GitHub`;
+            chip.innerHTML = `
+              <span>${escapeHtml(proj.name)}</span>
+              <svg class="chip-git-icon" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
             `;
-            this.tooltipProjectsList.appendChild(item);
+            this.tooltipProjectsList.appendChild(chip);
           });
         } else if (this.tooltipProjectsSection) {
           this.tooltipProjectsSection.style.display = 'none';
         }
       }
 
-      this.tooltip.style.setProperty('--tooltip-accent', tech.color);
-      this.tooltip.style.setProperty('--tooltip-glow', `${tech.color}44`);
+      this.tooltip.style.setProperty('--tooltip-accent', tech.color || '#D2FF00');
+      this.tooltip.style.setProperty('--tooltip-glow', `${tech.color || '#D2FF00'}44`);
 
       // Initialize position if not pinned
       if (!this.isPinned && this.pointerClientX > -1000) {
         const tooltipRect = this.tooltip.getBoundingClientRect();
-        const tooltipWidth = tooltipRect.width || 360;
-        const tooltipHeight = tooltipRect.height || 260;
-        let initX = this.pointerClientX + 18;
-        let initY = this.pointerClientY + 18;
+        const tooltipWidth = tooltipRect.width || 200;
+        const tooltipHeight = tooltipRect.height || 100;
+        let initX = this.pointerClientX + 16;
+        let initY = this.pointerClientY + 16;
         if (initX + tooltipWidth > window.innerWidth - 16) {
-          initX = this.pointerClientX - tooltipWidth - 18;
+          initX = this.pointerClientX - tooltipWidth - 16;
         }
         if (initY + tooltipHeight > window.innerHeight - 16) {
-          initY = this.pointerClientY - tooltipHeight - 18;
+          initY = this.pointerClientY - tooltipHeight - 16;
         }
         this.tooltipCurrentX = Math.max(12, initX);
         this.tooltipCurrentY = Math.max(12, initY);
@@ -1048,18 +763,18 @@ export class TechSolarSystem {
     if (this.isTooltipHovered || this.isPinned) return;
 
     const tooltipRect = this.tooltip.getBoundingClientRect();
-    const tooltipWidth = tooltipRect.width || 360;
-    const tooltipHeight = tooltipRect.height || 260;
-    let targetX = this.pointerClientX + 18;
-    let targetY = this.pointerClientY + 18;
+    const tooltipWidth = tooltipRect.width || 200;
+    const tooltipHeight = tooltipRect.height || 100;
+    let targetX = this.pointerClientX + 16;
+    let targetY = this.pointerClientY + 16;
 
     // Prevent clipping right screen edge
     if (targetX + tooltipWidth > window.innerWidth - 16) {
-      targetX = this.pointerClientX - tooltipWidth - 18;
+      targetX = this.pointerClientX - tooltipWidth - 16;
     }
     // Prevent clipping bottom screen edge
     if (targetY + tooltipHeight > window.innerHeight - 16) {
-      targetY = this.pointerClientY - tooltipHeight - 18;
+      targetY = this.pointerClientY - tooltipHeight - 16;
     }
     targetX = Math.max(12, targetX);
     targetY = Math.max(12, targetY);

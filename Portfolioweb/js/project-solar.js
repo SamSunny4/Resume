@@ -204,52 +204,34 @@ export class ProjectSolarSystem {
       }
       if (this.tooltipTitle) {
         this.tooltipTitle.textContent = proj.name;
-        this.tooltipTitle.style.color = proj.color;
-      }
-      if (this.tooltipCategory) {
-        this.tooltipCategory.textContent = `// ${proj.badge}`;
-        this.tooltipCategory.style.color = proj.color;
-      }
-      if (this.tooltipDesc) {
-        this.tooltipDesc.textContent = proj.desc;
-      }
-      if (this.tooltipFooter) {
-        this.tooltipFooter.textContent = `CLICK PLANET TO INSPECT TELEMETRY ↗`;
+        this.tooltipTitle.style.color = proj.color || '#FFFFFF';
       }
 
-      // Populate project's verified GitHub repository
+      // Populate project's verified GitHub repository as a clean chip
       if (this.tooltipProjectsList) {
         this.tooltipProjectsList.innerHTML = '';
         if (this.tooltipProjectsSection) {
           this.tooltipProjectsSection.style.display = 'flex';
         }
-        if (this.tooltipProjectsHeaderLabel) {
-          this.tooltipProjectsHeaderLabel.textContent = '// SOURCE REPOSITORY';
-        }
-        if (this.tooltipProjectsCount) {
-          this.tooltipProjectsCount.textContent = 'GITHUB';
-        }
-        const item = document.createElement('div');
-        item.className = 'tooltip-project-item';
-        item.innerHTML = `
-          <div class="tooltip-project-info">
-            <span class="tooltip-project-title font-mono">${proj.name}</span>
-            <span class="tooltip-project-role font-sans">${(proj.tech || []).slice(0, 3).join(' • ')}</span>
-          </div>
-          <a href="${proj.github}" target="_blank" rel="noopener noreferrer" class="tooltip-git-link font-mono" title="Open ${proj.name} on GitHub">
-            <svg viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
-            <span>GIT ↗</span>
-          </a>
+        const chip = document.createElement('a');
+        chip.className = 'tooltip-project-chip font-mono';
+        chip.href = proj.github;
+        chip.target = '_blank';
+        chip.rel = 'noopener noreferrer';
+        chip.title = `Open ${proj.name} on GitHub`;
+        chip.innerHTML = `
+          <span>${proj.name}</span>
+          <svg class="chip-git-icon" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
         `;
-        this.tooltipProjectsList.appendChild(item);
+        this.tooltipProjectsList.appendChild(chip);
       }
 
-      this.tooltip.style.setProperty('--tooltip-accent', proj.color);
-      this.tooltip.style.setProperty('--tooltip-glow', `${proj.color}44`);
+      this.tooltip.style.setProperty('--tooltip-accent', proj.color || '#D2FF00');
+      this.tooltip.style.setProperty('--tooltip-glow', `${proj.color || '#D2FF00'}44`);
 
       if (this.pointerClientX > -1000) {
-        this.tooltipCurrentX = this.pointerClientX + 18;
-        this.tooltipCurrentY = this.pointerClientY + 18;
+        this.tooltipCurrentX = this.pointerClientX + 16;
+        this.tooltipCurrentY = this.pointerClientY + 16;
         this.tooltip.style.transform = `translate3d(${this.tooltipCurrentX}px, ${this.tooltipCurrentY}px, 0)`;
       }
 
