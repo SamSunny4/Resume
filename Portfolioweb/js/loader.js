@@ -128,9 +128,7 @@ export class QuantumAssetPreloader {
     }
 
     this.container.addEventListener('click', () => {
-      if (this.displayProgress >= 80) {
-        this.dismiss(true);
-      }
+      this.dismiss(true);
     });
 
     // Start UI smooth render animation loop

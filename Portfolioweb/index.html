@@ -38,54 +38,26 @@
   </style>
 
   <!-- Design System Stylesheet -->
-  <link rel="stylesheet" href="style.css?v=52">
+  <link rel="stylesheet" href="style.css?v=53">
   <link rel="icon" type="image/png" href="assets/me.png">
 </head>
 <body>
 
-  <!-- High-Precision Cybernetic Asset Preloader Screen -->
-  <div id="app-preloader" class="app-preloader" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" aria-label="Downloading Assets and Pre-rendering Graphics">
-    <div class="preloader-backdrop" aria-hidden="true"></div>
-    
-    <div class="preloader-content">
-      <!-- Holographic Core Reactor -->
-      <div class="preloader-core-wrap">
-        <div class="preloader-reticle-outer" aria-hidden="true"></div>
-        <div class="preloader-gyro-inner" aria-hidden="true"></div>
-        <div class="preloader-brand-monogram">
-          <span class="font-display">SS</span>
-        </div>
+  <!-- Ultra-Minimal Brand Preloader Screen -->
+  <div id="app-preloader" class="app-preloader" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" aria-label="Loading Sam Sunny Portfolio">
+    <div class="preloader-minimal-wrap">
+      <!-- Centered Signature Logo -->
+      <div class="preloader-logo-glow-wrap">
+        <img src="assets/Samlogo.png" alt="Sam Sunny" class="preloader-brand-logo">
       </div>
-
-      <!-- Live Digital Telemetry Stream -->
-      <div class="preloader-telemetry-box">
-        <div class="preloader-status-row font-mono">
-          <span class="preloader-sys-tag text-lime">// QUANTUM_CORE_V52</span>
-          <span class="preloader-percent-display font-display text-lime" id="preloader-percent-display">00%</span>
-        </div>
-
-        <!-- Laser Energy Progress Bar -->
-        <div class="preloader-bar-track">
+      
+      <!-- Minimalist Hairline Progress Bar & Percentage -->
+      <div class="preloader-minimal-progress">
+        <div class="preloader-minimal-track">
           <div class="preloader-bar-fill" id="preloader-bar-fill"></div>
-          <div class="preloader-bar-glow" id="preloader-bar-glow"></div>
         </div>
-
-        <!-- Real-Time Activity Log -->
-        <div class="preloader-log-row font-mono">
-          <span class="preloader-log-indicator"></span>
-          <span class="preloader-log-text" id="preloader-log-text">INITIALIZING QUANTUM RUNTIME...</span>
-        </div>
-
-        <div class="preloader-meta-row font-mono text-muted">
-          <span id="preloader-assets-count">PREFETCHING 0 / 56 ARTIFACTS</span>
-          <span class="preloader-latency">GPU WARM: ACTIVE</span>
-        </div>
+        <span class="preloader-minimal-percent font-mono" id="preloader-percent-display">00%</span>
       </div>
-
-      <!-- Quick Bypass Button -->
-      <button id="preloader-bypass-btn" class="preloader-bypass-btn font-mono" title="Skip directly to interface">
-        [PROCEED TO INTERFACE ↗]
-      </button>
     </div>
   </div>
 
@@ -500,6 +472,6 @@
   <!-- Lenis Momentum Smooth Scroll Library -->
   <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.9/dist/lenis.min.js"></script>
   <!-- Main ES6 Module Entry -->
-  <script type="module" src="js/main.js?v=52"></script>
+  <script type="module" src="js/main.js?v=53"></script>
 </body>
 </html>
