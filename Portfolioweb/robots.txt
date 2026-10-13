@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+
+# Host
+Host: https://samsunny.me
+
+# Sitemaps
+Sitemap: https://samsunny.me/sitemap.xml
