@@ -1217,11 +1217,11 @@ html.lenis, html.lenis body {
    Architectural Stage: Deep space zoom from Hero into 3D Solar Tech Universe
    ========================================================================== */
 
-/* Outer scroll track for smooth cosmic travel through space, wormhole, projects, credentials & contact (920vh scroll distance) */
+/* Outer scroll track for smooth cosmic travel through space, wormhole, projects, credentials & contact (1450vh scroll distance) */
 .space-stage-track {
   position: relative;
   width: 100%;
-  height: 920vh;
+  height: 1450vh;
 }
 
 /* Sticky 100vh spatial viewport stage */
@@ -2186,7 +2186,15 @@ html.lenis, html.lenis body {
   box-sizing: border-box;
 }
 
-.orbit3d-wrapper {
+/* ==========================================================================
+   13. 3D CYLINDRICAL CREDENTIALS MATRIX ENGINE
+   Cards pasted onto a continuous spinning cylinder drum,
+   illuminated warm amber top rail with stardust beads,
+   illuminated cool cyan bottom rail with stardust beads,
+   and dark glossy reflective studio floor mirror.
+   ========================================================================== */
+
+.cylinder-stage-wrap {
   position: relative;
   width: 100%;
   height: 100%;
@@ -2196,38 +2204,38 @@ html.lenis, html.lenis body {
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
-  padding: 1.2rem 2rem 1rem 2rem;
+  padding: clamp(3.2rem, 5vh, 4.2rem) 1.5rem 1.2rem 1.5rem;
   box-sizing: border-box;
   z-index: 10;
   pointer-events: none;
-  overflow: visible;
+  overflow: hidden;
 }
 
-.orbit3d-header,
+.cylinder-header,
 .stage-nav-hud,
 .stage-nav-btn {
   pointer-events: auto;
 }
 
 /* Section Header */
-.orbit3d-header {
+.cylinder-header {
   text-align: center;
-  margin-bottom: 0.35rem;
-  z-index: 2;
+  margin-bottom: 0.2rem;
+  z-index: 20;
   position: relative;
 }
 
-.orbit3d-badge {
+.cylinder-tag {
   font-size: 0.72rem;
   letter-spacing: 0.16em;
   color: var(--color-lime);
   display: inline-block;
-  margin-bottom: 0.25rem;
+  margin-bottom: 0.2rem;
   text-shadow: 0 0 12px rgba(210, 255, 0, 0.4);
 }
 
-.orbit3d-title {
-  font-size: clamp(1.4rem, 2.8vw, 2.2rem);
+.cylinder-title {
+  font-size: clamp(1.4rem, 2.6vw, 2.1rem);
   font-weight: 800;
   letter-spacing: -0.02em;
   text-transform: uppercase;
@@ -2236,378 +2244,60 @@ html.lenis, html.lenis body {
   text-shadow: 0 0 25px rgba(210, 255, 0, 0.22);
 }
 
-.orbit3d-sub {
-  font-size: clamp(0.55rem, 1vw, 0.68rem);
+.cylinder-sub {
+  font-size: clamp(0.55rem, 0.9vw, 0.66rem);
   letter-spacing: 0.12em;
   color: var(--color-text-muted);
-  margin-top: 0.25rem;
+  margin-top: 0.2rem;
 }
 
-/* 3D Isometric Orbit Viewport Stage */
-.orbit3d-stage {
+/* 3D WebGL Curved Cylinder Viewport Stage */
+.cylinder-viewport {
   position: relative;
   width: 100%;
-  height: 100%;
   flex: 1;
-  min-height: 0;
+  min-height: 490px;
   display: flex;
   align-items: center;
   justify-content: center;
   overflow: visible;
-  perspective: 1400px;
-  perspective-origin: 50% 50%;
-  transform-style: preserve-3d;
   z-index: 2;
   user-select: none;
   pointer-events: auto;
-  cursor: grab;
-  touch-action: pan-y;
 }
 
-.orbit3d-stage:active {
+.cylinder-webgl-canvas {
+  width: 100%;
+  height: 100%;
+  min-height: 490px;
+  display: block;
+  cursor: grab;
+  touch-action: pan-y;
+  outline: none;
+  z-index: 2;
+  position: relative;
+}
+
+.cylinder-webgl-canvas:active {
   cursor: grabbing;
 }
 
-/* 3D Ring Anchor (Tilted at isometric camera angle) */
-.orbit3d-ring {
+/* Ambient Backlight Radiance behind cylinder */
+.cylinder-glow-backdrop {
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 0;
-  height: 0;
-  transform-style: preserve-3d;
-  will-change: transform;
-  pointer-events: none;
-  z-index: 2;
-}
-
-/* Individual 3D Certification Card (Infinity belt conveyor cartridge) */
-.orbit3d-card {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 255px;
-  height: 165px;
-  margin-left: -127px;
-  margin-top:  -82px;
-  transform-style: preserve-3d !important;
-  -webkit-transform-style: preserve-3d !important;
-  backface-visibility: visible !important;
-  -webkit-backface-visibility: visible !important;
-  cursor: pointer;
-  pointer-events: auto;
-  overflow: visible !important;
-  will-change: transform, opacity, filter;
-  transition: opacity 0.25s ease;
-}
-
-/* Two-sided Smoked Glass Card Faces with Cylindrical Belt Curvature */
-.orbit3d-card-face {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  border-radius: 20px / 13px; /* Elliptical arched top/bottom borders matching orbit cylinder */
-  background: linear-gradient(90deg, 
-    rgba(2, 6, 4, 0.96) 0%, 
-    rgba(14, 22, 16, 0.90) 20%, 
-    rgba(20, 32, 24, 0.86) 50%, 
-    rgba(14, 22, 16, 0.90) 80%, 
-    rgba(2, 6, 4, 0.96) 100%
-  );
-  border: 1.5px solid rgba(255, 255, 255, 0.22);
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
-  box-shadow:
-    inset 18px 0 24px -8px rgba(0, 0, 0, 0.75),   /* Left edge curves back into cylinder */
-    inset -18px 0 24px -8px rgba(0, 0, 0, 0.75),  /* Right edge curves back into cylinder */
-    inset 0 1.5px 2px rgba(255, 255, 255, 0.60),  /* Liquid glass specular top ridge */
-    inset 0 -1px 2px rgba(255, 255, 255, 0.12),   /* Liquid glass bottom reflection */
-    0 16px 45px rgba(0, 0, 0, 0.88);
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
-  transform-style: preserve-3d;
-  -webkit-transform-style: preserve-3d;
-  transition: box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-/* Cylindrical Specular Light Band corresponding to orbit radius */
-.orbit3d-card-face::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  background: linear-gradient(
-    90deg,
-    transparent 0%,
-    rgba(255, 255, 255, 0.02) 20%,
-    rgba(255, 255, 255, 0.08) 50%,
-    rgba(255, 255, 255, 0.02) 80%,
-    transparent 100%
+  transform: translate(-50%, -50%);
+  width: 1100px;
+  max-width: 95vw;
+  height: 440px;
+  background: radial-gradient(ellipse 65% 55% at 50% 48%, 
+    rgba(0, 240, 255, 0.08) 0%, 
+    rgba(255, 170, 0, 0.05) 30%, 
+    rgba(0, 0, 0, 0) 75%
   );
   pointer-events: none;
-  z-index: 2;
-}
-
-/* Liquid Glass Border Rim Gradient Overlay */
-.orbit3d-card-face::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  padding: 1.5px;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.55) 0%, rgba(255, 255, 255, 0.06) 45%, rgba(255, 255, 255, 0.28) 100%);
-  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-  pointer-events: none;
-  z-index: 3;
-  opacity: 0.85;
-  transition: opacity 0.3s ease, background 0.3s ease;
-}
-
-/* Front Spotlight Card — Luminous Liquid Glass Specular Shimmer (No painted colored border) */
-.orbit3d-card.is-front .orbit3d-card-face {
-  border-color: rgba(255, 255, 255, 0.48);
-  box-shadow:
-    inset 20px 0 26px -8px rgba(0, 0, 0, 0.65),
-    inset -20px 0 26px -8px rgba(0, 0, 0, 0.65),
-    inset 0 2px 3px rgba(255, 255, 255, 0.85),
-    inset 0 -1.5px 2px rgba(255, 255, 255, 0.20),
-    0 0 26px rgba(255, 255, 255, 0.12),
-    0 22px 55px rgba(0, 0, 0, 0.92);
-}
-
-.orbit3d-card.is-front .orbit3d-card-face::before {
-  opacity: 1;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.92) 0%, rgba(255, 255, 255, 0.16) 45%, rgba(255, 255, 255, 0.55) 100%);
-}
-
-.orbit3d-card:hover .orbit3d-card-face,
-.orbit3d-card.is-hovered .orbit3d-card-face {
-  border-color: rgba(255, 255, 255, 0.65);
-  box-shadow:
-    inset 20px 0 26px -8px rgba(0, 0, 0, 0.55),
-    inset -20px 0 26px -8px rgba(0, 0, 0, 0.55),
-    inset 0 2.5px 4px rgba(255, 255, 255, 0.95),
-    inset 0 -2px 3px rgba(255, 255, 255, 0.28),
-    0 0 32px rgba(255, 255, 255, 0.18),
-    0 26px 65px rgba(0, 0, 0, 0.95);
-}
-
-.orbit3d-card:hover .orbit3d-card-face::before,
-.orbit3d-card.is-hovered .orbit3d-card-face::before {
-  opacity: 1;
-  background: linear-gradient(135deg, #ffffff 0%, rgba(255, 255, 255, 0.24) 45%, rgba(255, 255, 255, 0.78) 100%);
-}
-
-/* Card Internal Layout */
-.orbit3d-card-inner {
-  padding: 0.85rem 1rem 0.75rem 1rem;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  height: 100%;
-  position: relative;
-  z-index: 2;
-}
-
-/* Top Row: Authentic Analyzed Logos Cluster + Verified Status Pill */
-.orbit3d-card-top {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 0.4rem;
-}
-
-.orbit3d-logos-cluster {
-  display: flex;
-  align-items: center;
-  gap: 0.35rem;
-  flex-wrap: nowrap;
-  overflow: hidden;
-}
-
-.cred-brand-mark {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.28rem;
-  padding: 0.18rem 0.45rem;
-  height: 26px;
-  border-radius: 6px;
-  background: rgba(0, 0, 0, 0.72);
-  border: 1px solid rgba(255, 255, 255, 0.16);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  flex-shrink: 0;
-  transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
-}
-
-.cred-brand-mark:hover {
-  border-color: rgba(210, 255, 0, 0.4);
-  background: rgba(10, 15, 20, 0.85);
-  transform: translateY(-1px);
-}
-
-.cred-logo-img {
-  height: 18px;
-  max-width: 58px;
-  width: auto;
-  object-fit: contain;
-  display: block;
-  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.5));
-}
-
-.cred-logo-fallback-text {
-  font-size: 0.54rem;
-  font-weight: 700;
-  letter-spacing: 0.04em;
-  color: #FFFFFF;
-}
-
-.logo-svg {
-  height: 18px;
-  width: auto;
-  max-width: 32px;
-  flex-shrink: 0;
-}
-
-.orbit3d-badge-pill {
-  font-size: 0.50rem;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  padding: 0.18rem 0.45rem;
-  border-radius: 4px;
-  background: rgba(0, 0, 0, 0.7);
-  border: 1px solid var(--card-accent, #D2FF00);
-  color: var(--card-accent, #D2FF00);
-  white-space: nowrap;
-  flex-shrink: 0;
-}
-
-/* Card Body / Main Title */
-.orbit3d-card-body {
-  margin: 0.2rem 0;
-}
-
-.orbit3d-card-title {
-  font-size: 0.86rem;
-  font-weight: 800;
-  color: #FFFFFF;
-  line-height: 1.22;
-  margin: 0 0 0.15rem 0;
-  letter-spacing: -0.01em;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.orbit3d-card-sub {
-  font-size: 0.58rem;
-  letter-spacing: 0.04em;
-  color: var(--card-accent, #D2FF00);
-  text-transform: uppercase;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  margin: 0;
-}
-
-/* Bottom: Certification Shield Badge, Score, and Rosette Seal */
-.orbit3d-card-bottom {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 0.5rem;
-  padding-top: 0.35rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
-}
-
-.orbit3d-shield-badge {
-  display: flex;
-  align-items: center;
-  gap: 0.4rem;
-  overflow: hidden;
-}
-
-.shield-badge-svg {
-  width: 20px;
-  height: 20px;
-  flex-shrink: 0;
-  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.5));
-}
-
-.shield-badge-meta {
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-}
-
-.shield-score {
-  font-size: 0.56rem;
-  font-weight: 700;
-  letter-spacing: 0.04em;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.shield-issuer {
-  font-size: 0.48rem;
-  letter-spacing: 0.03em;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.orbit3d-rosette-wrap {
-  width: 24px;
-  height: 24px;
-  flex-shrink: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.rosette-svg {
-  width: 24px;
-  height: 24px;
-  filter: drop-shadow(0 0 5px currentColor);
-}
-
-/* Bottom Micro Telemetry & ID */
-.orbit3d-card-footer {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  font-size: 0.48rem;
-  color: #A0B09A;
-  letter-spacing: 0.04em;
-  margin-top: 0.2rem;
-}
-
-/* Hover Reveal Cue */
-.orbit3d-reveal-indicator {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background: linear-gradient(to top, rgba(210, 255, 0, 0.25), transparent);
-  padding: 0.25rem 0.5rem;
-  font-size: 0.50rem;
-  letter-spacing: 0.12em;
-  text-align: center;
-  color: var(--color-lime);
-  opacity: 0;
-  transition: opacity 0.2s ease;
-  font-weight: 700;
-  pointer-events: none;
-}
-
-.orbit3d-card:hover .orbit3d-reveal-indicator,
-.orbit3d-card.is-hovered .orbit3d-reveal-indicator {
-  opacity: 1;
+  z-index: 0;
 }
 
 /* Navigation HUD */
@@ -2761,29 +2451,100 @@ html.lenis, html.lenis body {
   color: var(--color-lime);
 }
 
-/* Mobile Responsive Adjustments */
+/* Responsive Breakpoints */
+@media (max-width: 1024px) {
+  .cylinder-card {
+    width: 285px;
+    height: 180px;
+    margin-left: -142.5px;
+    margin-top:  -90px;
+  }
+  .cylinder-rail-top {
+    transform: translateY(-93px) rotateX(90deg);
+  }
+  .cylinder-rail-bottom {
+    transform: translateY(93px) rotateX(90deg);
+  }
+  .cylinder-card-title {
+    font-size: 0.95rem;
+  }
+}
+
 @media (max-width: 768px) {
-  .orbit3d-stage {
-    min-height: 400px;
+  .cylinder-viewport {
+    min-height: 420px;
   }
-  .orbit3d-card {
-    width: 220px;
-    height: 145px;
-    margin-left: -110px;
-    margin-top: -72px;
+  .cylinder-card {
+    width: 245px;
+    height: 160px;
+    margin-left: -122.5px;
+    margin-top:  -80px;
   }
-  .orbit3d-card-inner {
-    padding: 0.7rem 0.85rem 0.65rem 0.85rem;
+  .cylinder-rail-top {
+    transform: translateY(-83px) rotateX(90deg);
   }
-  .orbit3d-card-title {
-    font-size: 0.78rem;
+  .cylinder-rail-bottom {
+    transform: translateY(83px) rotateX(90deg);
   }
-  .orbit3d-title {
+  .cylinder-card-face {
+    padding: 0.75rem 0.9rem 0.7rem 0.9rem;
+    border-radius: 16px;
+  }
+  .cylinder-card-title {
+    font-size: 0.85rem;
+  }
+  .cylinder-card-sub {
+    font-size: 0.50rem;
+  }
+  .cylinder-status-pill {
+    font-size: 0.48rem;
+    padding: 0.18rem 0.45rem;
+  }
+  .cylinder-shield-score {
+    font-size: 0.58rem;
+  }
+  .cylinder-title {
     font-size: 1.25rem;
   }
   .stage-nav-hud {
     flex-direction: column;
     gap: 0.6rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .cylinder-card {
+    width: 215px;
+    height: 145px;
+    margin-left: -107.5px;
+    margin-top:  -72.5px;
+  }
+  .cylinder-rail-top {
+    transform: translateY(-75px) rotateX(90deg);
+  }
+  .cylinder-rail-bottom {
+    transform: translateY(75px) rotateX(90deg);
+  }
+  .cylinder-card-face {
+    padding: 0.65rem 0.75rem 0.6rem 0.75rem;
+    border-radius: 14px;
+  }
+  .cylinder-card-title {
+    font-size: 0.76rem;
+  }
+  .cylinder-card-sub {
+    font-size: 0.46rem;
+  }
+  .cylinder-logo-pill {
+    height: 22px;
+    padding: 0.15rem 0.4rem;
+  }
+  .cylinder-logo-img {
+    height: 14px;
+  }
+  .cylinder-seal-badge {
+    width: 22px;
+    height: 22px;
   }
 }
 

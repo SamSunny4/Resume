@@ -1,0 +1,6 @@
+while loading screen
+check device specs
+on pc devices show checking device performance
+if detected low end device notify lower quality web will be displayed add option for force max quality this option will be removed later
+
+i want the animations gradients, blur quality, glow effects,landing page topology to be dynamic according to device spec so website runds smooth on every device

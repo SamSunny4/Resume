@@ -427,10 +427,10 @@ export class ProjectSolarSystem {
     if (!this.track) return;
     const trackTop = this.track.offsetTop;
     const maxScroll = this.track.offsetHeight - window.innerHeight;
-    const targetY = trackTop + maxScroll * 0.60;
+    const targetY = trackTop + maxScroll * 0.49;
 
     if (window.AppState && window.AppState.lenis) {
-      window.AppState.lenis.scrollTo(targetY, { duration: 1.8 });
+      window.AppState.lenis.scrollTo(targetY, { duration: 2.2 });
     } else {
       window.scrollTo({ top: targetY, behavior: 'smooth' });
     }
@@ -440,10 +440,10 @@ export class ProjectSolarSystem {
     if (!this.track) return;
     const trackTop = this.track.offsetTop;
     const maxScroll = this.track.offsetHeight - window.innerHeight;
-    const targetY = trackTop + maxScroll * 0.28;
+    const targetY = trackTop + maxScroll * 0.20;
 
     if (window.AppState && window.AppState.lenis) {
-      window.AppState.lenis.scrollTo(targetY, { duration: 1.4 });
+      window.AppState.lenis.scrollTo(targetY, { duration: 1.6 });
     } else {
       window.scrollTo({ top: targetY, behavior: 'smooth' });
     }
@@ -453,14 +453,14 @@ export class ProjectSolarSystem {
     if (!this.track) return;
     const trackTop = this.track.offsetTop;
     const maxScroll = this.track.offsetHeight - window.innerHeight;
-    const targetY = trackTop + maxScroll * 0.88;
+    const targetY = trackTop + maxScroll * 0.78;
 
     if (window.AppState && window.AppState.credStones) {
       window.AppState.credStones.trigger(true);
     }
 
     if (window.AppState && window.AppState.lenis) {
-      window.AppState.lenis.scrollTo(targetY, { duration: 2.0 });
+      window.AppState.lenis.scrollTo(targetY, { duration: 2.4 });
     } else {
       window.scrollTo({ top: targetY, behavior: 'smooth' });
     }
@@ -500,23 +500,23 @@ export class ProjectSolarSystem {
     this.targetZoomProgress = Math.max(0, Math.min(1, rawProgress));
 
     // Faster lerp during transits for snappier response
-    const lerpFactor = (rawProgress > 0.35 && rawProgress < 0.85) ? 0.20 : 0.14;
+    const lerpFactor = (rawProgress > 0.30 && rawProgress < 0.90) ? 0.16 : 0.12;
     this.zoomProgress += (this.targetZoomProgress - this.zoomProgress) * lerpFactor;
     const p = this.zoomProgress;
 
-    // Phase 3: Projects Solar System Layer [0.44 -> 0.76]
-    // (EXACT SAME AS TECH STACK ENTER FROM HERO!)
+    // Phase 3: Projects Solar System Layer [0.34 -> 0.64]
+    // (EXACT SAME AS TECH-SOLAR ORCHESTRATION)
     if (this.projectsLayer) {
-      if (p <= 0.44) {
+      if (p <= 0.34) {
         this.projectsLayer.style.opacity = '0';
         this.projectsLayer.style.visibility = 'hidden';
         this.projectsLayer.style.pointerEvents = 'none';
         this.projectsLayer.style.transform = 'scale(0.18) translateZ(0)';
         this.projectsLayer.style.filter = 'blur(16px)';
-      } else if (p <= 0.58) {
+      } else if (p <= 0.56) {
         // Enters from deep space & remains actively interactive
         this.projectsLayer.style.visibility = 'visible';
-        const projP = Math.min(1, Math.max(0, (p - 0.44) / 0.12));
+        const projP = Math.min(1, Math.max(0, (p - 0.34) / 0.09));
         const easedProj = Math.sin((projP * Math.PI) / 2);
 
         const projScale = 0.18 + easedProj * 0.82; // zooms in from deep space: 0.18 -> 1.00!
@@ -527,10 +527,10 @@ export class ProjectSolarSystem {
         this.projectsLayer.style.opacity = projOpacity.toFixed(3);
         this.projectsLayer.style.filter = projBlur > 0.4 ? `blur(${projBlur.toFixed(1)}px)` : 'none';
         this.projectsLayer.style.pointerEvents = projP > 0.85 ? 'auto' : 'none';
-      } else if (p <= 0.70) {
+      } else if (p <= 0.64) {
         // Warps forward past camera as user journeys to Credentials
         this.projectsLayer.style.visibility = 'visible';
-        const exitP = Math.min(1, Math.max(0, (p - 0.58) / 0.12));
+        const exitP = Math.min(1, Math.max(0, (p - 0.56) / 0.08));
         const projScale = 1.0 + exitP * 2.2;
         const projOpacity = Math.max(0, 1.0 - exitP * 1.45);
         const projBlur = exitP * 18;
@@ -539,6 +539,7 @@ export class ProjectSolarSystem {
         this.projectsLayer.style.opacity = projOpacity.toFixed(3);
         this.projectsLayer.style.filter = projBlur > 0.4 ? `blur(${projBlur.toFixed(1)}px)` : 'none';
         this.projectsLayer.style.pointerEvents = 'none';
+        this.projectsLayer.style.visibility = projOpacity <= 0.005 ? 'hidden' : 'visible';
       } else {
         this.projectsLayer.style.opacity = '0';
         this.projectsLayer.style.visibility = 'hidden';
@@ -590,9 +591,9 @@ export class ProjectSolarSystem {
 
     ctx.clearRect(0, 0, w, h);
 
-    if (this.zoomProgress < 0.42 || this.zoomProgress > 0.76) return;
+    if (this.zoomProgress < 0.34 || this.zoomProgress > 0.64) return;
 
-    const projRingAlphaMultiplier = Math.min(1, Math.max(0, (this.zoomProgress - 0.42) / 0.12)) * Math.max(0, 1 - (this.zoomProgress - 0.66) / 0.08);
+    const projRingAlphaMultiplier = Math.min(1, Math.max(0, (this.zoomProgress - 0.34) / 0.08)) * Math.max(0, 1 - (this.zoomProgress - 0.56) / 0.08);
 
     // Draw 3D Projects Orbital Rings
     PROJECT_RINGS.forEach((ring) => {
@@ -659,7 +660,7 @@ export class ProjectSolarSystem {
     });
 
     // Laser connection line if project is hovered
-    if (this.hoveredProject && this.zoomProgress >= 0.48 && this.zoomProgress <= 0.74) {
+    if (this.hoveredProject && this.zoomProgress >= 0.38 && this.zoomProgress <= 0.60) {
       const activeProj = this.projectNodes.find(n => n.meta.id === this.hoveredProject.id);
       if (activeProj) {
         ctx.beginPath();
@@ -706,14 +707,14 @@ export class ProjectSolarSystem {
       const centerY = this.stageHeight / 2;
 
       // Update Monumental 3D Projects Title Parallax
-      if (this.centerText && this.zoomProgress > 0.42 && this.zoomProgress < 0.76) {
+      if (this.centerText && this.zoomProgress > 0.34 && this.zoomProgress < 0.64) {
         const projPitch = -this.camRotX * 16;
         const projYaw = this.camRotY * 22;
         this.centerText.style.transform = `perspective(900px) rotateX(${projPitch.toFixed(2)}deg) rotateY(${projYaw.toFixed(2)}deg) translateZ(0)`;
       }
 
       // Update Project Planetary Worlds in 3D Orbits
-      if (this.zoomProgress > 0.43 && this.zoomProgress < 0.76 && this.projectNodes.length > 0) {
+      if (this.zoomProgress > 0.34 && this.zoomProgress < 0.64 && this.projectNodes.length > 0) {
         let minProjMouseDist = 9999;
         if (this.pointerClientX > -1000 && this.pointerClientY > -1000) {
           for (let i = 0; i < this.projectNodes.length; i++) {
