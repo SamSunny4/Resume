@@ -93,7 +93,7 @@ import { initStickyBrandLogo } from './sticky-logo.js';
 import { initTechSolarSystem } from './tech-solar.js?v=71';
 import { initProjectSolarSystem } from './project-solar.js?v=66';
 import { initTopoBackground } from './topo-background.js';
-import { initCredentialsStones } from './credentials-stones.js?v=73';
+import { initCredentialsStones } from './credentials-stones.js?v=75';
 import { initContactSection } from './contact.js';
 import { initGyroParallax } from './gyro-parallax.js';
 
