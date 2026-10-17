@@ -2220,7 +2220,8 @@ html.lenis, html.lenis body {
 /* Section Header */
 .cylinder-header {
   text-align: center;
-  margin-bottom: 0.2rem;
+  margin-top: 0.5rem;
+  margin-bottom: 0.8rem;
   z-index: 20;
   position: relative;
   display: flex;
@@ -2228,23 +2229,14 @@ html.lenis, html.lenis body {
   align-items: center;
 }
 
-.cylinder-tag {
-  font-size: 0.72rem;
-  letter-spacing: 0.16em;
-  color: var(--color-lime);
-  display: inline-block;
-  margin-bottom: 0.2rem;
-  text-shadow: 0 0 12px rgba(210, 255, 0, 0.4);
-}
-
 .cylinder-title {
-  font-size: clamp(1.4rem, 2.6vw, 2.1rem);
+  font-size: clamp(1.8rem, 3.2vw, 2.6rem);
   font-weight: 800;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.01em;
   text-transform: uppercase;
   margin: 0;
   color: #FFFFFF;
-  text-shadow: 0 0 25px rgba(210, 255, 0, 0.22);
+  text-shadow: 0 0 30px rgba(210, 255, 0, 0.28);
 }
 
 .cylinder-sub {

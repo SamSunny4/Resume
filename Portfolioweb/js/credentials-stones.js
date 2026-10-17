@@ -231,18 +231,18 @@ export function generateCredentialCardCanvas(cert, isActive = false) {
   ctx.roundRect(bX, bY, bW, bH, bR);
   ctx.clip();
 
-  // Deep dark glass background gradient
-  const bgGrad = ctx.createLinearGradient(0, 0, w, h);
-  bgGrad.addColorStop(0, '#10141a');
-  bgGrad.addColorStop(0.4, '#0c1015');
-  bgGrad.addColorStop(0.8, '#090c10');
-  bgGrad.addColorStop(1, '#06080b');
+  // Multi-stop translucent liquid glass gradient with dark obsidian/emerald undertones
+  const bgGrad = ctx.createLinearGradient(bX, bY, bX + bW * 0.8, bY + bH);
+  bgGrad.addColorStop(0, 'rgba(25, 33, 44, 0.88)');
+  bgGrad.addColorStop(0.35, 'rgba(15, 21, 28, 0.92)');
+  bgGrad.addColorStop(0.7, 'rgba(10, 14, 18, 0.95)');
+  bgGrad.addColorStop(1, 'rgba(6, 9, 12, 0.98)');
   ctx.fillStyle = bgGrad;
   ctx.fillRect(bX, bY, bW, bH);
 
-  // Subtle frosted noise / micro grain
-  ctx.globalAlpha = 0.035;
-  for (let i = 0; i < 350; i++) {
+  // Fine liquid frosted glass noise
+  ctx.globalAlpha = 0.028;
+  for (let i = 0; i < 300; i++) {
     ctx.fillStyle = Math.random() > 0.5 ? '#FFFFFF' : '#000000';
     ctx.fillRect(
       bX + Math.random() * bW,
@@ -253,19 +253,55 @@ export function generateCredentialCardCanvas(cert, isActive = false) {
   }
   ctx.globalAlpha = 1;
 
-  // Specular top-left glass reflection sheen
-  const sheen = ctx.createRadialGradient(bX + 90, bY + 50, 10, bX + 130, bY + 80, 360);
-  sheen.addColorStop(0, 'rgba(255, 255, 255, 0.09)');
-  sheen.addColorStop(0.45, 'rgba(255, 255, 255, 0.025)');
-  sheen.addColorStop(1, 'rgba(255, 255, 255, 0)');
-  ctx.fillStyle = sheen;
+  // Glass refractive diagonal wash (liquid light prism)
+  const prismSweep = ctx.createLinearGradient(bX, bY, bX + bW * 0.9, bY + bH * 0.85);
+  prismSweep.addColorStop(0, 'rgba(255, 255, 255, 0.15)');
+  prismSweep.addColorStop(0.22, 'rgba(255, 255, 255, 0.045)');
+  prismSweep.addColorStop(0.5, 'rgba(255, 255, 255, 0.01)');
+  prismSweep.addColorStop(0.78, 'rgba(255, 255, 255, 0.035)');
+  prismSweep.addColorStop(1, 'transparent');
+  ctx.fillStyle = prismSweep;
   ctx.fillRect(bX, bY, bW, bH);
 
-  // If active card, render subtle interior ambient lime glow wash
+  // Specular top-left glass reflection sheen (liquid bubble bloom)
+  const bloom = ctx.createRadialGradient(bX + 90, bY + 45, 10, bX + 130, bY + 75, 340);
+  bloom.addColorStop(0, 'rgba(255, 255, 255, 0.12)');
+  bloom.addColorStop(0.4, 'rgba(255, 255, 255, 0.035)');
+  bloom.addColorStop(1, 'transparent');
+  ctx.fillStyle = bloom;
+  ctx.fillRect(bX, bY, bW, bH);
+
+  // Curved liquid light sweep (like reflection on a curved watch crystal / curved screen)
+  ctx.save();
+  ctx.beginPath();
+  ctx.ellipse(bX + bW * 0.38, bY - 30, bW * 0.62, bH * 0.58, -0.18, 0, Math.PI * 2);
+  const curvedGlow = ctx.createLinearGradient(bX, bY, bX + bW * 0.6, bY + bH * 0.5);
+  curvedGlow.addColorStop(0, 'rgba(255, 255, 255, 0.09)');
+  curvedGlow.addColorStop(0.6, 'rgba(255, 255, 255, 0.015)');
+  curvedGlow.addColorStop(1, 'transparent');
+  ctx.fillStyle = curvedGlow;
+  ctx.fill();
+  ctx.restore();
+
+  // Inner liquid glass bezel rim (subtle bevel reflection)
+  ctx.save();
+  ctx.beginPath();
+  ctx.roundRect(bX + 1.2, bY + 1.2, bW - 2.4, bH - 2.4, bR - 1);
+  const rimGrad = ctx.createLinearGradient(bX, bY, bX + bW * 0.65, bY + bH);
+  rimGrad.addColorStop(0, 'rgba(255, 255, 255, 0.42)');
+  rimGrad.addColorStop(0.28, 'rgba(255, 255, 255, 0.16)');
+  rimGrad.addColorStop(0.6, 'rgba(255, 255, 255, 0.03)');
+  rimGrad.addColorStop(1, 'transparent');
+  ctx.strokeStyle = rimGrad;
+  ctx.lineWidth = 1.2;
+  ctx.stroke();
+  ctx.restore();
+
+  // If active card, luminous internal liquid lime aura wash
   if (isActive) {
-    const greenWash = ctx.createRadialGradient(bX + bW * 0.5, bY + bH * 0.45, 20, bX + bW * 0.5, bY + bH * 0.45, bW * 0.55);
-    greenWash.addColorStop(0, 'rgba(163, 230, 53, 0.08)');
-    greenWash.addColorStop(0.5, 'rgba(163, 230, 53, 0.025)');
+    const greenWash = ctx.createRadialGradient(bX + bW * 0.5, bY + bH * 0.42, 25, bX + bW * 0.5, bY + bH * 0.42, bW * 0.58);
+    greenWash.addColorStop(0, 'rgba(163, 230, 53, 0.11)');
+    greenWash.addColorStop(0.45, 'rgba(163, 230, 53, 0.04)');
     greenWash.addColorStop(1, 'transparent');
     ctx.fillStyle = greenWash;
     ctx.fillRect(bX, bY, bW, bH);
@@ -406,25 +442,37 @@ export function generateCredentialCardCanvas(cert, isActive = false) {
   ctx.fillText(badgeLabel, bx, by + 16);
   ctx.restore();
 
-  // 5. BOTTOM CENTER: Pill Badges & Credential ID
+  // 5. BOTTOM ROW: Glassy Pill Badges
   ctx.save();
   const pillStartX = 126;
   let pillX = pillStartX;
-  const pillY = 252;
+  const pillY = 260;
   const pills = cert.pills || [cert.org.split(' ')[0], cert.badge.replace(/[^\w\s%]/g, '').trim()];
 
   pills.forEach(pillText => {
     ctx.font = 'bold 13px -apple-system, sans-serif';
     const textW = ctx.measureText(pillText).width;
-    const pW = textW + 26;
-    const pH = 30;
+    const pW = textW + 28;
+    const pH = 32;
 
     ctx.beginPath();
-    ctx.roundRect(pillX, pillY, pW, pH, 15);
-    ctx.fillStyle = 'rgba(255, 255, 255, 0.08)';
+    ctx.roundRect(pillX, pillY, pW, pH, 16);
+
+    const pillGrad = ctx.createLinearGradient(pillX, pillY, pillX, pillY + pH);
+    pillGrad.addColorStop(0, 'rgba(255, 255, 255, 0.14)');
+    pillGrad.addColorStop(1, 'rgba(255, 255, 255, 0.04)');
+    ctx.fillStyle = pillGrad;
     ctx.fill();
-    ctx.strokeStyle = 'rgba(255, 255, 255, 0.22)';
+
+    ctx.strokeStyle = 'rgba(255, 255, 255, 0.26)';
     ctx.lineWidth = 1.2;
+    ctx.stroke();
+
+    ctx.beginPath();
+    ctx.moveTo(pillX + 10, pillY + 1);
+    ctx.lineTo(pillX + pW - 10, pillY + 1);
+    ctx.strokeStyle = 'rgba(255, 255, 255, 0.4)';
+    ctx.lineWidth = 1;
     ctx.stroke();
 
     ctx.fillStyle = '#FFFFFF';
@@ -432,114 +480,50 @@ export function generateCredentialCardCanvas(cert, isActive = false) {
     ctx.textBaseline = 'middle';
     ctx.fillText(pillText, pillX + pW / 2, pillY + pH / 2);
 
-    pillX += pW + 10;
+    pillX += pW + 12;
   });
-
-  // Credential ID line below pills
-  ctx.font = 'bold 12px monospace';
-  ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
-  ctx.textAlign = 'left';
-  ctx.textBaseline = 'middle';
-  ctx.fillText(`CREDENTIAL ID : ${cert.code}`, pillStartX, 314);
   ctx.restore();
 
-  // 6. BOTTOM RIGHT: Rosette Ribbon Award Seal (Matching Image 2)
-  ctx.save();
-  const sealX = 582;
-  const sealY = 276;
-  const sealR = 22;
-
-  // Rosette scalloped outer ring (16 petal points)
-  ctx.beginPath();
-  const numPetals = 16;
-  for (let i = 0; i < numPetals * 2; i++) {
-    const rCurrent = i % 2 === 0 ? sealR : sealR - 3.5;
-    const angle = (i * Math.PI) / numPetals;
-    const px = sealX + rCurrent * Math.cos(angle);
-    const py = sealY + rCurrent * Math.sin(angle);
-    if (i === 0) ctx.moveTo(px, py);
-    else ctx.lineTo(px, py);
-  }
-  ctx.closePath();
-  ctx.strokeStyle = accentHex;
-  ctx.lineWidth = 1.8;
-  ctx.fillStyle = 'rgba(255, 255, 255, 0.04)';
-  ctx.fill();
-  ctx.stroke();
-
-  // Inner circle
-  ctx.beginPath();
-  ctx.arc(sealX, sealY, 14, 0, Math.PI * 2);
-  ctx.strokeStyle = accentHex + 'aa';
-  ctx.lineWidth = 1.2;
-  ctx.stroke();
-
-  // Verified checkmark inside rosette
-  ctx.beginPath();
-  ctx.moveTo(sealX - 4, sealY);
-  ctx.lineTo(sealX - 1, sealY + 3.5);
-  ctx.lineTo(sealX + 5, sealY - 3.5);
-  ctx.strokeStyle = accentHex;
-  ctx.lineWidth = 2.2;
-  ctx.lineCap = 'round';
-  ctx.lineJoin = 'round';
-  ctx.stroke();
-
-  // Two ribbon tails hanging down with V-cuts (Matching image 2)
-  // Left ribbon tail
-  ctx.beginPath();
-  ctx.moveTo(sealX - 7, sealY + 16);
-  ctx.lineTo(sealX - 12, sealY + 40);
-  ctx.lineTo(sealX - 7, sealY + 36);
-  ctx.lineTo(sealX - 2, sealY + 40);
-  ctx.lineTo(sealX - 2, sealY + 18);
-  ctx.strokeStyle = accentHex;
-  ctx.lineWidth = 1.5;
-  ctx.fillStyle = 'rgba(255, 255, 255, 0.05)';
-  ctx.fill();
-  ctx.stroke();
-
-  // Right ribbon tail
-  ctx.beginPath();
-  ctx.moveTo(sealX + 2, sealY + 18);
-  ctx.lineTo(sealX + 2, sealY + 40);
-  ctx.lineTo(sealX + 7, sealY + 36);
-  ctx.lineTo(sealX + 12, sealY + 40);
-  ctx.lineTo(sealX + 7, sealY + 16);
-  ctx.strokeStyle = accentHex;
-  ctx.lineWidth = 1.5;
-  ctx.fillStyle = 'rgba(255, 255, 255, 0.05)';
-  ctx.fill();
-  ctx.stroke();
-
-  ctx.restore();
-
-  // 7. BORDER & LIQUID GLASS EDGES (Subpixel Anti-Aliased on High-DPI Retina Canvas)
+  // 6. BORDER & LIQUID GLASS EDGES (Subpixel Anti-Aliased on High-DPI Retina Canvas)
   if (isActive) {
-    // A. Soft Outer Neon Lime Halo
+    // A. Soft outer liquid neon halo
     ctx.save();
     ctx.beginPath();
     ctx.roundRect(bX, bY, bW, bH, bR);
-    ctx.strokeStyle = 'rgba(163, 230, 53, 0.35)';
-    ctx.lineWidth = 5.5;
+    ctx.strokeStyle = 'rgba(163, 230, 53, 0.42)';
+    ctx.lineWidth = 6;
     ctx.stroke();
     ctx.restore();
 
-    // B. Vibrant Core Neon Lime Border (Matching Reference Image)
+    // B. Radiant primary neon lime line
     ctx.save();
     ctx.beginPath();
     ctx.roundRect(bX, bY, bW, bH, bR);
     ctx.strokeStyle = '#a3e635';
-    ctx.lineWidth = 2.8;
+    ctx.lineWidth = 3;
     ctx.stroke();
     ctx.restore();
 
-    // C. Specular Neon Inner Highlight
+    // C. Inner specular liquid core rim
     ctx.save();
     ctx.beginPath();
     ctx.roundRect(bX + 1, bY + 1, bW - 2, bH - 2, bR - 1);
-    ctx.strokeStyle = 'rgba(217, 249, 157, 0.65)';
-    ctx.lineWidth = 1;
+    ctx.strokeStyle = 'rgba(217, 249, 157, 0.85)';
+    ctx.lineWidth = 1.4;
+    ctx.stroke();
+    ctx.restore();
+
+    // D. Glassy top specular highlight across active neon border
+    ctx.save();
+    ctx.beginPath();
+    ctx.moveTo(bX + bR, bY);
+    ctx.lineTo(bX + bW - bR, bY);
+    const limeGlassSheen = ctx.createLinearGradient(bX + bR, bY, bX + bW - bR, bY);
+    limeGlassSheen.addColorStop(0, 'rgba(255, 255, 255, 0.7)');
+    limeGlassSheen.addColorStop(0.35, 'rgba(217, 249, 157, 0.9)');
+    limeGlassSheen.addColorStop(1, 'rgba(163, 230, 53, 0.25)');
+    ctx.strokeStyle = limeGlassSheen;
+    ctx.lineWidth = 1.6;
     ctx.stroke();
     ctx.restore();
   } else {
@@ -547,7 +531,7 @@ export function generateCredentialCardCanvas(cert, isActive = false) {
     ctx.save();
     ctx.beginPath();
     ctx.roundRect(bX, bY, bW, bH, bR);
-    ctx.strokeStyle = 'rgba(255, 255, 255, 0.16)';
+    ctx.strokeStyle = 'rgba(255, 255, 255, 0.18)';
     ctx.lineWidth = 1.6;
     ctx.stroke();
 
@@ -556,9 +540,9 @@ export function generateCredentialCardCanvas(cert, isActive = false) {
     ctx.moveTo(bX + bR, bY);
     ctx.lineTo(bX + bW - bR, bY);
     const topSheen = ctx.createLinearGradient(bX + bR, bY, bX + bW - bR, bY);
-    topSheen.addColorStop(0, 'rgba(255, 255, 255, 0.42)');
-    topSheen.addColorStop(0.35, 'rgba(255, 255, 255, 0.22)');
-    topSheen.addColorStop(1, 'rgba(255, 255, 255, 0.05)');
+    topSheen.addColorStop(0, 'rgba(255, 255, 255, 0.55)');
+    topSheen.addColorStop(0.35, 'rgba(255, 255, 255, 0.26)');
+    topSheen.addColorStop(1, 'rgba(255, 255, 255, 0.06)');
     ctx.strokeStyle = topSheen;
     ctx.lineWidth = 1.6;
     ctx.stroke();
@@ -624,22 +608,11 @@ export class CredentialsMobiusEngine {
       <div class="cylinder-stage-wrap" id="orbit3d-wrapper">
         <!-- Section Header -->
         <div class="cylinder-header">
-          <span class="font-mono text-lime cylinder-tag">// VERIFIED CREDENTIALS &amp; AWARDS</span>
-          <h2 class="cylinder-title font-display">CREDENTIALS MATRIX</h2>
-          <p class="font-mono text-muted cylinder-sub">09 VERIFIED ARTIFACTS · LIQUID GLASS RING · DRAG TO SPIN · CLICK TO INSPECT</p>
-
-          <!-- 3D Preset Mode Switcher -->
-          <div class="cred-preset-bar font-mono" role="group" aria-label="3D Carousel Preset Modes">
-            <span class="cred-preset-label">PRESET:</span>
-            <button class="cred-preset-btn is-active" data-preset="cylinder" title="Outward facing curved cylinder">CYLINDER</button>
-            <button class="cred-preset-btn" data-preset="orbit" title="Cards billboard facing camera">ORBIT</button>
-            <button class="cred-preset-btn" data-preset="wheel" title="Vertical rotating Ferris wheel">WHEEL</button>
-            <button class="cred-preset-btn" data-preset="panorama" title="Camera inside inward ring">PANORAMA</button>
-          </div>
+          <h2 class="cylinder-title font-display">MY CERTIFICATES</h2>
         </div>
 
         <!-- React Bits CircularCarousel Viewport Mount -->
-        <div class="cylinder-viewport" id="orbit3d-stage" role="region" aria-label="3D Credentials Liquid Glass Ring">
+        <div class="cylinder-viewport" id="orbit3d-stage" role="region" aria-label="3D Certificates Ring">
           <div class="cylinder-glow-backdrop" aria-hidden="true"></div>
           
           <!-- Mounting point for CircularCarousel -->
@@ -653,7 +626,6 @@ export class CredentialsMobiusEngine {
         <!-- Navigation HUD -->
         <div class="stage-nav-hud">
           <button id="cred-return-projects-btn" class="stage-nav-btn font-mono" title="Return to flagship projects">⤾ RETURN TO PROJECTS</button>
-          <button id="cred-to-contact-btn" class="stage-nav-btn font-mono text-lime" title="Zoom warp to Contact">WARP TO TRANSMISSION MATRIX ↯</button>
         </div>
       </div>
 
