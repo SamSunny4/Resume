@@ -1,37 +1,19 @@
 /**
- * CREDENTIALS MATRIX ENGINE
- * Powered by React Bits <CircularCarousel /> (JavaScript + CSS)
+ * CREDENTIALS MATRIX ENGINE — LIQUID GLASS RING EDITION
  * -----------------------------------------------------------
- * Features:
- *   - Authentic obsidian cybernetic glass cards with logos, badges, and titles
- *   - Continuous 3D curved cylinder geometry with 8-slice card tiles
+ * Redesigned to match the liquid glass circular ring aesthetic:
+ *   - Compact dark glassmorphic cards with glowing liquid borders
+ *   - Full visible ring of cards with dramatic depth receding
+ *   - Bold monumental titles, issuer logo pills, credential IDs
+ *   - Active card gets vivid accent glow border
  *   - Interactive drag-to-spin with momentum physics & inertia
- *   - Real-time preset switching (Cylinder, Orbit, Wheel, Panorama)
- *   - Captions with rolling odometer digit reels
- *   - High-resolution modal lightbox with verification telemetry
+ *   - Real-time preset switching & click-to-inspect lightbox
  */
 
 import { CircularCarousel, PRESETS } from './circular-carousel.js';
 
 // ── Verified Certificates with Authentic Analyzed Logos & Telemetry ──
 export const CERTIFICATES = [
-  {
-    id: 'energya-hackathon',
-    title: 'Eneryia Hackathon Finalist',
-    subtitle: 'SHRESHTA \'25 TECHNO-CULTURAL CONCLAVE',
-    org: 'MITS Kochi · NBA Accredited',
-    issuerTag: 'Muthoot Group · Indivara',
-    code: 'ENR-HACK-2025-V7',
-    date: 'FEB 15, 2025',
-    accent: '#FF9900',
-    badge: '⚡ ENERGYA',
-    score: 'Active Participant',
-    image: 'assets/certificates/Eneryahackathon.png',
-    logos: [
-      { name: 'mits', label: 'MITS' },
-      { name: 'nba', label: 'NBA' }
-    ]
-  },
   {
     id: 'nptel-ml',
     title: 'Machine Learning (Elite 92%)',
@@ -44,8 +26,9 @@ export const CERTIFICATES = [
     badge: '🥇 TOP 2% · 92%',
     score: 'Score: 92% (Top 2% Topper)',
     image: 'assets/certificates/Nptelmachinelearning.png',
+    pills: ['IIT Kharagpur', 'SWAYAM'],
     logos: [
-      { name: 'iit-kharagpur', label: 'IIT Kharagpur' },
+      { name: 'iit-kharagpur', label: 'IIT KGP' },
       { name: 'nptel', label: 'NPTEL' },
       { name: 'swayam', label: 'SWAYAM' }
     ]
@@ -62,10 +45,11 @@ export const CERTIFICATES = [
     badge: '🛠️ FULL-STACK',
     score: 'Course Complete',
     image: 'assets/certificates/mernstack.jpg',
+    pills: ['React.js', 'Node.js'],
     logos: [
-      { name: 'zeropixels', label: 'Zero Pixels' },
       { name: 'react', label: 'React' },
-      { name: 'nodejs', label: 'Node.js' }
+      { name: 'nodejs', label: 'Node.js' },
+      { name: 'zeropixels', label: 'Zero Pixels' }
     ]
   },
   {
@@ -80,10 +64,11 @@ export const CERTIFICATES = [
     badge: '📜 ELITE 73%',
     score: 'Score: 73% (Elite)',
     image: 'assets/certificates/nptel.png',
+    pills: ['Python', 'IIT Madras'],
     logos: [
+      { name: 'python', label: 'Python' },
       { name: 'iit-madras', label: 'IIT Madras' },
-      { name: 'nptel', label: 'NPTEL' },
-      { name: 'swayam', label: 'SWAYAM' }
+      { name: 'nptel', label: 'NPTEL' }
     ]
   },
   {
@@ -98,10 +83,11 @@ export const CERTIFICATES = [
     badge: '🥈 2ND PLACE',
     score: 'National Second',
     image: 'assets/certificates/nationalhackathon.jpg',
+    pills: ['AI Samasya', 'Team Beyond Vision'],
     logos: [
       { name: 'edu-ai', label: 'edu@ai 3.0' },
-      { name: 'ihrd', label: 'IHRD Kerala' },
-      { name: 'mits', label: 'MITS' }
+      { name: 'mits', label: 'MITS' },
+      { name: 'ihrd', label: 'IHRD Kerala' }
     ]
   },
   {
@@ -116,9 +102,28 @@ export const CERTIFICATES = [
     badge: '🚀 ISRO',
     score: 'Verified Participant',
     image: 'assets/certificates/isrohackathon.png',
+    pills: ['ISRO', 'Hack2Skill'],
     logos: [
       { name: 'isro', label: 'ISRO' },
       { name: 'hack2skill', label: 'Hack2Skill' }
+    ]
+  },
+  {
+    id: 'energya-hackathon',
+    title: 'Eneryia Hackathon Finalist',
+    subtitle: 'SHRESHTA \'25 TECHNO-CULTURAL CONCLAVE',
+    org: 'MITS Kochi · NBA Accredited',
+    issuerTag: 'Muthoot Group · Indivara',
+    code: 'ENR-HACK-2025-V7',
+    date: 'FEB 15, 2025',
+    accent: '#FF9900',
+    badge: '⚡ ENERGYA',
+    score: 'Active Participant',
+    image: 'assets/certificates/Eneryahackathon.png',
+    pills: ['MITS Kochi', 'Finalist'],
+    logos: [
+      { name: 'mits', label: 'MITS' },
+      { name: 'nba', label: 'NBA' }
     ]
   },
   {
@@ -133,9 +138,10 @@ export const CERTIFICATES = [
     badge: '🎓 LEADERSHIP',
     score: 'Appreciation Award',
     image: 'assets/certificates/programrep.jpg',
+    pills: ['College Union', 'CS(AI)'],
     logos: [
       { name: 'mits', label: 'MITS' },
-      { name: 'union', label: 'College Union' }
+      { name: 'union', label: 'Union' }
     ]
   },
   {
@@ -150,6 +156,7 @@ export const CERTIFICATES = [
     badge: '🏭 INDUSTRY',
     score: 'Participation Award',
     image: 'assets/certificates/industryvisit.jpeg',
+    pills: ['MariApps', 'SmartCity'],
     logos: [
       { name: 'mariapps', label: 'MariApps' },
       { name: 'mits', label: 'MITS' }
@@ -168,6 +175,7 @@ export const CERTIFICATES = [
     score: 'C1/B2 Proficient',
     image: 'assets/certificates/liguaskill.png',
     pdfUrl: 'assets/certificates/liguaskill.PDF',
+    pills: ['Cambridge', 'C1 / B2 English'],
     logos: [
       { name: 'cambridge', label: 'Cambridge' }
     ]
@@ -192,249 +200,315 @@ CERTIFICATES.forEach(cert => {
 });
 
 /**
- * Generates an authentic high-resolution cybernetic obsidian card
- * with brand logos, status badge, monumental title, subtitle, shield score,
- * verification seal, and telemetry ID.
+ * Generates a liquid glass credential card canvas matching the reference aesthetic:
+ *   - Dark smoky frosted glass background with subtle specular top edge reflection
+ *   - Clean brand logos on the top left
+ *   - Monumental white typography for the title (2 lines max)
+ *   - Bottom-left verified hexagonal badge emblem with date/score
+ *   - Center pill badges with tech / organization tags
+ *   - Clean monospace CREDENTIAL ID
+ *   - Bottom-right golden/accent rosette ribbon award seal
  */
 export function generateCredentialCardCanvas(cert) {
   const canvas = document.createElement('canvas');
-  canvas.width = 1024;
-  canvas.height = 640;
+  const w = 640;
+  const h = 400;
+  const dpr = 2; // High-DPI Retina sharpness
+  canvas.width = w * dpr;
+  canvas.height = h * dpr;
   const ctx = canvas.getContext('2d');
+  ctx.scale(dpr, dpr);
+  const r = 24;
 
-  // Card Background Rounded Rectangle
-  const x = 16, y = 16, w = 992, h = 608, r = 38;
+  // 1. Clip card body with rounded corners
   ctx.save();
   ctx.beginPath();
-  ctx.roundRect(x, y, w, h, r);
+  ctx.roundRect(0, 0, w, h, r);
   ctx.clip();
 
-  // Deep Obsidian Graphite Glass Gradient
-  const bgGrad = ctx.createLinearGradient(0, 0, 1024, 640);
-  bgGrad.addColorStop(0, '#121b20');
-  bgGrad.addColorStop(0.5, '#0a1114');
-  bgGrad.addColorStop(1, '#05090b');
+  // Deep dark glass background gradient
+  const bgGrad = ctx.createLinearGradient(0, 0, w, h);
+  bgGrad.addColorStop(0, '#10141a');
+  bgGrad.addColorStop(0.4, '#0c1015');
+  bgGrad.addColorStop(0.8, '#090c10');
+  bgGrad.addColorStop(1, '#06080b');
   ctx.fillStyle = bgGrad;
-  ctx.fillRect(x, y, w, h);
+  ctx.fillRect(0, 0, w, h);
 
-  // Curved Inset Edge Shadows (lateral cylindrical curvature)
-  const leftShadow = ctx.createLinearGradient(x, 0, x + 150, 0);
-  leftShadow.addColorStop(0, 'rgba(0, 0, 0, 0.85)');
-  leftShadow.addColorStop(1, 'rgba(0, 0, 0, 0)');
-  ctx.fillStyle = leftShadow;
-  ctx.fillRect(x, y, 150, h);
+  // Subtle frosted noise / micro grain
+  ctx.globalAlpha = 0.035;
+  for (let i = 0; i < 350; i++) {
+    ctx.fillStyle = Math.random() > 0.5 ? '#FFFFFF' : '#000000';
+    ctx.fillRect(
+      Math.random() * w,
+      Math.random() * h,
+      Math.random() * 2 + 0.5,
+      Math.random() * 2 + 0.5
+    );
+  }
+  ctx.globalAlpha = 1;
 
-  const rightShadow = ctx.createLinearGradient(x + w - 150, 0, x + w, 0);
-  rightShadow.addColorStop(0, 'rgba(0, 0, 0, 0)');
-  rightShadow.addColorStop(1, 'rgba(0, 0, 0, 0.85)');
-  ctx.fillStyle = rightShadow;
-  ctx.fillRect(x + w - 150, y, 150, h);
+  // Specular top-left glass reflection sheen
+  const sheen = ctx.createRadialGradient(90, 50, 10, 130, 80, 360);
+  sheen.addColorStop(0, 'rgba(255, 255, 255, 0.09)');
+  sheen.addColorStop(0.45, 'rgba(255, 255, 255, 0.025)');
+  sheen.addColorStop(1, 'rgba(255, 255, 255, 0)');
+  ctx.fillStyle = sheen;
+  ctx.fillRect(0, 0, w, h);
 
-  // Top Amber / Accent Rim Highlight
-  const topRim = ctx.createLinearGradient(0, y, 0, y + 26);
-  topRim.addColorStop(0, 'rgba(255, 170, 0, 0.5)');
-  topRim.addColorStop(1, 'rgba(255, 170, 0, 0)');
-  ctx.fillStyle = topRim;
-  ctx.fillRect(x, y, w, 26);
-
-  // Bottom Cyan Rim Highlight
-  const bottomRim = ctx.createLinearGradient(0, y + h - 26, 0, y + h);
-  bottomRim.addColorStop(0, 'rgba(0, 240, 255, 0)');
-  bottomRim.addColorStop(1, 'rgba(0, 240, 255, 0.5)');
-  ctx.fillStyle = bottomRim;
-  ctx.fillRect(x, y + h - 26, w, 26);
-
-  ctx.restore();
-
-  // Outer Stroke Border
-  ctx.save();
+  // Subtle inner top specular highlight line (liquid glass sheen)
   ctx.beginPath();
-  ctx.roundRect(x, y, w, h, r);
-  ctx.strokeStyle = 'rgba(255, 255, 255, 0.22)';
-  ctx.lineWidth = 4;
+  ctx.moveTo(r, 1.5);
+  ctx.lineTo(w - r, 1.5);
+  const topEdgeGrad = ctx.createLinearGradient(r, 0, w - r, 0);
+  topEdgeGrad.addColorStop(0, 'rgba(255, 255, 255, 0.38)');
+  topEdgeGrad.addColorStop(0.4, 'rgba(255, 255, 255, 0.22)');
+  topEdgeGrad.addColorStop(1, 'rgba(255, 255, 255, 0.05)');
+  ctx.strokeStyle = topEdgeGrad;
+  ctx.lineWidth = 1.5;
   ctx.stroke();
+
   ctx.restore();
 
-  // ── TOP ROW: Brand Logos & Status Tag ──
-  let curX = 60;
-  const topY = 65;
+  // 2. TOP ROW: Brand Logos
+  let curX = 38;
+  const topY = 32;
+  const maxLogoH = 34;
 
   cert.logos.forEach(logo => {
     const cachedImg = LOGO_CACHE.get(logo.name);
-    const pillW = (cachedImg && cachedImg.complete && cachedImg.naturalWidth > 0) ? 92 : 82;
-    const pillH = 46;
+    const hasImage = cachedImg && cachedImg.complete && cachedImg.naturalWidth > 0;
 
-    ctx.save();
-    ctx.beginPath();
-    ctx.roundRect(curX, topY, pillW, pillH, 12);
-    ctx.fillStyle = 'rgba(0, 0, 0, 0.75)';
-    ctx.fill();
-    ctx.strokeStyle = 'rgba(255, 255, 255, 0.2)';
-    ctx.lineWidth = 2;
-    ctx.stroke();
+    if (hasImage) {
+      const imgAspect = cachedImg.naturalWidth / cachedImg.naturalHeight;
+      const drawH = maxLogoH;
+      const drawW = Math.min(drawH * imgAspect, 80);
 
-    if (cachedImg && cachedImg.complete && cachedImg.naturalWidth > 0) {
-      ctx.drawImage(cachedImg, curX + 11, topY + 8, pillW - 22, pillH - 16);
+      ctx.save();
+      ctx.drawImage(cachedImg, curX, topY + (maxLogoH - drawH) / 2, drawW, drawH);
+      ctx.restore();
+      curX += drawW + 16;
     } else {
+      ctx.save();
+      ctx.font = 'bold 12px -apple-system, sans-serif';
+      const textW = ctx.measureText(logo.label || logo.name).width;
+      const pillW = textW + 22;
+      ctx.beginPath();
+      ctx.roundRect(curX, topY + 2, pillW, 28, 8);
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.06)';
+      ctx.fill();
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.16)';
+      ctx.lineWidth = 1;
+      ctx.stroke();
+
       ctx.fillStyle = '#FFFFFF';
-      ctx.font = 'bold 18px monospace';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
-      ctx.fillText(logo.label || logo.name, curX + pillW / 2, topY + pillH / 2);
+      ctx.fillText(logo.label || logo.name, curX + pillW / 2, topY + 16);
+      ctx.restore();
+      curX += pillW + 12;
     }
-    ctx.restore();
-
-    curX += pillW + 14;
   });
 
-  // Accent Status Pill (Right)
-  ctx.save();
-  ctx.font = 'bold 20px monospace';
-  const badgeText = cert.badge;
-  const badgeTextW = ctx.measureText(badgeText).width;
-  const badgePillW = badgeTextW + 36;
-  const badgePillX = 964 - badgePillW;
-
-  ctx.beginPath();
-  ctx.roundRect(badgePillX, topY, badgePillW, 46, 12);
-  ctx.fillStyle = 'rgba(0, 0, 0, 0.8)';
-  ctx.fill();
-  ctx.strokeStyle = cert.accent;
-  ctx.lineWidth = 2.5;
-  ctx.stroke();
-
-  ctx.fillStyle = cert.accent;
-  ctx.textAlign = 'center';
-  ctx.textBaseline = 'middle';
-  ctx.fillText(badgeText, badgePillX + badgePillW / 2, topY + 23);
-  ctx.restore();
-
-  // ── TITLE & SUBTITLE ──
+  // 3. TITLE: Big Bold Modern White Typography (Matching Image 2)
   ctx.save();
   ctx.fillStyle = '#FFFFFF';
-  ctx.font = '800 46px "Syne", -apple-system, sans-serif';
+  ctx.font = '800 32px "Syne", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif';
   ctx.textAlign = 'left';
   ctx.textBaseline = 'top';
 
-  let titleText = cert.title;
-  if (ctx.measureText(titleText).width > 880) {
-    while (ctx.measureText(titleText + '...').width > 880 && titleText.length > 5) {
-      titleText = titleText.slice(0, -1);
-    }
-    titleText += '...';
-  }
-  ctx.fillText(titleText, 60, 155);
+  const titleX = 38;
+  const titleY = 105;
+  const maxTitleW = 560;
 
-  ctx.fillStyle = cert.accent;
-  ctx.font = 'bold 22px monospace';
-  let subText = cert.subtitle;
-  if (ctx.measureText(subText).width > 880) {
-    while (ctx.measureText(subText + '...').width > 880 && subText.length > 5) {
-      subText = subText.slice(0, -1);
+  let words = cert.title.split(' ');
+  let line1 = '';
+  let line2 = '';
+
+  for (let i = 0; i < words.length; i++) {
+    let test = line1 ? line1 + ' ' + words[i] : words[i];
+    if (ctx.measureText(test).width <= maxTitleW && !line2) {
+      if (words.length > 3 && i >= Math.ceil(words.length / 2)) {
+        line1 = line1 || test;
+        line2 = words.slice(i).join(' ');
+        break;
+      } else {
+        line1 = test;
+      }
+    } else {
+      line2 = words.slice(i).join(' ');
+      break;
     }
-    subText += '...';
   }
-  ctx.fillText(subText, 60, 225);
+
+  ctx.fillText(line1, titleX, titleY);
+  if (line2) {
+    ctx.fillText(line2, titleX, titleY + 40);
+  }
   ctx.restore();
 
-  // ── MIDDLE ROW: Shield Score & Circular Checkmark Seal ──
+  // 4. BOTTOM LEFT: Hexagonal / Shield Credential Badge
   ctx.save();
-  ctx.beginPath();
-  ctx.moveTo(60, 305);
-  ctx.lineTo(964, 305);
-  ctx.strokeStyle = 'rgba(255, 255, 255, 0.14)';
-  ctx.lineWidth = 2;
-  ctx.stroke();
-  ctx.restore();
+  const badgeX = 38;
+  const badgeY = 248;
+  const badgeW = 68;
+  const badgeH = 74;
 
-  // Shield Icon
-  ctx.save();
-  const sX = 60, sY = 340;
-  ctx.fillStyle = cert.accent;
-  ctx.strokeStyle = cert.accent;
-  ctx.lineWidth = 3;
-
+  // Draw sleek hexagonal shield
+  const bx = badgeX + badgeW / 2;
+  const by = badgeY + badgeH / 2;
+  const br = 32;
   ctx.beginPath();
-  ctx.moveTo(sX + 16, sY);
-  ctx.lineTo(sX + 32, sY + 8);
-  ctx.lineTo(sX + 32, sY + 26);
-  ctx.bezierCurveTo(sX + 32, sY + 38, sX + 16, sY + 46, sX + 16, sY + 48);
-  ctx.bezierCurveTo(sX + 16, sY + 46, sX, sY + 38, sX, sY + 26);
-  ctx.lineTo(sX, sY + 8);
+  for (let i = 0; i < 6; i++) {
+    const angle = ((i * 60 - 30) * Math.PI) / 180;
+    const px = bx + br * Math.cos(angle);
+    const py = by + br * Math.sin(angle);
+    if (i === 0) ctx.moveTo(px, py);
+    else ctx.lineTo(px, py);
+  }
   ctx.closePath();
-  ctx.globalAlpha = 0.25;
+
+  // Badge fill with subtle accent glow
+  const accentHex = cert.accent || '#D2FF00';
+  ctx.fillStyle = 'rgba(255, 255, 255, 0.05)';
   ctx.fill();
-  ctx.globalAlpha = 1.0;
+  ctx.strokeStyle = accentHex + 'aa';
+  ctx.lineWidth = 1.8;
   ctx.stroke();
 
-  // Checkmark inside shield
+  // Inner emblem ring inside badge
   ctx.beginPath();
-  ctx.moveTo(sX + 8, sY + 24);
-  ctx.lineTo(sX + 14, sY + 30);
-  ctx.lineTo(sX + 24, sY + 18);
+  ctx.arc(bx, by - 6, 11, 0, Math.PI * 2);
+  ctx.strokeStyle = accentHex;
+  ctx.lineWidth = 1.4;
+  ctx.stroke();
+
+  // Center checkmark inside emblem
+  ctx.beginPath();
+  ctx.moveTo(bx - 5, by - 6);
+  ctx.lineTo(bx - 1, by - 2);
+  ctx.lineTo(bx + 5, by - 8);
   ctx.strokeStyle = '#FFFFFF';
-  ctx.lineWidth = 3.5;
-  ctx.stroke();
-  ctx.restore();
-
-  // Score text & issuer
-  ctx.save();
-  ctx.fillStyle = '#FFFFFF';
-  ctx.font = 'bold 28px sans-serif';
-  ctx.textAlign = 'left';
-  ctx.textBaseline = 'top';
-  ctx.fillText(cert.score, 110, 335);
-
-  ctx.fillStyle = '#8E9EA4';
-  ctx.font = '20px monospace';
-  ctx.fillText(cert.issuerTag, 110, 375);
-  ctx.restore();
-
-  // Glowing Circular Seal Badge Stamp (Right)
-  ctx.save();
-  const sealX = 910, sealY = 365, sealR = 36;
-  ctx.strokeStyle = cert.accent;
-
-  // Outer dashed circle
-  ctx.beginPath();
-  ctx.arc(sealX, sealY, sealR, 0, Math.PI * 2);
-  ctx.setLineDash([6, 4]);
-  ctx.lineWidth = 2.5;
-  ctx.stroke();
-
-  // Inner solid circle
-  ctx.beginPath();
-  ctx.setLineDash([]);
-  ctx.arc(sealX, sealY, sealR - 8, 0, Math.PI * 2);
-  ctx.lineWidth = 2.5;
-  ctx.fillStyle = cert.accent;
-  ctx.globalAlpha = 0.2;
-  ctx.fill();
-  ctx.globalAlpha = 1.0;
-  ctx.stroke();
-
-  // Seal Checkmark
-  ctx.beginPath();
-  ctx.moveTo(sealX - 12, sealY);
-  ctx.lineTo(sealX - 4, sealY + 8);
-  ctx.lineTo(sealX + 12, sealY - 8);
-  ctx.lineWidth = 3.5;
+  ctx.lineWidth = 2;
   ctx.lineCap = 'round';
   ctx.lineJoin = 'round';
   ctx.stroke();
+
+  // Date or label below emblem inside badge
+  ctx.font = 'bold 10px monospace';
+  ctx.fillStyle = 'rgba(255, 255, 255, 0.75)';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  const badgeLabel = cert.date.length > 8 ? cert.date.slice(0, 8) : cert.date;
+  ctx.fillText(badgeLabel, bx, by + 16);
   ctx.restore();
 
-  // ── BOTTOM ROW: Telemetry ID & Date ──
+  // 5. BOTTOM CENTER: Pill Badges & Credential ID
   ctx.save();
-  ctx.fillStyle = '#7B8C92';
-  ctx.font = 'bold 20px monospace';
-  ctx.textAlign = 'left';
-  ctx.textBaseline = 'bottom';
-  ctx.fillText(`ID: ${cert.code}`, 60, 580);
+  const pillStartX = 126;
+  let pillX = pillStartX;
+  const pillY = 252;
+  const pills = cert.pills || [cert.org.split(' ')[0], cert.badge.replace(/[^\w\s%]/g, '').trim()];
 
-  ctx.fillStyle = '#6C7D83';
-  ctx.textAlign = 'right';
-  ctx.fillText(cert.date, 964, 580);
+  pills.forEach(pillText => {
+    ctx.font = 'bold 13px -apple-system, sans-serif';
+    const textW = ctx.measureText(pillText).width;
+    const pW = textW + 26;
+    const pH = 30;
+
+    ctx.beginPath();
+    ctx.roundRect(pillX, pillY, pW, pH, 15);
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.08)';
+    ctx.fill();
+    ctx.strokeStyle = 'rgba(255, 255, 255, 0.22)';
+    ctx.lineWidth = 1.2;
+    ctx.stroke();
+
+    ctx.fillStyle = '#FFFFFF';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(pillText, pillX + pW / 2, pillY + pH / 2);
+
+    pillX += pW + 10;
+  });
+
+  // Credential ID line below pills
+  ctx.font = 'bold 12px monospace';
+  ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
+  ctx.textAlign = 'left';
+  ctx.textBaseline = 'middle';
+  ctx.fillText(`CREDENTIAL ID : ${cert.code}`, pillStartX, 314);
+  ctx.restore();
+
+  // 6. BOTTOM RIGHT: Rosette Ribbon Award Seal (Matching Image 2)
+  ctx.save();
+  const sealX = 582;
+  const sealY = 276;
+  const sealR = 22;
+
+  // Rosette scalloped outer ring (16 petal points)
+  ctx.beginPath();
+  const numPetals = 16;
+  for (let i = 0; i < numPetals * 2; i++) {
+    const rCurrent = i % 2 === 0 ? sealR : sealR - 3.5;
+    const angle = (i * Math.PI) / numPetals;
+    const px = sealX + rCurrent * Math.cos(angle);
+    const py = sealY + rCurrent * Math.sin(angle);
+    if (i === 0) ctx.moveTo(px, py);
+    else ctx.lineTo(px, py);
+  }
+  ctx.closePath();
+  ctx.strokeStyle = accentHex;
+  ctx.lineWidth = 1.8;
+  ctx.fillStyle = 'rgba(255, 255, 255, 0.04)';
+  ctx.fill();
+  ctx.stroke();
+
+  // Inner circle
+  ctx.beginPath();
+  ctx.arc(sealX, sealY, 14, 0, Math.PI * 2);
+  ctx.strokeStyle = accentHex + 'aa';
+  ctx.lineWidth = 1.2;
+  ctx.stroke();
+
+  // Verified checkmark inside rosette
+  ctx.beginPath();
+  ctx.moveTo(sealX - 4, sealY);
+  ctx.lineTo(sealX - 1, sealY + 3.5);
+  ctx.lineTo(sealX + 5, sealY - 3.5);
+  ctx.strokeStyle = accentHex;
+  ctx.lineWidth = 2.2;
+  ctx.lineCap = 'round';
+  ctx.lineJoin = 'round';
+  ctx.stroke();
+
+  // Two ribbon tails hanging down with V-cuts (Matching image 2)
+  // Left ribbon tail
+  ctx.beginPath();
+  ctx.moveTo(sealX - 7, sealY + 16);
+  ctx.lineTo(sealX - 12, sealY + 40);
+  ctx.lineTo(sealX - 7, sealY + 36);
+  ctx.lineTo(sealX - 2, sealY + 40);
+  ctx.lineTo(sealX - 2, sealY + 18);
+  ctx.strokeStyle = accentHex;
+  ctx.lineWidth = 1.5;
+  ctx.fillStyle = 'rgba(255, 255, 255, 0.05)';
+  ctx.fill();
+  ctx.stroke();
+
+  // Right ribbon tail
+  ctx.beginPath();
+  ctx.moveTo(sealX + 2, sealY + 18);
+  ctx.lineTo(sealX + 2, sealY + 40);
+  ctx.lineTo(sealX + 7, sealY + 36);
+  ctx.lineTo(sealX + 12, sealY + 40);
+  ctx.lineTo(sealX + 7, sealY + 16);
+  ctx.strokeStyle = accentHex;
+  ctx.lineWidth = 1.5;
+  ctx.fillStyle = 'rgba(255, 255, 255, 0.05)';
+  ctx.fill();
+  ctx.stroke();
+
   ctx.restore();
 
   return canvas.toDataURL('image/png');
@@ -498,7 +572,7 @@ export class CredentialsMobiusEngine {
         <div class="cylinder-header">
           <span class="font-mono text-lime cylinder-tag">// VERIFIED CREDENTIALS &amp; AWARDS</span>
           <h2 class="cylinder-title font-display">CREDENTIALS MATRIX</h2>
-          <p class="font-mono text-muted cylinder-sub">09 VERIFIED ARTIFACTS ON REACT BITS 3D CYLINDER · DRAG TO SPIN · CLICK TO INSPECT</p>
+          <p class="font-mono text-muted cylinder-sub">09 VERIFIED ARTIFACTS · LIQUID GLASS RING · DRAG TO SPIN · CLICK TO INSPECT</p>
 
           <!-- 3D Preset Mode Switcher -->
           <div class="cred-preset-bar font-mono" role="group" aria-label="3D Carousel Preset Modes">
@@ -511,7 +585,7 @@ export class CredentialsMobiusEngine {
         </div>
 
         <!-- React Bits CircularCarousel Viewport Mount -->
-        <div class="cylinder-viewport" id="orbit3d-stage" role="region" aria-label="3D Credentials Curved Carousel">
+        <div class="cylinder-viewport" id="orbit3d-stage" role="region" aria-label="3D Credentials Liquid Glass Ring">
           <div class="cylinder-glow-backdrop" aria-hidden="true"></div>
           
           <!-- Mounting point for CircularCarousel -->
@@ -571,7 +645,7 @@ export class CredentialsMobiusEngine {
     const mount = document.getElementById('circular-carousel-mount');
     if (!mount) return;
 
-    // Generate authentic obsidian cards with logo, title, badge, shield score
+    // Generate liquid glass cards
     const items = CERTIFICATES.map(cert => ({
       src: generateCredentialCardCanvas(cert),
       alt: `${cert.title} — ${cert.org}`,
@@ -584,14 +658,16 @@ export class CredentialsMobiusEngine {
       items,
       preset: 'cylinder',
       intro: 'rise',
-      cardWidth: 440,
-      aspectRatio: 1.6, // 1024 / 640
-      gap: 28,
-      curve: 1,
-      tilt: -8,
-      perspective: 1800,
+      cardWidth: 420,
+      aspectRatio: 1.6,   // 640 / 400
+      gap: 26,
+      curve: 0,
+      tilt: -14,
+      roll: -6,
+      cardRoll: -5,
+      perspective: 1600,
       autoplay: 'drift',
-      speed: 12,
+      speed: 7,
       interval: 3.5,
       direction: 'left',
       draggable: true,
@@ -599,12 +675,12 @@ export class CredentialsMobiusEngine {
       snap: true,
       pauseOnHover: true,
       focusOnClick: true,
-      parallax: 0.35,
-      stretch: 0.5,
-      depthFade: 0.55,
-      fadeColor: '#050907',
-      innerShade: 0.65,
-      cornerRadius: 14,
+      parallax: 0.22,
+      stretch: 0.2,
+      depthFade: 0.52,
+      fadeColor: '#050806',
+      innerShade: 0.45,
+      cornerRadius: 22,
       captions: true,
       onItemClick: (item, index) => {
         if (item && item.cert) {

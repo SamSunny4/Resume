@@ -8,10 +8,12 @@
 export const PRESETS = {
   cylinder: {
     axis: 'y',
-    tilt: -5,
-    perspective: 2500,
-    curve: 1,
-    spread: 1,
+    tilt: -14,
+    roll: -6,
+    cardRoll: -5,
+    perspective: 1600,
+    curve: 0,
+    spread: 1.15,
     inward: false,
     billboard: false,
     backfaces: true,
@@ -98,6 +100,8 @@ export class CircularCarousel {
       gap: 28,
       curve: undefined,
       tilt: undefined,
+      roll: undefined,
+      cardRoll: undefined,
       perspective: undefined,
       autoplay: 'drift',
       speed: 12,
@@ -196,6 +200,8 @@ export class CircularCarousel {
     const step = 360 / count;
     const axis = layout.axis;
     const tiltValue = this.options.tilt ?? layout.tilt;
+    const rollValue = this.options.roll ?? layout.roll ?? 0;
+    const cardRollValue = this.options.cardRoll ?? layout.cardRoll ?? 0;
     const curveValue = layout.billboard ? 0 : clamp(this.options.curve ?? layout.curve, 0, 1);
 
     const cardW = Math.max(40, this.options.cardWidth);
@@ -217,6 +223,8 @@ export class CircularCarousel {
       axis,
       along,
       tilt: tiltValue,
+      roll: rollValue,
+      cardRoll: cardRollValue,
       perspective: layout.inward ? radius : (this.options.perspective ?? layout.perspective),
       cardW,
       cardH,
@@ -581,7 +589,7 @@ export class CircularCarousel {
     const fit = Math.max(0.75, Math.min(1.05, width / spanX, (height * 1.35) / spanY));
 
     this.state.fit = fit;
-    this.state.shift = -((minY + maxY) / 2) * fit - room / 2;
+    this.state.shift = -((minY + maxY) / 2) * fit + 20;
     this.state.drop = s.axis === 'x' ? (rect.width / fit) * 0.55 + s.cardW : (rect.height / fit) * 0.55 + s.cardH;
 
     this.stage.style.perspective = `${P}px`;
@@ -703,7 +711,8 @@ export class CircularCarousel {
       this.camera.style.transform = `translate3d(0, 0, ${s.perspective - 1}px) rotateX(${s.tilt + state.pitch}deg) rotateY(${state.yaw}deg)`;
       this.ring.style.transform = `rotateY(${angle}deg)`;
     } else {
-      this.camera.style.transform = `translate3d(0, 0, ${-R}px) rotateX(${s.tilt + state.pitch}deg) rotateY(${state.yaw}deg)`;
+      const roll = s.roll || 0;
+      this.camera.style.transform = `translate3d(0, 0, ${-R}px) rotateZ(${roll}deg) rotateX(${s.tilt + state.pitch}deg) rotateY(${state.yaw}deg)`;
       this.ring.style.transform = `rotateY(${angle}deg)`;
     }
 
@@ -722,6 +731,7 @@ export class CircularCarousel {
         transform = `rotateY(${base}deg) translateZ(${r}px)`;
         if (s.layout.billboard) transform += ` rotateY(${-(base + angle)}deg)`;
       }
+      if (s.cardRoll) transform += ` rotateZ(${s.cardRoll}deg)`;
       if (mod.lift) transform += s.axis === 'x' ? ` translateX(${mod.lift}px)` : ` translateY(${mod.lift}px)`;
       card.style.transform = transform;
 
@@ -733,6 +743,16 @@ export class CircularCarousel {
     }
 
     const index = ((Math.round(-state.angle / s.step) % s.count) + s.count) % s.count || 0;
+    for (let i = 0; i < s.count; i++) {
+      const c = this.cardElements[i];
+      if (c) {
+        if (i === index) {
+          if (!c.classList.contains('is-active')) c.classList.add('is-active');
+        } else {
+          if (c.classList.contains('is-active')) c.classList.remove('is-active');
+        }
+      }
+    }
     if (index !== this.active) {
       this.active = index;
       this.updateCaption(index);
