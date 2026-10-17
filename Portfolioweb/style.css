@@ -2479,6 +2479,30 @@ html.lenis, html.lenis body {
 
 .circular-carousel__card {
   cursor: pointer;
+  outline: 1px solid transparent;
+  -webkit-font-smoothing: antialiased;
+  transform-style: preserve-3d;
+}
+
+/* Radiant volumetric neon ambient glow behind active front card (Matching Reference Image) */
+.circular-carousel__card.is-active::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 96%;
+  height: 96%;
+  transform: translate(-50%, -50%) translateZ(-16px);
+  background: radial-gradient(ellipse at center,
+    rgba(163, 230, 53, 0.48) 0%,
+    rgba(163, 230, 53, 0.18) 48%,
+    transparent 72%
+  );
+  filter: blur(28px);
+  border-radius: 28px;
+  pointer-events: none;
+  z-index: -1;
+  transition: opacity 0.35s ease;
 }
 
 .circular-carousel__tile {
@@ -2486,6 +2510,7 @@ html.lenis, html.lenis body {
   outline: 1px solid transparent;
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
+  transform-style: preserve-3d;
 }
 
 .circular-carousel__frame {
@@ -2494,39 +2519,17 @@ html.lenis, html.lenis body {
   top: 0;
   width: 100%;
   overflow: hidden;
-  border-radius: var(--cc-radius, 22px);
-  /* Liquid glass border effect */
-  border: 1.5px solid rgba(255, 255, 255, 0.16);
-  box-shadow:
-    0 16px 44px rgba(0, 0, 0, 0.75),
-    0 4px 16px rgba(0, 0, 0, 0.5),
-    inset 0 1px 1px rgba(255, 255, 255, 0.3),
-    inset 0 0 20px rgba(255, 255, 255, 0.02);
-  background: linear-gradient(145deg, rgba(16, 20, 26, 0.85), rgba(8, 11, 15, 0.94));
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-  transition: border-color 0.35s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  outline: 1px solid transparent;
 }
 
-/* Vibrant glowing liquid neon lime border on active front card (Matching Image 2) */
-.circular-carousel__card.is-active .circular-carousel__frame {
-  border: 2.5px solid #a3e635;
-  box-shadow:
-    0 0 25px rgba(163, 230, 53, 0.92),
-    0 0 55px rgba(163, 230, 53, 0.5),
-    0 0 100px rgba(163, 230, 53, 0.25),
-    inset 0 0 18px rgba(163, 230, 53, 0.3),
-    inset 0 1px 2px rgba(255, 255, 255, 0.7),
-    0 24px 60px rgba(0, 0, 0, 0.88);
-  z-index: 30;
-}
-
-.circular-carousel__card:hover:not(.is-active) .circular-carousel__frame {
-  border-color: rgba(255, 255, 255, 0.32);
-  box-shadow:
-    0 20px 50px rgba(0, 0, 0, 0.85),
-    0 0 20px rgba(255, 255, 255, 0.12),
-    inset 0 1px 1px rgba(255, 255, 255, 0.4);
+/* Seamless multi-tile curvature: all borders and backgrounds rendered on high-DPI canvas to eliminate seams and jaggedness */
+.circular-carousel__tile .circular-carousel__frame {
+  border: none !important;
+  background: transparent !important;
+  box-shadow: none !important;
 }
 
 .circular-carousel__photo {
@@ -2537,6 +2540,29 @@ html.lenis, html.lenis body {
   pointer-events: none;
   user-select: none;
   -webkit-user-drag: none;
+  image-rendering: auto;
+  outline: 1px solid transparent;
+  transition: opacity 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.circular-carousel__photo.photo--default {
+  opacity: 1;
+}
+
+.circular-carousel__photo.photo--active {
+  opacity: 0;
+}
+
+/* Active card smoothly reveals the radiant neon lime border render */
+.circular-carousel__card.is-active .circular-carousel__photo.photo--active {
+  opacity: 1;
+}
+.circular-carousel__card.is-active .circular-carousel__photo.photo--default {
+  opacity: 0;
+}
+
+.circular-carousel__card:hover:not(.is-active) {
+  filter: brightness(1.1);
 }
 
 .circular-carousel__photo--leaving {

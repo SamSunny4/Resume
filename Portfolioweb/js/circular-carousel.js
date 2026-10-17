@@ -8,11 +8,11 @@
 export const PRESETS = {
   cylinder: {
     axis: 'y',
-    tilt: -14,
-    roll: -6,
-    cardRoll: -5,
+    tilt: -13,
+    roll: -5,
+    cardRoll: -3,
     perspective: 1600,
-    curve: 0,
+    curve: 0.32,
     spread: 1.15,
     inward: false,
     billboard: false,
@@ -55,7 +55,7 @@ export const PRESETS = {
 };
 
 const INTRO_LENGTH = { assemble: 1500, rise: 1400, spin: 1800, none: 0 };
-const TILES = 8;
+const TILES = 16;
 const OVERLAP = 2.5;
 const DRAG_THRESHOLD = 5;
 const SPRING = 118;
@@ -444,26 +444,42 @@ export class CircularCarousel {
     frame.style.height = `${s.axis === 'x' ? size : s.cardH}px`;
     frame.style.borderRadius = frameRadius;
 
-    const photo = document.createElement('img');
-    photo.className = 'circular-carousel__photo';
-    photo.src = item.src;
-    photo.alt = '';
-    photo.draggable = false;
-    photo.decoding = 'async';
-
-    if (s.axis === 'x') {
-      photo.style.left = '0px';
-      photo.style.top = `${-offset}px`;
-      photo.style.width = `${s.cardW}px`;
-      photo.style.height = `${s.cardH}px`;
-    } else {
-      photo.style.left = `${-offset}px`;
-      photo.style.top = '0px';
-      photo.style.width = `${s.cardW}px`;
-      photo.style.height = `${s.cardH}px`;
+    if (tile.total > 1) {
+      tileEl.dataset.tilePos = first ? 'first' : (last ? 'last' : 'mid');
     }
 
-    frame.appendChild(photo);
+    const photoDefault = document.createElement('img');
+    photoDefault.className = 'circular-carousel__photo photo--default';
+    photoDefault.src = item.src;
+    photoDefault.alt = '';
+    photoDefault.draggable = false;
+    photoDefault.decoding = 'async';
+
+    const photoActive = document.createElement('img');
+    photoActive.className = 'circular-carousel__photo photo--active';
+    photoActive.src = item.activeSrc || item.src;
+    photoActive.alt = '';
+    photoActive.draggable = false;
+    photoActive.decoding = 'async';
+
+    if (s.axis === 'x') {
+      [photoDefault, photoActive].forEach(photo => {
+        photo.style.left = '0px';
+        photo.style.top = `${-offset}px`;
+        photo.style.width = `${s.cardW}px`;
+        photo.style.height = `${s.cardH}px`;
+      });
+    } else {
+      [photoDefault, photoActive].forEach(photo => {
+        photo.style.left = `${-offset}px`;
+        photo.style.top = '0px';
+        photo.style.width = `${s.cardW}px`;
+        photo.style.height = `${s.cardH}px`;
+      });
+    }
+
+    frame.appendChild(photoDefault);
+    frame.appendChild(photoActive);
 
     if (back) {
       const inner = document.createElement('div');
@@ -513,7 +529,11 @@ export class CircularCarousel {
   }
 
   loadImages() {
-    const sources = this.list.slice(0, 16).map(item => item.src);
+    const sources = [];
+    this.list.slice(0, 16).forEach(item => {
+      if (item.src) sources.push(item.src);
+      if (item.activeSrc) sources.push(item.activeSrc);
+    });
     const loadOne = src =>
       new Promise(resolve => {
         const image = new Image();

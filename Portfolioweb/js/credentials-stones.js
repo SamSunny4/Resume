@@ -209,7 +209,7 @@ CERTIFICATES.forEach(cert => {
  *   - Clean monospace CREDENTIAL ID
  *   - Bottom-right golden/accent rosette ribbon award seal
  */
-export function generateCredentialCardCanvas(cert) {
+export function generateCredentialCardCanvas(cert, isActive = false) {
   const canvas = document.createElement('canvas');
   const w = 640;
   const h = 400;
@@ -218,12 +218,17 @@ export function generateCredentialCardCanvas(cert) {
   canvas.height = h * dpr;
   const ctx = canvas.getContext('2d');
   ctx.scale(dpr, dpr);
-  const r = 24;
+  const pad = 4;
+  const bX = pad;
+  const bY = pad;
+  const bW = w - pad * 2;
+  const bH = h - pad * 2;
+  const bR = 22;
 
   // 1. Clip card body with rounded corners
   ctx.save();
   ctx.beginPath();
-  ctx.roundRect(0, 0, w, h, r);
+  ctx.roundRect(bX, bY, bW, bH, bR);
   ctx.clip();
 
   // Deep dark glass background gradient
@@ -233,15 +238,15 @@ export function generateCredentialCardCanvas(cert) {
   bgGrad.addColorStop(0.8, '#090c10');
   bgGrad.addColorStop(1, '#06080b');
   ctx.fillStyle = bgGrad;
-  ctx.fillRect(0, 0, w, h);
+  ctx.fillRect(bX, bY, bW, bH);
 
   // Subtle frosted noise / micro grain
   ctx.globalAlpha = 0.035;
   for (let i = 0; i < 350; i++) {
     ctx.fillStyle = Math.random() > 0.5 ? '#FFFFFF' : '#000000';
     ctx.fillRect(
-      Math.random() * w,
-      Math.random() * h,
+      bX + Math.random() * bW,
+      bY + Math.random() * bH,
       Math.random() * 2 + 0.5,
       Math.random() * 2 + 0.5
     );
@@ -249,24 +254,22 @@ export function generateCredentialCardCanvas(cert) {
   ctx.globalAlpha = 1;
 
   // Specular top-left glass reflection sheen
-  const sheen = ctx.createRadialGradient(90, 50, 10, 130, 80, 360);
+  const sheen = ctx.createRadialGradient(bX + 90, bY + 50, 10, bX + 130, bY + 80, 360);
   sheen.addColorStop(0, 'rgba(255, 255, 255, 0.09)');
   sheen.addColorStop(0.45, 'rgba(255, 255, 255, 0.025)');
   sheen.addColorStop(1, 'rgba(255, 255, 255, 0)');
   ctx.fillStyle = sheen;
-  ctx.fillRect(0, 0, w, h);
+  ctx.fillRect(bX, bY, bW, bH);
 
-  // Subtle inner top specular highlight line (liquid glass sheen)
-  ctx.beginPath();
-  ctx.moveTo(r, 1.5);
-  ctx.lineTo(w - r, 1.5);
-  const topEdgeGrad = ctx.createLinearGradient(r, 0, w - r, 0);
-  topEdgeGrad.addColorStop(0, 'rgba(255, 255, 255, 0.38)');
-  topEdgeGrad.addColorStop(0.4, 'rgba(255, 255, 255, 0.22)');
-  topEdgeGrad.addColorStop(1, 'rgba(255, 255, 255, 0.05)');
-  ctx.strokeStyle = topEdgeGrad;
-  ctx.lineWidth = 1.5;
-  ctx.stroke();
+  // If active card, render subtle interior ambient lime glow wash
+  if (isActive) {
+    const greenWash = ctx.createRadialGradient(bX + bW * 0.5, bY + bH * 0.45, 20, bX + bW * 0.5, bY + bH * 0.45, bW * 0.55);
+    greenWash.addColorStop(0, 'rgba(163, 230, 53, 0.08)');
+    greenWash.addColorStop(0.5, 'rgba(163, 230, 53, 0.025)');
+    greenWash.addColorStop(1, 'transparent');
+    ctx.fillStyle = greenWash;
+    ctx.fillRect(bX, bY, bW, bH);
+  }
 
   ctx.restore();
 
@@ -511,6 +514,57 @@ export function generateCredentialCardCanvas(cert) {
 
   ctx.restore();
 
+  // 7. BORDER & LIQUID GLASS EDGES (Subpixel Anti-Aliased on High-DPI Retina Canvas)
+  if (isActive) {
+    // A. Soft Outer Neon Lime Halo
+    ctx.save();
+    ctx.beginPath();
+    ctx.roundRect(bX, bY, bW, bH, bR);
+    ctx.strokeStyle = 'rgba(163, 230, 53, 0.35)';
+    ctx.lineWidth = 5.5;
+    ctx.stroke();
+    ctx.restore();
+
+    // B. Vibrant Core Neon Lime Border (Matching Reference Image)
+    ctx.save();
+    ctx.beginPath();
+    ctx.roundRect(bX, bY, bW, bH, bR);
+    ctx.strokeStyle = '#a3e635';
+    ctx.lineWidth = 2.8;
+    ctx.stroke();
+    ctx.restore();
+
+    // C. Specular Neon Inner Highlight
+    ctx.save();
+    ctx.beginPath();
+    ctx.roundRect(bX + 1, bY + 1, bW - 2, bH - 2, bR - 1);
+    ctx.strokeStyle = 'rgba(217, 249, 157, 0.65)';
+    ctx.lineWidth = 1;
+    ctx.stroke();
+    ctx.restore();
+  } else {
+    // Subtle Liquid Glass Border for Inactive Cards
+    ctx.save();
+    ctx.beginPath();
+    ctx.roundRect(bX, bY, bW, bH, bR);
+    ctx.strokeStyle = 'rgba(255, 255, 255, 0.16)';
+    ctx.lineWidth = 1.6;
+    ctx.stroke();
+
+    // Top Edge Specular Highlight Line
+    ctx.beginPath();
+    ctx.moveTo(bX + bR, bY);
+    ctx.lineTo(bX + bW - bR, bY);
+    const topSheen = ctx.createLinearGradient(bX + bR, bY, bX + bW - bR, bY);
+    topSheen.addColorStop(0, 'rgba(255, 255, 255, 0.42)');
+    topSheen.addColorStop(0.35, 'rgba(255, 255, 255, 0.22)');
+    topSheen.addColorStop(1, 'rgba(255, 255, 255, 0.05)');
+    ctx.strokeStyle = topSheen;
+    ctx.lineWidth = 1.6;
+    ctx.stroke();
+    ctx.restore();
+  }
+
   return canvas.toDataURL('image/png');
 }
 
@@ -647,7 +701,8 @@ export class CredentialsMobiusEngine {
 
     // Generate liquid glass cards
     const items = CERTIFICATES.map(cert => ({
-      src: generateCredentialCardCanvas(cert),
+      src: generateCredentialCardCanvas(cert, false),
+      activeSrc: generateCredentialCardCanvas(cert, true),
       alt: `${cert.title} — ${cert.org}`,
       title: cert.title,
       subtitle: `${cert.badge} · ${cert.subtitle}`,
@@ -661,10 +716,10 @@ export class CredentialsMobiusEngine {
       cardWidth: 420,
       aspectRatio: 1.6,   // 640 / 400
       gap: 26,
-      curve: 0,
-      tilt: -14,
-      roll: -6,
-      cardRoll: -5,
+      curve: 0.32,
+      tilt: -13,
+      roll: -5,
+      cardRoll: -3,
       perspective: 1600,
       autoplay: 'drift',
       speed: 7,
@@ -707,7 +762,8 @@ export class CredentialsMobiusEngine {
   refreshCardCanvas() {
     if (!this.carousel) return;
     const updatedItems = CERTIFICATES.map(cert => ({
-      src: generateCredentialCardCanvas(cert),
+      src: generateCredentialCardCanvas(cert, false),
+      activeSrc: generateCredentialCardCanvas(cert, true),
       alt: `${cert.title} — ${cert.org}`,
       title: cert.title,
       subtitle: `${cert.badge} · ${cert.subtitle}`,
