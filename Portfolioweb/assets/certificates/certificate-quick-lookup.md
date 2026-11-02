@@ -30,3 +30,41 @@
 - **Organizer:** H2S (Hack2Skill), ISRO
 
 ---
+
+## 4. Certificate of Completion – End to End Project Lifecycle using MERN Stack
+- **Recipient:** Sam Sunny
+- **Issuer / Organization:** Zero Pixels Technologies Pvt Ltd
+- **Course:** End to End Project Lifecycle using MERN stack
+- **Key Technologies & Competencies:** JavaScript, ReactJS, MongoDB, NodeJS, Git concepts & collaborative version control
+- **Date of Completion:** July 10th, 2026
+- **Signatory:** Managing Director, Zero Pixels Technologies Pvt Ltd
+- **Reference File:** `Certificates/mernstack.jpg`
+
+---
+
+## 5. NPTEL Online Certification (Elite + Top 2% Topper) – Introduction to Machine Learning
+- **Recipient:** Sam Sunny
+- **Issuer / Organization:** NPTEL, funded by MoE, Govt. of India (Offered by IIT Kharagpur)
+- **Course:** Introduction to Machine Learning (8-week course, 3 recommended credits)
+- **Distinction / Medal:** Elite + Top 2% Topper (Gold/Topper Badge)
+- **Consolidated Score:** 92% (Online Assignments: 23.88/25, Proctored Exam: 67.5/75)
+- **Total Certified Candidates:** 8,541
+- **Period:** Jul–Sep 2026
+- **Roll Number:** NPTEL26CS119S255301233
+- **Signatory:** Prof. Haimanti Banerji (Coordinator, NPTEL, IIT Kharagpur)
+- **Reference Files:** `Certificates/Nptelmachinelearning.png`, `Certificates/NOC26CS119S255301233.pdf`
+
+---
+
+## 6. NPTEL Online Certification (Elite 77%) – Deep Learning for Natural Language Processing
+- **Recipient:** Sam Sunny
+- **Issuer / Organization:** NPTEL, funded by MoE, Govt. of India (Offered by IIT Kharagpur)
+- **Course:** Deep Learning for Natural Language Processing (12-week course, 4 recommended credits)
+- **Distinction / Medal:** Elite (Silver/Elite Badge)
+- **Consolidated Score:** 77% (Online Assignments: 23.75/25, Proctored Exam: 53.25/75)
+- **Total Certified Candidates:** 2,461
+- **Period:** Jul–Oct 2026
+- **Roll Number:** NPTEL26CS181S654701385
+- **Reference Files:** `Certificates/NPTELDEEPLEARNINGNATURALLANGPROC.png`, `Certificates/NPTELDEEPLEARNINGNATURALLANGPROC.pdf`
+
+---

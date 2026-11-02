@@ -293,16 +293,20 @@ export class ProjectSolarSystem {
     }
 
     this.projectModal.classList.add('is-open');
+    this.projectModal.classList.add('is-active');
     this.projectModal.setAttribute('aria-hidden', 'false');
     document.body.style.overflow = 'hidden';
+    if (window.AppState?.lenis) window.AppState.lenis.stop();
   }
 
   closeProjectModal() {
     if (!this.projectModal) return;
     this.projectModal.classList.remove('is-open');
+    this.projectModal.classList.remove('is-active');
     this.projectModal.setAttribute('aria-hidden', 'true');
     this.activeModalProject = null;
     document.body.style.overflow = '';
+    if (window.AppState?.lenis) window.AppState.lenis.start();
   }
 
   setupModalListeners() {
@@ -316,7 +320,7 @@ export class ProjectSolarSystem {
       this.modalBackdrop.addEventListener('click', () => this.closeProjectModal());
     }
     window.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && this.projectModal?.classList.contains('is-open')) {
+      if (e.key === 'Escape' && (this.projectModal?.classList.contains('is-open') || this.projectModal?.classList.contains('is-active'))) {
         this.closeProjectModal();
       }
     });
@@ -401,33 +405,24 @@ export class ProjectSolarSystem {
       });
     }
 
-    if (this.heroProjectsBtn) {
-      this.heroProjectsBtn.addEventListener('click', (e) => {
+    const projectsToContactBtn = document.getElementById('projects-to-contact-btn');
+    if (projectsToContactBtn) {
+      projectsToContactBtn.addEventListener('click', (e) => {
         e.preventDefault();
-        this.triggerProjectsZoom();
-      });
-    }
-
-    if (this.engageCredentialsBtn) {
-      this.engageCredentialsBtn.addEventListener('click', (e) => {
-        e.preventDefault();
-        this.triggerCredentialsZoom();
-      });
-    }
-
-    if (this.heroCredentialsBtn) {
-      this.heroCredentialsBtn.addEventListener('click', (e) => {
-        e.preventDefault();
-        this.triggerCredentialsZoom();
+        this.triggerContactZoom();
       });
     }
   }
 
   triggerProjectsZoom() {
+    if (window.AppState?.techSolar) {
+      window.AppState.techSolar.triggerProjectsZoom();
+      return;
+    }
     if (!this.track) return;
     const trackTop = this.track.offsetTop;
     const maxScroll = this.track.offsetHeight - window.innerHeight;
-    const targetY = trackTop + maxScroll * 0.49;
+    const targetY = trackTop + maxScroll * 0.78;
 
     if (window.AppState && window.AppState.lenis) {
       window.AppState.lenis.scrollTo(targetY, { duration: 2.2 });
@@ -437,27 +432,31 @@ export class ProjectSolarSystem {
   }
 
   triggerTechZoom() {
+    if (window.AppState?.techSolar) {
+      window.AppState.techSolar.triggerTechZoom();
+      return;
+    }
     if (!this.track) return;
     const trackTop = this.track.offsetTop;
     const maxScroll = this.track.offsetHeight - window.innerHeight;
-    const targetY = trackTop + maxScroll * 0.20;
+    const targetY = trackTop + maxScroll * 0.58;
 
     if (window.AppState && window.AppState.lenis) {
-      window.AppState.lenis.scrollTo(targetY, { duration: 1.6 });
+      window.AppState.lenis.scrollTo(targetY, { duration: 2.0 });
     } else {
       window.scrollTo({ top: targetY, behavior: 'smooth' });
     }
   }
 
-  triggerCredentialsZoom() {
+  triggerContactZoom() {
+    if (window.AppState?.techSolar) {
+      window.AppState.techSolar.triggerContactZoom();
+      return;
+    }
     if (!this.track) return;
     const trackTop = this.track.offsetTop;
     const maxScroll = this.track.offsetHeight - window.innerHeight;
-    const targetY = trackTop + maxScroll * 0.78;
-
-    if (window.AppState && window.AppState.credStones) {
-      window.AppState.credStones.trigger(true);
-    }
+    const targetY = trackTop + maxScroll * 0.98;
 
     if (window.AppState && window.AppState.lenis) {
       window.AppState.lenis.scrollTo(targetY, { duration: 2.4 });
@@ -486,6 +485,11 @@ export class ProjectSolarSystem {
   }
 
   updateSpaceZoom() {
+    if (window.AppState?.techSolar?.zoomProgress !== undefined) {
+      this.zoomProgress = window.AppState.techSolar.zoomProgress;
+      return;
+    }
+
     if (!this.track) return;
     const trackRect = this.track.getBoundingClientRect();
     const trackTop = trackRect.top;
@@ -496,56 +500,9 @@ export class ProjectSolarSystem {
     if (maxScroll <= 0) return;
 
     const currentScroll = -trackTop;
-    const rawProgress = currentScroll / maxScroll;
-    this.targetZoomProgress = Math.max(0, Math.min(1, rawProgress));
-
-    // Faster lerp during transits for snappier response
-    const lerpFactor = (rawProgress > 0.30 && rawProgress < 0.90) ? 0.16 : 0.12;
-    this.zoomProgress += (this.targetZoomProgress - this.zoomProgress) * lerpFactor;
-    const p = this.zoomProgress;
-
-    // Phase 3: Projects Solar System Layer [0.34 -> 0.64]
-    // (EXACT SAME AS TECH-SOLAR ORCHESTRATION)
-    if (this.projectsLayer) {
-      if (p <= 0.34) {
-        this.projectsLayer.style.opacity = '0';
-        this.projectsLayer.style.visibility = 'hidden';
-        this.projectsLayer.style.pointerEvents = 'none';
-        this.projectsLayer.style.transform = 'scale(0.18) translateZ(0)';
-        this.projectsLayer.style.filter = 'blur(16px)';
-      } else if (p <= 0.56) {
-        // Enters from deep space & remains actively interactive
-        this.projectsLayer.style.visibility = 'visible';
-        const projP = Math.min(1, Math.max(0, (p - 0.34) / 0.09));
-        const easedProj = Math.sin((projP * Math.PI) / 2);
-
-        const projScale = 0.18 + easedProj * 0.82; // zooms in from deep space: 0.18 -> 1.00!
-        const projOpacity = Math.min(1, projP * 1.25);
-        const projBlur = (1 - easedProj) * 16;
-
-        this.projectsLayer.style.transform = `scale(${projScale.toFixed(3)}) translateZ(0)`;
-        this.projectsLayer.style.opacity = projOpacity.toFixed(3);
-        this.projectsLayer.style.filter = projBlur > 0.4 ? `blur(${projBlur.toFixed(1)}px)` : 'none';
-        this.projectsLayer.style.pointerEvents = projP > 0.85 ? 'auto' : 'none';
-      } else if (p <= 0.64) {
-        // Warps forward past camera as user journeys to Credentials
-        this.projectsLayer.style.visibility = 'visible';
-        const exitP = Math.min(1, Math.max(0, (p - 0.56) / 0.08));
-        const projScale = 1.0 + exitP * 2.2;
-        const projOpacity = Math.max(0, 1.0 - exitP * 1.45);
-        const projBlur = exitP * 18;
-
-        this.projectsLayer.style.transform = `scale(${projScale.toFixed(3)}) translateZ(0)`;
-        this.projectsLayer.style.opacity = projOpacity.toFixed(3);
-        this.projectsLayer.style.filter = projBlur > 0.4 ? `blur(${projBlur.toFixed(1)}px)` : 'none';
-        this.projectsLayer.style.pointerEvents = 'none';
-        this.projectsLayer.style.visibility = projOpacity <= 0.005 ? 'hidden' : 'visible';
-      } else {
-        this.projectsLayer.style.opacity = '0';
-        this.projectsLayer.style.visibility = 'hidden';
-        this.projectsLayer.style.pointerEvents = 'none';
-      }
-    }
+    const rawProgress = Math.max(0, Math.min(1, currentScroll / maxScroll));
+    this.targetZoomProgress = rawProgress;
+    this.zoomProgress += (this.targetZoomProgress - this.zoomProgress) * 0.14;
   }
 
   project3D(x0, y0, z0, ring, camX, camY) {
@@ -591,9 +548,9 @@ export class ProjectSolarSystem {
 
     ctx.clearRect(0, 0, w, h);
 
-    if (this.zoomProgress < 0.34 || this.zoomProgress > 0.64) return;
+    if (this.zoomProgress < 0.68 || this.zoomProgress > 0.88) return;
 
-    const projRingAlphaMultiplier = Math.min(1, Math.max(0, (this.zoomProgress - 0.34) / 0.08)) * Math.max(0, 1 - (this.zoomProgress - 0.56) / 0.08);
+    const projRingAlphaMultiplier = Math.min(1, Math.max(0, (this.zoomProgress - 0.68) / 0.05)) * Math.max(0, 1 - (this.zoomProgress - 0.83) / 0.05);
 
     // Draw 3D Projects Orbital Rings
     PROJECT_RINGS.forEach((ring) => {
@@ -660,7 +617,7 @@ export class ProjectSolarSystem {
     });
 
     // Laser connection line if project is hovered
-    if (this.hoveredProject && this.zoomProgress >= 0.38 && this.zoomProgress <= 0.60) {
+    if (this.hoveredProject && this.zoomProgress >= 0.70 && this.zoomProgress <= 0.86) {
       const activeProj = this.projectNodes.find(n => n.meta.id === this.hoveredProject.id);
       if (activeProj) {
         ctx.beginPath();
@@ -707,14 +664,14 @@ export class ProjectSolarSystem {
       const centerY = this.stageHeight / 2;
 
       // Update Monumental 3D Projects Title Parallax
-      if (this.centerText && this.zoomProgress > 0.34 && this.zoomProgress < 0.64) {
+      if (this.centerText && this.zoomProgress > 0.68 && this.zoomProgress < 0.88) {
         const projPitch = -this.camRotX * 16;
         const projYaw = this.camRotY * 22;
         this.centerText.style.transform = `perspective(900px) rotateX(${projPitch.toFixed(2)}deg) rotateY(${projYaw.toFixed(2)}deg) translateZ(0)`;
       }
 
       // Update Project Planetary Worlds in 3D Orbits
-      if (this.zoomProgress > 0.34 && this.zoomProgress < 0.64 && this.projectNodes.length > 0) {
+      if (this.zoomProgress > 0.68 && this.zoomProgress < 0.88 && this.projectNodes.length > 0) {
         let minProjMouseDist = 9999;
         if (this.pointerClientX > -1000 && this.pointerClientY > -1000) {
           for (let i = 0; i < this.projectNodes.length; i++) {

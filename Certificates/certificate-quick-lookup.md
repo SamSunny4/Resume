@@ -56,3 +56,15 @@
 
 ---
 
+## 6. NPTEL Online Certification (Elite 77%) – Deep Learning for Natural Language Processing
+- **Recipient:** Sam Sunny
+- **Issuer / Organization:** NPTEL, funded by MoE, Govt. of India (Offered by IIT Kharagpur)
+- **Course:** Deep Learning for Natural Language Processing (12-week course, 4 recommended credits)
+- **Distinction / Medal:** Elite (Silver/Elite Badge)
+- **Consolidated Score:** 77% (Online Assignments: 23.75/25, Proctored Exam: 53.25/75)
+- **Total Certified Candidates:** 2,461
+- **Period:** Jul–Oct 2026
+- **Roll Number:** NPTEL26CS181S654701385
+- **Reference Files:** `Certificates/NPTELDEEPLEARNINGNATURALLANGPROC.png`, `Certificates/NPTELDEEPLEARNINGNATURALLANGPROC.pdf`
+
+---

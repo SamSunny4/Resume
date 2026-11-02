@@ -34,6 +34,26 @@ export const CERTIFICATES = [
     ]
   },
   {
+    id: 'nptel-dl-nlp',
+    title: 'Deep Learning for NLP (Elite 77%)',
+    subtitle: 'NPTEL ONLINE CERTIFICATION · 12-WEEK ADVANCED ELECTIVE',
+    org: 'Indian Institute of Technology Kharagpur',
+    issuerTag: 'IIT Kharagpur · SWAYAM · MoE',
+    code: 'NPTEL26CS181S654701385',
+    date: 'JUL-OCT 2026',
+    accent: '#06B6D4',
+    badge: '📜 ELITE 77%',
+    score: 'Score: 77% (Elite)',
+    image: 'assets/certificates/NPTELDEEPLEARNINGNATURALLANGPROC.png',
+    pdfUrl: 'assets/certificates/NPTELDEEPLEARNINGNATURALLANGPROC.pdf',
+    pills: ['IIT Kharagpur', 'Deep Learning', 'NLP'],
+    logos: [
+      { name: 'iit-kharagpur', label: 'IIT KGP' },
+      { name: 'nptel', label: 'NPTEL' },
+      { name: 'swayam', label: 'SWAYAM' }
+    ]
+  },
+  {
     id: 'mern-stack',
     title: 'End-to-End MERN Lifecycle',
     subtitle: 'REACT · NODE.JS · MONGODB · EXPRESS · GIT',
@@ -625,7 +645,8 @@ export class CredentialsMobiusEngine {
 
         <!-- Navigation HUD -->
         <div class="stage-nav-hud">
-          <button id="cred-return-projects-btn" class="stage-nav-btn font-mono" title="Return to flagship projects">⤾ RETURN TO PROJECTS</button>
+          <button id="cred-return-home-btn" class="stage-nav-btn font-mono" title="Return to home landing">⤾ RETURN TO HOME</button>
+          <button id="cred-to-tech-btn" class="stage-nav-btn font-mono text-lime" title="Proceed to tech stack matrix">JOURNEY TO TECH MATRIX ↯</button>
         </div>
       </div>
 
@@ -779,25 +800,20 @@ export class CredentialsMobiusEngine {
     }
 
     // Navigation HUD Buttons
-    const returnBtn = document.getElementById('cred-return-projects-btn');
-    if (returnBtn) {
-      returnBtn.addEventListener('click', (e) => {
+    const returnHomeBtn = document.getElementById('cred-return-home-btn');
+    if (returnHomeBtn) {
+      returnHomeBtn.addEventListener('click', (e) => {
         e.preventDefault();
-        if (window.AppState?.techSolar) window.AppState.techSolar.triggerProjectsZoom();
-        else if (window.AppState?.projectSolar) window.AppState.projectSolar.triggerProjectsZoom();
+        if (window.AppState?.techSolar) window.AppState.techSolar.triggerSpaceZoomTop();
+        else window.scrollTo({ top: 0, behavior: 'smooth' });
       });
     }
 
-    const contactBtn = document.getElementById('cred-to-contact-btn');
-    if (contactBtn) {
-      contactBtn.addEventListener('click', (e) => {
+    const toTechBtn = document.getElementById('cred-to-tech-btn');
+    if (toTechBtn) {
+      toTechBtn.addEventListener('click', (e) => {
         e.preventDefault();
-        if (window.AppState?.techSolar) {
-          window.AppState.techSolar.triggerContactZoom();
-        } else {
-          const cs = document.getElementById('contact');
-          if (cs) cs.scrollIntoView({ behavior: 'smooth' });
-        }
+        if (window.AppState?.techSolar) window.AppState.techSolar.triggerTechZoom();
       });
     }
 

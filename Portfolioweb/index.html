@@ -116,7 +116,7 @@
   </style>
 
   <!-- Design System Stylesheet -->
-  <link rel="stylesheet" href="style.css?v=81">
+  <link rel="stylesheet" href="style.css?v=82">
   <link rel="icon" type="image/png" href="assets/me.png">
 </head>
 <body>
@@ -177,21 +177,17 @@
                   <!-- Left: Monumental Editorial Identity & Directives -->
                   <div class="hero-content">
                     <div class="hero-title-group">
-                      <h1 class="hero-monumental-title" aria-label="I AM SAM SUNNY">
+                      <h1 class="hero-monumental-title" aria-label="HI IM SAM SUNNY">
                         <span class="hero-line-mask">
                           <span class="hero-line-1">
-                            <span class="reveal-word word-i">I</span>
-                            <span class="reveal-word word-am">AM</span>
+                            <span class="reveal-word word-hi">HI</span>
+                            <span class="reveal-word word-im">IM</span>
                           </span>
                         </span>
                         <div id="shuffle-hero-name" class="ascii-hero-container" title="Interactive ASCII Typography — Hover or Click to Burst">
                           <!-- ASCII Block Burst Engine automatically populates SAM and SUNNY -->
                         </div>
                       </h1>
-
-                      <p class="font-sans text-editorial-muted hero-desc-reveal" style="font-size: var(--font-size-md); max-width: 640px; line-height: 1.6; margin-top: var(--space-md); margin-bottom: var(--space-lg);">
-                        Software Engineer specializing in Computer Vision, Applied AI pipelines, and commercial full-stack applications. Proven track record deploying production retail software and national hackathon achievements.
-                      </p>
                     </div>
                   </div>
 
@@ -232,6 +228,20 @@
             </section>
           </div>
 
+          <!-- ABOUT ME / TRAITS FLYBY LAYER (Short points fly through stars on scroll) -->
+          <div id="traits-space-layer" class="traits-space-layer" aria-label="About Sam Sunny Traits">
+            <div class="traits-container" id="traits-container">
+              <!-- 10 short points about me dynamically created and projected in 3D -->
+            </div>
+          </div>
+
+          <!-- CREDENTIALS / CERTIFICATES UNIVERSE LAYER (Cylindrical Liquid Glass Ring) -->
+          <div id="credentials-space-layer" class="credentials-space-layer">
+            <section id="credentials" class="credentials-universe-section">
+              <!-- Dynamically populated by credentials-stones.js with verified certificates -->
+            </section>
+          </div>
+
           <!-- TECH STACK UNIVERSE LAYER (Zooms in from deep space into foreground) -->
           <div id="tech-space-layer" class="tech-space-layer">
             <section id="tech-stack" class="tech-universe-section">
@@ -254,7 +264,8 @@
 
                 <!-- Quick Jump Navigation HUD -->
                 <div class="stage-nav-hud">
-                  <button id="engage-wormhole-btn" class="stage-nav-btn font-mono" title="Warp to projects">WARP TO PROJECTS ↯</button>
+                  <button id="return-cred-btn" class="stage-nav-btn font-mono" title="Return to certificates matrix">⤾ RETURN TO CERTIFICATES</button>
+                  <button id="engage-wormhole-btn" class="stage-nav-btn font-mono text-lime" title="Warp to projects">WARP TO PROJECTS ↯</button>
                 </div>
               </div>
             </section>
@@ -288,16 +299,9 @@
                 <!-- Quick Jump Navigation HUD -->
                 <div class="stage-nav-hud">
                   <button id="return-tech-btn" class="stage-nav-btn font-mono" title="Return to tech matrix">⤾ RETURN TO TECH MATRIX</button>
-                  <button id="engage-credentials-btn" class="stage-nav-btn font-mono text-lime" title="Launch space journey to credentials matrix">SPACE JOURNEY ↯ TO CREDENTIALS</button>
+                  <button id="projects-to-contact-btn" class="stage-nav-btn font-mono text-lime" title="Proceed to transmission">TRANSMIT / CONTACT ↯</button>
                 </div>
               </div>
-            </section>
-          </div>
-
-          <!-- CREDENTIALS UNIVERSE LAYER (Infinity Stones Celestial Destination) -->
-          <div id="credentials-space-layer" class="credentials-space-layer">
-            <section id="credentials" class="credentials-universe-section">
-              <!-- Dynamically populated by credentials-stones.js with 7 infinity stones -->
             </section>
           </div>
 
@@ -499,6 +503,6 @@
   <!-- Lenis Momentum Smooth Scroll Library -->
   <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.9/dist/lenis.min.js"></script>
   <!-- Main ES6 Module Entry -->
-  <script type="module" src="js/main.js?v=81"></script>
+  <script type="module" src="js/main.js?v=82"></script>
 </body>
 </html>

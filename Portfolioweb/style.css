@@ -705,14 +705,16 @@ button {
   animation: slowHeroReveal 2.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
-.reveal-word.word-i {
+.reveal-word.word-i,
+.reveal-word.word-hi {
   animation-delay: 0.25s;
   color: var(--color-text-white);
   font-family: var(--font-editorial);
   font-style: italic;
 }
 
-.reveal-word.word-am {
+.reveal-word.word-am,
+.reveal-word.word-im {
   animation-delay: 0.55s;
   font-family: var(--font-editorial);
   font-style: italic;
@@ -1282,6 +1284,90 @@ html.lenis, html.lenis body {
   display: block;
 }
 
+/* ==========================================================================
+   TRAITS WARP LAYER (Through the Stars — About Sam Sunny)
+   Slanted pure typography following the star dot trails with 3D parallax
+   ========================================================================== */
+.traits-space-layer {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 15;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  overflow: hidden;
+  opacity: 0;
+  visibility: hidden;
+  perspective: 1100px;
+  transform-style: preserve-3d;
+  transition: opacity 0.3s ease;
+}
+
+.traits-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  transform-style: preserve-3d;
+}
+
+.trait-item,
+.trait-capsule {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  display: inline-block;
+  white-space: nowrap;
+  user-select: none;
+  pointer-events: none;
+  cursor: default;
+  will-change: transform, opacity, filter;
+  transform-origin: center center;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  border-radius: 0 !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+.trait-text {
+  display: inline-block;
+  font-family: var(--font-display, 'Syne', sans-serif);
+  font-size: clamp(1.8rem, 3.6vw, 3.4rem);
+  font-weight: 800;
+  font-style: italic;
+  letter-spacing: 0.05em;
+  color: #FFFFFF;
+  text-transform: uppercase;
+  line-height: 1;
+  /* Celestial starburst glow: bright white core with cyber-lime corona & deep contrast shadow */
+  text-shadow: 
+    0 0 18px rgba(210, 255, 0, 0.65),
+    0 0 45px rgba(210, 255, 0, 0.30),
+    0 4px 24px rgba(0, 0, 0, 0.98);
+}
+
+.trait-index,
+.trait-spark {
+  display: none !important;
+}
+
+@media (max-width: 768px) {
+  .trait-text {
+    font-size: clamp(1.25rem, 5.8vw, 2.0rem);
+    letter-spacing: 0.04em;
+    text-shadow: 
+      0 0 14px rgba(210, 255, 0, 0.65),
+      0 3px 18px rgba(0, 0, 0, 0.98);
+  }
+}
+
 /* Tech Universe Layer (Zooms in from deep cosmic fog into foreground) */
 .tech-space-layer {
   position: absolute;
@@ -1777,7 +1863,6 @@ html.lenis, html.lenis body {
   pointer-events: auto;
   cursor: pointer;
   will-change: transform, opacity, filter;
-  transition: filter 0.25s ease, opacity 0.25s ease;
   user-select: none;
 }
 
@@ -1906,7 +1991,8 @@ html.lenis, html.lenis body {
   transition: opacity 0.25s var(--ease-expo);
 }
 
-.project-modal.is-active {
+.project-modal.is-active,
+.project-modal.is-open {
   opacity: 1;
   pointer-events: auto;
 }
@@ -1933,7 +2019,8 @@ html.lenis, html.lenis body {
   transition: transform 0.25s var(--ease-expo);
 }
 
-.project-modal.is-active .project-modal-card {
+.project-modal.is-active .project-modal-card,
+.project-modal.is-open .project-modal-card {
   transform: scale(1);
 }
 
@@ -3504,12 +3591,11 @@ html.lenis, html.lenis body {
    HIGH-PERFORMANCE PRE-RENDER & HARDWARE ACCELERATION TUNING
    ========================================================================== */
 
-/* Off-screen layout skipping: prevents CPU/GPU cost until section is near viewport */
+/* Off-screen layout skipping removed to prevent sticky canvas & 3D dimension clipping */
 #projects-space-layer,
 #credentials-space-layer,
 #contact-space-layer {
-  content-visibility: auto;
-  contain-intrinsic-size: 900px;
+  content-visibility: visible;
 }
 
 /* Force GPU compositing for fast 3D transforms */

@@ -90,10 +90,10 @@ export function initMouseTracking() {
 import { initQuantumPreloader } from './loader.js';
 import { initHeroAsciiBurst } from './ascii-burst.js';
 import { initStickyBrandLogo } from './sticky-logo.js';
-import { initTechSolarSystem } from './tech-solar.js?v=71';
-import { initProjectSolarSystem } from './project-solar.js?v=66';
+import { initTechSolarSystem } from './tech-solar.js?v=82';
+import { initProjectSolarSystem } from './project-solar.js?v=82';
 import { initTopoBackground } from './topo-background.js';
-import { initCredentialsStones } from './credentials-stones.js?v=75';
+import { initCredentialsStones } from './credentials-stones.js?v=82';
 import { initContactSection } from './contact.js';
 import { initGyroParallax } from './gyro-parallax.js';
 
@@ -181,21 +181,25 @@ function bootstrap() {
   document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
     anchor.addEventListener('click', (e) => {
       const targetId = anchor.getAttribute('href');
+      if (targetId === '#hero') {
+        e.preventDefault();
+        if (techSolar) techSolar.triggerSpaceZoomTop();
+        return;
+      }
+      if (targetId === '#credentials' || targetId === '#credentials-matrix' || targetId === '#certificates') {
+        e.preventDefault();
+        if (techSolar) techSolar.triggerCredentialsZoom();
+        return;
+      }
       if (targetId === '#tech-stack') {
         e.preventDefault();
-        if (techSolar) techSolar.triggerSpaceZoom();
+        if (techSolar) techSolar.triggerTechZoom();
         return;
       }
       if (targetId === '#projects' || targetId === '#projects-solar') {
         e.preventDefault();
-        if (projectSolar) projectSolar.triggerProjectsZoom();
-        else if (techSolar) techSolar.triggerProjectsZoom();
-        return;
-      }
-      if (targetId === '#credentials' || targetId === '#credentials-matrix') {
-        e.preventDefault();
-        if (techSolar) techSolar.triggerCredentialsZoom();
-        else if (projectSolar) projectSolar.triggerCredentialsZoom();
+        if (techSolar) techSolar.triggerProjectsZoom();
+        else if (projectSolar) projectSolar.triggerProjectsZoom();
         return;
       }
       if (targetId === '#contact' || targetId === '#transmission') {
