@@ -90,10 +90,11 @@ export function initMouseTracking() {
 import { initQuantumPreloader } from './loader.js';
 import { initHeroAsciiBurst } from './ascii-burst.js';
 import { initStickyBrandLogo } from './sticky-logo.js';
-import { initTechSolarSystem } from './tech-solar.js?v=82';
-import { initProjectSolarSystem } from './project-solar.js?v=82';
+import { initTechSolarSystem } from './tech-solar.js?v=83';
+import { initProjectSolarSystem } from './project-solar.js?v=83';
 import { initTopoBackground } from './topo-background.js';
-import { initCredentialsStones } from './credentials-stones.js?v=82';
+import { LightPillar, initLightPillar } from './light-pillar.js';
+import { initCredentialsStones } from './credentials-stones.js?v=83';
 import { initContactSection } from './contact.js';
 import { initGyroParallax } from './gyro-parallax.js';
 
@@ -134,19 +135,27 @@ function bootstrap() {
     }
   }, { passive: true });
 
-  // Initialize Ultra-Minimal Topographic Background on Landing Page
-  const heroTopoContainer = document.getElementById('hero-topo-container') || document.getElementById('hero-space-layer');
-  const topoBg = initTopoBackground({
-    container: heroTopoContainer,
-    theme: 'cyber-light',
-    cellSize: 28,
-    lineLevelsCount: 5,
-    speed: 0.00018,
-    mouseRadius: 280,
-    mouseStrength: 0.35,
-    parallaxFactor: 20
-  });
-  window.AppState.topoBg = topoBg;
+  // Initialize React Bits <LightPillar /> on Landing Page
+  const heroPillarContainer = document.getElementById('hero-topo-container') || document.getElementById('hero-space-layer');
+  if (heroPillarContainer) {
+    const lightPillar = new LightPillar(heroPillarContainer, {
+      topColor: '#008a00',
+      bottomColor: '#f4ff7b',
+      intensity: 1.0,
+      glowAmount: 0.002,
+      bloom: 0.5,
+      pillarWidth: 3.0,
+      pillarHeight: 0.4,
+      pillarRotation: 25,
+      rotationSpeed: 0.3,
+      interactive: true,
+      clickPulse: true,
+      intro: true,
+      quality: 'high',
+      mixBlendMode: 'screen'
+    });
+    window.AppState.lightPillar = lightPillar;
+  }
 
   // Initialize Interactive Topographic Background in Contact Section (Matching Landing Page)
   const contactTopoContainer = document.getElementById('contact-topo-container');

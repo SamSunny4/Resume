@@ -68,3 +68,15 @@
 - **Reference Files:** `Certificates/NPTELDEEPLEARNINGNATURALLANGPROC.png`, `Certificates/NPTELDEEPLEARNINGNATURALLANGPROC.pdf`
 
 ---
+
+## 7. Certificate of Participation – IBM Z Datathon 2026
+- **Recipient:** Sam Sunny
+- **Event:** IBM Z Datathon 2026 – A Global Datathon Event
+- **Purpose:** For successfully participating in the IBM Z Datathon 2026 on 17th October and contributing to the success of this prestigious event.
+- **Date:** October 17th, 2026
+- **Hosted by:** Shooting Stars Foundation (SSF) – Latha Narayannan (Founder & CEO)
+- **Powered by:** IBM – Jeanne Brooks (WW IBM Z and LinuxONE Community Leader)
+- **Key Domains:** Data Science, Big Data Analytics, Enterprise Computing (IBM Z & LinuxONE)
+- **Reference Files:** `Certificates/IBM Datathon 2026 Participation Certificate Sam Sunnycopy.png`, `Certificates/IBM Datathon 2026 Participation Certificate Sam Sunny.pdf`
+
+---

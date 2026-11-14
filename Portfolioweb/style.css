@@ -1262,8 +1262,9 @@ html.lenis, html.lenis body {
   overflow: hidden;
 }
 
-/* Dedicated Landing Page Topographic Background Container */
-.hero-topo-container {
+/* Dedicated Landing Page Topographic Background / LightPillar Container */
+.hero-topo-container,
+.light-pillar-container {
   position: absolute;
   inset: 0;
   width: 100%;
@@ -1274,7 +1275,8 @@ html.lenis, html.lenis body {
 }
 
 .hero-topo-container canvas,
-.topo-background-canvas {
+.topo-background-canvas,
+.light-pillar-canvas {
   position: absolute !important;
   inset: 0 !important;
   width: 100% !important;
@@ -1326,6 +1328,7 @@ html.lenis, html.lenis body {
   cursor: default;
   will-change: transform, opacity, filter;
   transform-origin: center center;
+  transform-style: preserve-3d;
   background: transparent !important;
   border: none !important;
   box-shadow: none !important;
@@ -1339,13 +1342,14 @@ html.lenis, html.lenis body {
 .trait-text {
   display: inline-block;
   font-family: var(--font-display, 'Syne', sans-serif);
-  font-size: clamp(1.8rem, 3.6vw, 3.4rem);
+  font-size: clamp(1.5rem, 2.8vw, 2.6rem);
   font-weight: 800;
   font-style: italic;
   letter-spacing: 0.05em;
   color: #FFFFFF;
   text-transform: uppercase;
   line-height: 1;
+  transform-style: preserve-3d;
   /* Celestial starburst glow: bright white core with cyber-lime corona & deep contrast shadow */
   text-shadow: 
     0 0 18px rgba(210, 255, 0, 0.65),

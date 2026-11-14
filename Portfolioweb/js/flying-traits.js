@@ -107,8 +107,8 @@ export class FlyingTraitsEngine {
     const winH = window.innerHeight;
 
     // Base elliptical radius of the focal orbit
-    const baseRadiusX = isMobile ? winW * 0.38 : winW * 0.44;
-    const baseRadiusY = isMobile ? winH * 0.35 : winH * 0.38;
+    const baseRadiusX = isMobile ? winW * 0.30 : winW * 0.32;
+    const baseRadiusY = isMobile ? winH * 0.28 : winH * 0.30;
 
     this.items.forEach(item => {
       // Normalized distance from this trait's focal point:
@@ -139,7 +139,7 @@ export class FlyingTraitsEngine {
         normR = 0.04 + radialEase * 0.96;    // Starts at 4% from center, expands to 100%
 
         // Exponential perspective scale
-        scale = 0.12 + Math.pow(t, 1.5) * 0.98; // 0.12 -> 1.10
+        scale = 0.12 + Math.pow(t, 1.5) * 0.88; // 0.12 -> 1.00
         opacity = Math.min(1.0, t * 1.4);
 
         // Cosmic depth blur dissolves as it enters focal plane
@@ -152,7 +152,7 @@ export class FlyingTraitsEngine {
         normR = 1.00 + Math.pow(t, 1.4) * 1.35; // 1.00 -> 2.35
 
         // Scale zooms past the viewer
-        scale = 1.10 + Math.pow(t, 1.6) * 2.30; // 1.10 -> 3.40
+        scale = 1.00 + Math.pow(t, 1.6) * 1.90; // 1.00 -> 2.90
         opacity = Math.max(0, 1.0 - Math.pow(t, 1.2) * 1.5);
 
         // High-velocity motion blur as it whips past
@@ -168,18 +168,29 @@ export class FlyingTraitsEngine {
 
       // Depth-dependent cursor / gyro parallax displacement
       // Items deeper in space shift differently than items close to the camera
-      const parallaxMult = isMobile ? 38 : (75 + normR * 65);
+      const parallaxMult = isMobile ? 32 : (60 + normR * 50);
       const finalX = posX + camRotY * parallaxMult;
       const finalY = posY - camRotX * parallaxMult;
 
-      // 3D camera tilt parallax (pitch & yaw)
-      const rotX = -camRotX * (isMobile ? 12 : 20);
-      const rotY = camRotY * (isMobile ? 14 : 24);
+      // 3D incoming train stance:
+      // 'A' (start of text) is near to viewport, 't' (end of text) is farthest to viewport
+      // like incoming trains / buses charging down the track towards the viewer
+      const baseTrainYaw = isMobile ? 35 : 40;
+      const baseTrainPitch = isMobile ? 7 : 9;
+      const baseTrainRoll = isMobile ? -3 : -4;
 
-      // Slanted text angle: baseline -12deg skew plus dynamic velocity slant
-      const skewX = -12 + skewBonus;
+      // Dynamic parallax responsiveness on top of the incoming train stance
+      const rotX = baseTrainPitch - camRotX * (isMobile ? 12 : 18);
+      const rotY = baseTrainYaw + camRotY * (isMobile ? 14 : 20);
+      const rotZ = baseTrainRoll - camRotY * (isMobile ? 3 : 5);
 
-      const transformStr = `translate3d(calc(-50% + ${finalX.toFixed(1)}px), calc(-50% + ${finalY.toFixed(1)}px), 0) rotateX(${rotX.toFixed(2)}deg) rotateY(${rotY.toFixed(2)}deg) skewX(${skewX.toFixed(1)}deg) scale(${scale.toFixed(3)})`;
+      // Kinetic speed slant
+      const skewX = -6 + skewBonus;
+
+      // Local perspective foreshortening creates authentic train/bus depth:
+      // Left side ('A') is physically closer in Z, right side ('t') is deep in distance
+      const pDist = isMobile ? 620 : 700;
+      const transformStr = `translate3d(calc(-50% + ${finalX.toFixed(1)}px), calc(-50% + ${finalY.toFixed(1)}px), 0) perspective(${pDist}px) rotateX(${rotX.toFixed(2)}deg) rotateY(${rotY.toFixed(2)}deg) rotateZ(${rotZ.toFixed(2)}deg) skewX(${skewX.toFixed(1)}deg) scale(${scale.toFixed(3)})`;
 
       item.el.style.transform = transformStr;
       item.el.style.opacity = (opacity * layerAlpha).toFixed(3);
