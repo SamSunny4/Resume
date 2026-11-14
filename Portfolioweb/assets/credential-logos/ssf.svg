@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="none">
+  <circle cx="50" cy="50" r="46" stroke="#0F62FE" stroke-width="4" stroke-opacity="0.8"/>
+  <path d="M50 16L59 38L82 41L65 56L70 79L50 67L30 79L35 56L18 41L41 38L50 16Z" fill="url(#ssfGlow)" stroke="#00F0FF" stroke-width="2"/>
+  <circle cx="50" cy="50" r="10" fill="#FFFFFF"/>
+  <defs>
+    <linearGradient id="ssfGlow" x1="18" y1="16" x2="82" y2="79" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#0F62FE"/>
+      <stop offset="0.5" stop-color="#00F0FF"/>
+      <stop offset="1" stop-color="#D2FF00"/>
+    </linearGradient>
+  </defs>
+</svg>
+

@@ -571,8 +571,8 @@ export function generateCredentialCardCanvas(cert, isActive = false) {
     ctx.save();
     ctx.beginPath();
     ctx.roundRect(bX, bY, bW, bH, bR);
-    ctx.strokeStyle = 'rgba(255, 255, 255, 0.18)';
-    ctx.lineWidth = 1.6;
+    ctx.strokeStyle = 'rgba(255, 255, 255, 0.28)';
+    ctx.lineWidth = 1.8;
     ctx.stroke();
 
     // Top Edge Specular Highlight Line
@@ -580,11 +580,11 @@ export function generateCredentialCardCanvas(cert, isActive = false) {
     ctx.moveTo(bX + bR, bY);
     ctx.lineTo(bX + bW - bR, bY);
     const topSheen = ctx.createLinearGradient(bX + bR, bY, bX + bW - bR, bY);
-    topSheen.addColorStop(0, 'rgba(255, 255, 255, 0.55)');
-    topSheen.addColorStop(0.35, 'rgba(255, 255, 255, 0.26)');
-    topSheen.addColorStop(1, 'rgba(255, 255, 255, 0.06)');
+    topSheen.addColorStop(0, 'rgba(255, 255, 255, 0.75)');
+    topSheen.addColorStop(0.35, 'rgba(255, 255, 255, 0.42)');
+    topSheen.addColorStop(1, 'rgba(255, 255, 255, 0.12)');
     ctx.strokeStyle = topSheen;
-    ctx.lineWidth = 1.6;
+    ctx.lineWidth = 1.8;
     ctx.stroke();
     ctx.restore();
   }

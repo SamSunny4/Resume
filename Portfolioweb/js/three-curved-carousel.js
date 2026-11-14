@@ -185,7 +185,6 @@ export class ThreeCurvedCarousel {
 
     this.scene = new THREE.Scene();
     this.camera = new THREE.PerspectiveCamera(fov, width / height, 0.1, 100);
-    this.camera.position.set(0, 0, 11.2);
     this.camera.position.set(0, 0, 10.4);
     this.camera.rotation.z = THREE.MathUtils.degToRad(this.options.roll);
 
@@ -235,6 +234,14 @@ export class ThreeCurvedCarousel {
       R, R, cardH, 32, 1, true, -thetaLength / 2, thetaLength
     );
 
+    // Back geometry with horizontally flipped UVs so text/artwork reads naturally when viewed from inside the cylinder
+    const backGeometry = cardGeometry.clone();
+    const uvAttr = backGeometry.attributes.uv;
+    for (let j = 0; j < uvAttr.count; j++) {
+      uvAttr.setX(j, 1 - uvAttr.getX(j));
+    }
+    uvAttr.needsUpdate = true;
+
     const textureLoader = new THREE.TextureLoader();
 
     this.items.forEach((item, i) => {
@@ -258,10 +265,10 @@ export class ThreeCurvedCarousel {
         depthWrite: false
       });
 
-      // Back material (sleek obsidian dark glass backplate)
+      // Back material (liquid smoked glass backface showing card artwork, glowing neon border, and details)
       const backMat = new THREE.MeshBasicMaterial({
-        color: 0x060906,
-        opacity: 0.94,
+        map: i === 0 ? actTexture : defTexture,
+        color: 0xffffff, // full-fidelity color for crystal clear typography and badge accents
         transparent: true,
         side: THREE.BackSide,
         depthWrite: false
@@ -270,7 +277,8 @@ export class ThreeCurvedCarousel {
       const frontMesh = new THREE.Mesh(cardGeometry, frontMat);
       frontMesh.userData = { index: i, item };
 
-      const backMesh = new THREE.Mesh(cardGeometry, backMat);
+      const backMesh = new THREE.Mesh(backGeometry, backMat);
+      backMesh.userData = { index: i, item };
 
       const pivot = new THREE.Group();
       pivot.rotation.y = stepAngle;
@@ -285,6 +293,7 @@ export class ThreeCurvedCarousel {
         defTexture,
         actTexture,
         frontMat,
+        backMat,
         item,
         index: i,
         stepAngle
@@ -332,12 +341,11 @@ export class ThreeCurvedCarousel {
     this.activeIndex = index;
 
     this.cardMeshes.forEach((card, i) => {
-      if (i === index) {
-        card.frontMat.map = card.actTexture;
-      } else {
-        card.frontMat.map = card.defTexture;
-      }
+      const tex = (i === index) ? card.actTexture : card.defTexture;
+      card.frontMat.map = tex;
+      if (card.backMat) card.backMat.map = tex;
       card.frontMat.needsUpdate = true;
+      if (card.backMat) card.backMat.needsUpdate = true;
     });
 
     this.updateCaption(index);
@@ -430,7 +438,11 @@ export class ThreeCurvedCarousel {
       this.mouse.y = -((e.clientY - rect.top) / height) * 2 + 1;
 
       this.raycaster.setFromCamera(this.mouse, this.camera);
-      const meshes = this.cardMeshes.map(c => c.frontMesh);
+      const meshes = [];
+      this.cardMeshes.forEach(c => {
+        if (c.frontMesh) meshes.push(c.frontMesh);
+        if (c.backMesh) meshes.push(c.backMesh);
+      });
       const intersects = this.raycaster.intersectObjects(meshes);
 
       if (intersects.length > 0) {
@@ -456,7 +468,11 @@ export class ThreeCurvedCarousel {
       this.mouse.y = -((e.clientY - rect.top) / height) * 2 + 1;
 
       this.raycaster.setFromCamera(this.mouse, this.camera);
-      const meshes = this.cardMeshes.map(c => c.frontMesh);
+      const meshes = [];
+      this.cardMeshes.forEach(c => {
+        if (c.frontMesh) meshes.push(c.frontMesh);
+        if (c.backMesh) meshes.push(c.backMesh);
+      });
       const intersects = this.raycaster.intersectObjects(meshes);
 
       if (intersects.length > 0) {
@@ -529,11 +545,18 @@ export class ThreeCurvedCarousel {
         // Compute facing angle relative to camera view
         const worldAngle = (this.currentAngle + card.stepAngle) % (2 * Math.PI);
         const facing = Math.cos(worldAngle); // 1 = facing front, -1 = facing back
-        // Smoothly fade cards in the back so they look like deep space holograms
-        const alpha = Math.max(0.18, Math.pow((facing + 1) / 2, 0.85));
-        card.frontMat.opacity = alpha;
-        if (card.backMesh) {
-          card.backMesh.material.opacity = alpha * 0.45;
+        
+        // Depth fade calculation:
+        // Front cards (facing > 0): opacity ranges smoothly from 0.68 (at sides) to 1.0 (at front center)
+        const frontAlpha = Math.max(0.68, Math.pow((facing + 1) / 2, 0.65));
+        card.frontMat.opacity = frontAlpha;
+
+        if (card.backMat) {
+          // Back cards (facing < 0): backMesh faces camera from inside the cylinder
+          // Sleek liquid glass hologram: 0.68 at sides up to 0.92 at deep back
+          const backWeight = Math.max(0, -facing); // 0 at sides, 1 at deep back
+          const backAlpha = 0.68 + 0.24 * Math.pow(backWeight, 0.7);
+          card.backMat.opacity = backAlpha;
         }
       });
 
@@ -574,6 +597,7 @@ export class ThreeCurvedCarousel {
         if (c.defTexture) c.defTexture.dispose();
         if (c.actTexture) c.actTexture.dispose();
         if (c.frontMat) c.frontMat.dispose();
+        if (c.backMat) c.backMat.dispose();
       });
       this.cardMeshes = [];
     }
