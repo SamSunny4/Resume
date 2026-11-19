@@ -30,6 +30,7 @@ export class ProjectSolarSystem {
     this.projectModal = document.getElementById('project-detail-modal');
     this.modalTitle = document.getElementById('modal-title');
     this.modalStatus = document.getElementById('modal-status');
+    this.modalCategory = document.getElementById('modal-category');
     this.modalDesc = document.getElementById('modal-desc');
     this.modalIcon = document.getElementById('modal-icon');
     this.modalTechChips = document.getElementById('modal-tech-chips');
@@ -148,6 +149,7 @@ export class ProjectSolarSystem {
 
         el.innerHTML = `
           <div class="project-node-badge" style="--proj-accent: ${proj.color}">
+            <div class="project-badge-glow" aria-hidden="true"></div>
             <div class="project-badge-header">
               <div class="project-badge-icon-wrap">
                 <img src="${proj.icon}" alt="${proj.name}" class="project-badge-icon" onerror="this.src='assets/Samlogo.png';" />
@@ -157,6 +159,10 @@ export class ProjectSolarSystem {
             <div class="project-badge-body">
               <h3 class="project-badge-title font-display">${proj.name}</h3>
               <p class="project-badge-sub font-mono">${proj.category}</p>
+            </div>
+            <div class="project-badge-tech-row font-mono">
+              ${(proj.tech || []).slice(0, 3).map(t => `<span class="project-badge-tech-chip">${t}</span>`).join('')}
+              ${proj.tech && proj.tech.length > 3 ? `<span class="project-badge-tech-more">+${proj.tech.length - 3}</span>` : ''}
             </div>
           </div>
         `;
@@ -262,11 +268,17 @@ export class ProjectSolarSystem {
       this.modalStatus.textContent = `// ${proj.badge}`;
       this.modalStatus.style.color = proj.color;
     }
+    if (this.modalCategory) {
+      this.modalCategory.textContent = proj.category || '';
+    }
     if (this.modalDesc) this.modalDesc.textContent = proj.desc;
     if (this.modalIcon) {
       this.modalIcon.src = proj.icon;
       this.modalIcon.alt = proj.name;
     }
+
+    this.projectModal.style.setProperty('--modal-accent', proj.color || '#D2FF00');
+    this.projectModal.style.setProperty('--modal-accent-glow', `${proj.color || '#D2FF00'}44`);
 
     if (this.modalTechChips) {
       this.modalTechChips.innerHTML = '';
@@ -358,9 +370,10 @@ export class ProjectSolarSystem {
       }
     }
 
-    if (w < 600) this.scaleRatio = 0.52;
-    else if (w < 900) this.scaleRatio = 0.72;
-    else if (w < 1200) this.scaleRatio = 0.88;
+    if (w < 600) this.scaleRatio = 0.44;
+    else if (w < 900) this.scaleRatio = 0.62;
+    else if (w < 1200) this.scaleRatio = 0.78;
+    else if (w < 1600) this.scaleRatio = 0.90;
     else this.scaleRatio = 1.0;
   }
 
