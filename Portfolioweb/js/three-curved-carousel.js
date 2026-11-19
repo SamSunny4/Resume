@@ -185,7 +185,14 @@ export class ThreeCurvedCarousel {
 
     this.scene = new THREE.Scene();
     this.camera = new THREE.PerspectiveCamera(fov, width / height, 0.1, 100);
-    this.camera.position.set(0, 0, 10.4);
+    let cameraZ = 10.4;
+    if (width < 768) {
+      const aspect = width / height;
+      if (aspect < 1.2) {
+        cameraZ = Math.min(13.2, Math.max(10.4, 10.4 + (1.2 - aspect) * 3.8));
+      }
+    }
+    this.camera.position.set(0, 0, cameraZ);
     this.camera.rotation.z = THREE.MathUtils.degToRad(this.options.roll);
 
     this.renderer = new THREE.WebGLRenderer({
@@ -388,6 +395,7 @@ export class ThreeCurvedCarousel {
     this.onResize = this.onResize.bind(this);
 
     if (this.stage) {
+      this.stage.style.touchAction = 'pan-y';
       this.stage.addEventListener('pointerdown', this.onPointerDown, { passive: true });
       this.stage.addEventListener('wheel', this.onWheel, { passive: false });
     }
@@ -414,6 +422,16 @@ export class ThreeCurvedCarousel {
     const height = this.canvas ? this.canvas.clientHeight : window.innerHeight;
 
     if (this.isDragging) {
+      // On touch devices, if finger movement is primarily vertical, allow native page scroll
+      if (e.pointerType === 'touch' && !this.hasMoved) {
+        const totalDx = Math.abs(e.clientX - this.startX);
+        const totalDy = Math.abs(e.clientY - this.startY);
+        if (totalDy > totalDx && totalDy > 7) {
+          this.isDragging = false;
+          return;
+        }
+      }
+
       const dx = e.clientX - this.lastX;
       if (Math.hypot(e.clientX - this.startX, e.clientY - this.startY) > 6) {
         this.hasMoved = true;
@@ -510,6 +528,14 @@ export class ThreeCurvedCarousel {
     const height = this.stage.clientHeight || Math.max(window.innerHeight - 220, 650);
 
     this.camera.aspect = width / height;
+    let cameraZ = 10.4;
+    if (width < 768) {
+      const aspect = width / height;
+      if (aspect < 1.2) {
+        cameraZ = Math.min(13.2, Math.max(10.4, 10.4 + (1.2 - aspect) * 3.8));
+      }
+    }
+    this.camera.position.z = cameraZ;
     this.camera.updateProjectionMatrix();
     this.renderer.setSize(width, height);
     this.renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));

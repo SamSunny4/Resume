@@ -649,6 +649,7 @@ export class CredentialsMobiusEngine {
         <!-- Section Header -->
         <div class="cylinder-header">
           <h2 class="cylinder-title font-display">MY CERTIFICATES</h2>
+          <span class="cylinder-sub font-mono">// 11 VERIFIED CREDENTIALS · TAP CARD TO INSPECT</span>
         </div>
 
         <!-- React Bits CircularCarousel Viewport Mount -->
