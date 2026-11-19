@@ -50,6 +50,8 @@ export const ASSET_MANIFEST = [
   'assets/certificates/programrep.jpg',
   'assets/certificates/industryvisit.jpeg',
   'assets/certificates/Nptelmachinelearning.png',
+  'assets/certificates/NPTELDEEPLEARNINGNATURALLANGPROC.png',
+  'assets/certificates/liguaskill.png',
 
   // Tech Stack 3D Solar Icons
   'assets/tech-icons/python.svg',
@@ -243,25 +245,26 @@ export class QuantumAssetPreloader {
     this.isDone = true;
     this.rawProgress = 100;
 
-    // Minimum display guarantee of ~700ms so the user sees the crisp telemetry finish
-    setTimeout(() => {
+    // Safety fallback: if requestAnimationFrame is throttled or suspended, force dismissal after 2.5s
+    if (this.doneTimeout) clearTimeout(this.doneTimeout);
+    this.doneTimeout = setTimeout(() => {
       if (!this.isDismissed) this.dismiss();
-    }, 450);
+    }, 2500);
   }
 
   renderLoop() {
     if (this.isDismissed) return;
 
-    // Smooth lerp to raw progress
+    // Smooth lerp to raw progress; accelerate towards 100 once all background assets finish
     const diff = this.rawProgress - this.displayProgress;
-    const step = Math.max(0.6, diff * 0.14);
+    const step = this.isDone ? Math.max(1.8, diff * 0.22) : Math.max(0.6, diff * 0.14);
     if (diff > 0.05) {
       this.displayProgress = Math.min(100, this.displayProgress + step);
     } else if (this.isDone) {
       this.displayProgress = 100;
     }
 
-    const roundedVal = Math.floor(this.displayProgress);
+    const roundedVal = Math.min(100, Math.floor(this.displayProgress));
     const displayStr = roundedVal < 10 ? `0${roundedVal}%` : `${roundedVal}%`;
 
     if (this.percentEl) {
@@ -289,7 +292,16 @@ export class QuantumAssetPreloader {
     }
 
     if (this.displayProgress >= 99.5 && this.isDone && !this.isDismissed) {
-      setTimeout(() => this.dismiss(), 250);
+      this.displayProgress = 100;
+      if (this.percentEl) {
+        this.percentEl.textContent = '100%';
+        this.percentEl.classList.add('is-ready');
+      }
+      if (this.barFillEl) {
+        this.barFillEl.style.width = '100%';
+      }
+      // Hold on 100% with the neon ready glow for ~260ms before dissolving
+      setTimeout(() => this.dismiss(), 260);
       return;
     }
 
