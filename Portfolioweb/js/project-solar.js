@@ -1,15 +1,19 @@
 /**
  * =====================================================================
- * LOKI TIMELINE WEAVER 3D ENGINE (project-solar.js) - CINEMATIC EDITION
+ * LOKI TIMELINE WEAVER 3D ENGINE (project-solar.js)
  * =====================================================================
- * Cinematic Ultra-Realistic Multiverse Timeline Experience:
- * - High-definition layered cinematic throne & Loki figure (God of Stories)
- * - 3D Timeline Nexus at Loki's hands casting volumetric emerald radiance
- * - Fibrous glowing plasma streams (thousands of soft additive photon motes)
- * - Multi-filament organic lightning threads weaving around each timeline
- * - Deep cosmic void with atmospheric mist, ambient Yggdrasil tree fan
- * - Smooth camera flight along timeline strands into deep space on mouse move
- * - Floating glassmorphic project telemetry card + deep-dive modal
+ * 100% Real-Time Three.js 3D PBR Engine (Zero 2D Wallpapers / Zero Flat Overlays):
+ * - Authentic Procedural PBR Textures (Normal Maps, Emissive Sap Veins, Weathered Gold, Basalt Stone)
+ * - 3D Citadel Throne Room & Dais (Basalt Stone with Gold Inlays & Spires)
+ * - 3D Sculpted Loki (God of Stories): Draped robes, Asgardian bracers, and iconic curved golden horns
+ * - 9 Living Organic Timeline Boughs (Branches of Yggdrasil):
+ *     * High-res organic curved tubes with procedural bark normal mapping
+ *     * Animated emissive sap veins pulsing from Loki's hands to project nodes
+ *     * Braided rootlet vines twisting organically around each main bough
+ *     * 3D faceted crystal planetary nexus orbs encased in rotating golden astrolabes
+ * - True 3D Point Lights casting real specular glints across gold, stone, and glowing vines
+ * - Cinematic camera flight along the organic timeline branches on mouse movement
+ * - Floating glassmorphic project telemetry HUD card + deep-dive architecture modal
  * =====================================================================
  */
 
@@ -69,11 +73,11 @@ export class ProjectTimelineEngine {
     // Camera Flight State
     this.activeProjectIndex = null;
     this.targetActiveIndex = null;
-    this.travelProgress = 0; // 0 = centered on Loki, 1 = deep on timeline
+    this.travelProgress = 0;
     this.targetTravelProgress = 0;
 
-    this.defaultCamPos = new THREE.Vector3(0, 0.75, 6.2);
-    this.defaultLookAt = new THREE.Vector3(0, 0.25, 0);
+    this.defaultCamPos = new THREE.Vector3(0, 1.15, 7.6);
+    this.defaultLookAt = new THREE.Vector3(0, 0.72, 0);
     this.currentCamPos = this.defaultCamPos.clone();
     this.currentLookAt = this.defaultLookAt.clone();
     this.targetCamPos = this.defaultCamPos.clone();
@@ -81,13 +85,12 @@ export class ProjectTimelineEngine {
 
     // 3D Collections
     this.timelines = [];
-    this.backgroundFilaments = [];
 
     this.initThree();
-    this.createGlowTexture();
-    this.buildCinematicHeroBackdrop();
-    this.buildTimelines();
-    this.buildAmbientYggdrasilFan();
+    this.generateProceduralTextures();
+    this.buildCitadelThroneRoom();
+    this.buildLokiFigure();
+    this.buildLivingTimelineRoots();
     this.buildSelectorHud();
     this.buildHudCard();
     this.setupModalListeners();
@@ -99,20 +102,20 @@ export class ProjectTimelineEngine {
     window.addEventListener('resize', this.onResize, { passive: true });
 
     requestAnimationFrame(this.animate);
-    console.log('[TimelineEngine] Cinematic Loki Multiverse Timeline Engine initialized.');
+    console.log('[TimelineEngine] True 3D PBR Loki Timeline Engine ignited.');
   }
 
   /* -----------------------------------------------------------------
-   * 1. THREE.JS SCENE, CAMERA & RENDERER SETUP
+   * 1. THREE.JS SCENE, CAMERA & LIGHTING SETUP
    * ----------------------------------------------------------------- */
   initThree() {
     const width = this.stage.clientWidth || window.innerWidth;
     const height = this.stage.clientHeight || window.innerHeight;
 
     this.scene = new THREE.Scene();
-    this.scene.fog = new THREE.FogExp2(0x020703, 0.042);
+    this.scene.fog = new THREE.FogExp2(0x020603, 0.038);
 
-    this.camera = new THREE.PerspectiveCamera(42, width / height, 0.1, 100);
+    this.camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 100);
     this.camera.position.copy(this.defaultCamPos);
     this.camera.lookAt(this.defaultLookAt);
 
@@ -125,151 +128,496 @@ export class ProjectTimelineEngine {
     this.renderer.setSize(width, height);
     this.renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
     this.renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    this.renderer.toneMappingExposure = 1.3;
+    this.renderer.toneMappingExposure = 1.35;
 
-    // Atmospheric Lighting
-    const ambientLight = new THREE.AmbientLight(0x0a1c10, 1.6);
+    // Atmospheric & Specular Lighting
+    const ambientLight = new THREE.AmbientLight(0x06140a, 1.4);
     this.scene.add(ambientLight);
 
     // Blazing Emerald Nexus Light at Loki's hands
-    this.nexusLight = new THREE.PointLight(0x00ff66, 5.0, 26);
-    this.nexusLight.position.set(0, 0.15, -1.9);
+    this.nexusLight = new THREE.PointLight(0x00ff66, 6.0, 24);
+    this.nexusLight.position.set(0, 0.48, 0.72);
     this.scene.add(this.nexusLight);
 
-    // Secondary Warm Golden Throne Light
-    this.throneGoldLight = new THREE.PointLight(0xffd54f, 2.4, 16);
-    this.throneGoldLight.position.set(0, 1.8, -2.5);
-    this.scene.add(this.throneGoldLight);
+    // Warm Golden Throne Light from above
+    this.throneLight = new THREE.PointLight(0xffd54f, 2.8, 14);
+    this.throneLight.position.set(0, 3.4, -0.4);
+    this.scene.add(this.throneLight);
 
-    // Directional cyan fill from upper corner
-    const dirLight = new THREE.DirectionalLight(0x00f0ff, 0.45);
-    dirLight.position.set(4, 8, 3);
+    // Side directional cyan fill
+    const dirLight = new THREE.DirectionalLight(0x00f0ff, 0.65);
+    dirLight.position.set(3, 7, 4);
     this.scene.add(dirLight);
+
+    // Soft emerald under-light
+    const floorLight = new THREE.PointLight(0x00aa44, 2.0, 10);
+    floorLight.position.set(0, -1.8, 0.5);
+    this.scene.add(floorLight);
   }
 
   /* -----------------------------------------------------------------
-   * 2. SOFT RADIAL GLOW TEXTURE (For authentic optical blooming)
+   * 2. PROCEDURAL PBR TEXTURES (BUMP, NORMAL, EMISSIVE SAP, GOLD, STONE)
    * ----------------------------------------------------------------- */
-  createGlowTexture() {
-    const canvas = document.createElement('canvas');
-    canvas.width = 64;
-    canvas.height = 64;
-    const ctx = canvas.getContext('2d');
-    const grad = ctx.createRadialGradient(32, 32, 0, 32, 32, 32);
-    grad.addColorStop(0.0, 'rgba(255, 255, 235, 1.0)');
-    grad.addColorStop(0.18, 'rgba(195, 255, 130, 0.9)');
-    grad.addColorStop(0.42, 'rgba(0, 255, 102, 0.45)');
-    grad.addColorStop(0.72, 'rgba(0, 120, 45, 0.14)');
-    grad.addColorStop(1.0, 'rgba(0, 0, 0, 0.0)');
-    ctx.fillStyle = grad;
-    ctx.fillRect(0, 0, 64, 64);
+  generateProceduralTextures() {
+    // A. Organic Vine / Tree Bark Normal Map (512x512)
+    const normalCanvas = document.createElement('canvas');
+    normalCanvas.width = 512;
+    normalCanvas.height = 512;
+    const nCtx = normalCanvas.getContext('2d');
+    const nImgData = nCtx.createImageData(512, 512);
+    const nData = nImgData.data;
 
-    this.glowTexture = new THREE.CanvasTexture(canvas);
+    // Compute fibrous bark heightfield & Sobel normal vectors
+    const heightMap = new Float32Array(512 * 512);
+    for (let y = 0; y < 512; y++) {
+      for (let x = 0; x < 512; x++) {
+        const u = x / 512;
+        const v = y / 512;
+        // Directional fibrous grooves + organic micro-twists
+        const grain = Math.sin(u * 50.0 + Math.sin(v * 20.0) * 4.0) * 0.45;
+        const fineGrain = Math.sin(u * 120.0) * 0.25;
+        const noise = (Math.sin(u * 15.0 + v * 35.0) + Math.cos(u * 30.0 - v * 20.0)) * 0.3;
+        heightMap[y * 512 + x] = grain + fineGrain + noise;
+      }
+    }
+
+    const strength = 3.2;
+    for (let y = 0; y < 512; y++) {
+      for (let x = 0; x < 512; x++) {
+        const xL = (x - 1 + 512) % 512;
+        const xR = (x + 1) % 512;
+        const yU = (y - 1 + 512) % 512;
+        const yD = (y + 1) % 512;
+
+        const dx = (heightMap[y * 512 + xR] - heightMap[y * 512 + xL]) * strength;
+        const dy = (heightMap[yD * 512 + x] - heightMap[yU * 512 + x]) * strength;
+        const dz = 1.0;
+
+        const len = Math.hypot(dx, dy, dz);
+        const nx = -dx / len;
+        const ny = -dy / len;
+        const nz = dz / len;
+
+        const idx = (y * 512 + x) * 4;
+        nData[idx] = Math.floor((nx * 0.5 + 0.5) * 255);
+        nData[idx + 1] = Math.floor((ny * 0.5 + 0.5) * 255);
+        nData[idx + 2] = Math.floor((nz * 0.5 + 0.5) * 255);
+        nData[idx + 3] = 255;
+      }
+    }
+    nCtx.putImageData(nImgData, 0, 0);
+
+    this.vineNormalMap = new THREE.CanvasTexture(normalCanvas);
+    this.vineNormalMap.wrapS = THREE.RepeatWrapping;
+    this.vineNormalMap.wrapT = THREE.RepeatWrapping;
+    this.vineNormalMap.repeat.set(2, 16);
+
+    // B. Emissive Sap Vein Texture (Interior Glowing Capillaries)
+    const veinCanvas = document.createElement('canvas');
+    veinCanvas.width = 512;
+    veinCanvas.height = 512;
+    const vCtx = veinCanvas.getContext('2d');
+    vCtx.fillStyle = '#010502';
+    vCtx.fillRect(0, 0, 512, 512);
+
+    // Draw glowing sap veins running down length of vine
+    vCtx.lineWidth = 14;
+    vCtx.strokeStyle = 'rgba(0, 255, 102, 0.75)';
+    vCtx.shadowColor = '#d2ff00';
+    vCtx.shadowBlur = 22;
+
+    for (let i = 0; i < 4; i++) {
+      vCtx.beginPath();
+      const startX = 60 + i * 110;
+      vCtx.moveTo(startX, 0);
+      for (let y = 0; y <= 512; y += 40) {
+        const offset = Math.sin(y * 0.05 + i * 1.5) * 35;
+        vCtx.lineTo(startX + offset, y);
+      }
+      vCtx.stroke();
+    }
+
+    // Core hot-white hairline in veins
+    vCtx.lineWidth = 4;
+    vCtx.strokeStyle = 'rgba(255, 255, 220, 0.95)';
+    vCtx.shadowBlur = 10;
+    for (let i = 0; i < 4; i++) {
+      vCtx.beginPath();
+      const startX = 60 + i * 110;
+      vCtx.moveTo(startX, 0);
+      for (let y = 0; y <= 512; y += 40) {
+        const offset = Math.sin(y * 0.05 + i * 1.5) * 35;
+        vCtx.lineTo(startX + offset, y);
+      }
+      vCtx.stroke();
+    }
+
+    this.veinTexture = new THREE.CanvasTexture(veinCanvas);
+    this.veinTexture.wrapS = THREE.RepeatWrapping;
+    this.veinTexture.wrapT = THREE.RepeatWrapping;
+    this.veinTexture.repeat.set(1, 8);
+
+    // C. Weathered Ancient Citadel Gold Texture
+    const goldCanvas = document.createElement('canvas');
+    goldCanvas.width = 256;
+    goldCanvas.height = 256;
+    const gCtx = goldCanvas.getContext('2d');
+    gCtx.fillStyle = '#c5a045';
+    gCtx.fillRect(0, 0, 256, 256);
+
+    // Brushed gold specular scratches
+    gCtx.strokeStyle = 'rgba(255, 235, 150, 0.18)';
+    gCtx.lineWidth = 1;
+    for (let i = 0; i < 160; i++) {
+      gCtx.beginPath();
+      const y = Math.random() * 256;
+      gCtx.moveTo(0, y);
+      gCtx.lineTo(256, y + (Math.random() - 0.5) * 12);
+      gCtx.stroke();
+    }
+    // Dark bronze patina in crevices
+    gCtx.fillStyle = 'rgba(60, 40, 10, 0.22)';
+    for (let i = 0; i < 25; i++) {
+      gCtx.fillRect(Math.random() * 256, Math.random() * 256, Math.random() * 40, Math.random() * 40);
+    }
+    this.goldTexture = new THREE.CanvasTexture(goldCanvas);
+
+    // D. Citadel Basalt Stone Texture
+    const stoneCanvas = document.createElement('canvas');
+    stoneCanvas.width = 256;
+    stoneCanvas.height = 256;
+    const sCtx = stoneCanvas.getContext('2d');
+    sCtx.fillStyle = '#0a0f0c';
+    sCtx.fillRect(0, 0, 256, 256);
+
+    // Stone texture grain
+    sCtx.fillStyle = 'rgba(25, 38, 28, 0.4)';
+    for (let i = 0; i < 3000; i++) {
+      sCtx.fillRect(Math.random() * 256, Math.random() * 256, 2, 2);
+    }
+    // Faint golden crack lines (Kintsugi Citadel Stone)
+    sCtx.strokeStyle = 'rgba(212, 175, 55, 0.35)';
+    sCtx.lineWidth = 1.2;
+    for (let i = 0; i < 6; i++) {
+      sCtx.beginPath();
+      sCtx.moveTo(Math.random() * 256, 0);
+      sCtx.lineTo(Math.random() * 256, 256);
+      sCtx.stroke();
+    }
+    this.stoneTexture = new THREE.CanvasTexture(stoneCanvas);
   }
 
   /* -----------------------------------------------------------------
-   * 3. CINEMATIC LOKI & CITADEL THRONE 3D HERO PLANE
+   * 3. 3D CITADEL THRONE ROOM & STEPS (REAL PBR GEOMETRY & MATERIALS)
    * ----------------------------------------------------------------- */
-  buildCinematicHeroBackdrop() {
-    this.heroGroup = new THREE.Group();
+  buildCitadelThroneRoom() {
+    this.citadelGroup = new THREE.Group();
 
-    // Load authentic feathered cinematic Loki on throne
-    const textureLoader = new THREE.TextureLoader();
-    textureLoader.load('assets/loki-cinematic-feathered.png', (tex) => {
-      tex.colorSpace = THREE.SRGBColorSpace;
-      tex.minFilter = THREE.LinearMipmapLinearFilter;
-
-      const aspect = 843 / 561; // 1.502
-      const planeH = 7.4;
-      const planeW = planeH * aspect;
-
-      const planeGeo = new THREE.PlaneGeometry(planeW, planeH);
-      const planeMat = new THREE.MeshBasicMaterial({
-        map: tex,
-        transparent: true,
-        opacity: 0.96,
-        depthWrite: false,
-      });
-
-      this.heroBackdropMesh = new THREE.Mesh(planeGeo, planeMat);
-      this.heroBackdropMesh.position.set(0, 0.35, -2.15);
-      this.heroGroup.add(this.heroBackdropMesh);
+    // PBR Materials
+    this.goldMaterial = new THREE.MeshStandardMaterial({
+      color: 0xd4af37,
+      map: this.goldTexture,
+      metalness: 0.92,
+      roughness: 0.26,
     });
 
-    // 3D Blazing Nexus Core (Exactly at Loki's hands in 3D world space)
-    const nexusGeo = new THREE.SphereGeometry(0.18, 20, 20);
-    const nexusMat = new THREE.MeshBasicMaterial({
+    this.stoneMaterial = new THREE.MeshStandardMaterial({
+      color: 0x111613,
+      map: this.stoneTexture,
+      metalness: 0.25,
+      roughness: 0.68,
+    });
+
+    // Tiered Hexagonal Dais Plinths
+    for (let i = 0; i < 3; i++) {
+      const radius = 2.4 - i * 0.42;
+      const height = 0.24;
+      const plinth = new THREE.Mesh(
+        new THREE.CylinderGeometry(radius, radius + 0.12, height, 6),
+        this.stoneMaterial
+      );
+      plinth.position.y = -1.8 + i * 0.24;
+      this.citadelGroup.add(plinth);
+
+      // Inlaid Gold Rim Border
+      const goldRim = new THREE.Mesh(
+        new THREE.TorusGeometry(radius + 0.02, 0.028, 6, 6),
+        this.goldMaterial
+      );
+      goldRim.rotation.x = Math.PI / 2;
+      goldRim.position.y = -1.8 + i * 0.24 + height / 2;
+      this.citadelGroup.add(goldRim);
+    }
+
+    // Heavy Carved Throne Base & Seat
+    const throneSeat = new THREE.Mesh(
+      new THREE.BoxGeometry(1.5, 0.85, 1.4),
+      this.stoneMaterial
+    );
+    throneSeat.position.set(0, -0.85, -0.15);
+    this.citadelGroup.add(throneSeat);
+
+    // Stone & Gold Armrests
+    [-0.82, 0.82].forEach((xSide) => {
+      const armrest = new THREE.Mesh(
+        new THREE.BoxGeometry(0.24, 0.72, 1.45),
+        this.stoneMaterial
+      );
+      armrest.position.set(xSide, -0.32, -0.15);
+      this.citadelGroup.add(armrest);
+
+      const armCap = new THREE.Mesh(
+        new THREE.BoxGeometry(0.28, 0.08, 1.5),
+        this.goldMaterial
+      );
+      armCap.position.set(xSide, 0.06, -0.15);
+      this.citadelGroup.add(armCap);
+    });
+
+    // Majestic High Gothic Asgardian Throne Back
+    const backGeo = new THREE.BoxGeometry(1.5, 2.8, 0.3);
+    const throneBack = new THREE.Mesh(backGeo, this.stoneMaterial);
+    throneBack.position.set(0, 1.05, -0.8);
+    this.citadelGroup.add(throneBack);
+
+    // Towering Gold Spires on Throne Back
+    [-0.78, 0.78].forEach((xSide) => {
+      const spire = new THREE.Mesh(
+        new THREE.ConeGeometry(0.18, 1.8, 6),
+        this.goldMaterial
+      );
+      spire.position.set(xSide, 2.55, -0.8);
+      this.citadelGroup.add(spire);
+    });
+
+    const centerSpire = new THREE.Mesh(
+      new THREE.ConeGeometry(0.25, 2.2, 6),
+      this.goldMaterial
+    );
+    centerSpire.position.set(0, 2.85, -0.8);
+    this.citadelGroup.add(centerSpire);
+
+    // Intricate Gold Chevron Relief
+    const chevronGeo = new THREE.TorusGeometry(0.52, 0.045, 8, 16, Math.PI);
+    const chevron = new THREE.Mesh(chevronGeo, this.goldMaterial);
+    chevron.position.set(0, 1.35, -0.62);
+    chevron.rotation.z = Math.PI;
+    this.citadelGroup.add(chevron);
+
+    this.scene.add(this.citadelGroup);
+  }
+
+  /* -----------------------------------------------------------------
+   * 4. 3D SCULPTED LOKI (GOD OF STORIES WITH THE HORNS)
+   * ----------------------------------------------------------------- */
+  buildLokiFigure() {
+    this.lokiGroup = new THREE.Group();
+
+    const robeMaterial = new THREE.MeshStandardMaterial({
+      color: 0x06190e,
+      roughness: 0.85,
+      metalness: 0.1,
+    });
+
+    const tunicMaterial = new THREE.MeshStandardMaterial({
+      color: 0x0a2414,
+      roughness: 0.65,
+      metalness: 0.2,
+    });
+
+    // Seated Lower Body & Draped Robe
+    const lowerBody = new THREE.Mesh(
+      new THREE.BoxGeometry(1.1, 0.7, 1.15),
+      robeMaterial
+    );
+    lowerBody.position.set(0, -0.45, 0.05);
+    this.lokiGroup.add(lowerBody);
+
+    // Seated legs draped forward
+    const legs = new THREE.Mesh(
+      new THREE.CylinderGeometry(0.46, 0.42, 0.88, 16),
+      robeMaterial
+    );
+    legs.rotation.x = Math.PI / 2.3;
+    legs.position.set(0, -0.65, 0.55);
+    this.lokiGroup.add(legs);
+
+    // Torso in Emerald Tunic
+    const torso = new THREE.Mesh(
+      new THREE.CylinderGeometry(0.42, 0.46, 0.95, 16),
+      tunicMaterial
+    );
+    torso.position.set(0, 0.32, -0.05);
+    this.lokiGroup.add(torso);
+
+    // Golden Cross-Chest Straps
+    const strap1 = new THREE.Mesh(
+      new THREE.BoxGeometry(0.08, 0.8, 0.82),
+      this.goldMaterial
+    );
+    strap1.rotation.z = 0.55;
+    strap1.position.set(0, 0.35, -0.02);
+    this.lokiGroup.add(strap1);
+
+    const strap2 = new THREE.Mesh(
+      new THREE.BoxGeometry(0.08, 0.8, 0.82),
+      this.goldMaterial
+    );
+    strap2.rotation.z = -0.55;
+    strap2.position.set(0, 0.35, -0.02);
+    this.lokiGroup.add(strap2);
+
+    // Cloak Shoulders
+    const capeShoulders = new THREE.Mesh(
+      new THREE.BoxGeometry(1.25, 0.3, 0.6),
+      robeMaterial
+    );
+    capeShoulders.position.set(0, 0.74, -0.15);
+    this.lokiGroup.add(capeShoulders);
+
+    // Arms reaching forward to clasp the timeline roots
+    [-0.38, 0.38].forEach((xSide) => {
+      const upperArm = new THREE.Mesh(
+        new THREE.CylinderGeometry(0.14, 0.12, 0.55, 12),
+        tunicMaterial
+      );
+      upperArm.rotation.x = Math.PI / 4;
+      upperArm.rotation.z = xSide > 0 ? -0.35 : 0.35;
+      upperArm.position.set(xSide * 1.05, 0.52, 0.16);
+      this.lokiGroup.add(upperArm);
+
+      const forearm = new THREE.Mesh(
+        new THREE.CylinderGeometry(0.12, 0.1, 0.58, 12),
+        tunicMaterial
+      );
+      forearm.rotation.x = Math.PI / 2.2;
+      forearm.rotation.y = xSide > 0 ? -0.45 : 0.45;
+      forearm.position.set(xSide * 0.55, 0.44, 0.46);
+      this.lokiGroup.add(forearm);
+
+      // Gold Vambrace / Bracer
+      const bracer = new THREE.Mesh(
+        new THREE.CylinderGeometry(0.13, 0.12, 0.28, 12),
+        this.goldMaterial
+      );
+      bracer.rotation.x = Math.PI / 2.2;
+      bracer.rotation.y = xSide > 0 ? -0.45 : 0.45;
+      bracer.position.set(xSide * 0.38, 0.44, 0.56);
+      this.lokiGroup.add(bracer);
+    });
+
+    // Hands clasped together gripping the timeline root bundle
+    const hands = new THREE.Mesh(
+      new THREE.SphereGeometry(0.16, 16, 16),
+      this.goldMaterial
+    );
+    hands.position.set(0, 0.46, 0.68);
+    this.lokiGroup.add(hands);
+
+    // Head / Hooded Visage in shadows
+    const head = new THREE.Mesh(
+      new THREE.SphereGeometry(0.24, 16, 16),
+      new THREE.MeshStandardMaterial({ color: 0x08100a, roughness: 0.7 })
+    );
+    head.position.set(0, 1.15, -0.05);
+    this.lokiGroup.add(head);
+
+    // Brow Circlet Diadem
+    const browBand = new THREE.Mesh(
+      new THREE.TorusGeometry(0.24, 0.035, 8, 24),
+      this.goldMaterial
+    );
+    browBand.rotation.x = Math.PI / 2.4;
+    browBand.position.set(0, 1.22, 0.02);
+    this.lokiGroup.add(browBand);
+
+    // THE ICONIC CURVED GOLDEN HORNS (High-detail smooth sweeping tubes)
+    [-1, 1].forEach((dir) => {
+      const hornCurve = new THREE.CatmullRomCurve3([
+        new THREE.Vector3(dir * 0.16, 1.25, 0.08),
+        new THREE.Vector3(dir * 0.48, 1.58, 0.05),
+        new THREE.Vector3(dir * 0.72, 2.15, -0.05),
+        new THREE.Vector3(dir * 0.56, 2.68, 0.18),
+        new THREE.Vector3(dir * 0.28, 2.92, 0.38),
+      ]);
+      const hornGeo = new THREE.TubeGeometry(hornCurve, 40, 0.062, 16, false);
+      const hornMesh = new THREE.Mesh(hornGeo, this.goldMaterial);
+      this.lokiGroup.add(hornMesh);
+    });
+
+    // Timeline Root Nexus Core at Hands
+    const nexusCoreGeo = new THREE.SphereGeometry(0.22, 24, 24);
+    const nexusCoreMat = new THREE.MeshBasicMaterial({
       color: 0xf5ffb8,
       transparent: true,
       opacity: 0.95,
       blending: THREE.AdditiveBlending,
     });
-    this.nexusMesh = new THREE.Mesh(nexusGeo, nexusMat);
-    this.nexusMesh.position.set(0, 0.15, -1.9);
-    this.heroGroup.add(this.nexusMesh);
+    this.nexusCore = new THREE.Mesh(nexusCoreGeo, nexusCoreMat);
+    this.nexusCore.position.set(0, 0.46, 0.7);
+    this.lokiGroup.add(this.nexusCore);
 
-    // Rotating Ethereal Loom Rings
-    this.loomRing1 = new THREE.Mesh(
-      new THREE.TorusGeometry(0.36, 0.015, 8, 32),
+    // Rotating Astrolabe Rings around Nexus
+    this.nexusRing1 = new THREE.Mesh(
+      new THREE.TorusGeometry(0.38, 0.02, 8, 32),
       new THREE.MeshBasicMaterial({
         color: 0x00ff88,
         transparent: true,
-        opacity: 0.75,
+        opacity: 0.8,
         blending: THREE.AdditiveBlending,
       })
     );
-    this.loomRing1.position.copy(this.nexusMesh.position);
-    this.heroGroup.add(this.loomRing1);
+    this.nexusRing1.position.copy(this.nexusCore.position);
+    this.lokiGroup.add(this.nexusRing1);
 
-    this.loomRing2 = new THREE.Mesh(
-      new THREE.TorusGeometry(0.54, 0.012, 8, 32),
+    this.nexusRing2 = new THREE.Mesh(
+      new THREE.TorusGeometry(0.54, 0.016, 8, 32),
       new THREE.MeshBasicMaterial({
         color: 0xd2ff00,
         transparent: true,
-        opacity: 0.55,
+        opacity: 0.6,
         blending: THREE.AdditiveBlending,
       })
     );
-    this.loomRing2.position.copy(this.nexusMesh.position);
-    this.heroGroup.add(this.loomRing2);
+    this.nexusRing2.position.copy(this.nexusCore.position);
+    this.lokiGroup.add(this.nexusRing2);
 
-    this.scene.add(this.heroGroup);
+    this.scene.add(this.lokiGroup);
   }
 
   /* -----------------------------------------------------------------
-   * 4. THE 9 PROJECT TIMELINES (FIBROUS PLASMA & ENERGETIC FLOW)
+   * 5. 9 LIVING TIMELINE BOUGHS (ORGANIC YGGDRASIL ROOTS WITH PBR VEINS)
    * ----------------------------------------------------------------- */
-  buildTimelines() {
+  buildLivingTimelineRoots() {
     this.timelineGroup = new THREE.Group();
-    // Nexus origin at Loki's hands
-    const nexusOrigin = new THREE.Vector3(0, 0.15, -1.9);
+    const nexusOrigin = new THREE.Vector3(0, 0.46, 0.7);
 
-    // 9 Spatial Target Vectors (Fanning out 360° into 3D foreground)
+    // 9 Spatial Target Vectors in 3D Space (Fanning out 360° around Loki)
     const TARGET_VECTORS = [
-      new THREE.Vector3(-4.4, 2.3, 1.4),   // 0. KeyBase (NW High)
-      new THREE.Vector3(-0.9, 3.6, 1.0),   // 1. Leadis / AiSam (N Zenith)
-      new THREE.Vector3(3.2, 2.8, 1.2),    // 2. InfoGrid (NE High)
-      new THREE.Vector3(4.8, 0.8, 0.8),    // 3. Rainiest (E Mid)
-      new THREE.Vector3(3.8, -2.1, 1.6),   // 4. Fitman (SE Low)
-      new THREE.Vector3(1.3, -3.2, 2.0),   // 5. 3DS Spatial (S Low)
-      new THREE.Vector3(-1.5, -3.1, 1.9),  // 6. ShareDash (SSW Low)
-      new THREE.Vector3(-3.8, -1.8, 1.5),  // 7. LateLoggy (SW Low)
-      new THREE.Vector3(-4.6, 0.5, 1.0),   // 8. FakePaste (W Mid)
+      new THREE.Vector3(-4.8, 2.8, 1.8),   // 0. KeyBase (NW High)
+      new THREE.Vector3(-1.0, 4.4, 1.2),   // 1. Leadis / AiSam (N Zenith)
+      new THREE.Vector3(3.6, 3.4, 1.6),    // 2. InfoGrid (NE High)
+      new THREE.Vector3(5.6, 1.1, 1.2),    // 3. Rainiest (E Mid)
+      new THREE.Vector3(4.6, -2.2, 2.3),   // 4. Fitman (SE Low)
+      new THREE.Vector3(1.6, -3.6, 2.8),   // 5. 3DS Spatial (S Low)
+      new THREE.Vector3(-1.8, -3.5, 2.6),  // 6. ShareDash (SSW Low)
+      new THREE.Vector3(-4.6, -1.9, 2.1),  // 7. LateLoggy (SW Low)
+      new THREE.Vector3(-5.6, 0.7, 1.4),   // 8. FakePaste (W Mid)
     ];
 
     PROJECT_NODES.forEach((proj, idx) => {
-      const endPt = TARGET_VECTORS[idx] || new THREE.Vector3(0, 2.5, 0);
+      const endPt = TARGET_VECTORS[idx] || new THREE.Vector3(0, 3, 0);
 
-      // Organic curved 3D trajectory
+      // Organic curved 3D trajectory with natural bough curvature
       const midPt1 = new THREE.Vector3(
-        nexusOrigin.x * 0.65 + endPt.x * 0.35 + (Math.random() - 0.5) * 0.3,
-        nexusOrigin.y * 0.65 + endPt.y * 0.35 + 0.25,
-        nexusOrigin.z * 0.65 + endPt.z * 0.35 + 0.4
+        nexusOrigin.x * 0.7 + endPt.x * 0.3 + (Math.random() - 0.5) * 0.35,
+        nexusOrigin.y * 0.7 + endPt.y * 0.3 + 0.3,
+        nexusOrigin.z * 0.7 + endPt.z * 0.3 + 0.25
       );
       const midPt2 = new THREE.Vector3(
         nexusOrigin.x * 0.25 + endPt.x * 0.75 + (Math.random() - 0.5) * 0.4,
-        nexusOrigin.y * 0.25 + endPt.y * 0.75 - 0.1,
-        nexusOrigin.z * 0.25 + endPt.z * 0.75 + 0.5
+        nexusOrigin.y * 0.25 + endPt.y * 0.75 - 0.15,
+        nexusOrigin.z * 0.25 + endPt.z * 0.75 + 0.4
       );
 
       const curve = new THREE.CatmullRomCurve3([
@@ -280,146 +628,70 @@ export class ProjectTimelineEngine {
       ]);
       curve.curveType = 'centripetal';
 
-      // --- A. Luminous Plasma Core Line (Thin & Blazing, NOT Chunky) ---
-      const corePoints = curve.getPoints(90);
-      const coreGeo = new THREE.BufferGeometry().setFromPoints(corePoints);
-      const coreMat = new THREE.LineBasicMaterial({
-        color: new THREE.Color(0xf5ffb8),
-        transparent: true,
-        opacity: 0.9,
-        blending: THREE.AdditiveBlending,
-        depthWrite: false,
-      });
-      const coreLine = new THREE.Line(coreGeo, coreMat);
-      this.timelineGroup.add(coreLine);
+      // Clone vein texture per timeline so we can animate independent sap flow
+      const timelineVeinTex = this.veinTexture.clone();
+      timelineVeinTex.needsUpdate = true;
 
-      // --- B. Luminous River of Flowing Photon Motes (Reference 2 Plasma Look) ---
-      const motesCount = 280; // High-density particle stream
-      const motesGeo = new THREE.BufferGeometry();
-      const motesPos = new Float32Array(motesCount * 3);
-      const motesColors = new Float32Array(motesCount * 3);
-
-      const colorGreen = new THREE.Color(0x00ff66);
-      const colorAccent = new THREE.Color(proj.color || '#D2FF00');
-      const colorCore = new THREE.Color(0xf5ffc0);
-
-      for (let m = 0; m < motesCount; m++) {
-        // Gradient color along strand
-        const mixed = colorGreen.clone().lerp(colorAccent, Math.random() * 0.4).lerp(colorCore, Math.random() * 0.3);
-        motesColors[m * 3] = mixed.r;
-        motesColors[m * 3 + 1] = mixed.g;
-        motesColors[m * 3 + 2] = mixed.b;
-      }
-
-      motesGeo.setAttribute('position', new THREE.BufferAttribute(motesPos, 3));
-      motesGeo.setAttribute('color', new THREE.BufferAttribute(motesColors, 3));
-
-      const motesMat = new THREE.PointsMaterial({
-        size: 0.12,
-        map: this.glowTexture,
-        vertexColors: true,
-        transparent: true,
-        opacity: 0.85,
-        blending: THREE.AdditiveBlending,
-        depthWrite: false,
+      // PBR Material for Living Jade Bough
+      const boughMaterial = new THREE.MeshStandardMaterial({
+        color: 0x072412,
+        roughness: 0.34,
+        metalness: 0.18,
+        normalMap: this.vineNormalMap,
+        normalScale: new THREE.Vector2(2.2, 2.2),
+        emissive: new THREE.Color(proj.color || '#00FF66'),
+        emissiveMap: timelineVeinTex,
+        emissiveIntensity: 1.8,
       });
 
-      const motesPoints = new THREE.Points(motesGeo, motesMat);
-      this.timelineGroup.add(motesPoints);
+      // Main Organic Bough Tube
+      const boughGeo = new THREE.TubeGeometry(curve, 96, 0.052, 12, false);
+      const boughMesh = new THREE.Mesh(boughGeo, boughMaterial);
+      this.timelineGroup.add(boughMesh);
 
-      // --- C. Fine Ethereal Tendril Threads (Fibrous Plasma Weave) ---
-      const tendrilLines = [];
-      const tendrilCount = 5;
-      for (let tc = 0; tc < tendrilCount; tc++) {
-        const tPts = [];
-        const phase = (tc * Math.PI * 2) / tendrilCount;
-        for (let s = 0; s <= 45; s++) {
-          const u = s / 45;
-          const pt = curve.getPointAt(u);
-          const tangent = curve.getTangentAt(u);
-          let up = new THREE.Vector3(0, 1, 0);
-          if (Math.abs(tangent.y) > 0.9) up = new THREE.Vector3(1, 0, 0);
-          const normal = new THREE.Vector3().crossVectors(tangent, up).normalize();
-          const binormal = new THREE.Vector3().crossVectors(tangent, normal).normalize();
+      // Intertwining Rootlet Vines
+      const rootletCurves = this.generateRootletCurves(curve, 2);
+      rootletCurves.forEach((rCurve) => {
+        const rGeo = new THREE.TubeGeometry(rCurve, 72, 0.022, 8, false);
+        const rMesh = new THREE.Mesh(rGeo, boughMaterial);
+        this.timelineGroup.add(rMesh);
+      });
 
-          // Organic wisp offset
-          const rad = 0.045 * Math.sin(u * Math.PI);
-          const ang = u * Math.PI * 8.0 + phase;
-          const offset = normal.clone().multiplyScalar(Math.cos(ang) * rad)
-            .add(binormal.clone().multiplyScalar(Math.sin(ang) * rad));
-
-          tPts.push(pt.clone().add(offset));
-        }
-        const tGeo = new THREE.BufferGeometry().setFromPoints(tPts);
-        const tMat = new THREE.LineBasicMaterial({
-          color: colorGreen,
-          transparent: true,
-          opacity: 0.4,
-          blending: THREE.AdditiveBlending,
-          depthWrite: false,
-        });
-        const tLine = new THREE.Line(tGeo, tMat);
-        this.timelineGroup.add(tLine);
-        tendrilLines.push(tLine);
-      }
-
-      // --- D. Project Nexus Orb at Apex ---
+      // Apex Project World (Faceted Crystal Orb in Golden Astrolabe Armature)
       const orbGroup = new THREE.Group();
       orbGroup.position.copy(endPt);
 
-      // Inner glowing core
-      const orbMesh = new THREE.Mesh(
-        new THREE.SphereGeometry(0.20, 16, 16),
-        new THREE.MeshBasicMaterial({
-          color: colorAccent,
-          transparent: true,
-          opacity: 0.95,
-          blending: THREE.AdditiveBlending,
-        })
-      );
-      orbGroup.add(orbMesh);
-
-      // Halo Sprite
-      const haloMat = new THREE.SpriteMaterial({
-        map: this.glowTexture,
-        color: colorAccent,
-        transparent: true,
-        opacity: 0.85,
-        blending: THREE.AdditiveBlending,
+      // 3D Faceted Icosahedron Crystal
+      const crystalGeo = new THREE.IcosahedronGeometry(0.24, 0);
+      const crystalMat = new THREE.MeshStandardMaterial({
+        color: new THREE.Color(proj.color || '#D2FF00'),
+        metalness: 0.85,
+        roughness: 0.15,
+        emissive: new THREE.Color(proj.color || '#D2FF00'),
+        emissiveIntensity: 1.4,
       });
-      const haloSprite = new THREE.Sprite(haloMat);
-      haloSprite.scale.set(0.95, 0.95, 1);
-      orbGroup.add(haloSprite);
+      const crystalMesh = new THREE.Mesh(crystalGeo, crystalMat);
+      orbGroup.add(crystalMesh);
 
-      // Targeting reticle ring
-      const reticleRing = new THREE.Mesh(
-        new THREE.TorusGeometry(0.38, 0.015, 8, 24),
-        new THREE.MeshBasicMaterial({
-          color: 0x00ff88,
-          transparent: true,
-          opacity: 0.7,
-          blending: THREE.AdditiveBlending,
-        })
+      // Rotating Golden Astrolabe Ring
+      const astrolabeRing = new THREE.Mesh(
+        new THREE.TorusGeometry(0.42, 0.022, 8, 32),
+        this.goldMaterial
       );
-      orbGroup.add(reticleRing);
+      orbGroup.add(astrolabeRing);
 
       this.timelineGroup.add(orbGroup);
 
-      // Store timeline state
+      // Store timeline telemetry
       this.timelines.push({
         index: idx,
         project: proj,
         curve: curve,
-        coreLine: coreLine,
-        coreMat: coreMat,
-        motesPoints: motesPoints,
-        motesMat: motesMat,
-        motesCount: motesCount,
-        motesSpeeds: Array.from({ length: motesCount }, () => 0.12 + Math.random() * 0.18),
-        motesOffsets: Array.from({ length: motesCount }, (_, i) => i / motesCount),
-        tendrilLines: tendrilLines,
+        material: boughMaterial,
+        veinTex: timelineVeinTex,
         orbGroup: orbGroup,
-        reticleRing: reticleRing,
+        crystalMesh: crystalMesh,
+        astrolabeRing: astrolabeRing,
         endPt: endPt,
       });
     });
@@ -428,45 +700,39 @@ export class ProjectTimelineEngine {
   }
 
   /* -----------------------------------------------------------------
-   * 5. AMBIENT YGGDRASIL BACKGROUND FAN (Dozens of Ethereal Threads)
+   * Generate Organic Rootlets Twisting Around Main Bough
    * ----------------------------------------------------------------- */
-  buildAmbientYggdrasilFan() {
-    this.ambientFanGroup = new THREE.Group();
-    const nexusOrigin = new THREE.Vector3(0, 0.15, -1.9);
-    const fanCount = 22;
+  generateRootletCurves(parentCurve, count = 2) {
+    const rootlets = [];
+    const pointsCount = 48;
+    const twistCycles = 6.0;
+    const radius = 0.082;
 
-    for (let f = 0; f < fanCount; f++) {
-      const angle = (f / fanCount) * Math.PI * 2 + (Math.random() - 0.5) * 0.2;
-      const dist = 5.5 + Math.random() * 2.5;
-      const endPt = new THREE.Vector3(
-        Math.cos(angle) * dist,
-        Math.sin(angle) * dist * 0.75 + 0.5,
-        -1.5 + (Math.random() - 0.5) * 1.5
-      );
+    for (let b = 0; b < count; b++) {
+      const phase = (b * Math.PI * 2) / count;
+      const pts = [];
 
-      const mid = new THREE.Vector3(
-        nexusOrigin.x * 0.5 + endPt.x * 0.5 + (Math.random() - 0.5) * 0.5,
-        nexusOrigin.y * 0.5 + endPt.y * 0.5 + 0.3,
-        nexusOrigin.z * 0.5 + endPt.z * 0.5
-      );
+      for (let i = 0; i <= pointsCount; i++) {
+        const t = i / pointsCount;
+        const pt = parentCurve.getPointAt(t);
+        const tangent = parentCurve.getTangentAt(t);
 
-      const curve = new THREE.CatmullRomCurve3([nexusOrigin.clone(), mid, endPt]);
-      const pts = curve.getPoints(35);
-      const geo = new THREE.BufferGeometry().setFromPoints(pts);
-      const mat = new THREE.LineBasicMaterial({
-        color: 0x00ff66,
-        transparent: true,
-        opacity: 0.18 + Math.random() * 0.15,
-        blending: THREE.AdditiveBlending,
-        depthWrite: false,
-      });
+        let up = new THREE.Vector3(0, 1, 0);
+        if (Math.abs(tangent.y) > 0.9) up = new THREE.Vector3(1, 0, 0);
+        const normal = new THREE.Vector3().crossVectors(tangent, up).normalize();
+        const binormal = new THREE.Vector3().crossVectors(tangent, normal).normalize();
 
-      const line = new THREE.Line(geo, mat);
-      this.ambientFanGroup.add(line);
-      this.backgroundFilaments.push({ line, curve, baseOpacity: mat.opacity });
+        const angle = t * Math.PI * 2 * twistCycles + phase;
+        const offset = normal.clone().multiplyScalar(Math.cos(angle) * radius)
+          .add(binormal.clone().multiplyScalar(Math.sin(angle) * radius));
+
+        const taper = Math.min(1.0, t / 0.18);
+        pts.push(pt.clone().add(offset.multiplyScalar(taper)));
+      }
+
+      rootlets.push(new THREE.CatmullRomCurve3(pts));
     }
-
-    this.scene.add(this.ambientFanGroup);
+    return rootlets;
   }
 
   /* -----------------------------------------------------------------
@@ -737,7 +1003,7 @@ export class ProjectTimelineEngine {
 
     // Center Deadzone: Near center -> Focused on Loki in chair
     // Moving outward: Traveling along nearest timeline strand
-    const centerDeadzone = 0.28;
+    const centerDeadzone = 0.26;
 
     if (this.mouse.dist < centerDeadzone) {
       this.targetActiveIndex = null;
@@ -760,7 +1026,7 @@ export class ProjectTimelineEngine {
       });
 
       this.targetActiveIndex = closestIdx;
-      const travelNorm = Math.min(1.0, (this.mouse.dist - centerDeadzone) / 0.52);
+      const travelNorm = Math.min(1.0, (this.mouse.dist - centerDeadzone) / 0.54);
       this.targetTravelProgress = travelNorm;
     }
   }
@@ -845,52 +1111,48 @@ export class ProjectTimelineEngine {
       }
     }
 
-    // 1. Animate Hero Backdrop Parallax & Nexus
-    if (this.heroBackdropMesh) {
-      this.heroBackdropMesh.position.x = this.mouse.x * 0.35;
-      this.heroBackdropMesh.position.y = 0.35 + this.mouse.y * 0.2;
+    // 1. Animate Loki Nexus Core & Spinning Astrolabe Rings
+    if (this.nexusCore) {
+      const pulse = 1.0 + Math.sin(this.time * 4.5) * 0.14;
+      this.nexusCore.scale.set(pulse, pulse, pulse);
     }
-    if (this.nexusMesh) {
-      const pulse = 1.0 + Math.sin(this.time * 5.0) * 0.18;
-      this.nexusMesh.scale.set(pulse, pulse, pulse);
+    if (this.nexusRing1) {
+      this.nexusRing1.rotation.x = this.time * 1.2;
+      this.nexusRing1.rotation.y = this.time * 0.8;
     }
-    if (this.loomRing1) {
-      this.loomRing1.rotation.x = this.time * 1.4;
-      this.loomRing1.rotation.y = this.time * 0.9;
-    }
-    if (this.loomRing2) {
-      this.loomRing2.rotation.x = -this.time * 1.1;
-      this.loomRing2.rotation.z = this.time * 1.3;
+    if (this.nexusRing2) {
+      this.nexusRing2.rotation.x = -this.time * 0.9;
+      this.nexusRing2.rotation.z = this.time * 1.1;
     }
 
     // 2. Camera Flight Navigation
     if (this.activeProjectIndex === null || this.travelProgress < 0.05) {
-      // --- MODE A: LOKI CENTER PANORAMA ---
-      const parallaxX = this.mouse.x * 0.65;
-      const parallaxY = this.mouse.y * 0.35;
+      // --- MODE A: LOKI PANORAMA OVERVIEW ---
+      const parallaxX = this.mouse.x * 0.72;
+      const parallaxY = this.mouse.y * 0.42;
 
-      this.targetCamPos.set(parallaxX, 0.75 + parallaxY, 6.2);
-      this.targetLookAt.set(parallaxX * 0.25, 0.25 + parallaxY * 0.15, 0);
+      this.targetCamPos.set(parallaxX, 1.15 + parallaxY, 7.6);
+      this.targetLookAt.set(parallaxX * 0.22, 0.72 + parallaxY * 0.18, 0);
 
       // Show title
       if (this.centerAnchor) {
         this.centerAnchor.style.opacity = '1';
-        this.centerAnchor.style.transform = `translateX(-50%) translate3d(${parallaxX * 16}px, ${-parallaxY * 12}px, 0)`;
+        this.centerAnchor.style.transform = `translateX(-50%) translate3d(${parallaxX * 18}px, ${-parallaxY * 12}px, 0)`;
       }
 
       if (this.hudCard) {
         this.hudCard.classList.remove('is-active');
       }
     } else {
-      // --- MODE B: CAMERA SWOOPING ALONG ACTIVE TIMELINE ---
+      // --- MODE B: CAMERA TRAVELING ALONG SELECTED TIMELINE ---
       const activeTimeline = this.timelines[this.activeProjectIndex];
       const curve = activeTimeline.curve;
 
       // Sample along curve (from 28% to 75% along curve)
-      const t = 0.26 + this.travelProgress * 0.48;
+      const t = 0.28 + this.travelProgress * 0.46;
       const curvePoint = curve.getPointAt(t);
 
-      const camOffset = new THREE.Vector3(0.18, 0.28, 1.35);
+      const camOffset = new THREE.Vector3(0.2, 0.32, 1.45);
       this.targetCamPos.copy(curvePoint).add(camOffset);
       this.targetLookAt.copy(activeTimeline.endPt);
 
@@ -902,7 +1164,7 @@ export class ProjectTimelineEngine {
 
       // Show project card
       if (this.hudCard) {
-        if (this.travelProgress > 0.32) {
+        if (this.travelProgress > 0.35) {
           this.hudCard.classList.add('is-active');
         } else {
           this.hudCard.classList.remove('is-active');
@@ -916,48 +1178,28 @@ export class ProjectTimelineEngine {
     this.camera.position.copy(this.currentCamPos);
     this.camera.lookAt(this.currentLookAt);
 
-    // 3. Update Timelines: Flowing Photons, Tendril Oscillation, Reticles
+    // 3. Animate Flowing Sap Veins & Astrolabe Armatures
     this.timelines.forEach((tl, idx) => {
       const isSelected = idx === this.activeProjectIndex;
-      const targetOpacity = (this.activeProjectIndex === null)
-        ? 0.85
-        : (isSelected ? 1.0 : Math.max(0.15, 0.85 - this.travelProgress * 0.7));
 
-      tl.motesMat.opacity += (targetOpacity - tl.motesMat.opacity) * 0.1;
-      tl.coreMat.opacity = tl.motesMat.opacity * 0.95;
+      // Continuously animate sap flow along texture offset
+      tl.veinTex.offset.y -= isSelected ? 0.016 : 0.007;
 
-      // Advance flowing photon motes
-      const positions = tl.motesPoints.geometry.attributes.position.array;
-      const count = tl.motesCount;
-      const speedMult = isSelected ? 0.026 : 0.013;
+      // Dynamic emissive intensity
+      const targetEmissive = isSelected
+        ? 3.2
+        : (this.activeProjectIndex === null ? 1.8 : 0.45);
+      tl.material.emissiveIntensity += (targetEmissive - tl.material.emissiveIntensity) * 0.1;
 
-      for (let m = 0; m < count; m++) {
-        tl.motesOffsets[m] = (tl.motesOffsets[m] + tl.motesSpeeds[m] * speedMult) % 1.0;
-        const pt = tl.curve.getPointAt(tl.motesOffsets[m]);
-
-        // Add subtle organic plasma wisp jitter
-        const jitter = Math.sin(tl.motesOffsets[m] * 20.0 + this.time * 4.0) * 0.025;
-        positions[m * 3] = pt.x + jitter;
-        positions[m * 3 + 1] = pt.y + jitter;
-        positions[m * 3 + 2] = pt.z;
-      }
-      tl.motesPoints.geometry.attributes.position.needsUpdate = true;
-
-      // Animate Reticle Ring & Apex Orb
-      if (tl.reticleRing) {
-        tl.reticleRing.rotation.z += isSelected ? 0.038 : 0.012;
-        const orbScale = isSelected ? 1.0 + Math.sin(this.time * 6.0) * 0.2 : 1.0;
-        tl.orbGroup.scale.set(orbScale, orbScale, orbScale);
+      // Spin crystal & astrolabe ring
+      if (tl.astrolabeRing) {
+        tl.astrolabeRing.rotation.x += isSelected ? 0.035 : 0.012;
+        tl.astrolabeRing.rotation.y += isSelected ? 0.045 : 0.016;
+        tl.crystalMesh.rotation.y += isSelected ? 0.05 : 0.02;
       }
     });
 
-    // 4. Update Ambient Yggdrasil Fan Lines
-    this.backgroundFilaments.forEach((bg, i) => {
-      const flicker = Math.sin(this.time * 2.0 + i) * 0.05;
-      bg.line.material.opacity = Math.max(0.08, bg.baseOpacity + flicker);
-    });
-
-    // 5. Update Selector Pill Active State
+    // 4. Update Selector Pill Active State
     if (this.selectorHud) {
       const pills = this.selectorHud.querySelectorAll('.timeline-pill-btn');
       pills.forEach((p, idx) => {
@@ -969,7 +1211,7 @@ export class ProjectTimelineEngine {
       });
     }
 
-    // 6. Render Three.js Scene
+    // 5. Render Three.js Scene
     this.renderer.render(this.scene, this.camera);
 
     requestAnimationFrame(this.animate);
