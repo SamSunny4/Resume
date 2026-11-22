@@ -1767,29 +1767,29 @@ html.lenis, html.lenis body {
   z-index: 1;
 }
 
-.projects-singularity {
+.projects-timeline-glow {
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 540px;
-  height: 540px;
+  width: 680px;
+  height: 680px;
   transform: translate(-50%, -50%);
-  background: radial-gradient(circle, rgba(0, 240, 255, 0.05) 0%, rgba(168, 85, 247, 0.03) 35%, transparent 65%);
+  background: radial-gradient(circle, rgba(0, 255, 102, 0.08) 0%, rgba(210, 255, 0, 0.04) 30%, rgba(5, 20, 10, 0.02) 60%, transparent 80%);
   border-radius: 50%;
   pointer-events: none;
   z-index: 2;
-  filter: blur(55px);
-  animation: projectsSingularityPulse 6s ease-in-out infinite alternate;
+  filter: blur(65px);
+  animation: timelineGlowPulse 5s ease-in-out infinite alternate;
 }
 
-@keyframes projectsSingularityPulse {
-  0% { transform: translate(-50%, -50%) scale(0.90); opacity: 0.5; }
-  100% { transform: translate(-50%, -50%) scale(1.12); opacity: 0.85; }
+@keyframes timelineGlowPulse {
+  0% { transform: translate(-50%, -50%) scale(0.92); opacity: 0.6; }
+  100% { transform: translate(-50%, -50%) scale(1.15); opacity: 0.95; }
 }
 
 .projects-center-anchor {
   position: absolute;
-  top: 50%;
+  top: 48%;
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 50;
@@ -1798,6 +1798,7 @@ html.lenis, html.lenis body {
   width: 100%;
   max-width: 950px;
   padding: 0 1rem;
+  transition: opacity 0.3s ease, transform 0.2s ease-out;
 }
 
 .projects-center-3d-text {
@@ -1807,7 +1808,6 @@ html.lenis, html.lenis body {
   justify-content: center;
   transform-style: preserve-3d;
   will-change: transform;
-  transition: transform 0.12s linear;
 }
 
 .projects-text-pre {
@@ -1816,7 +1816,7 @@ html.lenis, html.lenis body {
   color: var(--color-lime);
   margin-bottom: 0.4rem;
   opacity: 0.9;
-  text-shadow: 0 0 8px rgba(210, 255, 0, 0.35);
+  text-shadow: 0 0 10px rgba(0, 255, 102, 0.45);
 }
 
 .projects-text-monumental {
@@ -1827,12 +1827,12 @@ html.lenis, html.lenis body {
   letter-spacing: -0.03em;
   text-transform: uppercase;
   color: #FFFFFF;
-  background: linear-gradient(180deg, #FFFFFF 0%, #D8DFE6 45%, #7B8594 80%, #1A202C 100%);
+  background: linear-gradient(180deg, #FFFFFF 0%, #D8FFE2 40%, #72B887 80%, #0E2914 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.9))
           drop-shadow(0 8px 24px rgba(0, 0, 0, 0.95))
-          drop-shadow(0 0 20px rgba(0, 240, 255, 0.08));
+          drop-shadow(0 0 24px rgba(0, 255, 102, 0.2));
   margin: 0;
   user-select: none;
 }
@@ -1841,110 +1841,203 @@ html.lenis, html.lenis body {
   font-size: clamp(0.62rem, 0.85vw, 0.78rem);
   letter-spacing: 0.18em;
   color: var(--color-text-muted);
-  margin-top: 0.8rem;
+  margin-top: 0.7rem;
   max-width: 600px;
   text-transform: uppercase;
 }
 
-.projects-orbits-container {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
+.projects-text-hint {
+  font-size: 0.58rem;
+  letter-spacing: 0.15em;
+  color: var(--color-lime);
+  margin-top: 0.75rem;
+  padding: 0.25rem 0.8rem;
+  background: rgba(0, 255, 102, 0.06);
+  border: 1px solid rgba(0, 255, 102, 0.22);
+  border-radius: 9999px;
+  text-transform: uppercase;
+  animation: hintBreathe 2.5s ease-in-out infinite;
 }
 
-/* Individual Project Planetary World Node */
-.project-node {
+@keyframes hintBreathe {
+  0%, 100% { opacity: 0.65; transform: scale(0.98); }
+  50% { opacity: 1; transform: scale(1.02); }
+}
+
+/* ==========================================================================
+   LOKI TIMELINE SELECTOR HUD (Pill Navigation)
+   ========================================================================== */
+.timeline-selector-hud {
   position: absolute;
-  top: 0;
-  left: 0;
+  top: 1.8rem;
+  left: 50%;
+  transform: translateX(-50%);
   display: flex;
-  flex-direction: column;
   align-items: center;
-  justify-content: center;
+  gap: 0.45rem;
+  z-index: 55;
   pointer-events: auto;
+  max-width: 95vw;
+  overflow-x: auto;
+  padding: 0.35rem 0.6rem;
+  background: rgba(5, 12, 7, 0.75);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(0, 255, 102, 0.2);
+  border-radius: 9999px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.75), 0 0 16px rgba(0, 255, 102, 0.12);
+  scrollbar-width: none;
+}
+
+.timeline-selector-hud::-webkit-scrollbar {
+  display: none;
+}
+
+.timeline-pill-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.32rem 0.75rem;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 9999px;
+  color: var(--color-text-editorial);
+  font-size: 0.62rem;
+  letter-spacing: 0.06em;
   cursor: pointer;
-  will-change: transform, opacity, filter;
+  white-space: nowrap;
+  transition: all 0.22s var(--ease-expo);
   user-select: none;
 }
 
-.project-node-badge {
-  width: clamp(230px, 24vw, 290px);
-  background: linear-gradient(155deg, rgba(16, 22, 13, 0.94) 0%, rgba(8, 12, 7, 0.96) 100%);
-  backdrop-filter: blur(18px);
-  -webkit-backdrop-filter: blur(18px);
-  border: 1px solid var(--proj-accent, rgba(255, 255, 255, 0.16));
-  border-radius: 14px;
-  padding: 0.95rem 1.15rem;
-  box-shadow: 0 14px 35px rgba(0, 0, 0, 0.88), 0 0 16px color-mix(in srgb, var(--proj-accent, #D2FF00) 22%, transparent);
+.timeline-pill-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--pill-accent, #00FF66);
+  box-shadow: 0 0 6px var(--pill-accent, #00FF66);
+  opacity: 0.7;
+  transition: transform 0.2s, opacity 0.2s;
+}
+
+.timeline-pill-num {
+  font-weight: 700;
+  color: var(--pill-accent, var(--color-lime));
+  opacity: 0.85;
+}
+
+.timeline-pill-name {
+  font-weight: 500;
+}
+
+.timeline-pill-btn:hover {
+  background: rgba(0, 255, 102, 0.12);
+  border-color: var(--pill-accent, #00FF66);
+  color: #FFFFFF;
+  transform: translateY(-1px);
+}
+
+.timeline-pill-btn.is-active {
+  background: color-mix(in srgb, var(--pill-accent, #00FF66) 18%, rgba(5, 12, 7, 0.95));
+  border-color: var(--pill-accent, #00FF66);
+  color: #FFFFFF;
+  box-shadow: 0 0 14px color-mix(in srgb, var(--pill-accent, #00FF66) 40%, transparent);
+}
+
+.timeline-pill-btn.is-active .timeline-pill-dot {
+  transform: scale(1.35);
+  opacity: 1;
+}
+
+/* ==========================================================================
+   FLOATING PROJECT TELEMETRY CARD (Surfaces during timeline travel)
+   ========================================================================== */
+.timeline-project-card {
+  position: absolute;
+  top: 5.4rem;
+  right: 2.8rem;
+  width: clamp(280px, 28vw, 360px);
+  background: linear-gradient(155deg, rgba(8, 20, 11, 0.94) 0%, rgba(4, 11, 6, 0.96) 100%);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--card-accent, #00FF66);
+  border-radius: 16px;
+  padding: 1.15rem 1.3rem;
+  box-shadow: 0 18px 45px rgba(0, 0, 0, 0.92), 0 0 28px color-mix(in srgb, var(--card-accent, #00FF66) 28%, transparent);
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
-  transition: transform 0.25s var(--ease-expo), border-color 0.25s, box-shadow 0.25s;
-  position: relative;
+  gap: 0.7rem;
+  z-index: 55;
+  opacity: 0;
+  transform: translateY(18px) scale(0.96);
+  pointer-events: none;
+  transition: opacity 0.28s var(--ease-expo), transform 0.28s var(--ease-expo), border-color 0.25s, box-shadow 0.25s;
+  cursor: pointer;
   overflow: hidden;
 }
 
-.project-badge-glow {
+.timeline-project-card.is-active {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  pointer-events: auto;
+}
+
+.timeline-project-card:hover {
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 24px 55px rgba(0, 0, 0, 0.95), 0 0 38px color-mix(in srgb, var(--card-accent, #00FF66) 45%, transparent);
+}
+
+.timeline-card-glow {
   position: absolute;
   top: 0;
-  left: 15%;
-  right: 15%;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, var(--proj-accent, #D2FF00), transparent);
-  opacity: 0.8;
+  left: 10%;
+  right: 10%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--card-accent, #00FF66), transparent);
+  opacity: 0.9;
   pointer-events: none;
 }
 
-.project-node:hover .project-node-badge,
-.project-node.is-hovered .project-node-badge {
-  transform: scale(1.10);
-  border-color: var(--proj-accent, #D2FF00);
-  box-shadow: 0 20px 48px rgba(0, 0, 0, 0.95), 0 0 26px color-mix(in srgb, var(--proj-accent, #D2FF00) 45%, transparent);
-}
-
-.project-badge-header {
+.timeline-card-header {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 0.5rem;
+  gap: 0.75rem;
 }
 
-.project-badge-icon-wrap {
-  width: 36px;
-  height: 36px;
-  border-radius: 9px;
+.timeline-card-icon-wrap {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
   background: rgba(255, 255, 255, 0.05);
-  border: 1px solid color-mix(in srgb, var(--proj-accent, rgba(255, 255, 255, 0.15)) 40%, transparent);
-  box-shadow: 0 0 12px color-mix(in srgb, var(--proj-accent, #D2FF00) 18%, transparent);
+  border: 1px solid color-mix(in srgb, var(--card-accent, #00FF66) 35%, transparent);
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
+  box-shadow: 0 0 12px color-mix(in srgb, var(--card-accent, #00FF66) 22%, transparent);
 }
 
-.project-badge-icon {
-  width: 22px;
-  height: 22px;
+.timeline-card-icon {
+  width: 24px;
+  height: 24px;
   object-fit: contain;
 }
 
-.project-badge-status {
+.timeline-card-badge {
   font-size: 0.58rem;
   font-weight: 700;
   letter-spacing: 0.06em;
-  color: var(--proj-accent, var(--color-lime));
-  background: color-mix(in srgb, var(--proj-accent, var(--color-lime)) 8%, transparent);
-  padding: 0.22rem 0.5rem;
+  color: var(--card-accent, var(--color-lime));
+  background: color-mix(in srgb, var(--card-accent, var(--color-lime)) 10%, transparent);
+  padding: 0.18rem 0.45rem;
   border-radius: 4px;
-  border: 1px solid color-mix(in srgb, var(--proj-accent, var(--color-lime)) 30%, transparent);
-  white-space: nowrap;
+  border: 1px solid color-mix(in srgb, var(--card-accent, var(--color-lime)) 30%, transparent);
+  display: inline-block;
+  margin-bottom: 0.15rem;
 }
 
-.project-badge-title {
-  font-size: 1.08rem;
+.timeline-card-title {
+  font-size: 1.18rem;
   font-weight: 800;
   color: #FFFFFF;
   margin: 0;
@@ -1952,41 +2045,90 @@ html.lenis, html.lenis body {
   line-height: 1.2;
 }
 
-.project-badge-sub {
+.timeline-card-category {
   font-size: 0.62rem;
   letter-spacing: 0.08em;
   color: var(--color-text-dim);
-  margin: 0.15rem 0 0 0;
   text-transform: uppercase;
+  display: block;
 }
 
-.project-badge-tech-row {
+.timeline-card-desc {
+  font-size: 0.8rem;
+  line-height: 1.5;
+  color: var(--color-text-editorial);
+  margin: 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.timeline-card-tech-row {
   display: flex;
   align-items: center;
   gap: 0.35rem;
   flex-wrap: wrap;
-  margin-top: 0.2rem;
   padding-top: 0.45rem;
   border-top: 1px solid rgba(255, 255, 255, 0.06);
 }
 
-.project-badge-tech-chip {
-  font-size: 0.55rem;
+.timeline-chip {
+  font-size: 0.56rem;
   font-weight: 500;
   letter-spacing: 0.04em;
   color: var(--color-text-editorial);
   background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.09);
-  padding: 0.15rem 0.4rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 0.16rem 0.45rem;
   border-radius: 4px;
   white-space: nowrap;
 }
 
-.project-badge-tech-more {
-  font-size: 0.54rem;
-  font-weight: 700;
-  color: var(--proj-accent, var(--color-lime));
-  opacity: 0.9;
+.timeline-card-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.2rem;
+}
+
+.timeline-inspect-btn {
+  flex: 1;
+  font-size: 0.65rem;
+  padding: 0.55rem 0.8rem;
+  justify-content: center;
+}
+
+.timeline-git-btn {
+  font-size: 0.65rem;
+  padding: 0.55rem 0.8rem;
+  white-space: nowrap;
+}
+
+.timeline-card-dismiss-hint {
+  font-size: 0.52rem;
+  letter-spacing: 0.08em;
+  color: var(--color-text-dim);
+  text-align: center;
+  margin-top: 0.15rem;
+  opacity: 0.75;
+}
+
+@media (max-width: 900px) {
+  .timeline-project-card {
+    top: auto;
+    bottom: 5.6rem;
+    right: 50%;
+    transform: translate(50%, 20px) scale(0.96);
+    width: min(92vw, 380px);
+  }
+  .timeline-project-card.is-active {
+    transform: translate(50%, 0) scale(1);
+  }
+  .timeline-selector-hud {
+    top: 1.0rem;
+    max-width: 96vw;
+  }
 }
 
 /* In-Stage HUD Navigation Buttons */

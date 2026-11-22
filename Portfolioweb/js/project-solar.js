@@ -1,30 +1,35 @@
 /**
  * =====================================================================
- * PROJECT SOLAR SYSTEM ENGINE (project-solar.js)
+ * LOKI TIMELINE WEAVER 3D ENGINE (project-solar.js)
  * =====================================================================
- * 3D Celestial Solar System for Flagship Projects:
- * - 6 Verified Production Planetary Worlds in Keplerian Multi-Plane Orbits
- * - Mathematical Euler rotation matrices + 3D perspective projection
- * - Depth-sorted orbiting badges (< 0 behind monumental title, >= 0 over title)
- * - Dynamic mouse proximity time-dilation (smooth deceleration when cursor nears planets)
- * - Holographic near-pointer telemetry tooltip
- * - Interactive Cybernetic HUD modal with deep architecture telemetry & specs
- * - Canvas orbital rings with travelling photon energy packets & targeting lasers
- * - Zero external build dependencies (Pure Vanilla ES6 Module)
+ * Inspired by Marvel's Loki (God of Stories / Master of the Multiverse):
+ * - Central 3D Loki seated on the End of Time Throne holding 9 radiant timelines
+ * - Distinctive Asgardian Golden Curved Horns & Draped Obsidian-Green Robes
+ * - Central Timeline Nexus at Loki's hands radiating vibrant emerald energy
+ * - 9 Braided Helical Catmull-Rom Timeline Strands (one per flagship project)
+ * - Custom GLSL energy pulse shader with traveling waves, corona, & photon motes
+ * - Cinematic Camera Navigation:
+ *     * Center mouse: Panoramic view of Loki holding all timelines fanning out
+ *     * Moving mouse outward: Camera swoops & travels smoothly along that project's strand!
+ *     * Active timeline surges with intense emerald-gold light while others gently dim
+ *     * Floating Project Telemetry HUD card surfaces with specs & actions
+ *     * Click opens the Deep-Dive Architecture Modal with complete telemetry
+ * - Quick Timeline Pills for instant mobile/touch navigation
+ * - Hardware-accelerated Three.js WebGL runtime with zero external dependencies
  * =====================================================================
  */
 
 import { PROJECT_NODES, PROJECT_RINGS } from './projects.js';
 export { PROJECT_NODES, PROJECT_RINGS };
 
-export class ProjectSolarSystem {
+export class ProjectTimelineEngine {
   constructor() {
-    this.track = document.getElementById('space-stage-track');
     this.stage = document.getElementById('projects-stage');
     this.projectsLayer = document.getElementById('projects-space-layer');
-    this.container = document.getElementById('projects-orbits-container');
-    this.centerText = document.getElementById('projects-center-text');
     this.canvas = document.getElementById('projects-canvas');
+    this.centerText = document.getElementById('projects-center-text');
+    this.centerAnchor = document.getElementById('projects-center-anchor');
+    this.track = document.getElementById('space-stage-track');
 
     // Interactive Project Deep-Dive Modal Elements
     this.projectModal = document.getElementById('project-detail-modal');
@@ -40,262 +45,840 @@ export class ProjectSolarSystem {
     this.modalDismissBtn = document.getElementById('modal-dismiss-btn');
     this.modalBackdrop = document.getElementById('project-modal-backdrop');
 
-    // Quick Jump Navigation Buttons
+    // Navigation Buttons
     this.returnTechBtn = document.getElementById('return-tech-btn');
-    this.heroProjectsBtn = document.getElementById('hero-projects-btn');
-    this.engageCredentialsBtn = document.getElementById('engage-credentials-btn');
-    this.heroCredentialsBtn = document.getElementById('hero-credentials-btn');
+    this.projectsToContactBtn = document.getElementById('projects-to-contact-btn');
 
-    // Near-Pointer Floating Tooltip (shared HUD)
-    this.tooltip = document.getElementById('solar-cursor-tooltip');
-    this.tooltipIcon = document.getElementById('tooltip-icon');
-    this.tooltipTitle = document.getElementById('tooltip-title');
-    this.tooltipCategory = document.getElementById('tooltip-category');
-    this.tooltipDesc = document.getElementById('tooltip-desc');
-    this.tooltipFooter = document.getElementById('tooltip-footer');
-    this.tooltipProjectsSection = document.getElementById('tooltip-projects-section');
-    this.tooltipProjectsHeaderLabel = document.getElementById('tooltip-projects-header-label');
-    this.tooltipProjectsCount = document.getElementById('tooltip-projects-count');
-    this.tooltipProjectsList = document.getElementById('tooltip-projects-list');
+    // New Floating HUD Card & Selector elements
+    this.hudCard = document.getElementById('timeline-project-card');
+    this.selectorHud = document.getElementById('timeline-selector-hud');
 
-    if (!this.stage || !this.container) {
-      console.warn('[ProjectSolar] Projects stage or container not found in DOM.');
+    if (!this.stage || !this.canvas) {
+      console.warn('[TimelineEngine] Projects stage or canvas not found in DOM.');
       return;
     }
 
-    this.ctx = this.canvas ? this.canvas.getContext('2d') : null;
-    this.projectNodes = [];
-    this.hoveredProject = null;
-    this.activeModalProject = null;
-    this.time = 0;
+    if (typeof THREE === 'undefined') {
+      console.error('[TimelineEngine] Three.js is not loaded globally.');
+      return;
+    }
+
     this.isInViewport = true;
-    this.scaleRatio = 1.0;
-    this.stageWidth = 1200;
-    this.stageHeight = 700;
+    this.time = 0;
+    this.zoomProgress = 0;
 
-    // Camera 3D Parallax angles (lerped)
-    this.camRotX = 0;
-    this.camRotY = 0;
-    this.targetCamRotX = 0;
-    this.targetCamRotY = 0;
-
-    // Pointer Coordinates for Tooltip & Parallax
+    // Mouse coordinates (-1 to 1 normalized)
+    this.mouse = { x: 0, y: 0, targetX: 0, targetY: 0, dist: 0 };
     this.pointerClientX = -9999;
     this.pointerClientY = -9999;
-    this.tooltipCurrentX = -9999;
-    this.tooltipCurrentY = -9999;
-    this.isTooltipActive = false;
 
-    // Space Zoom State
-    this.zoomProgress = 0;
-    this.targetZoomProgress = 0;
+    // Camera Flight State
+    this.activeProjectIndex = null;
+    this.targetActiveIndex = null;
+    this.travelProgress = 0; // 0 = centered on Loki, 1 = deep on timeline
+    this.targetTravelProgress = 0;
 
-    // Dynamic Mouse Proximity Orbit Speed Dilation
-    this.projectsDilation = 1.0;
-    this.targetProjectsDilation = 1.0;
+    this.defaultCamPos = new THREE.Vector3(0, 1.25, 7.8);
+    this.defaultLookAt = new THREE.Vector3(0, 0.75, 0);
+    this.currentCamPos = this.defaultCamPos.clone();
+    this.currentLookAt = this.defaultLookAt.clone();
+    this.targetCamPos = this.defaultCamPos.clone();
+    this.targetLookAt = this.defaultLookAt.clone();
 
-    // Bind methods
-    this.animate = this.animate.bind(this);
-    this.onResize = this.onResize.bind(this);
-    this.onScroll = this.onScroll.bind(this);
-    this.onPointerMove = this.onPointerMove.bind(this);
-    this.triggerProjectsZoom = this.triggerProjectsZoom.bind(this);
-    this.triggerTechZoom = this.triggerTechZoom.bind(this);
-    this.openProjectModal = this.openProjectModal.bind(this);
-    this.closeProjectModal = this.closeProjectModal.bind(this);
+    // Core 3D Collections
+    this.timelines = [];
+    this.moteSystems = [];
+    this.raycaster = new THREE.Raycaster();
+    this.mouseVec2 = new THREE.Vector2();
 
-    this.init();
-  }
-
-  init() {
-    this.buildProjectNodesDOM();
-    this.onResize();
-    this.setupListeners();
+    this.initThree();
+    this.buildLokiAndThrone();
+    this.buildTimelines();
+    this.buildSelectorHud();
+    this.buildHudCard();
     this.setupModalListeners();
+    this.setupListeners();
     this.setupIntersectionObserver();
 
-    // Start 60fps / 120fps render loop
+    this.onResize = this.onResize.bind(this);
+    this.animate = this.animate.bind(this);
+    window.addEventListener('resize', this.onResize, { passive: true });
+
     requestAnimationFrame(this.animate);
-    console.log(`[ProjectSolar] Initialized with ${PROJECT_NODES.length} flagship project planetary worlds.`);
+    console.log('[TimelineEngine] Loki Multiverse Timeline Engine ignited successfully.');
   }
 
-  buildProjectNodesDOM() {
-    if (!this.container) return;
-    this.container.innerHTML = '';
-    this.projectNodes = [];
+  /* -----------------------------------------------------------------
+   * 1. THREE.JS SCENE, CAMERA & RENDERER SETUP
+   * ----------------------------------------------------------------- */
+  initThree() {
+    const width = this.stage.clientWidth || window.innerWidth;
+    const height = this.stage.clientHeight || window.innerHeight;
 
-    const ringBuckets = {};
-    PROJECT_NODES.forEach((proj) => {
-      const rIdx = Math.max(0, Math.min(PROJECT_RINGS.length - 1, proj.ringIndex ?? 0));
-      if (!ringBuckets[rIdx]) ringBuckets[rIdx] = [];
-      ringBuckets[rIdx].push(proj);
+    this.scene = new THREE.Scene();
+    this.scene.fog = new THREE.FogExp2(0x020703, 0.038);
+
+    this.camera = new THREE.PerspectiveCamera(44, width / height, 0.1, 100);
+    this.camera.position.copy(this.defaultCamPos);
+    this.camera.lookAt(this.defaultLookAt);
+
+    this.renderer = new THREE.WebGLRenderer({
+      canvas: this.canvas,
+      alpha: true,
+      antialias: true,
+      powerPreference: 'high-performance',
+    });
+    this.renderer.setSize(width, height);
+    this.renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+    this.renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    this.renderer.toneMappingExposure = 1.25;
+
+    // Atmospheric Lights
+    const ambientLight = new THREE.AmbientLight(0x0a1f11, 1.4);
+    this.scene.add(ambientLight);
+
+    // Warm golden throne rim light
+    this.throneLight = new THREE.PointLight(0xd4af37, 2.2, 12);
+    this.throneLight.position.set(0, 3.2, -0.6);
+    this.scene.add(this.throneLight);
+
+    // Blazing Emerald Nexus Point Light at Loki's hands
+    this.nexusLight = new THREE.PointLight(0x00ff66, 4.2, 18);
+    this.nexusLight.position.set(0, 0.48, 0.72);
+    this.scene.add(this.nexusLight);
+
+    // Overhead cyan fill
+    const dirLight = new THREE.DirectionalLight(0x00f0ff, 0.6);
+    dirLight.position.set(2, 6, 4);
+    this.scene.add(dirLight);
+
+    // Floor Radiance Plane
+    const floorGeo = new THREE.PlaneGeometry(24, 24);
+    const floorMat = new THREE.MeshBasicMaterial({
+      color: 0x00220d,
+      transparent: true,
+      opacity: 0.22,
+      depthWrite: false,
+    });
+    const floorMesh = new THREE.Mesh(floorGeo, floorMat);
+    floorMesh.rotation.x = -Math.PI / 2;
+    floorMesh.position.y = -2.1;
+    this.scene.add(floorMesh);
+  }
+
+  /* -----------------------------------------------------------------
+   * 2. CENTRAL LOKI FIGURE & END OF TIME THRONE
+   * ----------------------------------------------------------------- */
+  buildLokiAndThrone() {
+    this.lokiGroup = new THREE.Group();
+
+    // Materials
+    const goldThroneMat = new THREE.MeshStandardMaterial({
+      color: 0xc9a039,
+      metalness: 0.88,
+      roughness: 0.32,
+    });
+    const obsidianMat = new THREE.MeshStandardMaterial({
+      color: 0x0a0f0c,
+      metalness: 0.4,
+      roughness: 0.6,
+    });
+    const robeMat = new THREE.MeshStandardMaterial({
+      color: 0x06190e,
+      roughness: 0.82,
+      metalness: 0.15,
+    });
+    const tunicMat = new THREE.MeshStandardMaterial({
+      color: 0x0d2e19,
+      roughness: 0.65,
+      metalness: 0.25,
+    });
+    const hornedGoldMat = new THREE.MeshStandardMaterial({
+      color: 0xffd942,
+      metalness: 0.95,
+      roughness: 0.22,
+      emissive: 0x4a3a00,
+      emissiveIntensity: 0.25,
     });
 
-    Object.keys(ringBuckets).forEach((rKey) => {
-      const ringIndex = parseInt(rKey, 10);
-      const ring = PROJECT_RINGS[ringIndex];
-      const ringNodes = ringBuckets[ringIndex];
-      const totalInRing = ringNodes.length;
+    // --- A. THE THRONE ---
+    // Tiered Circular Plinths
+    for (let i = 0; i < 3; i++) {
+      const radius = 2.4 - i * 0.45;
+      const height = 0.22;
+      const plinth = new THREE.Mesh(
+        new THREE.CylinderGeometry(radius, radius + 0.1, height, 32),
+        obsidianMat
+      );
+      plinth.position.y = -1.9 + i * 0.22;
+      this.lokiGroup.add(plinth);
 
-      ringNodes.forEach((proj, itemIndex) => {
-        const initialTheta = (itemIndex / totalInRing) * Math.PI * 2 + (proj.orbitPhase ?? 0);
+      // Gold Trim Ring
+      const ring = new THREE.Mesh(
+        new THREE.TorusGeometry(radius + 0.02, 0.035, 12, 32),
+        goldThroneMat
+      );
+      ring.rotation.x = Math.PI / 2;
+      ring.position.y = -1.9 + i * 0.22 + height / 2;
+      this.lokiGroup.add(ring);
+    }
 
-        const el = document.createElement('div');
-        el.className = 'project-node';
-        el.dataset.id = proj.id;
-        el.setAttribute('role', 'button');
-        el.setAttribute('tabindex', '0');
-        el.setAttribute('aria-label', `${proj.name}: ${proj.category}`);
+    // Throne Seat Base & Box
+    const seatBase = new THREE.Mesh(
+      new THREE.BoxGeometry(1.6, 0.8, 1.4),
+      obsidianMat
+    );
+    seatBase.position.set(0, -0.85, -0.1);
+    this.lokiGroup.add(seatBase);
 
-        el.innerHTML = `
-          <div class="project-node-badge" style="--proj-accent: ${proj.color}">
-            <div class="project-badge-glow" aria-hidden="true"></div>
-            <div class="project-badge-header">
-              <div class="project-badge-icon-wrap">
-                <img src="${proj.icon}" alt="${proj.name}" class="project-badge-icon" onerror="this.src='assets/Samlogo.png';" />
-              </div>
-              <span class="project-badge-status font-mono">${proj.badge}</span>
-            </div>
-            <div class="project-badge-body">
-              <h3 class="project-badge-title font-display">${proj.name}</h3>
-              <p class="project-badge-sub font-mono">${proj.category}</p>
-            </div>
-            <div class="project-badge-tech-row font-mono">
-              ${(proj.tech || []).slice(0, 3).map(t => `<span class="project-badge-tech-chip">${t}</span>`).join('')}
-              ${proj.tech && proj.tech.length > 3 ? `<span class="project-badge-tech-more">+${proj.tech.length - 3}</span>` : ''}
-            </div>
-          </div>
-        `;
+    // Throne Armrests
+    [-0.85, 0.85].forEach((xSide) => {
+      const armrest = new THREE.Mesh(
+        new THREE.BoxGeometry(0.24, 0.7, 1.45),
+        obsidianMat
+      );
+      armrest.position.set(xSide, -0.35, -0.1);
+      this.lokiGroup.add(armrest);
 
-        el.addEventListener('pointerenter', () => this.handleProjectHover(proj, el));
-        el.addEventListener('pointerleave', () => this.handleProjectLeave());
-        el.addEventListener('focus', () => this.handleProjectHover(proj, el));
-        el.addEventListener('blur', () => this.handleProjectLeave());
-        el.addEventListener('click', (e) => {
-          e.stopPropagation();
-          this.openProjectModal(proj);
-        });
-        el.addEventListener('keydown', (e) => {
-          if (e.key === 'Enter' || e.key === ' ') {
-            e.preventDefault();
-            this.openProjectModal(proj);
+      // Gold cap
+      const armCap = new THREE.Mesh(
+        new THREE.BoxGeometry(0.28, 0.08, 1.5),
+        goldThroneMat
+      );
+      armCap.position.set(xSide, 0.02, -0.1);
+      this.lokiGroup.add(armCap);
+    });
+
+    // Majestic High Gothic Throne Back
+    const backGeo = new THREE.BoxGeometry(1.5, 2.6, 0.28);
+    const throneBack = new THREE.Mesh(backGeo, obsidianMat);
+    throneBack.position.set(0, 0.9, -0.75);
+    this.lokiGroup.add(throneBack);
+
+    // Asgardian Winged Spires on Throne Back
+    const spireGeo = new THREE.ConeGeometry(0.18, 1.6, 4);
+    [-0.78, 0.78].forEach((xSide) => {
+      const spire = new THREE.Mesh(spireGeo, goldThroneMat);
+      spire.position.set(xSide, 2.3, -0.75);
+      this.lokiGroup.add(spire);
+    });
+    const centerSpire = new THREE.Mesh(
+      new THREE.ConeGeometry(0.24, 2.0, 4),
+      goldThroneMat
+    );
+    centerSpire.position.set(0, 2.6, -0.75);
+    this.lokiGroup.add(centerSpire);
+
+    // Gold Chevron Inlays on Throne Back
+    const chevronGeo = new THREE.TorusGeometry(0.48, 0.045, 8, 16, Math.PI);
+    const chevron = new THREE.Mesh(chevronGeo, goldThroneMat);
+    chevron.position.set(0, 1.2, -0.58);
+    chevron.rotation.z = Math.PI;
+    this.lokiGroup.add(chevron);
+
+    // --- B. SEATED LOKI (GOD OF STORIES) ---
+    // Seated Lower Body & Draped Robe
+    const lowerBody = new THREE.Mesh(
+      new THREE.BoxGeometry(1.05, 0.65, 1.1),
+      robeMat
+    );
+    lowerBody.position.set(0, -0.45, 0.05);
+    this.lokiGroup.add(lowerBody);
+
+    // Legs draped forward
+    const legs = new THREE.Mesh(
+      new THREE.CylinderGeometry(0.45, 0.42, 0.85, 16),
+      robeMat
+    );
+    legs.rotation.x = Math.PI / 2.3;
+    legs.position.set(0, -0.65, 0.55);
+    this.lokiGroup.add(legs);
+
+    // Torso in Emerald Tunic
+    const torso = new THREE.Mesh(
+      new THREE.CylinderGeometry(0.42, 0.46, 0.95, 16),
+      tunicMat
+    );
+    torso.position.set(0, 0.32, -0.05);
+    this.lokiGroup.add(torso);
+
+    // Golden Cross-Chest Straps & Medallion
+    const chestStrap1 = new THREE.Mesh(
+      new THREE.BoxGeometry(0.08, 0.8, 0.82),
+      goldThroneMat
+    );
+    chestStrap1.rotation.z = 0.55;
+    chestStrap1.position.set(0, 0.35, -0.02);
+    this.lokiGroup.add(chestStrap1);
+
+    const chestStrap2 = new THREE.Mesh(
+      new THREE.BoxGeometry(0.08, 0.8, 0.82),
+      goldThroneMat
+    );
+    chestStrap2.rotation.z = -0.55;
+    chestStrap2.position.set(0, 0.35, -0.02);
+    this.lokiGroup.add(chestStrap2);
+
+    // Cloak Shoulders & Drape
+    const capeShoulders = new THREE.Mesh(
+      new THREE.BoxGeometry(1.22, 0.3, 0.6),
+      robeMat
+    );
+    capeShoulders.position.set(0, 0.74, -0.15);
+    this.lokiGroup.add(capeShoulders);
+
+    // Arms reaching forward to hold the timeline nexus
+    [-0.38, 0.38].forEach((xSide) => {
+      // Upper arm
+      const upperArm = new THREE.Mesh(
+        new THREE.CylinderGeometry(0.14, 0.12, 0.55, 12),
+        tunicMat
+      );
+      upperArm.rotation.x = Math.PI / 4;
+      upperArm.rotation.z = xSide > 0 ? -0.35 : 0.35;
+      upperArm.position.set(xSide * 1.05, 0.52, 0.16);
+      this.lokiGroup.add(upperArm);
+
+      // Forearm angled inward toward center chest
+      const forearm = new THREE.Mesh(
+        new THREE.CylinderGeometry(0.12, 0.1, 0.58, 12),
+        tunicMat
+      );
+      forearm.rotation.x = Math.PI / 2.2;
+      forearm.rotation.y = xSide > 0 ? -0.45 : 0.45;
+      forearm.position.set(xSide * 0.55, 0.44, 0.46);
+      this.lokiGroup.add(forearm);
+
+      // Golden Vambrace / Bracer
+      const bracer = new THREE.Mesh(
+        new THREE.CylinderGeometry(0.13, 0.12, 0.28, 12),
+        goldThroneMat
+      );
+      bracer.rotation.x = Math.PI / 2.2;
+      bracer.rotation.y = xSide > 0 ? -0.45 : 0.45;
+      bracer.position.set(xSide * 0.38, 0.44, 0.56);
+      this.lokiGroup.add(bracer);
+    });
+
+    // Hands clasped together holding the nexus
+    const hands = new THREE.Mesh(
+      new THREE.SphereGeometry(0.16, 16, 16),
+      goldThroneMat
+    );
+    hands.position.set(0, 0.46, 0.68);
+    this.lokiGroup.add(hands);
+
+    // Head / Hooded Visage in shadows
+    const head = new THREE.Mesh(
+      new THREE.SphereGeometry(0.24, 16, 16),
+      obsidianMat
+    );
+    head.position.set(0, 1.15, -0.05);
+    this.lokiGroup.add(head);
+
+    // Circlet Brow Band
+    const browBand = new THREE.Mesh(
+      new THREE.TorusGeometry(0.24, 0.035, 8, 24),
+      goldThroneMat
+    );
+    browBand.rotation.x = Math.PI / 2.4;
+    browBand.position.set(0, 1.22, 0.02);
+    this.lokiGroup.add(browBand);
+
+    // --- C. THE ICONIC GOLDEN CURVED HORNS ---
+    [-1, 1].forEach((dir) => {
+      const hornCurve = new THREE.CatmullRomCurve3([
+        new THREE.Vector3(dir * 0.16, 1.25, 0.08),
+        new THREE.Vector3(dir * 0.45, 1.55, 0.05),
+        new THREE.Vector3(dir * 0.68, 2.05, -0.05),
+        new THREE.Vector3(dir * 0.52, 2.55, 0.18),
+        new THREE.Vector3(dir * 0.28, 2.75, 0.35),
+      ]);
+      const hornGeo = new THREE.TubeGeometry(hornCurve, 32, 0.065, 12, false);
+      const hornMesh = new THREE.Mesh(hornGeo, hornedGoldMat);
+      this.lokiGroup.add(hornMesh);
+    });
+
+    // --- D. TIMELINE NEXUS (At Hands) ---
+    // Pulsing Core Sphere
+    const nexusCoreGeo = new THREE.SphereGeometry(0.22, 24, 24);
+    const nexusCoreMat = new THREE.MeshBasicMaterial({
+      color: 0xe8ff88,
+      transparent: true,
+      opacity: 0.95,
+    });
+    this.nexusCore = new THREE.Mesh(nexusCoreGeo, nexusCoreMat);
+    this.nexusCore.position.set(0, 0.46, 0.7);
+    this.lokiGroup.add(this.nexusCore);
+
+    // Spinning Loom Rings around nexus
+    this.nexusRing1 = new THREE.Mesh(
+      new THREE.TorusGeometry(0.38, 0.025, 8, 32),
+      new THREE.MeshBasicMaterial({
+        color: 0x00ff88,
+        transparent: true,
+        opacity: 0.8,
+        blending: THREE.AdditiveBlending,
+      })
+    );
+    this.nexusRing1.position.copy(this.nexusCore.position);
+    this.lokiGroup.add(this.nexusRing1);
+
+    this.nexusRing2 = new THREE.Mesh(
+      new THREE.TorusGeometry(0.52, 0.02, 8, 32),
+      new THREE.MeshBasicMaterial({
+        color: 0xd2ff00,
+        transparent: true,
+        opacity: 0.6,
+        blending: THREE.AdditiveBlending,
+      })
+    );
+    this.nexusRing2.position.copy(this.nexusCore.position);
+    this.lokiGroup.add(this.nexusRing2);
+
+    // --- E. GODHOOD AURA PARTICLES ---
+    const auraCount = 1100;
+    const auraPositions = new Float32Array(auraCount * 3);
+    const auraColors = new Float32Array(auraCount * 3);
+    const colGreen = new THREE.Color(0x00ff66);
+    const colGold = new THREE.Color(0xffd700);
+
+    for (let i = 0; i < auraCount; i++) {
+      const theta = Math.random() * Math.PI * 2;
+      const rad = 0.4 + Math.random() * 2.8;
+      const y = -1.2 + Math.random() * 4.2;
+      const z = -0.8 + Math.random() * 2.5;
+
+      auraPositions[i * 3] = Math.cos(theta) * rad;
+      auraPositions[i * 3 + 1] = y;
+      auraPositions[i * 3 + 2] = Math.sin(theta) * rad * 0.7 + z;
+
+      const mixed = colGreen.clone().lerp(colGold, Math.random());
+      auraColors[i * 3] = mixed.r;
+      auraColors[i * 3 + 1] = mixed.g;
+      auraColors[i * 3 + 2] = mixed.b;
+    }
+
+    const auraGeo = new THREE.BufferGeometry();
+    auraGeo.setAttribute('position', new THREE.BufferAttribute(auraPositions, 3));
+    auraGeo.setAttribute('color', new THREE.BufferAttribute(auraColors, 3));
+
+    const auraMat = new THREE.PointsMaterial({
+      size: 0.055,
+      vertexColors: true,
+      transparent: true,
+      opacity: 0.7,
+      blending: THREE.AdditiveBlending,
+      depthWrite: false,
+    });
+
+    this.auraPoints = new THREE.Points(auraGeo, auraMat);
+    this.lokiGroup.add(this.auraPoints);
+
+    this.scene.add(this.lokiGroup);
+  }
+
+  /* -----------------------------------------------------------------
+   * 3. THE 9 WEAVED PROJECT TIMELINES (BRAIDED GLOWING STRANDS)
+   * ----------------------------------------------------------------- */
+  buildTimelines() {
+    this.timelineGroup = new THREE.Group();
+    const nexusOrigin = new THREE.Vector3(0, 0.46, 0.7);
+
+    // 9 Radial Spatial Target Trajectories (Fanning out 360° around Loki)
+    const TARGET_VECTORS = [
+      new THREE.Vector3(-4.8, 2.7, 1.8),   // 0. KeyBase (NW High)
+      new THREE.Vector3(-1.1, 4.4, 1.2),   // 1. Leadis / AiSam (N Zenith)
+      new THREE.Vector3(3.6, 3.4, 1.6),    // 2. InfoGrid (NE High)
+      new THREE.Vector3(5.6, 1.1, 1.2),    // 3. Rainiest (E Mid)
+      new THREE.Vector3(4.6, -2.2, 2.3),   // 4. Fitman (SE Low)
+      new THREE.Vector3(1.6, -3.6, 2.8),   // 5. 3DS Spatial (S Low)
+      new THREE.Vector3(-1.8, -3.5, 2.6),  // 6. ShareDash (SSW Low)
+      new THREE.Vector3(-4.6, -1.9, 2.1),  // 7. LateLoggy (SW Low)
+      new THREE.Vector3(-5.6, 0.7, 1.4),   // 8. FakePaste (W Mid)
+    ];
+
+    PROJECT_NODES.forEach((proj, idx) => {
+      const endPt = TARGET_VECTORS[idx] || new THREE.Vector3(0, 3, 0);
+
+      // Compute natural 3D curve sways
+      const midPt1 = new THREE.Vector3(
+        nexusOrigin.x * 0.7 + endPt.x * 0.3 + (Math.random() - 0.5) * 0.4,
+        nexusOrigin.y * 0.7 + endPt.y * 0.3 + 0.35,
+        nexusOrigin.z * 0.7 + endPt.z * 0.3 + 0.2
+      );
+      const midPt2 = new THREE.Vector3(
+        nexusOrigin.x * 0.25 + endPt.x * 0.75 + (Math.random() - 0.5) * 0.5,
+        nexusOrigin.y * 0.25 + endPt.y * 0.75 - 0.15,
+        nexusOrigin.z * 0.25 + endPt.z * 0.75 + 0.35
+      );
+
+      const curve = new THREE.CatmullRomCurve3([
+        nexusOrigin.clone(),
+        midPt1,
+        midPt2,
+        endPt.clone(),
+      ]);
+      curve.curveType = 'centripetal';
+
+      // --- Custom GLSL Pulse Shader for Timeline Strands ---
+      const timelineShaderMat = new THREE.ShaderMaterial({
+        uniforms: {
+          uTime: { value: 0 },
+          uIntensity: { value: 1.0 },
+          uBaseColor: { value: new THREE.Color(0x00ff66) },
+          uAccentColor: { value: new THREE.Color(proj.color || '#D2FF00') },
+          uCoreColor: { value: new THREE.Color(0xfaffb5) },
+        },
+        vertexShader: `
+          varying vec2 vUv;
+          varying vec3 vNormal;
+          varying vec3 vViewPosition;
+          void main() {
+            vUv = uv;
+            vNormal = normalize(normalMatrix * normal);
+            vec4 mvPosition = modelViewMatrix * vec4(position, 1.0);
+            vViewPosition = -mvPosition.xyz;
+            gl_Position = projectionMatrix * mvPosition;
           }
-        });
+        `,
+        fragmentShader: `
+          uniform float uTime;
+          uniform float uIntensity;
+          uniform vec3 uBaseColor;
+          uniform vec3 uAccentColor;
+          uniform vec3 uCoreColor;
+          varying vec2 vUv;
+          varying vec3 vNormal;
+          varying vec3 vViewPosition;
 
-        this.container.appendChild(el);
+          void main() {
+            // Flowing energetic pulse travelling outward from Loki's hands
+            float wave1 = sin(vUv.x * 24.0 - uTime * 4.8) * 0.5 + 0.5;
+            float wave2 = sin(vUv.x * 55.0 - uTime * 11.0) * 0.3 + 0.3;
+            float shimmer = sin(vUv.x * 120.0 + uTime * 8.0) * 0.15;
 
-        this.projectNodes.push({
-          meta: proj,
-          ring: ring,
-          el: el,
-          theta: initialTheta,
-          projX: 0,
-          projY: 0,
-          projZ: 0,
-          scale: 1,
-          isFront: false,
-        });
+            float pulse = wave1 * 0.65 + wave2 * 0.35 + shimmer;
+
+            // Fresnel rim glow
+            vec3 viewDir = normalize(vViewPosition);
+            float fresnel = 1.0 - abs(dot(vNormal, viewDir));
+            fresnel = pow(fresnel, 1.8);
+
+            // Blend core white-gold -> emerald -> accent color
+            vec3 color = mix(uBaseColor, uAccentColor, 0.45);
+            color = mix(color, uCoreColor, fresnel * 0.6 + pulse * 0.4);
+
+            float alpha = (0.55 + fresnel * 0.45 + pulse * 0.3) * uIntensity;
+            gl_FragColor = vec4(color * (1.1 + pulse * 0.9) * uIntensity, clamp(alpha, 0.0, 1.0));
+          }
+        `,
+        transparent: true,
+        blending: THREE.AdditiveBlending,
+        depthWrite: false,
+        side: THREE.DoubleSide,
+      });
+
+      // 1. Main Tube Geometry
+      const tubeGeo = new THREE.TubeGeometry(curve, 72, 0.048, 8, false);
+      const mainTube = new THREE.Mesh(tubeGeo, timelineShaderMat);
+      this.timelineGroup.add(mainTube);
+
+      // 2. Braided Helical Sub-Filaments (Like Reference 2)
+      const braidCurves = this.generateBraidCurves(curve, 2);
+      braidCurves.forEach((bCurve) => {
+        const bGeo = new THREE.TubeGeometry(bCurve, 64, 0.022, 6, false);
+        const bMesh = new THREE.Mesh(bGeo, timelineShaderMat);
+        this.timelineGroup.add(bMesh);
+      });
+
+      // 3. Flowing Energy Photon Motes along this strand
+      const motesCount = 38;
+      const motesGeo = new THREE.BufferGeometry();
+      const motesPos = new Float32Array(motesCount * 3);
+      motesGeo.setAttribute('position', new THREE.BufferAttribute(motesPos, 3));
+
+      const motesMat = new THREE.PointsMaterial({
+        color: new THREE.Color(proj.color || '#D2FF00'),
+        size: 0.09,
+        transparent: true,
+        opacity: 0.85,
+        blending: THREE.AdditiveBlending,
+        depthWrite: false,
+      });
+      const motesPoints = new THREE.Points(motesGeo, motesMat);
+      this.timelineGroup.add(motesPoints);
+
+      // 4. Project Nexus Orb at Apex
+      const orbGroup = new THREE.Group();
+      orbGroup.position.copy(endPt);
+
+      const orbMesh = new THREE.Mesh(
+        new THREE.SphereGeometry(0.24, 20, 20),
+        new THREE.MeshBasicMaterial({
+          color: new THREE.Color(proj.color || '#D2FF00'),
+          transparent: true,
+          opacity: 0.9,
+          blending: THREE.AdditiveBlending,
+        })
+      );
+      orbGroup.add(orbMesh);
+
+      const reticleRing = new THREE.Mesh(
+        new THREE.TorusGeometry(0.42, 0.02, 8, 24),
+        new THREE.MeshBasicMaterial({
+          color: 0x00ff88,
+          transparent: true,
+          opacity: 0.7,
+          blending: THREE.AdditiveBlending,
+        })
+      );
+      orbGroup.add(reticleRing);
+
+      this.timelineGroup.add(orbGroup);
+
+      // Store timeline telemetry
+      this.timelines.push({
+        index: idx,
+        project: proj,
+        curve: curve,
+        material: timelineShaderMat,
+        motesPoints: motesPoints,
+        motesCount: motesCount,
+        motesSpeeds: Array.from({ length: motesCount }, () => 0.15 + Math.random() * 0.25),
+        motesOffsets: Array.from({ length: motesCount }, (_, i) => i / motesCount),
+        orbGroup: orbGroup,
+        reticleRing: reticleRing,
+        endPt: endPt,
+        // Projected 2D screen coords for distance checks
+        screenX: 0,
+        screenY: 0,
       });
     });
+
+    this.scene.add(this.timelineGroup);
   }
 
-  handleProjectHover(proj, el) {
-    this.hoveredProject = proj;
-    el.classList.add('is-hovered');
+  /* -----------------------------------------------------------------
+   * Generate Helical Braided Splines Winding Around Main Curve
+   * ----------------------------------------------------------------- */
+  generateBraidCurves(parentCurve, count = 2) {
+    const braids = [];
+    const pointsCount = 48;
+    const twistCycles = 7.0; // Number of spirals from Loki to outer apex
+    const radius = 0.085;
 
-    if (this.tooltip) {
-      if (this.tooltipIcon) {
-        this.tooltipIcon.src = proj.icon;
-        this.tooltipIcon.alt = proj.name;
-      }
-      if (this.tooltipTitle) {
-        this.tooltipTitle.textContent = proj.name;
-        this.tooltipTitle.style.color = proj.color || '#FFFFFF';
+    for (let b = 0; b < count; b++) {
+      const phase = (b * Math.PI * 2) / count;
+      const pts = [];
+
+      for (let i = 0; i <= pointsCount; i++) {
+        const t = i / pointsCount;
+        const pt = parentCurve.getPointAt(t);
+        const tangent = parentCurve.getTangentAt(t);
+
+        // Compute local perpendicular plane (Normal & Binormal)
+        let up = new THREE.Vector3(0, 1, 0);
+        if (Math.abs(tangent.y) > 0.9) up = new THREE.Vector3(1, 0, 0);
+        const normal = new THREE.Vector3().crossVectors(tangent, up).normalize();
+        const binormal = new THREE.Vector3().crossVectors(tangent, normal).normalize();
+
+        const angle = t * Math.PI * 2 * twistCycles + phase;
+        const offset = normal.clone().multiplyScalar(Math.cos(angle) * radius)
+          .add(binormal.clone().multiplyScalar(Math.sin(angle) * radius));
+
+        // Taper down at Loki's hands (t < 0.15) for tight convergence
+        const taper = Math.min(1.0, t / 0.15);
+        pts.push(pt.clone().add(offset.multiplyScalar(taper)));
       }
 
-      // Populate project's verified GitHub repository as a clean chip
-      if (this.tooltipProjectsList) {
-        this.tooltipProjectsList.innerHTML = '';
-        if (this.tooltipProjectsSection) {
-          this.tooltipProjectsSection.style.display = 'flex';
+      braids.push(new THREE.CatmullRomCurve3(pts));
+    }
+    return braids;
+  }
+
+  /* -----------------------------------------------------------------
+   * 4. QUICK SELECTOR HUD (Pill Navigation for Desktop & Mobile)
+   * ----------------------------------------------------------------- */
+  buildSelectorHud() {
+    if (!this.selectorHud) {
+      this.selectorHud = document.createElement('div');
+      this.selectorHud.id = 'timeline-selector-hud';
+      this.selectorHud.className = 'timeline-selector-hud';
+      this.stage.appendChild(this.selectorHud);
+    }
+
+    this.selectorHud.innerHTML = '';
+    PROJECT_NODES.forEach((proj, idx) => {
+      const btn = document.createElement('button');
+      btn.className = 'timeline-pill-btn font-mono';
+      btn.dataset.index = idx;
+      btn.style.setProperty('--pill-accent', proj.color || '#00FF66');
+      btn.innerHTML = `
+        <span class="timeline-pill-dot"></span>
+        <span class="timeline-pill-num">T-0${idx + 1}</span>
+        <span class="timeline-pill-name">${proj.name}</span>
+      `;
+
+      btn.addEventListener('mouseenter', () => {
+        this.selectTimeline(idx);
+      });
+
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        this.selectTimeline(idx);
+        // On double-click or mobile tap when already active, open modal
+        if (this.activeProjectIndex === idx) {
+          this.openProjectModal(proj);
         }
-        const chip = document.createElement('a');
-        chip.className = 'tooltip-project-chip font-mono';
-        chip.href = proj.github;
-        chip.target = '_blank';
-        chip.rel = 'noopener noreferrer';
-        chip.title = `Open ${proj.name} on GitHub`;
-        chip.innerHTML = `
-          <span>${proj.name}</span>
-          <svg class="chip-git-icon" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
-        `;
-        this.tooltipProjectsList.appendChild(chip);
+      });
+
+      this.selectorHud.appendChild(btn);
+    });
+  }
+
+  /* -----------------------------------------------------------------
+   * 5. FLOATING PROJECT TELEMETRY CARD (Surfaces along travel path)
+   * ----------------------------------------------------------------- */
+  buildHudCard() {
+    if (!this.hudCard) {
+      this.hudCard = document.createElement('div');
+      this.hudCard.id = 'timeline-project-card';
+      this.hudCard.className = 'timeline-project-card';
+      this.stage.appendChild(this.hudCard);
+    }
+
+    this.hudCard.innerHTML = `
+      <div class="timeline-card-glow" aria-hidden="true"></div>
+      <div class="timeline-card-header">
+        <div class="timeline-card-icon-wrap" id="tl-card-icon-wrap">
+          <img src="" alt="" id="tl-card-icon" class="timeline-card-icon" />
+        </div>
+        <div>
+          <span class="timeline-card-badge font-mono" id="tl-card-badge">// WEAVED TIMELINE</span>
+          <h3 class="timeline-card-title font-display" id="tl-card-title">PROJECT NAME</h3>
+          <span class="timeline-card-category font-mono" id="tl-card-category">CATEGORY</span>
+        </div>
+      </div>
+      <p class="timeline-card-desc font-sans" id="tl-card-desc"></p>
+      <div class="timeline-card-tech-row font-mono" id="tl-card-tech"></div>
+      <div class="timeline-card-actions">
+        <button class="btn-primary timeline-inspect-btn font-mono" id="tl-card-inspect-btn">
+          <span>INSPECT ARCHITECTURE ↗</span>
+        </button>
+        <a href="#" target="_blank" rel="noopener noreferrer" class="btn-secondary timeline-git-btn font-mono" id="tl-card-git-btn">
+          <span>GITHUB</span>
+        </a>
+      </div>
+      <div class="timeline-card-dismiss-hint font-mono">
+        <span>CLICK CARD FOR FULL SPECS · MOVE CURSOR TO CENTER TO RESET</span>
+      </div>
+    `;
+
+    this.tlCardIcon = document.getElementById('tl-card-icon');
+    this.tlCardBadge = document.getElementById('tl-card-badge');
+    this.tlCardTitle = document.getElementById('tl-card-title');
+    this.tlCardCategory = document.getElementById('tl-card-category');
+    this.tlCardDesc = document.getElementById('tl-card-desc');
+    this.tlCardTech = document.getElementById('tl-card-tech');
+    this.tlCardInspectBtn = document.getElementById('tl-card-inspect-btn');
+    this.tlCardGitBtn = document.getElementById('tl-card-git-btn');
+
+    if (this.tlCardInspectBtn) {
+      this.tlCardInspectBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        if (this.activeProjectIndex !== null) {
+          this.openProjectModal(PROJECT_NODES[this.activeProjectIndex]);
+        }
+      });
+    }
+
+    this.hudCard.addEventListener('click', (e) => {
+      // Don't trigger if clicked on the git link
+      if (e.target.closest('#tl-card-git-btn')) return;
+      e.stopPropagation();
+      if (this.activeProjectIndex !== null) {
+        this.openProjectModal(PROJECT_NODES[this.activeProjectIndex]);
       }
+    });
+  }
 
-      this.tooltip.style.setProperty('--tooltip-accent', proj.color || '#D2FF00');
-      this.tooltip.style.setProperty('--tooltip-glow', `${proj.color || '#D2FF00'}44`);
+  updateHudCard(proj) {
+    if (!proj || !this.hudCard) return;
 
-      if (this.pointerClientX > -1000) {
-        this.tooltipCurrentX = this.pointerClientX + 16;
-        this.tooltipCurrentY = this.pointerClientY + 16;
-        this.tooltip.style.transform = `translate3d(${this.tooltipCurrentX}px, ${this.tooltipCurrentY}px, 0)`;
-      }
+    this.hudCard.style.setProperty('--card-accent', proj.color || '#00FF66');
+    this.hudCard.style.setProperty('--card-accent-glow', `${proj.color || '#00FF66'}44`);
 
-      this.tooltip.classList.add('is-visible');
-      this.isTooltipActive = true;
+    if (this.tlCardIcon) {
+      this.tlCardIcon.src = proj.icon;
+      this.tlCardIcon.alt = proj.name;
+    }
+    if (this.tlCardBadge) this.tlCardBadge.textContent = proj.badge;
+    if (this.tlCardTitle) this.tlCardTitle.textContent = proj.name;
+    if (this.tlCardCategory) this.tlCardCategory.textContent = proj.category;
+    if (this.tlCardDesc) this.tlCardDesc.textContent = proj.desc;
+
+    if (this.tlCardTech) {
+      this.tlCardTech.innerHTML = (proj.tech || [])
+        .slice(0, 4)
+        .map((t) => `<span class="timeline-chip">${t}</span>`)
+        .join('');
+    }
+
+    if (this.tlCardGitBtn) {
+      this.tlCardGitBtn.href = proj.github || 'https://github.com/SamSunny4';
     }
   }
 
-  handleProjectLeave() {
-    if (this.hoveredProject) {
-      const el = this.container?.querySelector(`[data-id="${this.hoveredProject.id}"]`);
-      if (el) el.classList.remove('is-hovered');
-      this.hoveredProject = null;
+  /* -----------------------------------------------------------------
+   * 6. TIMELINE SELECTION & CAMERA FLIGHT DISPATCHER
+   * ----------------------------------------------------------------- */
+  selectTimeline(index) {
+    if (index === null || index === undefined) {
+      this.targetActiveIndex = null;
+      this.targetTravelProgress = 0;
+      return;
     }
 
-    if (this.tooltip) {
-      this.tooltip.classList.remove('is-visible');
-      this.isTooltipActive = false;
-    }
+    this.targetActiveIndex = Math.max(0, Math.min(PROJECT_NODES.length - 1, index));
+    this.targetTravelProgress = 1.0; // Glide camera along strand towards project
   }
 
+  /* -----------------------------------------------------------------
+   * 7. DEEP-DIVE MODAL SYSTEM
+   * ----------------------------------------------------------------- */
   openProjectModal(proj) {
     if (!this.projectModal || !proj) return;
     this.activeModalProject = proj;
 
     if (this.modalTitle) this.modalTitle.textContent = proj.name;
-    if (this.modalStatus) {
-      this.modalStatus.textContent = `// ${proj.badge}`;
-      this.modalStatus.style.color = proj.color;
-    }
-    if (this.modalCategory) {
-      this.modalCategory.textContent = proj.category || '';
-    }
+    if (this.modalStatus) this.modalStatus.textContent = `// ${proj.badge}`;
+    if (this.modalCategory) this.modalCategory.textContent = proj.category || '';
     if (this.modalDesc) this.modalDesc.textContent = proj.desc;
     if (this.modalIcon) {
       this.modalIcon.src = proj.icon;
       this.modalIcon.alt = proj.name;
     }
 
-    this.projectModal.style.setProperty('--modal-accent', proj.color || '#D2FF00');
-    this.projectModal.style.setProperty('--modal-accent-glow', `${proj.color || '#D2FF00'}44`);
+    this.projectModal.style.setProperty('--modal-accent', proj.color || '#00FF66');
+    this.projectModal.style.setProperty('--modal-accent-glow', `${proj.color || '#00FF66'}44`);
 
     if (this.modalTechChips) {
       this.modalTechChips.innerHTML = '';
-      (proj.tech || []).forEach(techName => {
+      (proj.tech || []).forEach((t) => {
         const chip = document.createElement('span');
         chip.className = 'modal-chip';
-        chip.textContent = techName;
+        chip.textContent = t;
         this.modalTechChips.appendChild(chip);
       });
     }
 
     if (this.modalStatsList) {
       this.modalStatsList.innerHTML = '';
-      (proj.stats || []).forEach(stat => {
+      (proj.stats || []).forEach((s) => {
         const pill = document.createElement('div');
         pill.className = 'modal-stat-pill';
-        pill.textContent = stat;
+        pill.textContent = s;
         this.modalStatsList.appendChild(pill);
       });
     }
@@ -304,8 +887,7 @@ export class ProjectSolarSystem {
       this.modalRepoLink.href = proj.github || 'https://github.com/SamSunny4';
     }
 
-    this.projectModal.classList.add('is-open');
-    this.projectModal.classList.add('is-active');
+    this.projectModal.classList.add('is-open', 'is-active');
     this.projectModal.setAttribute('aria-hidden', 'false');
     document.body.style.overflow = 'hidden';
     if (window.AppState?.lenis) window.AppState.lenis.stop();
@@ -313,8 +895,7 @@ export class ProjectSolarSystem {
 
   closeProjectModal() {
     if (!this.projectModal) return;
-    this.projectModal.classList.remove('is-open');
-    this.projectModal.classList.remove('is-active');
+    this.projectModal.classList.remove('is-open', 'is-active');
     this.projectModal.setAttribute('aria-hidden', 'true');
     this.activeModalProject = null;
     document.body.style.overflow = '';
@@ -332,10 +913,104 @@ export class ProjectSolarSystem {
       this.modalBackdrop.addEventListener('click', () => this.closeProjectModal());
     }
     window.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && (this.projectModal?.classList.contains('is-open') || this.projectModal?.classList.contains('is-active'))) {
-        this.closeProjectModal();
+      if (e.key === 'Escape') {
+        if (this.projectModal?.classList.contains('is-open')) {
+          this.closeProjectModal();
+        } else if (this.activeProjectIndex !== null) {
+          // Reset to Loki center view
+          this.selectTimeline(null);
+        }
       }
     });
+  }
+
+  /* -----------------------------------------------------------------
+   * 8. EVENT LISTENERS & NAVIGATION
+   * ----------------------------------------------------------------- */
+  setupListeners() {
+    window.addEventListener('pointermove', (e) => this.onPointerMove(e), { passive: true });
+
+    // Clicking anywhere on stage while focused on a timeline opens the deep dive
+    this.stage.addEventListener('click', (e) => {
+      // Don't trigger if clicked on buttons or selector pills
+      if (e.target.closest('button') || e.target.closest('a') || e.target.closest('.timeline-pill-btn')) return;
+
+      if (this.activeProjectIndex !== null && this.travelProgress > 0.45) {
+        this.openProjectModal(PROJECT_NODES[this.activeProjectIndex]);
+      }
+    });
+
+    if (this.returnTechBtn) {
+      this.returnTechBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        this.triggerTechZoom();
+      });
+    }
+
+    if (this.projectsToContactBtn) {
+      this.projectsToContactBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        this.triggerContactZoom();
+      });
+    }
+  }
+
+  onPointerMove(e) {
+    this.pointerClientX = e.clientX;
+    this.pointerClientY = e.clientY;
+
+    const w = window.innerWidth;
+    const h = window.innerHeight;
+    const nx = (e.clientX / w) * 2 - 1;
+    const ny = -(e.clientY / h) * 2 + 1;
+
+    this.mouse.targetX = nx;
+    this.mouse.targetY = ny;
+    this.mouse.dist = Math.hypot(nx, ny);
+
+    // MOUSE BEHAVIOR:
+    // Center deadzone: Within radius 0.26 -> Focused on Loki in chair
+    // Outside deadzone: Traveling along nearest timeline strand
+    const centerDeadzone = 0.26;
+
+    if (this.mouse.dist < centerDeadzone) {
+      this.targetActiveIndex = null;
+      this.targetTravelProgress = 0;
+    } else {
+      // Find nearest project timeline by comparing mouse directional angle
+      const mouseAngle = Math.atan2(ny, nx); // [-PI to PI]
+      let closestIdx = 0;
+      let minAngleDiff = 999;
+
+      this.timelines.forEach((tl, idx) => {
+        const endPt = tl.endPt;
+        const tlAngle = Math.atan2(endPt.y, endPt.x);
+        let diff = Math.abs(mouseAngle - tlAngle);
+        if (diff > Math.PI) diff = Math.PI * 2 - diff;
+
+        if (diff < minAngleDiff) {
+          minAngleDiff = diff;
+          closestIdx = idx;
+        }
+      });
+
+      this.targetActiveIndex = closestIdx;
+      // Travel progress scales smoothly from 0.0 to 1.0 as cursor moves towards edge
+      const travelNorm = Math.min(1.0, (this.mouse.dist - centerDeadzone) / 0.55);
+      this.targetTravelProgress = travelNorm;
+    }
+  }
+
+  onResize() {
+    const w = this.stage?.clientWidth || window.innerWidth;
+    const h = this.stage?.clientHeight || window.innerHeight;
+
+    if (this.camera && this.renderer) {
+      this.camera.aspect = w / h;
+      this.camera.updateProjectionMatrix();
+      this.renderer.setSize(w, h);
+      this.renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+    }
   }
 
   setupIntersectionObserver() {
@@ -352,81 +1027,6 @@ export class ProjectSolarSystem {
     else if (this.stage) observer.observe(this.stage);
   }
 
-  onResize() {
-    const w = this.stage?.clientWidth || window.innerWidth;
-    const h = this.stage?.clientHeight || window.innerHeight;
-    this.stageWidth = w;
-    this.stageHeight = h;
-
-    if (this.canvas) {
-      const dpr = Math.min(window.devicePixelRatio || 1, 2);
-      this.canvas.width = w * dpr;
-      this.canvas.height = h * dpr;
-      this.canvas.style.width = `${w}px`;
-      this.canvas.style.height = `${h}px`;
-      if (this.ctx) {
-        this.ctx.resetTransform();
-        this.ctx.scale(dpr, dpr);
-      }
-    }
-
-    if (w < 600) this.scaleRatio = 0.44;
-    else if (w < 900) this.scaleRatio = 0.62;
-    else if (w < 1200) this.scaleRatio = 0.78;
-    else if (w < 1600) this.scaleRatio = 0.90;
-    else this.scaleRatio = 1.0;
-  }
-
-  updateTooltipPosition() {
-    if (!this.tooltip || !this.isTooltipActive) return;
-
-    const tooltipRect = this.tooltip.getBoundingClientRect();
-    const tooltipWidth = tooltipRect.width || 360;
-    const tooltipHeight = tooltipRect.height || 260;
-    let targetX = this.pointerClientX + 18;
-    let targetY = this.pointerClientY + 18;
-
-    if (targetX + tooltipWidth > window.innerWidth - 16) {
-      targetX = this.pointerClientX - tooltipWidth - 18;
-    }
-    if (targetY + tooltipHeight > window.innerHeight - 16) {
-      targetY = this.pointerClientY - tooltipHeight - 18;
-    }
-    targetX = Math.max(12, targetX);
-    targetY = Math.max(12, targetY);
-
-    this.tooltipCurrentX += (targetX - this.tooltipCurrentX) * 0.24;
-    this.tooltipCurrentY += (targetY - this.tooltipCurrentY) * 0.24;
-
-    this.tooltip.style.transform = `translate3d(${this.tooltipCurrentX.toFixed(1)}px, ${this.tooltipCurrentY.toFixed(1)}px, 0)`;
-  }
-
-  setupListeners() {
-    window.addEventListener('resize', this.onResize, { passive: true });
-    window.addEventListener('scroll', this.onScroll, { passive: true });
-    window.addEventListener('pointermove', this.onPointerMove, { passive: true });
-    window.addEventListener('pointerleave', () => {
-      this.pointerClientX = -9999;
-      this.pointerClientY = -9999;
-      this.targetProjectsDilation = 1.0;
-    });
-
-    if (this.returnTechBtn) {
-      this.returnTechBtn.addEventListener('click', (e) => {
-        e.preventDefault();
-        this.triggerTechZoom();
-      });
-    }
-
-    const projectsToContactBtn = document.getElementById('projects-to-contact-btn');
-    if (projectsToContactBtn) {
-      projectsToContactBtn.addEventListener('click', (e) => {
-        e.preventDefault();
-        this.triggerContactZoom();
-      });
-    }
-  }
-
   triggerProjectsZoom() {
     if (window.AppState?.techSolar) {
       window.AppState.techSolar.triggerProjectsZoom();
@@ -436,8 +1036,7 @@ export class ProjectSolarSystem {
     const trackTop = this.track.offsetTop;
     const maxScroll = this.track.offsetHeight - window.innerHeight;
     const targetY = trackTop + maxScroll * 0.78;
-
-    if (window.AppState && window.AppState.lenis) {
+    if (window.AppState?.lenis) {
       window.AppState.lenis.scrollTo(targetY, { duration: 2.2 });
     } else {
       window.scrollTo({ top: targetY, behavior: 'smooth' });
@@ -447,341 +1046,185 @@ export class ProjectSolarSystem {
   triggerTechZoom() {
     if (window.AppState?.techSolar) {
       window.AppState.techSolar.triggerTechZoom();
-      return;
-    }
-    if (!this.track) return;
-    const trackTop = this.track.offsetTop;
-    const maxScroll = this.track.offsetHeight - window.innerHeight;
-    const targetY = trackTop + maxScroll * 0.58;
-
-    if (window.AppState && window.AppState.lenis) {
-      window.AppState.lenis.scrollTo(targetY, { duration: 2.0 });
-    } else {
-      window.scrollTo({ top: targetY, behavior: 'smooth' });
     }
   }
 
   triggerContactZoom() {
     if (window.AppState?.techSolar) {
       window.AppState.techSolar.triggerContactZoom();
-      return;
-    }
-    if (!this.track) return;
-    const trackTop = this.track.offsetTop;
-    const maxScroll = this.track.offsetHeight - window.innerHeight;
-    const targetY = trackTop + maxScroll * 0.98;
-
-    if (window.AppState && window.AppState.lenis) {
-      window.AppState.lenis.scrollTo(targetY, { duration: 2.4 });
-    } else {
-      window.scrollTo({ top: targetY, behavior: 'smooth' });
     }
   }
 
-  onPointerMove(e) {
-    this.pointerClientX = e.clientX;
-    this.pointerClientY = e.clientY;
-
-    if (!this.isInViewport) return;
-    const centerX = window.innerWidth / 2;
-    const centerY = window.innerHeight / 2;
-
-    const nx = Math.max(-1, Math.min(1, (e.clientX - centerX) / (window.innerWidth / 2)));
-    const ny = Math.max(-1, Math.min(1, (e.clientY - centerY) / (window.innerHeight / 2)));
-
-    this.targetCamRotY = nx * 0.44;
-    this.targetCamRotX = -ny * 0.35;
-  }
-
-  onScroll() {
-    // Progress updated in animation loop
-  }
-
-  updateSpaceZoom() {
-    if (window.AppState?.techSolar?.zoomProgress !== undefined) {
-      this.zoomProgress = window.AppState.techSolar.zoomProgress;
-      return;
-    }
-
-    if (!this.track) return;
-    const trackRect = this.track.getBoundingClientRect();
-    const trackTop = trackRect.top;
-    const trackH = this.track.offsetHeight;
-    const winH = window.innerHeight;
-    const maxScroll = trackH - winH;
-
-    if (maxScroll <= 0) return;
-
-    const currentScroll = -trackTop;
-    const rawProgress = Math.max(0, Math.min(1, currentScroll / maxScroll));
-    this.targetZoomProgress = rawProgress;
-    this.zoomProgress += (this.targetZoomProgress - this.zoomProgress) * 0.14;
-  }
-
-  project3D(x0, y0, z0, ring, camX, camY) {
-    // 1. Orbital Plane Euler rotation
-    const y1 = y0 * Math.cos(ring.tiltX) - z0 * Math.sin(ring.tiltX);
-    const z1 = y0 * Math.sin(ring.tiltX) + z0 * Math.cos(ring.tiltX);
-    const x1 = x0;
-
-    const x2 = x1 * Math.cos(ring.tiltY) + z1 * Math.sin(ring.tiltY);
-    const z2 = -x1 * Math.sin(ring.tiltY) + z1 * Math.cos(ring.tiltY);
-    const y2 = y1;
-
-    const x3 = x2 * Math.cos(ring.tiltZ) - y2 * Math.sin(ring.tiltZ);
-    const y3 = x2 * Math.sin(ring.tiltZ) + y2 * Math.cos(ring.tiltZ);
-    const z3 = z2;
-
-    // 2. Camera Parallax Rotation
-    const xCam = x3 * Math.cos(camY) + z3 * Math.sin(camY);
-    const zCam1 = -x3 * Math.sin(camY) + z3 * Math.cos(camY);
-
-    const yCam = y3 * Math.cos(camX) - zCam1 * Math.sin(camX);
-    const zCam = y3 * Math.sin(camX) + zCam1 * Math.cos(camX);
-
-    // 3. Perspective Projection
-    const fov = 850;
-    const perspectiveScale = fov / (fov - zCam);
-
-    return {
-      screenX: xCam * perspectiveScale,
-      screenY: yCam * perspectiveScale,
-      depthZ: zCam,
-      scale: perspectiveScale,
-    };
-  }
-
-  renderCanvas(camX, camY) {
-    if (!this.ctx) return;
-    const ctx = this.ctx;
-    const w = this.stageWidth;
-    const h = this.stageHeight;
-    const centerX = w / 2;
-    const centerY = h / 2;
-
-    ctx.clearRect(0, 0, w, h);
-
-    if (this.zoomProgress < 0.68 || this.zoomProgress > 0.88) return;
-
-    const projRingAlphaMultiplier = Math.min(1, Math.max(0, (this.zoomProgress - 0.68) / 0.05)) * Math.max(0, 1 - (this.zoomProgress - 0.83) / 0.05);
-
-    // Draw 3D Projects Orbital Rings
-    PROJECT_RINGS.forEach((ring) => {
-      const a = ring.baseRadiusX * this.scaleRatio;
-      const b = ring.baseRadiusY * this.scaleRatio;
-      const segments = 90;
-
-      const points = [];
-      for (let i = 0; i <= segments; i++) {
-        const phi = (i / segments) * Math.PI * 2;
-        const x0 = a * Math.cos(phi);
-        const y0 = b * Math.sin(phi);
-        const p = this.project3D(x0, y0, 0, ring, camX, camY);
-        points.push({
-          x: centerX + p.screenX,
-          y: centerY + p.screenY,
-          z: p.depthZ,
-        });
-      }
-
-      // Background segments (faint, behind)
-      ctx.lineWidth = 1;
-      ctx.beginPath();
-      let isDrawing = false;
-      for (let i = 0; i < points.length; i++) {
-        const pt = points[i];
-        if (pt.z < 0) {
-          if (!isDrawing) { ctx.moveTo(pt.x, pt.y); isDrawing = true; }
-          else { ctx.lineTo(pt.x, pt.y); }
-        } else { isDrawing = false; }
-      }
-      ctx.strokeStyle = ring.color.replace(/[\d\.]+\)$/, `${(0.06 * projRingAlphaMultiplier).toFixed(2)})`);
-      ctx.setLineDash([3, 5]);
-      ctx.stroke();
-
-      // Foreground segments (subtle, clean, over)
-      ctx.beginPath();
-      isDrawing = false;
-      for (let i = 0; i < points.length; i++) {
-        const pt = points[i];
-        if (pt.z >= 0) {
-          if (!isDrawing) { ctx.moveTo(pt.x, pt.y); isDrawing = true; }
-          else { ctx.lineTo(pt.x, pt.y); }
-        } else { isDrawing = false; }
-      }
-      ctx.strokeStyle = ring.color.replace(/[\d\.]+\)$/, `${(0.20 * projRingAlphaMultiplier).toFixed(2)})`);
-      ctx.setLineDash([]);
-      ctx.stroke();
-
-      // Travelling photon energy packet on project orbit
-      const photonPhase = (this.time * ring.baseSpeed * 2.2) % (Math.PI * 2);
-      const px0 = a * Math.cos(photonPhase);
-      const py0 = b * Math.sin(photonPhase);
-      const photonProj = this.project3D(px0, py0, 0, ring, camX, camY);
-      if (photonProj.depthZ >= 0) {
-        ctx.fillStyle = '#FFFFFF';
-        ctx.shadowColor = ring.color;
-        ctx.shadowBlur = 5;
-        ctx.beginPath();
-        ctx.arc(centerX + photonProj.screenX, centerY + photonProj.screenY, 1.8 * photonProj.scale, 0, Math.PI * 2);
-        ctx.fill();
-        ctx.shadowBlur = 0;
-      }
-    });
-
-    // Laser connection line if project is hovered
-    if (this.hoveredProject && this.zoomProgress >= 0.70 && this.zoomProgress <= 0.86) {
-      const activeProj = this.projectNodes.find(n => n.meta.id === this.hoveredProject.id);
-      if (activeProj) {
-        ctx.beginPath();
-        ctx.moveTo(centerX, centerY);
-        ctx.lineTo(centerX + activeProj.projX, centerY + activeProj.projY);
-        ctx.strokeStyle = `${activeProj.meta.color}99`;
-        ctx.lineWidth = 1.2;
-        ctx.setLineDash([4, 4]);
-        ctx.stroke();
-        ctx.setLineDash([]);
-
-        // Target reticle ring at project planet
-        ctx.beginPath();
-        ctx.arc(centerX + activeProj.projX, centerY + activeProj.projY, 26 * activeProj.scale, 0, Math.PI * 2);
-        ctx.strokeStyle = activeProj.meta.color;
-        ctx.lineWidth = 1;
-        ctx.stroke();
-      }
-    }
-  }
-
+  /* -----------------------------------------------------------------
+   * 9. MAIN RENDER & ANIMATION LOOP
+   * ----------------------------------------------------------------- */
   animate() {
-    if (document.hidden) {
+    if (!this.isInViewport || document.hidden) {
       requestAnimationFrame(this.animate);
       return;
     }
 
-    if (this.isInViewport) {
-      this.time += 1.0;
+    this.time += 0.016;
 
-      this.updateSpaceZoom();
+    // Smooth lerp mouse coords
+    this.mouse.x += (this.mouse.targetX - this.mouse.x) * 0.08;
+    this.mouse.y += (this.mouse.targetY - this.mouse.y) * 0.08;
 
-      // Blend mobile gyroscope if active and no active touch drag
-      if (window.AppState && window.AppState.gyro && window.AppState.gyro.active) {
-        this.targetCamRotY = window.AppState.gyro.x * 0.44;
-        this.targetCamRotX = -window.AppState.gyro.y * 0.35;
+    // Smooth lerp travel progress
+    this.travelProgress += (this.targetTravelProgress - this.travelProgress) * 0.075;
+
+    // Handle Active Project switching
+    if (this.targetActiveIndex !== this.activeProjectIndex) {
+      this.activeProjectIndex = this.targetActiveIndex;
+      if (this.activeProjectIndex !== null) {
+        this.updateHudCard(PROJECT_NODES[this.activeProjectIndex]);
       }
-
-      // Smooth lerp camera angles (mouse / gyro parallax)
-      this.camRotX += (this.targetCamRotX - this.camRotX) * 0.07;
-      this.camRotY += (this.targetCamRotY - this.camRotY) * 0.07;
-
-      const centerX = this.stageWidth / 2;
-      const centerY = this.stageHeight / 2;
-
-      // Update Monumental 3D Projects Title Parallax
-      if (this.centerText && this.zoomProgress > 0.68 && this.zoomProgress < 0.88) {
-        const projPitch = -this.camRotX * 16;
-        const projYaw = this.camRotY * 22;
-        this.centerText.style.transform = `perspective(900px) rotateX(${projPitch.toFixed(2)}deg) rotateY(${projYaw.toFixed(2)}deg) translateZ(0)`;
-      }
-
-      // Update Project Planetary Worlds in 3D Orbits
-      if (this.zoomProgress > 0.68 && this.zoomProgress < 0.88 && this.projectNodes.length > 0) {
-        let minProjMouseDist = 9999;
-        if (this.pointerClientX > -1000 && this.pointerClientY > -1000) {
-          for (let i = 0; i < this.projectNodes.length; i++) {
-            const pNode = this.projectNodes[i];
-            const pScreenX = centerX + pNode.projX;
-            const pScreenY = centerY + pNode.projY;
-            const d = Math.hypot(this.pointerClientX - pScreenX, this.pointerClientY - pScreenY);
-            if (d < minProjMouseDist) minProjMouseDist = d;
-          }
-
-          const projProximity = Math.max(0, Math.min(1, (minProjMouseDist - 30) / 220));
-          this.targetProjectsDilation = 0.20 + 0.80 * Math.pow(projProximity, 1.5);
-
-          if (this.hoveredProject) {
-            this.targetProjectsDilation = 0.05;
-          }
-        } else {
-          this.targetProjectsDilation = 1.0;
-        }
-
-        this.projectsDilation += (this.targetProjectsDilation - this.projectsDilation) * 0.08;
-
-        this.projectNodes.forEach(pNode => {
-          const ring = pNode.ring;
-
-          const pSpeed = (pNode.meta.id === this.hoveredProject?.id)
-            ? ring.baseSpeed * 0.05
-            : ring.baseSpeed * this.projectsDilation;
-
-          pNode.theta += pSpeed;
-
-          const a = ring.baseRadiusX * this.scaleRatio;
-          const b = ring.baseRadiusY * this.scaleRatio;
-
-          const x0 = a * Math.cos(pNode.theta);
-          const y0 = b * Math.sin(pNode.theta);
-
-          const wobbleAmp = (ring.wobbleAmp * 0.6) * this.scaleRatio;
-          const z0 = wobbleAmp * Math.sin(2 * pNode.theta + this.time * 0.012);
-
-          const proj = this.project3D(x0, y0, z0, ring, this.camRotX, this.camRotY);
-
-          pNode.projX = proj.screenX;
-          pNode.projY = proj.screenY;
-          pNode.projZ = proj.depthZ;
-          pNode.scale = proj.scale;
-
-          const screenPosX = centerX + proj.screenX;
-          const screenPosY = centerY + proj.screenY;
-
-          const isFront = pNode.projZ >= 0;
-          pNode.isFront = isFront;
-
-          let zIndex = 50;
-          let opacity = 1.0;
-          let scale = pNode.scale;
-          let blurPx = 0;
-          let brightness = 1.0;
-
-          if (isFront) {
-            zIndex = Math.max(52, Math.min(99, Math.round(55 + pNode.projZ / 12)));
-            scale = pNode.scale * 1.08;
-            opacity = 1.0;
-            brightness = 1.05;
-
-            pNode.el.classList.add('is-front');
-            pNode.el.classList.remove('is-behind');
-          } else {
-            zIndex = Math.max(1, Math.min(48, Math.round(25 + pNode.projZ / 18)));
-            scale = pNode.scale * 0.82;
-            opacity = Math.max(0.48, Math.min(0.88, 0.78 + pNode.projZ / 700));
-            blurPx = Math.min(2.5, Math.abs(pNode.projZ) / 200);
-            brightness = Math.max(0.65, 0.9 + pNode.projZ / 800);
-
-            pNode.el.classList.add('is-behind');
-            pNode.el.classList.remove('is-front');
-          }
-
-          pNode.el.style.zIndex = zIndex;
-          pNode.el.style.opacity = opacity;
-          pNode.el.style.transform = `translate3d(${screenPosX.toFixed(1)}px, ${screenPosY.toFixed(1)}px, 0) translate(-50%, -50%) scale(${scale.toFixed(3)})`;
-          pNode.el.style.filter = blurPx > 0.4 ? `blur(${blurPx.toFixed(1)}px) brightness(${brightness.toFixed(2)})` : `brightness(${brightness.toFixed(2)})`;
-        });
-      }
-
-      this.renderCanvas(this.camRotX, this.camRotY);
-      this.updateTooltipPosition();
     }
+
+    // 1. Animate Loki Nexus Core & Spinning Rings
+    if (this.nexusCore) {
+      const pulse = 1.0 + Math.sin(this.time * 4.5) * 0.14;
+      this.nexusCore.scale.set(pulse, pulse, pulse);
+    }
+    if (this.nexusRing1) {
+      this.nexusRing1.rotation.x = this.time * 1.2;
+      this.nexusRing1.rotation.y = this.time * 0.8;
+    }
+    if (this.nexusRing2) {
+      this.nexusRing2.rotation.x = -this.time * 0.9;
+      this.nexusRing2.rotation.z = this.time * 1.1;
+    }
+
+    // 2. Animate Godhood Aura Particle Drift
+    if (this.auraPoints) {
+      this.auraPoints.rotation.y = this.time * 0.04;
+    }
+
+    // 3. Compute Camera Target Vector (Center vs. Timeline Flight)
+    if (this.activeProjectIndex === null || this.travelProgress < 0.05) {
+      // --- MODE A: LOKI CENTER OVERVIEW ---
+      // Subtle parallax sway with cursor
+      const parallaxX = this.mouse.x * 0.75;
+      const parallaxY = this.mouse.y * 0.45;
+
+      this.targetCamPos.set(parallaxX, 1.25 + parallaxY, 7.8);
+      this.targetLookAt.set(parallaxX * 0.25, 0.75 + parallaxY * 0.2, 0);
+
+      // Restore central title visibility
+      if (this.centerAnchor) {
+        this.centerAnchor.style.opacity = '1';
+        this.centerAnchor.style.transform = `translate(-50%, -50%) translate3d(${parallaxX * 22}px, ${-parallaxY * 18}px, 0)`;
+      }
+
+      // Hide floating project card
+      if (this.hudCard) {
+        this.hudCard.classList.remove('is-active');
+      }
+    } else {
+      // --- MODE B: CAMERA TRAVELING ALONG SELECTED TIMELINE ---
+      const activeTimeline = this.timelines[this.activeProjectIndex];
+      const curve = activeTimeline.curve;
+
+      // Sample along curve based on travel progress (from 30% to 75% along curve)
+      const t = 0.28 + this.travelProgress * 0.46;
+      const curvePoint = curve.getPointAt(t);
+
+      // Camera offset along travel direction for optimal viewing angle
+      const camOffset = new THREE.Vector3(0.2, 0.35, 1.45);
+      this.targetCamPos.copy(curvePoint).add(camOffset);
+
+      // Look toward the project's apex node
+      this.targetLookAt.copy(activeTimeline.endPt);
+
+      // Fade out central title to give full cinematic focus to the project
+      if (this.centerAnchor) {
+        const titleOpacity = Math.max(0, 1.0 - this.travelProgress * 2.2);
+        this.centerAnchor.style.opacity = titleOpacity.toFixed(3);
+      }
+
+      // Reveal floating project card when zoom is deep enough
+      if (this.hudCard) {
+        if (this.travelProgress > 0.35) {
+          this.hudCard.classList.add('is-active');
+        } else {
+          this.hudCard.classList.remove('is-active');
+        }
+      }
+    }
+
+    // Smooth lerp camera position and lookAt
+    this.currentCamPos.lerp(this.targetCamPos, 0.075);
+    this.currentLookAt.lerp(this.targetLookAt, 0.075);
+    this.camera.position.copy(this.currentCamPos);
+    this.camera.lookAt(this.currentLookAt);
+
+    // 4. Update Timelines Shaders, Intensity, and Flowing Photons
+    this.timelines.forEach((tl, idx) => {
+      // Material uniforms
+      tl.material.uniforms.uTime.value = this.time;
+
+      const isSelected = idx === this.activeProjectIndex;
+      let targetIntensity = 1.0;
+
+      if (this.activeProjectIndex !== null) {
+        // Boost selected timeline; dim others
+        targetIntensity = isSelected
+          ? 1.0 + this.travelProgress * 1.8
+          : Math.max(0.2, 1.0 - this.travelProgress * 0.75);
+      }
+
+      const currInt = tl.material.uniforms.uIntensity.value;
+      tl.material.uniforms.uIntensity.value += (targetIntensity - currInt) * 0.1;
+
+      // Animate Apex Reticle Ring Spin
+      if (tl.reticleRing) {
+        tl.reticleRing.rotation.z += isSelected ? 0.035 : 0.012;
+        const orbScale = isSelected ? 1.0 + Math.sin(this.time * 6.0) * 0.18 : 1.0;
+        tl.orbGroup.scale.set(orbScale, orbScale, orbScale);
+      }
+
+      // Animate Flowing Energy Photons along strand
+      const positions = tl.motesPoints.geometry.attributes.position.array;
+      const count = tl.motesCount;
+
+      for (let m = 0; m < count; m++) {
+        // Advance offset along curve
+        tl.motesOffsets[m] = (tl.motesOffsets[m] + tl.motesSpeeds[m] * (isSelected ? 0.024 : 0.012)) % 1.0;
+        const pt = tl.curve.getPointAt(tl.motesOffsets[m]);
+
+        positions[m * 3] = pt.x;
+        positions[m * 3 + 1] = pt.y;
+        positions[m * 3 + 2] = pt.z;
+      }
+      tl.motesPoints.geometry.attributes.position.needsUpdate = true;
+    });
+
+    // 5. Update Selector Pill Active State
+    if (this.selectorHud) {
+      const pills = this.selectorHud.querySelectorAll('.timeline-pill-btn');
+      pills.forEach((p, idx) => {
+        if (idx === this.activeProjectIndex && this.travelProgress > 0.25) {
+          p.classList.add('is-active');
+        } else {
+          p.classList.remove('is-active');
+        }
+      });
+    }
+
+    // 6. Render Three.js Scene
+    this.renderer.render(this.scene, this.camera);
 
     requestAnimationFrame(this.animate);
   }
 }
 
+// Backwards-compatible export for main.js and system bootstrap
+export class ProjectSolarSystem extends ProjectTimelineEngine {}
+
 export function initProjectSolarSystem() {
   const stage = document.getElementById('projects-stage');
   if (stage) {
-    return new ProjectSolarSystem();
+    return new ProjectTimelineEngine();
   }
   return null;
 }
