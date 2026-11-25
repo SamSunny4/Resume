@@ -80,3 +80,14 @@
 - **Reference Files:** `Certificates/IBM Datathon 2026 Participation Certificate Sam Sunnycopy.png`, `Certificates/IBM Datathon 2026 Participation Certificate Sam Sunny.pdf`
 
 ---
+
+## 8. Certificate of Completion – Rust Fundamentals (Coddy)
+- **Recipient:** Sam Sunny
+- **Issuer / Platform:** Coddy Tech (`coddy.tech`)
+- **Course Section:** Rust Fundamentals
+- **Date of Completion:** November 24, 2026
+- **Certification ID:** `L5Ir8b-rust-VQz9c3`
+- **Signatory:** Kevin Spektor (CTO)
+- **Reference File:** `Certificates/Rust_Fundamentals.pdf`
+
+---

@@ -25,6 +25,8 @@ Drop your official, accurate logo files directly into this folder! The 3D Creden
 | `union.svg` *(or `college-union.png`)* | **College Union Leadership** | 🎓 Program Representative CS(AI) |
 | `mariapps.svg` *(or .png)* | **MariApps Marine Solutions** (SmartCity Kochi) | 🏭 Industrial Immersion Program |
 | `cambridge.svg` *(or .png)* | **Cambridge Assessment English** | 🌐 Cambridge Linguaskill C1/B2 |
+| `rust.svg` *(or .png)* | **Rust Programming Language** | 🦀 Rust Fundamentals (Coddy) |
+| `coddy.svg` *(or .png)* | **Coddy Tech** | 🦀 Rust Fundamentals (Coddy) |
 
 ---
 

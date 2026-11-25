@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100" fill="none">
+  <!-- Coddy warm sunburst seal -->
+  <path d="M50 6 L57 14 L67 10 L71 20 L82 20 L82 31 L91 36 L87 46 L94 55 L86 63 L89 74 L79 79 L78 90 L67 90 L60 98 L50 93 L40 98 L33 90 L22 90 L21 79 L11 74 L14 63 L6 55 L13 46 L9 36 L18 31 L18 20 L29 20 L33 10 L43 14 Z" fill="#F29B4C"/>
+  <!-- Glasses lenses -->
+  <circle cx="36" cy="48" r="12" fill="#FFF7EA" stroke="#0B3C6D" stroke-width="3.6"/>
+  <circle cx="64" cy="48" r="12" fill="#FFF7EA" stroke="#0B3C6D" stroke-width="3.6"/>
+  <!-- Glasses bridge -->
+  <path d="M48 48 H52" stroke="#0B3C6D" stroke-width="3.6" stroke-linecap="round"/>
+  <!-- Happy eyes -->
+  <path d="M31 48 Q36 43 41 48" stroke="#0B3C6D" stroke-width="3" stroke-linecap="round" fill="none"/>
+  <path d="M59 48 Q64 43 69 48" stroke="#0B3C6D" stroke-width="3" stroke-linecap="round" fill="none"/>
+  <!-- Smile -->
+  <path d="M45 64 Q50 68 55 64" stroke="#0B3C6D" stroke-width="2.8" stroke-linecap="round" fill="none"/>
+</svg>

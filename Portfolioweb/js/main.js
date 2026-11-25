@@ -91,10 +91,10 @@ import { initQuantumPreloader } from './loader.js';
 import { initHeroAsciiBurst } from './ascii-burst.js';
 import { initStickyBrandLogo } from './sticky-logo.js';
 import { initTechSolarSystem } from './tech-solar.js?v=86';
-import { initProjectSolarSystem } from './project-solar.js?v=86';
+import { initProjectShowcase } from './project-showcase.js?v=87';
 import { initTopoBackground } from './topo-background.js';
 import { LightPillar, initLightPillar } from './light-pillar.js';
-import { initCredentialsStones } from './credentials-stones.js?v=86';
+import { initCredentialsStones } from './credentials-stones.js?v=88';
 import { initContactSection } from './contact.js';
 import { initGyroParallax } from './gyro-parallax.js';
 
@@ -174,7 +174,7 @@ function bootstrap() {
   }
 
   const techSolar = initTechSolarSystem();
-  const projectSolar = initProjectSolarSystem();
+  const projectSolar = initProjectShowcase();
   window.AppState.techSolar = techSolar;
   window.AppState.projectSolar = projectSolar;
 

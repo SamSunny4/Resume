@@ -116,7 +116,8 @@
   </style>
 
   <!-- Design System Stylesheet -->
-  <link rel="stylesheet" href="style.css?v=83">
+  <link rel="stylesheet" href="style.css?v=87">
+  <link rel="stylesheet" href="projects.css?v=87">
   <link rel="icon" type="image/png" href="assets/me.png">
 </head>
 <body>
@@ -264,42 +265,33 @@
             </section>
           </div>
 
-          <!-- PROJECTS UNIVERSE LAYER (Loki Multiverse Timeline Weaver) -->
+          <!-- Selected work: accessible project index and feature panel -->
           <div id="projects-space-layer" class="projects-space-layer">
-            <section id="projects" class="projects-universe-section" aria-label="Flagship Projects Multiverse">
-              <!-- Central 3D Projects Loki Timeline Stage -->
-              <div class="projects-stage-wrapper" id="projects-stage">
-                <!-- 3D WebGL Canvas for Loki & Timeline Strands -->
-                <canvas id="projects-canvas" class="projects-canvas"></canvas>
-
-                <!-- Floor & Atmospheric Timeline Glow -->
-                <div class="projects-timeline-glow" aria-hidden="true"></div>
-
-                <!-- Central 3D Monumental Title (Centered on Loki) -->
-                <div class="projects-center-anchor" id="projects-center-anchor">
-                  <div class="projects-center-3d-text" id="projects-center-text">
-                    <span class="projects-text-pre font-mono">// GOD OF STORIES · TIMELINE WEAVER ARCHITECTURE</span>
-                    <h2 class="projects-text-monumental" data-text="FLAGSHIP PROJECTS">FLAGSHIP PROJECTS</h2>
-                    <span class="projects-text-sub font-mono">09 WEAVED TIMELINES · CENTRALISED SYSTEM MATRIX</span>
-                    <span class="projects-text-hint font-mono">MOVE CURSOR OUTWARD TO TRAVEL ALONG TIMELINES · CLICK TO INSPECT</span>
+            <section id="projects" class="work-explorer" aria-labelledby="work-title" data-lenis-prevent>
+              <div class="work-heading">
+                <div><span class="work-eyebrow">Selected work / Sam Sunny</span><h2 id="work-title">Built to <em>do something.</em></h2></div>
+                <p>A collection of useful software.<br>From applied AI to everyday tools.</p>
+              </div>
+              <div id="project-explorer" style="display: contents;">
+                <div class="work-toolbar">
+                  <div class="work-filters" role="group" aria-label="Filter projects">
+                    <button type="button" data-work-filter="All work" aria-pressed="true">All work</button>
+                    <button type="button" data-work-filter="AI &amp; vision" aria-pressed="false">AI &amp; vision</button>
+                    <button type="button" data-work-filter="Web" aria-pressed="false">Web</button>
+                    <button type="button" data-work-filter="Systems" aria-pressed="false">Systems</button>
                   </div>
+                  <span class="work-count">09 projects</span>
                 </div>
-
-                <!-- Quick Timeline Pill Selector HUD -->
-                <div class="timeline-selector-hud" id="timeline-selector-hud" aria-label="Timeline selector">
-                  <!-- Generated dynamically in project-solar.js -->
+                <div class="work-layout">
+                  <nav class="work-index" aria-label="Choose a project"></nav>
+                  <article id="work-feature" class="work-feature" aria-label="Selected project"></article>
                 </div>
-
-                <!-- Floating Project Telemetry HUD Card (Surfaces along timeline flight) -->
-                <div class="timeline-project-card" id="timeline-project-card" aria-hidden="true">
-                  <!-- Generated dynamically in project-solar.js -->
-                </div>
-
-                <!-- Quick Jump Navigation HUD -->
-                <div class="stage-nav-hud">
-                  <button id="return-tech-btn" class="stage-nav-btn font-mono" title="Return to tech matrix">⤾ RETURN TO TECH MATRIX</button>
-                  <button id="projects-to-contact-btn" class="stage-nav-btn font-mono text-lime" title="Proceed to transmission">TRANSMIT / CONTACT ↯</button>
-                </div>
+                <span class="work-announcement" role="status" aria-live="polite"></span>
+                <noscript><p>Explore my projects on <a href="https://github.com/SamSunny4">GitHub</a>.</p></noscript>
+              </div>
+              <div class="work-footer">
+                <button type="button" id="return-tech-btn">← Tech stack</button>
+                <button type="button" id="projects-to-contact-btn">Have something in mind? Let’s talk ↗</button>
               </div>
             </section>
           </div>
@@ -453,40 +445,10 @@
         </div>
       </div>
 
-      <!-- Interactive Project Deep-Dive Modal -->
-      <div id="project-detail-modal" class="project-modal" aria-hidden="true">
-        <div class="project-modal-backdrop" id="project-modal-backdrop"></div>
-        <div class="project-modal-card hud-frame">
-          <div class="project-modal-header">
-            <div style="display: flex; align-items: center; gap: 0.85rem;">
-              <div class="project-modal-icon-wrap" id="modal-icon-wrap">
-                <img src="" alt="" id="modal-icon" class="project-modal-icon" />
-              </div>
-              <div>
-                <span class="font-mono text-lime" id="modal-status" style="font-size: 0.65rem; letter-spacing: 0.08em;">// STATUS</span>
-                <h3 class="font-display" id="modal-title" style="font-size: 1.45rem; margin-top: 0.15rem; color: #FFFFFF;">PROJECT NAME</h3>
-                <span class="font-mono text-muted" id="modal-category" style="font-size: 0.68rem; letter-spacing: 0.08em; display: block; margin-top: 0.2rem; text-transform: uppercase;"></span>
-              </div>
-            </div>
-            <button class="project-modal-close font-mono" id="modal-close-btn" aria-label="Close Modal">✕ [ESC]</button>
-          </div>
-          <div class="project-modal-body">
-            <p class="font-sans text-editorial-muted" id="modal-desc" style="line-height: 1.6; margin-bottom: 1.2rem; font-size: 0.95rem;"></p>
-            <div style="margin-bottom: 1.2rem;">
-              <span class="font-mono text-muted" style="font-size: 0.72rem; letter-spacing: 0.1em; display: block; margin-bottom: 0.5rem;">// TECHNOLOGY ARCHITECTURE</span>
-              <div id="modal-tech-chips" class="modal-chips-wrap"></div>
-            </div>
-            <div style="margin-bottom: 1.4rem;">
-              <span class="font-mono text-muted" style="font-size: 0.72rem; letter-spacing: 0.1em; display: block; margin-bottom: 0.5rem;">// SYSTEM SPECIFICATIONS & METRICS</span>
-              <div id="modal-stats-list" class="modal-stats-grid"></div>
-            </div>
-          </div>
-          <div class="project-modal-footer">
-            <a href="#" target="_blank" id="modal-repo-link" class="btn-primary" style="font-size: 0.75rem;">VIEW REPOSITORY ON GITHUB ↗</a>
-            <button class="btn-secondary" id="modal-dismiss-btn" style="font-size: 0.75rem;">DISMISS TELEMETRY</button>
-          </div>
-        </div>
-      </div>
+      <dialog id="work-dialog" class="work-dialog" aria-labelledby="work-dialog-title" data-lenis-prevent>
+        <button type="button" class="work-dialog-close" data-close-work aria-label="Close project details">Close ×</button>
+        <div class="work-dialog-content"></div>
+      </dialog>
 
       <!-- Toast Notification for Clipboard Copy -->
       <div id="contact-toast" class="contact-toast font-mono" role="status" aria-live="polite">
@@ -503,6 +465,6 @@
   <!-- Lenis Momentum Smooth Scroll Library -->
   <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.9/dist/lenis.min.js"></script>
   <!-- Main ES6 Module Entry -->
-  <script type="module" src="js/main.js?v=86"></script>
+  <script type="module" src="js/main.js?v=88"></script>
 </body>
 </html>

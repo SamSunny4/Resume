@@ -55,6 +55,25 @@ export const CERTIFICATES = [
     ]
   },
   {
+    id: 'rust-fundamentals',
+    title: 'Rust Fundamentals',
+    subtitle: 'CODDY TECH · CERTIFICATE OF COMPLETION',
+    org: 'Coddy (Kevin Spektor, CTO)',
+    issuerTag: 'Coddy · Interactive Rust Track',
+    code: 'L5Ir8b-rust-VQz9c3',
+    date: 'NOV 24, 2026',
+    accent: '#DEA584',
+    badge: '🦀 RUST',
+    score: 'Section Complete',
+    image: 'assets/certificates/rust_fundamentals.png',
+    pdfUrl: 'assets/certificates/Rust_Fundamentals.pdf',
+    pills: ['Rust', 'Coddy'],
+    logos: [
+      { name: 'rust', label: 'Rust' },
+      { name: 'coddy', label: 'Coddy' }
+    ]
+  },
+  {
     id: 'mern-stack',
     title: 'End-to-End MERN Lifecycle',
     subtitle: 'REACT · NODE.JS · MONGODB · EXPRESS · GIT',
@@ -649,7 +668,7 @@ export class CredentialsMobiusEngine {
         <!-- Section Header -->
         <div class="cylinder-header">
           <h2 class="cylinder-title font-display">MY CERTIFICATES</h2>
-          <span class="cylinder-sub font-mono">// 11 VERIFIED CREDENTIALS · TAP CARD TO INSPECT</span>
+          <span class="cylinder-sub font-mono">// ${CERTIFICATES.length} VERIFIED CREDENTIALS · TAP CARD TO INSPECT</span>
         </div>
 
         <!-- React Bits CircularCarousel Viewport Mount -->
@@ -725,7 +744,7 @@ export class CredentialsMobiusEngine {
       intro: 'rise',
       cardWidth: 420,
       aspectRatio: 2.0,   // 640 / 320 (sleek widescreen aspect ratio)
-      cardW: 2.02,        // Arc width on R=4.8 cylinder (leaves clean ~8.6° gap between 11 cards)
+      cardW: 2.02,        // Arc width on R=4.8 cylinder (leaves clean ~5.9° gap between 12 cards)
       radius: 4.8,
       tilt: -13,       // Cylinder 3D pitch tilt (keeps the cylinder itself tilted in 3D space)
       roll: -4,        // Camera Z-axis roll (negative = CCW, positive = CW)

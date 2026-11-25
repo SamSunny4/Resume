@@ -1,24 +1,6 @@
 /**
- * FLAGSHIP PROJECTS & ORBITAL ARCHITECTURE CONFIGURATION
- * =======================================================
- * Dedicated registry for portfolio flagship projects.
- * Rearrange, edit, add, or remove projects easily here without touching
- * the 3D Keplerian celestial render engine in project-solar.js.
- *
- * Each project entry contains:
- * - id: unique slug identifier
- * - name: Display title
- * - badge: Status / award / milestone pill
- * - category: Subsystem or engineering domain
- * - desc: Comprehensive architectural synopsis
- * - icon: Asset icon path (SVG/PNG)
- * - color: Hex accent color for planet glow, reticle & HUD telemetry
- * - ringIndex: Which Keplerian orbital ring it orbits on (0 = inner, 1 = mid, 2 = outer)
- * - orbitPhase: Angular offset in radians around the ring (e.g. 0, Math.PI, 0.6)
- * - speedFactor: Orbital speed modifier
- * - tech: List of architecture & framework tags
- * - github: Source repository URL
- * - stats: List of key system metrics & engineering achievements
+ * Portfolio project registry: technical descriptions, assets, and source links.
+ * The explorer presentation is maintained in project-showcase.js.
  */
 
 export const PROJECT_NODES = [
@@ -30,9 +12,6 @@ export const PROJECT_NODES = [
     desc: 'Enterprise key duplication & records management system running live in commercial retail operations. Built with Java Swing and embedded H2 database with live webcam capture, multi-criteria search, analytics dashboard, and CSV export.',
     icon: 'assets/keybase-icon.png',
     color: '#00F0FF',
-    ringIndex: 0,
-    orbitPhase: 0,
-    speedFactor: 1.0,
     tech: ['Java 17', 'Java Swing', 'H2 Embedded DB', 'Webcam API', 'Windows x64', 'PyInstaller'],
     github: 'https://github.com/SamSunny4/KeyBase',
     stats: ['COMMERCIAL RETAIL DEPLOYMENT', 'PORTABLE JRE BUNDLE', 'EMBEDDED H2 DATABASE', 'LIVE WEBCAM CAPTURE', 'SALES ANALYTICS DASHBOARD', 'CSV EXPORT & PRINT'],
@@ -45,9 +24,6 @@ export const PROJECT_NODES = [
     desc: 'Award-winning AI-assisted developmental screening platform combining MediaPipe 33-point pose estimation with multimodal risk assessment, schema-driven forms, and Flask ML inference backend. National 2nd Prize — AI Samasya Hackathon.',
     icon: 'assets/leadis-logo.svg',
     color: '#D2FF00',
-    ringIndex: 0,
-    orbitPhase: Math.PI,
-    speedFactor: 1.0,
     tech: ['Next.js', 'MediaPipe', 'Python', 'Flask ML', 'Tailwind', 'pnpm'],
     github: 'https://github.com/SamSunny4/Leadis',
     stats: ['NATIONAL AI 2ND PRIZE', '33-POINT POSE ESTIMATION', 'MULTIMODAL RISK SCORING', 'FLASK ML INFERENCE API', 'GESTURE RECOGNITION', 'SCHEMA-DRIVEN FORMS'],
@@ -60,9 +36,6 @@ export const PROJECT_NODES = [
     desc: 'Full-stack digital signage CMS engineered for 43-inch vertical laboratory screens with real-time news feeds, event carousels, poster management, QR routing, and a full CRUD admin panel backed by MongoDB Atlas and Cloudflare R2.',
     icon: 'assets/tech-icons/nextjs.svg',
     color: '#A855F7',
-    ringIndex: 1,
-    orbitPhase: 0.6,
-    speedFactor: 0.98,
     tech: ['TypeScript', 'Next.js 16', 'MongoDB Atlas', 'Cloudflare R2', 'REST API'],
     github: 'https://github.com/SamSunny4/InfoGrid',
     stats: ['43" VERTICAL LAB SCREEN', 'MONGODB ATLAS REALTIME', 'CLOUDFLARE R2 ASSET CDN', 'FULL CRUD ADMIN PANEL'],
@@ -75,9 +48,6 @@ export const PROJECT_NODES = [
     desc: 'Public dashboard monitoring rainfall status and District Collector education leave declarations across all 14 Kerala districts. Features HTML5 Canvas weather particle simulation and real-time Facebook API data aggregation.',
     icon: 'assets/tech-icons/react.svg',
     color: '#38BDF8',
-    ringIndex: 1,
-    orbitPhase: 0.6 + Math.PI,
-    speedFactor: 1.02,
     tech: ['Next.js 15', 'React 19', 'HTML5 Canvas', 'Tailwind', 'Vercel'],
     github: 'https://github.com/SamSunny4/Rainiest',
     stats: ['14 KERALA DISTRICTS', 'REALTIME LEAVE RADAR', 'CANVAS WEATHER SIMULATION', 'PUBLIC FACEBOOK API'],
@@ -90,9 +60,6 @@ export const PROJECT_NODES = [
     desc: 'Real-time exercise posture and biomechanics tracking pipeline evaluating repetition accuracy, joint angles, and kinetic posture using OpenCV and MediaPipe. Processes 33 3D skeletal landmarks at 60fps for precision health feedback.',
     icon: 'assets/tech-icons/mediapipe.svg',
     color: '#FF9900',
-    ringIndex: 2,
-    orbitPhase: 1.3,
-    speedFactor: 1.05,
     tech: ['Python', 'OpenCV', 'MediaPipe', 'PyTorch', 'FastAPI'],
     github: 'https://github.com/SamSunny4/MovSense',
     stats: ['33 3D POSE LANDMARKS', 'REAL-TIME KINEMATICS', 'JOINT ANGLE GEOMETRY', 'LOW-LATENCY 60FPS'],
@@ -105,9 +72,6 @@ export const PROJECT_NODES = [
     desc: 'Spatial reconstruction engine processing 3D coordinates, depth meshes, and camera point clouds for real-time visualization using perspective projection matrices and hardware shader pipelines.',
     icon: 'assets/tech-icons/c.svg',
     color: '#EC4899',
-    ringIndex: 2,
-    orbitPhase: 1.3 + Math.PI,
-    speedFactor: 0.95,
     tech: ['C++', 'WebGL', 'Linear Algebra', 'Shader Pipeline'],
     github: 'https://github.com/SamSunny4/3DS',
     stats: ['POINT CLOUD RECONSTRUCTION', 'PERSPECTIVE MATRICES', 'HARDWARE SHADER PIPELINE', 'DEPTH MESHES'],
@@ -120,9 +84,6 @@ export const PROJECT_NODES = [
     desc: 'Offline multipath P2P file transfer engine aggregating USB 3.x (107 MB/s) and 5 GHz Wi-Fi Direct (48+ MB/s) simultaneously — no router, cloud, or account required. Ships a native GPU GUI (Rust + GPUI), CLI wizard, and Android companion app (Jetpack Compose).',
     icon: 'assets/sharedash-logo.svg',
     color: '#FF6B35',
-    ringIndex: 3,
-    orbitPhase: 0,
-    speedFactor: 0.90,
     tech: ['Rust', 'GPUI', 'Kotlin', 'Jetpack Compose', 'ADB', 'USB RNDIS', 'Wi-Fi Direct', 'SHA-256'],
     github: 'https://github.com/SamSunny4/ShareDash',
     stats: ['107 MB/s USB FAST-PATH', '78+ MB/s MULTIPATH PEAK', 'ZERO ROUTER / ZERO CLOUD', 'SHA-256 / BLAKE3 VERIFY', 'RUST + GPUI NATIVE GUI', 'ANDROID JETPACK COMPOSE'],
@@ -135,9 +96,6 @@ export const PROJECT_NODES = [
     desc: 'Campus-wide tamper-proof late entry verification platform built for educational institutions. Students scan QR codes via phone, receive a live dynamic colour-cycling pass (anti-screenshot), while faculty get real-time alerts and analytics. Full admin portal with Supabase Auth and Prisma v7.',
     icon: 'assets/tech-icons/nextjs.svg',
     color: '#3ECF8E',
-    ringIndex: 3,
-    orbitPhase: (Math.PI * 2) / 3,
-    speedFactor: 0.92,
     tech: ['Next.js 16', 'Prisma v7', 'Supabase Auth', 'Tailwind v4', 'shadcn/ui', 'Web3Forms', 'PostgreSQL'],
     github: 'https://github.com/SamSunny4/LateLoggy',
     stats: ['QR SCAN CHECK-IN', 'LIVE DYNAMIC PASS', 'REAL-TIME FACULTY ALERTS', 'AUTOMATED EMAIL DIGEST', 'SUPABASE GOOGLE OAUTH', 'ADMIN MANAGEMENT PORTAL'],
@@ -150,58 +108,8 @@ export const PROJECT_NODES = [
     desc: 'Human-like typing simulator for Windows that injects keystrokes into any application with configurable WPM (10–200), realistic typos and corrections, thinking delays, punctuation pauses, and paragraph breaks. Ships as a standalone EXE — no install required.',
     icon: 'assets/tech-icons/python.svg',
     color: '#F7CC3B',
-    ringIndex: 3,
-    orbitPhase: (Math.PI * 4) / 3,
-    speedFactor: 0.88,
     tech: ['Python 3.10+', 'PyQt6', 'pynput', 'PyInstaller', 'Inno Setup', 'Windows 10/11'],
     github: 'https://github.com/SamSunny4/FakePaste',
     stats: ['10–200 WPM CONFIGURABLE', 'REALISTIC TYPO ENGINE', 'GLOBAL ESC HOTKEY STOP', 'PORTABLE STANDALONE EXE', 'LIVE WPM ANALYTICS', 'SAVE/LOAD PRESETS'],
-  },
-];
-
-export const PROJECT_RINGS = [
-  // Ring 0: Inner Flagships (KeyBase & Leadis)
-  {
-    baseRadiusX: 380,
-    baseRadiusY: 200,
-    tiltX: 0.38,
-    tiltY: -0.25,
-    tiltZ: 0.08,
-    baseSpeed: 0.0090,
-    wobbleAmp: 16,
-    color: 'rgba(0, 240, 255, 0.18)',
-  },
-  // Ring 1: Web & Civic Platforms (InfoGrid & Rainiest)
-  {
-    baseRadiusX: 540,
-    baseRadiusY: 285,
-    tiltX: -0.45,
-    tiltY: 0.32,
-    tiltZ: -0.15,
-    baseSpeed: -0.0068,
-    wobbleAmp: 22,
-    color: 'rgba(168, 85, 247, 0.16)',
-  },
-  // Ring 2: Vision & Spatial Graphics (Fitman & 3DS)
-  {
-    baseRadiusX: 700,
-    baseRadiusY: 360,
-    tiltX: 0.65,
-    tiltY: -0.35,
-    tiltZ: 0.22,
-    baseSpeed: 0.0055,
-    wobbleAmp: 28,
-    color: 'rgba(255, 153, 0, 0.16)',
-  },
-  // Ring 3: Systems & Tools (ShareDash, LateLoggy, FakePaste)
-  {
-    baseRadiusX: 860,
-    baseRadiusY: 430,
-    tiltX: -0.28,
-    tiltY: 0.42,
-    tiltZ: -0.18,
-    baseSpeed: -0.0042,
-    wobbleAmp: 34,
-    color: 'rgba(255, 107, 53, 0.16)',
   },
 ];

@@ -22,6 +22,8 @@ export const ASSET_MANIFEST = [
   'assets/keybase-splash.png',
 
   // Credential Analyzed Logos
+  'assets/credential-logos/rust.svg',
+  'assets/credential-logos/coddy.svg',
   'assets/credential-logos/ibm.svg',
   'assets/credential-logos/ssf.svg',
   'assets/credential-logos/isro.svg',
@@ -41,6 +43,7 @@ export const ASSET_MANIFEST = [
   'assets/credential-logos/cambridge.svg',
 
   // Verified High-Res Certificate Documents
+  'assets/certificates/rust_fundamentals.png',
   'assets/certificates/ibmdatathon.png',
   'assets/certificates/nationalhackathon.jpg',
   'assets/certificates/isrohackathon.png',
