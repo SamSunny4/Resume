@@ -63,7 +63,7 @@ Computer Science and Engineering (Artificial Intelligence) undergraduate buildin
 \textbf{Languages:} Rust, Kotlin, Java, Python, JavaScript, TypeScript, C\#, C, SQL, HTML, CSS\\
 \textbf{Frameworks:} Next.js, React, Prisma ORM, Node.js, Express.js, Jetpack Compose, Flask, Fastify, Tailwind CSS, MediaPipe, Three.js\\
 \textbf{Databases:} PostgreSQL (Supabase), Neo4j, MongoDB, H2, SQLite\\
-\textbf{Tools and protocols:} Git, GitHub, VS Code, Docker, Wi-Fi Direct, BLE, Vercel, REST APIs, Linux, Windows\\
+\textbf{Tools and protocols:} Git, GitHub, VS Code, Docker, Wi-Fi Direct, ADB, WebSockets, Vercel, REST APIs, Linux, Windows\\
 \textbf{Focus areas:} Artificial intelligence, full-stack development, systems programming, data analytics
 \normalsize
 
@@ -80,10 +80,10 @@ Computer Science and Engineering (Artificial Intelligence) undergraduate buildin
   \item Added sales charts, payment filters, CSV exports, and thermal report printing; packaged a portable installer with a bundled Java runtime.
 \end{itemize}
 
-\project{ShareDash -- Multipath File Transfer}{August 2026}{Rust, Kotlin, Android, Windows Runtime, BLE}
+\project{ShareDash -- Multipath File Transfer}{August 2026}{Rust, GPUI, Axum, Tokio, Kotlin, Jetpack Compose}
 \begin{itemize}
-  \item Built a local Windows-to-Android transfer system using USB 3.x and Wi-Fi Direct concurrently, with reported transfer speeds of 78--100+ MB/s and no cloud relay.
-  \item Developed BLE-based SoftAP setup and connection negotiation; implemented adaptive chunking, AES-256-GCM encryption, BLAKE3 checksums, and direct-offset file writes.
+  \item Built a local Windows-to-Android file transfer system with a Rust/GPUI desktop app, Axum HTTP/WebSocket server, and Jetpack Compose Android companion, dispatching concurrent chunk workers across USB (ADB forwarding/tethering) and Wi-Fi links.
+  \item Implemented UDP peer discovery, PIN/QR pairing and hotspot setup helpers, memory-mapped adaptive chunking (1--4 MiB) with CRC32 verification, positional offset writes, and a tested binary-protocol module (AES-256-GCM, BLAKE3/SHA-256, SQLite manifests).
 \end{itemize}
 
 \project{Leadis -- AI Developmental Screening Platform}{2025}{Next.js, MediaPipe, Flask, scikit-learn}
