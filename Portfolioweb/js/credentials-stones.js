@@ -10,8 +10,8 @@
  *   - Real-time preset switching & click-to-inspect lightbox
  */
 
-import { CircularCarousel, PRESETS } from './circular-carousel.js';
-import { ThreeCurvedCarousel } from './three-curved-carousel.js';
+import { CircularCarousel, PRESETS } from './circular-carousel.js?v=89';
+import { ThreeCurvedCarousel } from './three-curved-carousel.js?v=89';
 
 // ── Verified Certificates with Authentic Analyzed Logos & Telemetry ──
 export const CERTIFICATES = [
@@ -738,7 +738,7 @@ export class CredentialsMobiusEngine {
       cert
     }));
 
-    this.carousel = new ThreeCurvedCarousel(mount, {
+    const carouselOptions = {
       items,
       preset: 'cylinder',
       intro: 'rise',
@@ -771,18 +771,42 @@ export class CredentialsMobiusEngine {
           this.openLightbox(item.cert);
         }
       }
-    });
+    };
 
-    // If any logos were still loading, re-render cards smoothly once ready
-    let hasPendingLogos = false;
+    // Prefer GPU Three.js curved cylinder; gracefully fall back to CSS 3D CircularCarousel if WebGL fails
+    try {
+      const threeCarousel = new ThreeCurvedCarousel(mount, carouselOptions);
+      if (threeCarousel && threeCarousel.renderer) {
+        this.carousel = threeCarousel;
+      } else {
+        threeCarousel?.destroy?.();
+        throw new Error('Three.js WebGL renderer unavailable');
+      }
+    } catch (err) {
+      console.warn('[Credentials] WebGL carousel unavailable, falling back to CSS 3D carousel:', err);
+      this.carousel = new CircularCarousel(mount, {
+        ...carouselOptions,
+        perspective: 1600,
+        cardWidth: 360
+      });
+    }
+
+    // Coalesce pending logo refreshes into a single redraw to avoid repeated texture churn
+    let refreshScheduled = false;
+    const scheduleRefresh = () => {
+      if (refreshScheduled) return;
+      refreshScheduled = true;
+      requestAnimationFrame(() => {
+        refreshScheduled = false;
+        this.refreshCardCanvas();
+      });
+    };
+
     CERTIFICATES.forEach(cert => {
       cert.logos.forEach(l => {
         const img = LOGO_CACHE.get(l.name);
         if (img && !img.complete) {
-          hasPendingLogos = true;
-          img.onload = () => {
-            this.refreshCardCanvas();
-          };
+          img.addEventListener('load', scheduleRefresh, { once: true });
         }
       });
     });

@@ -297,7 +297,8 @@ export class LightPillar {
     });
 
     if (!gl) {
-      console.warn('[LightPillar] WebGL2 not supported on this device/browser.');
+      console.warn('[LightPillar] WebGL2 not supported on this device/browser; using CSS beam fallback.');
+      this.applyFallback();
       return;
     }
     this.gl = gl;
@@ -305,7 +306,10 @@ export class LightPillar {
     this.floatTargets = !!gl.getExtension('EXT_color_buffer_float');
     this.marchProgram = link(gl, MARCH);
     this.compositeProgram = link(gl, COMPOSITE);
-    if (!this.marchProgram || !this.compositeProgram) return;
+    if (!this.marchProgram || !this.compositeProgram) {
+      this.applyFallback();
+      return;
+    }
 
     this.buffer = gl.createBuffer();
     this.vao = gl.createVertexArray();
@@ -344,6 +348,16 @@ export class LightPillar {
     this.bindEvents();
     this.resize();
     this.wake();
+  }
+
+  applyFallback() {
+    if (!this.container) return;
+    if (this.canvas && this.canvas.parentNode) {
+      this.canvas.parentNode.removeChild(this.canvas);
+    }
+    this.canvas = null;
+    this.container.style.background =
+      `radial-gradient(ellipse 42% 72% at 54% 48%, rgba(210, 255, 0, 0.18) 0%, rgba(0, 138, 0, 0.14) 38%, rgba(0, 0, 0, 0) 72%)`;
   }
 
   toRgb(value) {

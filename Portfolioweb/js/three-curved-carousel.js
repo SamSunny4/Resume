@@ -225,7 +225,15 @@ export class ThreeCurvedCarousel {
     const THREE = window.THREE;
     if (!THREE || !this.ringGroup) return;
 
-    // Clean existing
+    // Clean existing meshes and dispose GPU textures/materials before rebuilding
+    if (this.cardMeshes && this.cardMeshes.length > 0) {
+      this.cardMeshes.forEach(c => {
+        if (c.defTexture) c.defTexture.dispose();
+        if (c.actTexture) c.actTexture.dispose();
+        if (c.frontMat) c.frontMat.dispose();
+        if (c.backMat) c.backMat.dispose();
+      });
+    }
     while (this.ringGroup.children.length > 0) {
       this.ringGroup.remove(this.ringGroup.children[0]);
     }
