@@ -116,8 +116,8 @@
   </style>
 
   <!-- Design System Stylesheet -->
-  <link rel="stylesheet" href="style.css?v=91">
-  <link rel="stylesheet" href="projects.css?v=91">
+  <link rel="stylesheet" href="style.css?v=92">
+  <link rel="stylesheet" href="projects.css?v=92">
   <link rel="icon" type="image/png" href="assets/me.png">
 </head>
 <body>
@@ -265,13 +265,19 @@
             </section>
           </div>
 
-          <!-- Selected work: 3D Interactive Neural Constellation -->
+          <!-- Selected work: Full-Environment Three.js 3D Neural Constellation -->
           <div id="projects-space-layer" class="projects-space-layer">
             <section id="projects" class="constellation-section" aria-labelledby="work-title">
               <div id="project-explorer" class="constellation-shell">
+                <!-- Full-Bleed 3D Three.js Stage -->
+                <div class="constellation-viewport" id="constellation-viewport" role="region" aria-label="3D Project Constellation Universe">
+                  <div class="constellation-canvas-host" id="constellation-canvas-host"></div>
+                </div>
+
+                <!-- Minimal Floating Top Header Overlay -->
                 <header class="constellation-header">
                   <div class="constellation-title-wrap">
-                    <span class="work-eyebrow">// 09 NEURAL NODES · INTERACTIVE ARCHITECTURE GRAPH</span>
+                    <span class="work-eyebrow">// 09 3D NEURAL NODES · DRAG TO ORBIT · CLICK NODE TO FLY</span>
                     <h2 id="work-title">Selected <em>work.</em></h2>
                   </div>
                   <div class="constellation-controls">
@@ -285,24 +291,17 @@
                   </div>
                 </header>
 
-                <div class="constellation-stage-grid">
-                  <div class="constellation-viewport" id="constellation-viewport" role="region" aria-label="3D Project Constellation Graph">
-                    <div class="constellation-canvas-host" id="constellation-canvas-host"></div>
-                    <div class="constellation-pins-layer" id="constellation-pins-layer"></div>
-                    <div class="constellation-edge-badge font-mono" id="constellation-edge-badge" aria-hidden="true"></div>
-                    <div class="constellation-hint font-mono">DRAG TO ORBIT · CLICK NODE TO INSPECT SYNAPSES</div>
-                  </div>
-
-                  <aside id="work-feature" class="constellation-dossier" aria-label="Selected project details" data-lenis-prevent></aside>
+                <!-- Minimal Floating Bottom Telemetry Dock -->
+                <div class="constellation-bottom-hud">
+                  <aside id="work-feature" class="constellation-dock" aria-label="Selected project details"></aside>
+                  <footer class="work-footer">
+                    <button type="button" id="return-tech-btn">← Tech stack</button>
+                    <button type="button" id="projects-to-contact-btn">Have something in mind? Let’s talk ↗</button>
+                  </footer>
                 </div>
 
                 <span class="work-announcement" role="status" aria-live="polite"></span>
                 <noscript><p>Explore my projects on <a href="https://github.com/SamSunny4">GitHub</a>.</p></noscript>
-
-                <footer class="work-footer">
-                  <button type="button" id="return-tech-btn">← Tech stack</button>
-                  <button type="button" id="projects-to-contact-btn">Have something in mind? Let’s talk ↗</button>
-                </footer>
               </div>
             </section>
           </div>
@@ -476,6 +475,6 @@
   <!-- Lenis Momentum Smooth Scroll Library -->
   <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.9/dist/lenis.min.js"></script>
   <!-- Main ES6 Module Entry -->
-  <script type="module" src="js/main.js?v=91"></script>
+  <script type="module" src="js/main.js?v=92"></script>
 </body>
 </html>

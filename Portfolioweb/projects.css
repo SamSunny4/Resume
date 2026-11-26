@@ -1,51 +1,75 @@
-/* Selected work: 3D Interactive Neural Constellation & Knowledge Graph */
+/* Selected work: Full-Environment Three.js 3D Neural Constellation */
 
 .projects-space-layer {
-  background: radial-gradient(ellipse 65% 55% at 42% 52%, rgba(210, 255, 0, 0.045) 0%, rgba(0, 240, 255, 0.025) 45%, rgba(3, 3, 3, 0) 78%);
+  background: radial-gradient(ellipse 68% 58% at 50% 46%, rgba(210, 255, 0, 0.04) 0%, rgba(0, 240, 255, 0.025) 45%, rgba(3, 3, 3, 0) 78%);
 }
 
-.constellation-section {
+.constellation-section,
+.constellation-shell {
+  position: relative;
   width: 100%;
   height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: clamp(4.8rem, 8vh, 5.8rem) clamp(1.2rem, 3.8vw, 4rem) 1.3rem;
-  box-sizing: border-box;
+  overflow: hidden;
   color: #f0f1e9;
 }
 
-.constellation-shell {
-  width: min(1420px, 100%);
+/* Full-Bleed Three.js 3D Space Canvas */
+.constellation-viewport {
+  position: absolute;
+  inset: 0;
+  width: 100%;
   height: 100%;
-  display: flex;
-  flex-direction: column;
-  gap: 0.85rem;
-  min-height: 0;
+  cursor: grab;
+  user-select: none;
 }
 
+.constellation-viewport.is-grabbing {
+  cursor: grabbing;
+}
+
+.constellation-canvas-host,
+.constellation-webgl-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  pointer-events: none;
+}
+
+/* Minimal Floating Top Header Overlay */
 .constellation-header {
+  position: absolute;
+  top: clamp(1.3rem, 2.8vh, 2.2rem);
+  left: clamp(5.2rem, 8.5vw, 7.2rem);
+  right: clamp(1.4rem, 3.8vw, 3.5rem);
+  z-index: 20;
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
   gap: 1rem;
-  padding-bottom: 0.75rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  pointer-events: none;
+}
+
+.constellation-title-wrap,
+.constellation-controls {
+  pointer-events: auto;
 }
 
 .work-eyebrow {
   display: block;
-  font: 10px/1.5 var(--font-mono);
+  font: 10px/1.4 var(--font-mono);
   letter-spacing: 0.14em;
   color: #9ba394;
   text-transform: uppercase;
 }
 
 .constellation-header h2 {
-  font: 400 clamp(2rem, 4.2vw, 3.6rem)/1.02 var(--font-headline);
+  font: 400 clamp(1.85rem, 3.4vw, 3.1rem)/1.02 var(--font-headline);
   letter-spacing: -0.01em;
   text-transform: uppercase;
-  margin-top: 0.25rem;
+  margin-top: 0.2rem;
+  text-shadow: 0 4px 24px rgba(0, 0, 0, 0.85);
 }
 
 .constellation-header h2 em {
@@ -58,7 +82,7 @@
 .constellation-controls {
   display: flex;
   align-items: center;
-  gap: 1.25rem;
+  gap: 1rem;
 }
 
 .work-filters {
@@ -69,11 +93,13 @@
 
 .work-filters button {
   font: 11px var(--font-mono);
-  color: #a7ada0;
-  padding: 0.45rem 0.85rem;
-  border: 1px solid rgba(255, 255, 255, 0.14);
+  color: #b7bdb0;
+  padding: 0.42rem 0.82rem;
+  border: 1px solid rgba(255, 255, 255, 0.16);
   border-radius: 999px;
-  background: rgba(12, 16, 11, 0.72);
+  background: rgba(8, 12, 9, 0.72);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   cursor: pointer;
   white-space: nowrap;
   transition: border-color 0.2s, color 0.2s, background 0.2s;
@@ -92,181 +118,92 @@
 }
 
 .work-count {
-  font-size: 0.68rem;
+  font-size: 0.66rem;
   letter-spacing: 0.12em;
   color: var(--color-lime);
   white-space: nowrap;
 }
 
-.constellation-stage-grid {
-  flex: 1;
-  min-height: 0;
-  display: grid;
-  grid-template-columns: minmax(0, 1.48fr) minmax(320px, 0.88fr);
-  gap: 1.25rem;
-  align-items: stretch;
-}
-
-.constellation-viewport {
-  position: relative;
-  min-height: 360px;
-  border-radius: 16px;
-  border: 1px solid rgba(255, 255, 255, 0.09);
-  background: radial-gradient(circle at 50% 48%, rgba(18, 25, 16, 0.56) 0%, rgba(7, 10, 8, 0.32) 72%, rgba(4, 6, 5, 0.18) 100%);
-  overflow: hidden;
-  cursor: grab;
-  user-select: none;
-}
-
-.constellation-viewport.is-grabbing {
-  cursor: grabbing;
-}
-
-.constellation-canvas-host,
-.constellation-webgl-canvas,
-.constellation-pins-layer {
+/* Minimal Floating Bottom Dock */
+.constellation-bottom-hud {
   position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-}
-
-.constellation-canvas-host,
-.constellation-webgl-canvas {
-  pointer-events: none;
-}
-
-.constellation-pins-layer {
-  pointer-events: none;
-  overflow: hidden;
-}
-
-.constellation-pin {
-  position: absolute;
-  top: 0;
-  left: 0;
-  pointer-events: auto;
+  bottom: clamp(0.85rem, 2.2vh, 1.5rem);
+  left: clamp(1rem, 3.8vw, 3.5rem);
+  right: clamp(1rem, 3.8vw, 3.5rem);
+  z-index: 25;
   display: flex;
   flex-direction: column;
+  gap: 0.55rem;
+  pointer-events: none;
+}
+
+.constellation-dock,
+.work-footer {
+  pointer-events: auto;
+}
+
+.constellation-dock {
+  --work-accent: #d2ff00;
+  width: min(1160px, 100%);
+  margin: 0 auto;
+  padding: 0.85rem 1.15rem;
+  border-radius: 16px;
+  background: rgba(9, 13, 10, 0.78);
+  border: 1px solid color-mix(in srgb, var(--work-accent) 36%, rgba(255, 255, 255, 0.14));
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.78), 0 0 24px color-mix(in srgb, var(--work-accent) 12%, transparent);
+}
+
+.dock-main {
+  display: flex;
   align-items: center;
-  gap: 0.25rem;
-  background: transparent;
-  border: 0;
-  cursor: pointer;
-  transform-origin: center top;
-  transition: opacity 0.22s ease;
+  justify-content: space-between;
+  gap: 1.25rem;
 }
 
-.pin-dot {
-  display: none;
-}
-
-.pin-chip {
-  display: inline-flex;
+.dock-identity {
+  display: flex;
   align-items: center;
-  gap: 0.42rem;
-  padding: 0.3rem 0.62rem;
-  border-radius: 999px;
-  background: rgba(8, 12, 9, 0.84);
-  border: 1px solid rgba(255, 255, 255, 0.16);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.65);
-  white-space: nowrap;
-  transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+  gap: 0.85rem;
+  min-width: 0;
+  flex: 1.2;
 }
 
-.pin-icon {
-  width: 14px;
-  height: 14px;
-  object-fit: contain;
+.dock-icon-wrap {
+  width: 42px;
+  height: 42px;
+  border-radius: 11px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid color-mix(in srgb, var(--work-accent) 45%, rgba(255, 255, 255, 0.14));
+  display: flex;
+  align-items: center;
+  justify-content: center;
   flex-shrink: 0;
 }
 
-.pin-name {
-  font: 600 0.72rem/1 var(--font-sans);
-  color: #edf0e5;
+.dock-icon-wrap img {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
 }
 
-.pin-idx {
-  font-size: 0.58rem;
-  color: #8f9887;
+.dock-text {
+  min-width: 0;
 }
 
-.constellation-pin:hover .pin-chip,
-.constellation-pin.is-connected .pin-chip {
-  border-color: var(--pin-accent, var(--color-lime));
-  box-shadow: 0 0 16px color-mix(in srgb, var(--pin-accent, var(--color-lime)) 35%, transparent);
-}
-
-.constellation-pin.is-active .pin-chip {
-  background: color-mix(in srgb, var(--pin-accent, var(--color-lime)) 18%, #0a0f0a);
-  border-color: var(--pin-accent, var(--color-lime));
-  box-shadow: 0 0 22px color-mix(in srgb, var(--pin-accent, var(--color-lime)) 45%, transparent);
-}
-
-.constellation-pin.is-active .pin-name {
-  color: #ffffff;
-}
-
-.constellation-pin.is-dimmed {
-  pointer-events: none;
-}
-
-.constellation-edge-badge {
-  position: absolute;
-  top: 0.9rem;
-  left: 1rem;
-  right: 1rem;
-  font-size: 0.64rem;
-  letter-spacing: 0.11em;
-  color: var(--color-lime);
-  pointer-events: none;
-  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.9);
-}
-
-.constellation-hint {
-  position: absolute;
-  bottom: 0.85rem;
-  left: 50%;
-  transform: translateX(-50%);
-  font-size: 0.6rem;
-  letter-spacing: 0.14em;
-  color: rgba(227, 232, 220, 0.56);
-  pointer-events: none;
-  white-space: nowrap;
-}
-
-/* Right Glass Dossier Panel */
-.constellation-dossier {
-  --work-accent: #d2ff00;
+.dock-meta-line {
   display: flex;
-  flex-direction: column;
-  gap: 0.78rem;
-  padding: 1.35rem 1.4rem;
-  border-radius: 16px;
-  background: rgba(11, 15, 11, 0.82);
-  border: 1px solid color-mix(in srgb, var(--work-accent) 32%, rgba(255, 255, 255, 0.12));
-  backdrop-filter: blur(18px);
-  -webkit-backdrop-filter: blur(18px);
-  box-shadow: 0 20px 55px rgba(0, 0, 0, 0.72), inset 0 1px 0 rgba(255, 255, 255, 0.08);
-  overflow-y: auto;
-  min-height: 0;
-}
-
-.dossier-top {
-  display: flex;
-  justify-content: space-between;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.65rem;
 }
 
 .work-status {
   display: inline-flex;
   align-items: center;
-  gap: 0.45rem;
+  gap: 0.4rem;
   color: var(--work-accent);
-  font: 600 0.65rem/1.4 var(--font-mono);
+  font: 600 0.6rem/1.3 var(--font-mono);
   letter-spacing: 0.08em;
 }
 
@@ -279,137 +216,74 @@
 }
 
 .work-position {
-  font-size: 0.65rem;
+  font-size: 0.6rem;
   color: #8f9887;
 }
 
-.dossier-title-row {
-  display: flex;
-  align-items: center;
-  gap: 0.85rem;
-}
-
-.dossier-icon-wrap {
-  width: 44px;
-  height: 44px;
-  border-radius: 11px;
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid color-mix(in srgb, var(--work-accent) 45%, rgba(255, 255, 255, 0.14));
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-}
-
-.dossier-icon-wrap img {
-  width: 26px;
-  height: 26px;
-  object-fit: contain;
-}
-
-.dossier-cat {
-  display: block;
-  font-size: 0.6rem;
-  letter-spacing: 0.12em;
-  color: #9ba394;
-  text-transform: uppercase;
-}
-
-.constellation-dossier h3 {
-  font: 700 clamp(1.35rem, 2.2vw, 1.9rem)/1.15 var(--font-display);
-  letter-spacing: -0.02em;
+.dock-text h3 {
+  font: 700 clamp(1.05rem, 1.6vw, 1.35rem)/1.2 var(--font-display);
   color: #ffffff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-.work-headline {
-  font-size: 0.86rem;
-  font-weight: 600;
-  color: #e3e8dc;
+.dock-headline {
+  font-size: 0.76rem;
+  color: #b2b8aa;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-.work-summary {
-  font-size: 0.8rem;
-  line-height: 1.65;
-  color: #a7ada0;
-}
-
-.work-stack {
+.dock-links-wrap {
   display: flex;
   flex-wrap: wrap;
   gap: 0.4rem;
-  list-style: none;
+  justify-content: center;
+  flex: 1;
 }
 
-.work-stack li {
-  font: 0.64rem/1.3 var(--font-mono);
-  color: #d6dcd0;
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  background: rgba(255, 255, 255, 0.03);
-  border-radius: 6px;
-  padding: 0.28rem 0.55rem;
-}
-
-.dossier-links {
-  display: flex;
-  flex-direction: column;
-  gap: 0.4rem;
-  padding-top: 0.35rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
-}
-
-.dossier-links-label {
-  font-size: 0.6rem;
-  letter-spacing: 0.12em;
-  color: #8f9887;
-}
-
-.dossier-links-row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.4rem;
-}
-
-.dossier-link-chip {
+.dock-link-chip {
   display: inline-flex;
   align-items: center;
   gap: 0.35rem;
-  padding: 0.28rem 0.55rem;
+  padding: 0.3rem 0.62rem;
   border-radius: 999px;
-  border: 1px solid color-mix(in srgb, var(--chip-accent, #d2ff00) 40%, rgba(255, 255, 255, 0.14));
+  border: 1px solid color-mix(in srgb, var(--chip-accent, #d2ff00) 42%, rgba(255, 255, 255, 0.14));
   background: rgba(255, 255, 255, 0.04);
-  font: 600 0.68rem/1 var(--font-sans);
+  font: 600 0.66rem/1 var(--font-sans);
   color: #f0f1e9;
   cursor: pointer;
   transition: background 0.2s, border-color 0.2s;
 }
 
-.dossier-link-chip small {
-  font: 0.58rem var(--font-mono);
+.dock-link-chip span {
+  font: 0.56rem var(--font-mono);
   color: var(--chip-accent, var(--color-lime));
 }
 
-.dossier-link-chip:hover {
+.dock-link-chip:hover {
   background: color-mix(in srgb, var(--chip-accent, #d2ff00) 16%, transparent);
   border-color: var(--chip-accent, var(--color-lime));
 }
 
-.work-actions {
-  margin-top: auto;
-  padding-top: 0.4rem;
+.dock-actions {
   display: flex;
   align-items: center;
-  gap: 0.85rem;
+  gap: 0.75rem;
+  flex-shrink: 0;
 }
 
 .work-primary {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 0.55rem;
-  min-height: 40px;
-  padding: 0 1rem;
+  gap: 0.45rem;
+  min-height: 36px;
+  padding: 0 0.9rem;
   border-radius: 8px;
-  font: 700 0.74rem var(--font-sans);
+  font: 700 0.72rem var(--font-sans);
   background: #edf0e5;
   color: #0b0e08;
   cursor: pointer;
@@ -423,7 +297,7 @@
 }
 
 .work-repo {
-  font: 600 0.74rem var(--font-mono);
+  font: 600 0.7rem var(--font-mono);
   color: #d1d5c9;
   text-decoration: none;
 }
@@ -434,18 +308,17 @@
 
 .work-stepper {
   display: flex;
-  gap: 0.35rem;
-  margin-left: auto;
+  gap: 0.3rem;
 }
 
 .work-stepper button {
-  width: 38px;
-  height: 38px;
+  width: 36px;
+  height: 36px;
   border-radius: 8px;
   border: 1px solid rgba(255, 255, 255, 0.2);
   color: #edf0e5;
   cursor: pointer;
-  font-size: 1rem;
+  font-size: 0.95rem;
   transition: border-color 0.2s, color 0.2s;
 }
 
@@ -455,20 +328,21 @@
 }
 
 .work-footer {
+  width: min(1160px, 100%);
+  margin: 0 auto;
   display: flex;
   justify-content: space-between;
   align-items: center;
   gap: 0.85rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
-  padding-top: 0.65rem;
+  padding: 0 0.25rem;
 }
 
 .work-footer button {
-  font: 0.68rem var(--font-mono);
+  font: 0.64rem var(--font-mono);
   letter-spacing: 0.08em;
   color: #a7ada0;
   cursor: pointer;
-  min-height: 30px;
+  min-height: 24px;
 }
 
 .work-footer button:last-child {
@@ -546,6 +420,22 @@
   color: #edf0e5;
 }
 
+.work-stack {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  list-style: none;
+}
+
+.work-stack li {
+  font: 0.64rem/1.3 var(--font-mono);
+  color: #d6dcd0;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 6px;
+  padding: 0.28rem 0.55rem;
+}
+
 .work-capabilities {
   list-style: none;
   display: grid;
@@ -566,15 +456,20 @@ body.work-dialog-open {
 }
 
 /* Responsive Tablet & Mobile */
-@media (max-width: 960px) {
-  .constellation-section {
-    padding: 4.3rem 1rem 0.9rem;
+@media (max-width: 1024px) {
+  .dock-links-wrap {
+    display: none;
   }
+}
 
+@media (max-width: 768px) {
   .constellation-header {
+    top: 4.1rem;
+    left: 1rem;
+    right: 1rem;
     flex-direction: column;
     align-items: flex-start;
-    gap: 0.65rem;
+    gap: 0.55rem;
   }
 
   .constellation-controls {
@@ -582,52 +477,30 @@ body.work-dialog-open {
     justify-content: space-between;
   }
 
-  .constellation-stage-grid {
-    grid-template-columns: 1fr;
-    grid-template-rows: minmax(240px, 1.15fr) auto;
-    gap: 0.75rem;
-  }
-
-  .constellation-viewport {
-    min-height: 240px;
-  }
-
-  .constellation-dossier {
-    padding: 1rem 1.05rem;
-    gap: 0.55rem;
-    max-height: 39vh;
-  }
-
-  .work-summary,
-  .dossier-links {
-    display: none;
-  }
-}
-
-@media (max-width: 600px) {
   .work-filters button {
     font-size: 0.6rem;
-    padding: 0.35rem 0.65rem;
+    padding: 0.34rem 0.62rem;
   }
 
-  .constellation-hint {
-    font-size: 0.52rem;
-    letter-spacing: 0.08em;
+  .constellation-dock {
+    padding: 0.75rem 0.85rem;
   }
 
-  .pin-chip {
-    padding: 0.22rem 0.48rem;
+  .dock-main {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.65rem;
   }
 
-  .pin-name {
-    font-size: 0.64rem;
-  }
-
-  .work-capabilities {
-    grid-template-columns: 1fr;
+  .dock-actions {
+    justify-content: space-between;
   }
 
   .work-footer button {
     font-size: 0.58rem;
+  }
+
+  .work-capabilities {
+    grid-template-columns: 1fr;
   }
 }

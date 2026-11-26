@@ -1,75 +1,75 @@
 import { PROJECT_NODES } from './projects.js';
 
 /**
- * 3D Interactive Neural Constellation / Knowledge Graph for Selected Work
- * -----------------------------------------------------------------------
- * Renders the 9 flagship projects as rotating faceted 3D cores suspended in space,
- * linked by synaptic filaments wherever projects share technologies or architecture.
- * Falls back gracefully to a 3D-projected 2D canvas if WebGL is unavailable.
+ * Full-Environment Three.js 3D Neural Constellation / Knowledge Graph
+ * -------------------------------------------------------------------
+ * All 9 project nodes, holographic label plaques, curved 3D synaptic tubes,
+ * travelling energy pulses, shared-tech badges, and space dust live directly
+ * inside the Three.js 3D scene with smooth 3D camera orbit & fly-to framing.
  */
 
 const GRAPH_META = {
+  leadis: {
+    group: 'AI & vision',
+    label: 'Applied AI · 2nd Prize',
+    headline: 'Multimodal developmental screening pipeline.',
+    pos: [0.0, 0.55, 2.35],
+    sharedTags: ['Next.js', 'Python', 'MediaPipe', 'Tailwind', 'Camera'],
+  },
   keybase: {
     group: 'Systems',
     label: 'Desktop Software',
     headline: 'Commercial retail key & records platform.',
-    pos: [-2.65, 1.35, 1.15],
+    pos: [-3.4, 1.55, 1.35],
     sharedTags: ['Desktop', 'PyInstaller', 'Camera', 'Java'],
   },
   sharedash: {
     group: 'Systems',
     label: 'Multipath Transfer',
     headline: '78–107 MB/s USB + Wi-Fi Direct P2P engine.',
-    pos: [-3.25, -0.85, -0.45],
+    pos: [-4.1, -0.95, -1.15],
     sharedTags: ['Desktop', 'Rust', 'Networking'],
-  },
-  leadis: {
-    group: 'AI & vision',
-    label: 'Applied AI · 2nd Prize',
-    headline: 'Multimodal developmental screening pipeline.',
-    pos: [0.05, 0.25, 1.85],
-    sharedTags: ['Next.js', 'Python', 'MediaPipe', 'Tailwind', 'Camera'],
   },
   infogrid: {
     group: 'Web',
     label: 'Digital Signage CMS',
     headline: '43" vertical lab display & Cloudflare R2 CMS.',
-    pos: [2.55, 1.45, 0.65],
+    pos: [3.35, 1.75, 1.05],
     sharedTags: ['Next.js', 'Web', 'Cloud DB'],
   },
   rainiest: {
     group: 'Web',
     label: 'Civic Weather Radar',
     headline: '14 Kerala districts rainfall & leave monitor.',
-    pos: [3.1, -0.35, -1.15],
+    pos: [4.15, -0.55, -1.45],
     sharedTags: ['Next.js', 'Tailwind', 'Canvas/3D', 'Web'],
   },
   lateloggy: {
     group: 'Web',
     label: 'Campus Operations',
     headline: 'Dynamic anti-screenshot QR verification pass.',
-    pos: [1.55, -1.65, 1.05],
+    pos: [2.15, -0.78, 2.05],
     sharedTags: ['Next.js', 'Tailwind', 'Cloud DB', 'Web'],
   },
   fitman: {
     group: 'AI & vision',
     label: 'Computer Vision',
     headline: '60fps 33-landmark skeletal biomechanics tracker.',
-    pos: [-0.85, 1.95, -1.45],
+    pos: [-1.15, 2.45, -1.85],
     sharedTags: ['Python', 'MediaPipe', 'Camera'],
   },
   'threed-s': {
     group: 'Systems',
     label: '3D Spatial Engine',
     headline: 'Point-cloud & hardware shader reconstruction.',
-    pos: [1.35, 1.15, -2.35],
+    pos: [1.45, 1.35, -3.25],
     sharedTags: ['Canvas/3D', 'Desktop'],
   },
   fakepaste: {
     group: 'Systems',
     label: 'Windows Utility',
     headline: 'Human-rhythm keystroke injection desktop tool.',
-    pos: [-1.45, -1.75, -1.55],
+    pos: [-1.85, -1.05, -1.95],
     sharedTags: ['Python', 'PyInstaller', 'Desktop'],
   },
 };
@@ -80,7 +80,7 @@ const escapeHtml = (value) =>
   String(value).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 
 /**
- * Compute synaptic connections between projects sharing technologies or engineering domains.
+ * Compute unique synaptic links between projects sharing technologies or domains.
  */
 function buildSynapticEdges(projects) {
   const edges = [];
@@ -88,9 +88,7 @@ function buildSynapticEdges(projects) {
     for (let j = i + 1; j < projects.length; j++) {
       const a = projects[i];
       const b = projects[j];
-      const tagsA = GRAPH_META[a.id].sharedTags;
-      const tagsB = GRAPH_META[b.id].sharedTags;
-      const shared = tagsA.filter((tag) => tagsB.includes(tag));
+      const shared = GRAPH_META[a.id].sharedTags.filter((tag) => GRAPH_META[b.id].sharedTags.includes(tag));
       if (shared.length > 0) {
         edges.push({
           aIndex: i,
@@ -107,20 +105,124 @@ function buildSynapticEdges(projects) {
 }
 
 /**
- * Create a soft radial glow texture for Three.js sprites and energy pulses.
+ * Soft radial sprite texture for Three.js halos, space dust, and travelling pulses.
  */
-function createGlowTexture() {
+function createGlowCanvas() {
   const canvas = document.createElement('canvas');
   canvas.width = 128;
   canvas.height = 128;
   const ctx = canvas.getContext('2d');
   const grad = ctx.createRadialGradient(64, 64, 2, 64, 64, 64);
   grad.addColorStop(0, 'rgba(255, 255, 255, 1)');
-  grad.addColorStop(0.25, 'rgba(255, 255, 255, 0.72)');
-  grad.addColorStop(0.55, 'rgba(255, 255, 255, 0.18)');
+  grad.addColorStop(0.28, 'rgba(255, 255, 255, 0.72)');
+  grad.addColorStop(0.6, 'rgba(255, 255, 255, 0.16)');
   grad.addColorStop(1, 'rgba(255, 255, 255, 0)');
   ctx.fillStyle = grad;
   ctx.fillRect(0, 0, 128, 128);
+  return canvas;
+}
+
+/**
+ * Draw a crisp holographic 3D plaque texture directly on an offscreen canvas for Three.js.
+ */
+function renderPlaqueCanvas(project, index, isActive, iconImg) {
+  const w = 520;
+  const h = 148;
+  const canvas = document.createElement('canvas');
+  canvas.width = w;
+  canvas.height = h;
+  const ctx = canvas.getContext('2d');
+
+  // Frosted dark glass body
+  ctx.save();
+  ctx.beginPath();
+  ctx.roundRect(6, 6, w - 12, h - 12, 24);
+  const bg = ctx.createLinearGradient(0, 0, w, h);
+  bg.addColorStop(0, isActive ? 'rgba(18, 28, 16, 0.94)' : 'rgba(10, 14, 11, 0.88)');
+  bg.addColorStop(1, 'rgba(6, 9, 7, 0.94)');
+  ctx.fillStyle = bg;
+  ctx.fill();
+
+  ctx.lineWidth = isActive ? 3.5 : 1.8;
+  ctx.strokeStyle = isActive ? project.color : 'rgba(255, 255, 255, 0.22)';
+  ctx.stroke();
+  ctx.restore();
+
+  // Accent top highlight
+  ctx.save();
+  const sheen = ctx.createLinearGradient(28, 6, w - 28, 6);
+  sheen.addColorStop(0, 'transparent');
+  sheen.addColorStop(0.5, isActive ? project.color : 'rgba(255,255,255,0.45)');
+  sheen.addColorStop(1, 'transparent');
+  ctx.strokeStyle = sheen;
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  ctx.moveTo(30, 8);
+  ctx.lineTo(w - 30, 8);
+  ctx.stroke();
+  ctx.restore();
+
+  // Project icon box
+  ctx.save();
+  ctx.beginPath();
+  ctx.roundRect(24, 30, 84, 84, 18);
+  ctx.fillStyle = 'rgba(255, 255, 255, 0.05)';
+  ctx.fill();
+  ctx.strokeStyle = isActive ? project.color : 'rgba(255,255,255,0.16)';
+  ctx.lineWidth = 1.5;
+  ctx.stroke();
+
+  if (iconImg && iconImg.complete && iconImg.naturalWidth > 0) {
+    ctx.drawImage(iconImg, 38, 44, 56, 56);
+  }
+  ctx.restore();
+
+  // Index pill + category label
+  const meta = GRAPH_META[project.id];
+  ctx.save();
+  ctx.font = '700 18px "JetBrains Mono", monospace';
+  ctx.fillStyle = project.color;
+  ctx.textBaseline = 'top';
+  ctx.fillText(`${String(index + 1).padStart(2, '0')} // ${meta.label.toUpperCase()}`, 128, 28);
+
+  // Project Title
+  ctx.font = '800 34px "Syne", "Plus Jakarta Sans", sans-serif';
+  ctx.fillStyle = '#FFFFFF';
+  ctx.fillText(project.name, 128, 56, 368);
+
+  // Bottom tech preview
+  ctx.font = '600 17px "JetBrains Mono", monospace';
+  ctx.fillStyle = 'rgba(227, 232, 220, 0.68)';
+  ctx.fillText(project.tech.slice(0, 3).join(' · '), 128, 102, 368);
+  ctx.restore();
+
+  return canvas;
+}
+
+/**
+ * Draw a compact 3D edge shared-tech label texture for Three.js sprites.
+ */
+function renderEdgeLabelCanvas(text, accentColor) {
+  const canvas = document.createElement('canvas');
+  canvas.width = 256;
+  canvas.height = 64;
+  const ctx = canvas.getContext('2d');
+  ctx.font = '700 22px "JetBrains Mono", monospace';
+  const tw = Math.min(220, ctx.measureText(text).width + 32);
+  const x = (256 - tw) / 2;
+
+  ctx.beginPath();
+  ctx.roundRect(x, 10, tw, 44, 22);
+  ctx.fillStyle = 'rgba(7, 11, 8, 0.92)';
+  ctx.fill();
+  ctx.strokeStyle = accentColor;
+  ctx.lineWidth = 2;
+  ctx.stroke();
+
+  ctx.fillStyle = '#E3E8DC';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillText(text, 128, 32, tw - 16);
   return canvas;
 }
 
@@ -130,14 +232,12 @@ class ProjectConstellationEngine {
     this.layerEl = document.getElementById('projects-space-layer');
     this.viewport = document.getElementById('constellation-viewport');
     this.canvasHost = document.getElementById('constellation-canvas-host');
-    this.pinsLayer = document.getElementById('constellation-pins-layer');
-    this.edgeBadge = document.getElementById('constellation-edge-badge');
-    this.dossier = document.getElementById('work-feature');
+    this.dock = document.getElementById('work-feature');
     this.counter = this.root?.querySelector('.work-count');
     this.announcement = this.root?.querySelector('.work-announcement');
     this.dialog = document.getElementById('work-dialog');
 
-    if (!this.root || !this.viewport || !this.canvasHost || !this.pinsLayer || !this.dossier) return;
+    if (!this.root || !this.viewport || !this.canvasHost || !this.dock) return;
 
     this.projects = ORDER.map((id) => PROJECT_NODES.find((p) => p.id === id)).filter(Boolean);
     this.edges = buildSynapticEdges(this.projects);
@@ -146,13 +246,18 @@ class ProjectConstellationEngine {
     this.hoveredId = null;
     this.opener = null;
 
-    // 3D Orbit & Fly-to camera state
-    this.yaw = -0.18;
-    this.pitch = 0.16;
-    this.targetYaw = -0.18;
-    this.targetPitch = 0.16;
-    this.yawVel = 0;
-    this.pitchVel = 0;
+    // 3D Spherical Camera Orbit & Smooth Fly-To state
+    this.camTheta = 0.16;
+    this.camPhi = 1.42;
+    this.camRadius = 9.4;
+    this.targetTheta = 0.16;
+    this.targetPhi = 1.42;
+    this.targetRadius = 9.4;
+    this.lookAtCurrent = null;
+    this.lookAtTarget = null;
+    this.thetaVel = 0;
+    this.phiVel = 0;
+
     this.isDragging = false;
     this.hasMoved = false;
     this.startX = 0;
@@ -165,20 +270,20 @@ class ProjectConstellationEngine {
     this.rafId = null;
     this.isDestroyed = false;
 
-    // Three.js & Fallback 2D state
     this.useCanvas2D = false;
     this.scene = null;
     this.camera = null;
     this.renderer = null;
-    this.clusterGroup = null;
+    this.worldGroup = null;
+    this.starField = null;
     this.nodeVisuals = [];
     this.edgeVisuals = [];
     this.pulseVisuals = [];
     this.raycaster = null;
     this.pointerNdc = null;
-    this.pinElements = new Map();
-    this.ctx2d = null;
     this.canvas2d = null;
+    this.ctx2d = null;
+    this.iconCache = new Map();
 
     this.animate = this.animate.bind(this);
     this.onResize = this.onResize.bind(this);
@@ -190,54 +295,44 @@ class ProjectConstellationEngine {
   }
 
   init() {
-    this.buildPinsDOM();
+    this.preloadIcons();
     this.initEngine();
     this.bindEvents();
     this.selectProject(this.activeId, true);
-    this.updateFilterUI();
     this.startLoop();
   }
 
-  buildPinsDOM() {
-    this.pinsLayer.innerHTML = '';
-    this.pinElements.clear();
-
+  preloadIcons() {
     this.projects.forEach((proj, idx) => {
-      const meta = GRAPH_META[proj.id];
-      const btn = document.createElement('button');
-      btn.type = 'button';
-      btn.className = 'constellation-pin';
-      btn.dataset.project = proj.id;
-      btn.style.setProperty('--pin-accent', proj.color);
-      btn.setAttribute('aria-label', `${proj.name} — ${meta.label}`);
-
-      btn.innerHTML = `
-        <span class="pin-dot"></span>
-        <span class="pin-chip">
-          <img src="${escapeHtml(proj.icon)}" alt="" class="pin-icon" width="16" height="16" loading="lazy">
-          <span class="pin-name">${escapeHtml(proj.name)}</span>
-          <span class="pin-idx font-mono">${String(idx + 1).padStart(2, '0')}</span>
-        </span>
-      `;
-
-      btn.addEventListener('pointerenter', () => {
-        this.hoveredId = proj.id;
-        this.autoOrbit = false;
-        this.updateEdgeBadge();
-      });
-      btn.addEventListener('pointerleave', () => {
-        if (this.hoveredId === proj.id) this.hoveredId = null;
-        this.autoOrbit = true;
-        this.updateEdgeBadge();
-      });
-      btn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        this.selectProject(proj.id, true);
-      });
-
-      this.pinsLayer.appendChild(btn);
-      this.pinElements.set(proj.id, btn);
+      const img = new Image();
+      img.onload = () => {
+        this.refreshPlaqueTexture(idx);
+      };
+      img.src = proj.icon;
+      this.iconCache.set(proj.id, img);
     });
+  }
+
+  refreshPlaqueTexture(idx) {
+    const node = this.nodeVisuals[idx];
+    if (!node || !window.THREE) return;
+    const proj = this.projects[idx];
+    const iconImg = this.iconCache.get(proj.id);
+
+    const defTex = new window.THREE.CanvasTexture(renderPlaqueCanvas(proj, idx, false, iconImg));
+    defTex.colorSpace = window.THREE.SRGBColorSpace;
+    defTex.minFilter = window.THREE.LinearMipmapLinearFilter;
+
+    const actTex = new window.THREE.CanvasTexture(renderPlaqueCanvas(proj, idx, true, iconImg));
+    actTex.colorSpace = window.THREE.SRGBColorSpace;
+    actTex.minFilter = window.THREE.LinearMipmapLinearFilter;
+
+    node.defPlaqueTex?.dispose();
+    node.actPlaqueTex?.dispose();
+    node.defPlaqueTex = defTex;
+    node.actPlaqueTex = actTex;
+    node.plaqueMat.map = proj.id === this.activeId ? actTex : defTex;
+    node.plaqueMat.needsUpdate = true;
   }
 
   initEngine() {
@@ -254,12 +349,16 @@ class ProjectConstellationEngine {
   }
 
   initThree(THREE) {
-    const width = Math.max(300, this.viewport.clientWidth || 800);
-    const height = Math.max(260, this.viewport.clientHeight || 540);
+    const width = Math.max(300, this.viewport.clientWidth || window.innerWidth || 1280);
+    const height = Math.max(300, this.viewport.clientHeight || window.innerHeight || 720);
 
     this.scene = new THREE.Scene();
-    this.camera = new THREE.PerspectiveCamera(42, width / height, 0.1, 100);
-    this.updateCameraDistance(width, height);
+    this.scene.fog = new THREE.FogExp2(0x030503, 0.042);
+
+    this.camera = new THREE.PerspectiveCamera(44, width / height, 0.1, 100);
+    this.lookAtCurrent = new THREE.Vector3(0, -0.45, 0);
+    this.lookAtTarget = new THREE.Vector3(0, -0.45, 0);
+    this.updateCameraRadius(width, height);
 
     this.renderer = new THREE.WebGLRenderer({
       antialias: true,
@@ -274,37 +373,78 @@ class ProjectConstellationEngine {
     this.renderer.domElement.className = 'constellation-webgl-canvas';
     this.canvasHost.appendChild(this.renderer.domElement);
 
-    // Subtle cosmic lighting for faceted crystal cores
-    this.scene.add(new THREE.AmbientLight(0xffffff, 0.75));
-    const keyLight = new THREE.DirectionalLight(0xd2ff00, 1.35);
-    keyLight.position.set(5, 7, 8);
+    // Three-point cosmic lighting
+    this.scene.add(new THREE.AmbientLight(0xffffff, 0.85));
+    const keyLight = new THREE.DirectionalLight(0xd2ff00, 1.45);
+    keyLight.position.set(6, 9, 8);
     this.scene.add(keyLight);
 
-    const rimLight = new THREE.DirectionalLight(0x00f0ff, 0.95);
-    rimLight.position.set(-6, -4, -5);
+    const rimLight = new THREE.DirectionalLight(0x00f0ff, 1.1);
+    rimLight.position.set(-7, -4, -6);
     this.scene.add(rimLight);
 
-    this.clusterGroup = new THREE.Group();
-    this.scene.add(this.clusterGroup);
+    this.worldGroup = new THREE.Group();
+    this.scene.add(this.worldGroup);
 
-    const glowTex = new THREE.CanvasTexture(createGlowTexture());
-    const coreGeo = new THREE.IcosahedronGeometry(0.28, 0);
-    const cageGeo = new THREE.OctahedronGeometry(0.43, 0);
-    const ringGeo = new THREE.TorusGeometry(0.56, 0.014, 12, 48);
+    const glowTex = new THREE.CanvasTexture(createGlowCanvas());
 
-    // Build 9 3D crystal project nodes
+    // 3D Starfield & Ambient Spatial Dust inside Three.js environment
+    const starCount = 320;
+    const starPos = new Float32Array(starCount * 3);
+    for (let i = 0; i < starCount; i++) {
+      const r = 6 + Math.random() * 16;
+      const theta = Math.random() * Math.PI * 2;
+      const phi = Math.acos(2 * Math.random() - 1);
+      starPos[i * 3] = r * Math.sin(phi) * Math.cos(theta);
+      starPos[i * 3 + 1] = r * Math.cos(phi);
+      starPos[i * 3 + 2] = r * Math.sin(phi) * Math.sin(theta);
+    }
+    const starGeo = new THREE.BufferGeometry();
+    starGeo.setAttribute('position', new THREE.BufferAttribute(starPos, 3));
+    const starMat = new THREE.PointsMaterial({
+      map: glowTex,
+      color: 0xd2ff00,
+      size: 0.14,
+      transparent: true,
+      opacity: 0.55,
+      blending: THREE.AdditiveBlending,
+      depthWrite: false,
+    });
+    this.starField = new THREE.Points(starGeo, starMat);
+    this.worldGroup.add(this.starField);
+
+    // Subtle 3D orbital reference rings in environment
+    [4.4, 6.2].forEach((r, idx) => {
+      const envRingGeo = new THREE.TorusGeometry(r, 0.008, 8, 96);
+      const envRingMat = new THREE.MeshBasicMaterial({
+        color: idx === 0 ? 0xd2ff00 : 0x00f0ff,
+        transparent: true,
+        opacity: 0.12,
+      });
+      const envRing = new THREE.Mesh(envRingGeo, envRingMat);
+      envRing.rotation.x = Math.PI * (idx === 0 ? 0.44 : -0.38);
+      envRing.rotation.y = idx * 0.45;
+      this.worldGroup.add(envRing);
+    });
+
+    // Build 9 3D project crystal nodes + 3D holographic plaque meshes inside Three.js
+    const coreGeo = new THREE.IcosahedronGeometry(0.32, 0);
+    const cageGeo = new THREE.OctahedronGeometry(0.49, 0);
+    const ringGeo = new THREE.TorusGeometry(0.64, 0.015, 12, 48);
+    const plaqueGeo = new THREE.PlaneGeometry(1.78, 0.506);
+
     this.nodeVisuals = this.projects.map((proj, index) => {
       const [px, py, pz] = GRAPH_META[proj.id].pos;
       const nodeGroup = new THREE.Group();
       nodeGroup.position.set(px, py, pz);
 
-      const accentColor = new THREE.Color(proj.color);
+      const accent = new THREE.Color(proj.color);
       const coreMat = new THREE.MeshStandardMaterial({
-        color: accentColor,
-        emissive: accentColor,
-        emissiveIntensity: 0.45,
-        roughness: 0.25,
-        metalness: 0.65,
+        color: accent,
+        emissive: accent,
+        emissiveIntensity: 0.48,
+        roughness: 0.22,
+        metalness: 0.68,
         flatShading: true,
         transparent: true,
         opacity: 0.96,
@@ -313,7 +453,7 @@ class ProjectConstellationEngine {
       coreMesh.userData = { projectId: proj.id };
 
       const cageMat = new THREE.MeshBasicMaterial({
-        color: accentColor,
+        color: accent,
         wireframe: true,
         transparent: true,
         opacity: 0.36,
@@ -326,21 +466,40 @@ class ProjectConstellationEngine {
         opacity: 0,
       });
       const focusRing = new THREE.Mesh(ringGeo, ringMat);
-      focusRing.rotation.x = Math.PI * 0.35 + index * 0.3;
+      focusRing.rotation.x = Math.PI * 0.35 + index * 0.25;
 
       const haloMat = new THREE.SpriteMaterial({
         map: glowTex,
-        color: accentColor,
+        color: accent,
         transparent: true,
-        opacity: 0.42,
+        opacity: 0.46,
         blending: THREE.AdditiveBlending,
         depthWrite: false,
       });
       const haloSprite = new THREE.Sprite(haloMat);
-      haloSprite.scale.set(1.55, 1.55, 1);
+      haloSprite.scale.set(1.85, 1.85, 1);
 
-      nodeGroup.add(haloSprite, coreMesh, cageMesh, focusRing);
-      this.clusterGroup.add(nodeGroup);
+      const iconImg = this.iconCache.get(proj.id);
+      const defPlaqueTex = new THREE.CanvasTexture(renderPlaqueCanvas(proj, index, false, iconImg));
+      defPlaqueTex.colorSpace = THREE.SRGBColorSpace;
+      defPlaqueTex.minFilter = THREE.LinearMipmapLinearFilter;
+
+      const actPlaqueTex = new THREE.CanvasTexture(renderPlaqueCanvas(proj, index, true, iconImg));
+      actPlaqueTex.colorSpace = THREE.SRGBColorSpace;
+      actPlaqueTex.minFilter = THREE.LinearMipmapLinearFilter;
+
+      const plaqueMat = new THREE.MeshBasicMaterial({
+        map: proj.id === this.activeId ? actPlaqueTex : defPlaqueTex,
+        transparent: true,
+        depthWrite: false,
+        side: THREE.DoubleSide,
+      });
+      const plaqueMesh = new THREE.Mesh(plaqueGeo, plaqueMat);
+      plaqueMesh.position.set(0, -0.78, 0.12);
+      plaqueMesh.userData = { projectId: proj.id };
+
+      nodeGroup.add(haloSprite, coreMesh, cageMesh, focusRing, plaqueMesh);
+      this.worldGroup.add(nodeGroup);
 
       return {
         id: proj.id,
@@ -350,52 +509,84 @@ class ProjectConstellationEngine {
         cageMesh,
         focusRing,
         haloSprite,
+        plaqueMesh,
         coreMat,
         cageMat,
         ringMat,
         haloMat,
+        plaqueMat,
+        defPlaqueTex,
+        actPlaqueTex,
         spinSpeed: 0.008 + (index % 4) * 0.003,
         phase: index * 0.9,
       };
     });
 
-    // Build synaptic filaments & travelling data pulses
-    const pulseTex = glowTex;
+    // Build 3D curved Catmull-Rom synaptic tubes + mid-edge shared-tech sprites + travelling pulses
     this.edgeVisuals = [];
     this.pulseVisuals = [];
 
     this.edges.forEach((edge, idx) => {
       const start = this.nodeVisuals[edge.aIndex].basePos;
       const end = this.nodeVisuals[edge.bIndex].basePos;
+      const mid = start.clone().add(end).multiplyScalar(0.5);
+      // Gentle outward radial bow so synaptic filaments curve organically through 3D space
+      const outward = mid.clone().normalize().multiplyScalar(0.55);
+      mid.add(outward);
 
-      const lineGeo = new THREE.BufferGeometry().setFromPoints([start.clone(), end.clone()]);
-      const lineMat = new THREE.LineBasicMaterial({
-        color: 0x6c7a65,
+      const curve = new THREE.CatmullRomCurve3([start.clone(), mid, end.clone()]);
+      const tubeGeo = new THREE.TubeGeometry(curve, 24, 0.014, 6, false);
+      const tubeMat = new THREE.MeshBasicMaterial({
+        color: 0x62705d,
         transparent: true,
-        opacity: 0.22,
+        opacity: 0.18,
       });
-      const line = new THREE.Line(lineGeo, lineMat);
-      this.clusterGroup.add(line);
-      this.edgeVisuals.push({ edge, line, lineGeo, lineMat });
+      const tubeMesh = new THREE.Mesh(tubeGeo, tubeMat);
+      this.worldGroup.add(tubeMesh);
 
-      // Travelling energy packet sprite along each edge
+      // 3D mid-edge shared-tech tag sprite (shown only when connected to active/hovered node)
+      const labelTex = new THREE.CanvasTexture(renderEdgeLabelCanvas(edge.shared[0], '#D2FF00'));
+      labelTex.colorSpace = THREE.SRGBColorSpace;
+      const labelMat = new THREE.SpriteMaterial({
+        map: labelTex,
+        transparent: true,
+        opacity: 0,
+        depthWrite: false,
+      });
+      const labelSprite = new THREE.Sprite(labelMat);
+      labelSprite.position.copy(curve.getPoint(0.5));
+      labelSprite.scale.set(1.1, 0.275, 1);
+      this.worldGroup.add(labelSprite);
+
+      this.edgeVisuals.push({
+        edge,
+        curve,
+        tubeMesh,
+        tubeMat,
+        labelSprite,
+        labelMat,
+        labelTex,
+      });
+
+      // Travelling energy pulse sprite along the 3D curve
       const pulseMat = new THREE.SpriteMaterial({
-        map: pulseTex,
+        map: glowTex,
         color: 0xd2ff00,
         transparent: true,
         opacity: 0,
         blending: THREE.AdditiveBlending,
         depthWrite: false,
       });
-      const sprite = new THREE.Sprite(pulseMat);
-      sprite.scale.set(0.24, 0.24, 1);
-      this.clusterGroup.add(sprite);
+      const pulseSprite = new THREE.Sprite(pulseMat);
+      pulseSprite.scale.set(0.28, 0.28, 1);
+      this.worldGroup.add(pulseSprite);
       this.pulseVisuals.push({
         edge,
-        sprite,
+        curve,
+        sprite: pulseSprite,
         pulseMat,
-        t: (idx * 0.27) % 1,
-        speed: 0.0045 + (idx % 3) * 0.0018,
+        t: (idx * 0.29) % 1,
+        speed: 0.0042 + (idx % 3) * 0.0016,
       });
     });
 
@@ -414,12 +605,16 @@ class ProjectConstellationEngine {
     this.onResize();
   }
 
-  updateCameraDistance(width, height) {
-    if (!this.camera) return;
+  updateCameraRadius(width, height) {
     const aspect = width / Math.max(1, height);
-    this.camera.aspect = aspect;
-    this.camera.position.set(0, 0, aspect < 1.0 ? 11.4 : aspect < 1.35 ? 9.8 : 8.8);
-    this.camera.updateProjectionMatrix();
+    if (this.camera) {
+      this.camera.aspect = aspect;
+      this.camera.updateProjectionMatrix();
+    }
+    this.baseRadius = aspect < 0.85 ? 14.2 : aspect < 1.25 ? 10.8 : 9.4;
+    if (!this.isDragging) {
+      this.targetRadius = this.baseRadius;
+    }
   }
 
   getConnectedProjectIds(projectId) {
@@ -440,96 +635,80 @@ class ProjectConstellationEngine {
     if (!project) return;
     this.activeId = id;
 
-    // Smoothly rotate constellation so selected node faces camera cleanly
+    // Update 3D plaque highlight materials
+    this.nodeVisuals.forEach((node) => {
+      const isAct = node.id === id;
+      node.plaqueMat.map = isAct ? node.actPlaqueTex : node.defPlaqueTex;
+      node.plaqueMat.needsUpdate = true;
+    });
+
+    // Fly the 3D camera smoothly to frame the selected node in front-center of the environment
     if (flyCamera) {
       const [px, py, pz] = GRAPH_META[id].pos;
-      const targetYaw = -Math.atan2(px, pz || 0.001) * 0.55;
-      const targetPitch = Math.max(-0.48, Math.min(0.48, Math.atan2(py, 4.5) * 0.55));
-      this.targetYaw = targetYaw;
-      this.targetPitch = targetPitch;
+      const theta = Math.atan2(px, pz || 0.001);
+      const horiz = Math.hypot(px, pz) || 1;
+      const phi = Math.max(0.95, Math.min(2.05, Math.PI / 2 - Math.atan2(py, horiz) * 0.55));
+      this.targetTheta = theta * 0.72;
+      this.targetPhi = phi;
+      this.targetRadius = (this.baseRadius || 9.4) * 0.88;
+      if (this.lookAtTarget && window.THREE) {
+        this.lookAtTarget.set(px * 0.25, py * 0.22 - 0.62, pz * 0.25);
+      }
     }
 
-    this.renderDossier(project);
-    this.updateFilterUI();
-    this.updateEdgeBadge();
+    this.renderDock(project);
+    this.updateCounterUI();
 
     if (this.announcement) {
       this.announcement.textContent = `${project.name} selected`;
     }
   }
 
-  renderDossier(project) {
+  renderDock(project) {
     const meta = GRAPH_META[project.id];
     const index = this.projects.findIndex((p) => p.id === project.id);
-    const connectedMap = this.getConnectedProjectIds(project.id);
-    const linkedChips = Array.from(connectedMap.entries())
-      .slice(0, 4)
+    const connected = this.getConnectedProjectIds(project.id);
+    const linkedChips = Array.from(connected.entries())
+      .slice(0, 3)
       .map(([otherId, shared]) => {
         const other = this.projects.find((p) => p.id === otherId);
         if (!other) return '';
-        return `<button type="button" class="dossier-link-chip" data-jump-project="${other.id}" style="--chip-accent:${escapeHtml(other.color)}"><span>${escapeHtml(other.name)}</span><small>${escapeHtml(shared[0])}</small></button>`;
+        return `<button type="button" class="dock-link-chip" data-jump-project="${other.id}" style="--chip-accent:${escapeHtml(other.color)}">${escapeHtml(other.name)} <span>${escapeHtml(shared[0])}</span></button>`;
       })
       .join('');
 
-    this.dossier.style.setProperty('--work-accent', project.color);
-    this.dossier.innerHTML = `
-      <div class="dossier-top">
-        <span class="work-status"><i></i>${escapeHtml(project.badge)}</span>
-        <span class="work-position font-mono">${String(index + 1).padStart(2, '0')} / ${String(this.projects.length).padStart(2, '0')}</span>
-      </div>
-      <div class="dossier-title-row">
-        <div class="dossier-icon-wrap"><img src="${escapeHtml(project.icon)}" alt="" width="28" height="28"></div>
-        <div>
-          <span class="dossier-cat font-mono">${escapeHtml(meta.label)}</span>
-          <h3>${escapeHtml(project.name)}</h3>
+    this.dock.style.setProperty('--work-accent', project.color);
+    this.dock.innerHTML = `
+      <div class="dock-main">
+        <div class="dock-identity">
+          <div class="dock-icon-wrap"><img src="${escapeHtml(project.icon)}" alt="" width="24" height="24"></div>
+          <div class="dock-text">
+            <div class="dock-meta-line">
+              <span class="work-status"><i></i>${escapeHtml(project.badge)}</span>
+              <span class="work-position font-mono">${String(index + 1).padStart(2, '0')} / ${String(this.projects.length).padStart(2, '0')}</span>
+            </div>
+            <h3>${escapeHtml(project.name)}</h3>
+            <p class="dock-headline">${escapeHtml(meta.headline)}</p>
+          </div>
         </div>
-      </div>
-      <p class="work-headline">${escapeHtml(meta.headline)}</p>
-      <p class="work-summary">${escapeHtml(project.desc)}</p>
-      <ul class="work-stack" aria-label="Technologies">${project.tech.slice(0, 5).map((t) => `<li>${escapeHtml(t)}</li>`).join('')}</ul>
-      ${linkedChips ? `<div class="dossier-links"><span class="dossier-links-label font-mono">// SYNAPTIC LINKS</span><div class="dossier-links-row">${linkedChips}</div></div>` : ''}
-      <div class="work-actions">
-        <button type="button" class="work-primary" data-details>Full specs <span aria-hidden="true">↗</span></button>
-        <a class="work-repo" href="${escapeHtml(project.github)}" target="_blank" rel="noopener noreferrer">Source ↗</a>
-        <div class="work-stepper">
-          <button type="button" data-step="-1" aria-label="Previous project">←</button>
-          <button type="button" data-step="1" aria-label="Next project">→</button>
+        <div class="dock-links-wrap">${linkedChips}</div>
+        <div class="dock-actions">
+          <button type="button" class="work-primary" data-details>Full specs ↗</button>
+          <a class="work-repo" href="${escapeHtml(project.github)}" target="_blank" rel="noopener noreferrer">Source ↗</a>
+          <div class="work-stepper">
+            <button type="button" data-step="-1" aria-label="Previous project">←</button>
+            <button type="button" data-step="1" aria-label="Next project">→</button>
+          </div>
         </div>
       </div>
     `;
   }
 
-  updateFilterUI() {
-    const visibleProjects = this.projects.filter((p) => this.isProjectVisibleInFilter(p.id));
+  updateCounterUI() {
+    const visible = this.projects.filter((p) => this.isProjectVisibleInFilter(p.id));
     if (this.counter) {
-      this.counter.textContent = `${String(visibleProjects.length).padStart(2, '0')} NODES`;
+      this.counter.textContent = `${String(visible.length).padStart(2, '0')} NODES`;
     }
-
-    const connectedMap = this.getConnectedProjectIds(this.hoveredId || this.activeId);
-    const focusId = this.hoveredId || this.activeId;
-
-    this.pinElements.forEach((el, id) => {
-      const inFilter = this.isProjectVisibleInFilter(id);
-      const isActive = id === this.activeId;
-      const isConnected = connectedMap.has(id);
-      el.classList.toggle('is-active', isActive);
-      el.classList.toggle('is-connected', isConnected && id !== focusId);
-      el.classList.toggle('is-dimmed', !inFilter);
-      el.setAttribute('aria-pressed', String(isActive));
-    });
-  }
-
-  updateEdgeBadge() {
-    if (!this.edgeBadge) return;
-    const focusId = this.hoveredId || this.activeId;
-    const focusProject = this.projects.find((p) => p.id === focusId);
-    const connected = this.getConnectedProjectIds(focusId);
-    if (!focusProject || connected.size === 0) {
-      this.edgeBadge.textContent = '';
-      return;
-    }
-    const tags = Array.from(new Set(Array.from(connected.values()).flat())).slice(0, 4).join(' · ');
-    this.edgeBadge.textContent = `${focusProject.name.toUpperCase()} — ${connected.size} LINKS (${tags})`;
   }
 
   stepProject(delta) {
@@ -581,10 +760,10 @@ class ProjectConstellationEngine {
           btn.setAttribute('aria-pressed', String(btn === filter))
         );
         if (!this.isProjectVisibleInFilter(this.activeId)) {
-          const firstVisible = this.projects.find((p) => this.isProjectVisibleInFilter(p.id));
-          if (firstVisible) this.selectProject(firstVisible.id, true);
+          const first = this.projects.find((p) => this.isProjectVisibleInFilter(p.id));
+          if (first) this.selectProject(first.id, true);
         } else {
-          this.updateFilterUI();
+          this.updateCounterUI();
         }
         return;
       }
@@ -619,8 +798,28 @@ class ProjectConstellationEngine {
     }
   }
 
+  getRaycastHit(clientX, clientY) {
+    if (this.useCanvas2D || !this.raycaster || !this.camera || !this.renderer) return null;
+    const rect = this.renderer.domElement.getBoundingClientRect();
+    if (rect.width <= 0 || rect.height <= 0) return null;
+    if (clientX < rect.left || clientX > rect.right || clientY < rect.top || clientY > rect.bottom) return null;
+
+    this.pointerNdc.x = ((clientX - rect.left) / rect.width) * 2 - 1;
+    this.pointerNdc.y = -((clientY - rect.top) / rect.height) * 2 + 1;
+    this.raycaster.setFromCamera(this.pointerNdc, this.camera);
+
+    const targets = [];
+    this.nodeVisuals.forEach((n) => {
+      if (this.isProjectVisibleInFilter(n.id)) {
+        targets.push(n.coreMesh, n.plaqueMesh);
+      }
+    });
+    const hits = this.raycaster.intersectObjects(targets, false);
+    return hits.length > 0 ? hits[0].object.userData.projectId : null;
+  }
+
   onPointerDown(e) {
-    if (e.target.closest('.constellation-pin')) return;
+    if (e.target.closest('.constellation-header, .constellation-bottom-hud')) return;
     this.isDragging = true;
     this.hasMoved = false;
     this.autoOrbit = false;
@@ -628,8 +827,8 @@ class ProjectConstellationEngine {
     this.startY = e.clientY;
     this.lastX = e.clientX;
     this.lastY = e.clientY;
-    this.yawVel = 0;
-    this.pitchVel = 0;
+    this.thetaVel = 0;
+    this.phiVel = 0;
     this.viewport.classList.add('is-grabbing');
   }
 
@@ -653,38 +852,23 @@ class ProjectConstellationEngine {
       this.lastX = e.clientX;
       this.lastY = e.clientY;
 
-      this.targetYaw += dx * 0.0065;
-      this.targetPitch = Math.max(-0.75, Math.min(0.75, this.targetPitch + dy * 0.005));
-      this.yawVel = dx * 0.003;
-      this.pitchVel = dy * 0.002;
+      this.targetTheta -= dx * 0.0068;
+      this.targetPhi = Math.max(0.75, Math.min(2.25, this.targetPhi - dy * 0.0052));
+      this.thetaVel = -dx * 0.003;
+      this.phiVel = -dy * 0.0022;
       return;
     }
 
-    // Raycast hover detection on Three.js crystal nodes
-    if (!this.useCanvas2D && this.raycaster && this.camera && this.renderer) {
-      const rect = this.renderer.domElement.getBoundingClientRect();
-      if (rect.width <= 0 || rect.height <= 0) return;
-      if (e.clientX < rect.left || e.clientX > rect.right || e.clientY < rect.top || e.clientY > rect.bottom) {
-        if (this.hoveredId && !e.target.closest('.constellation-pin')) {
-          this.hoveredId = null;
-          this.updateEdgeBadge();
-        }
-        return;
-      }
-
-      this.pointerNdc.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
-      this.pointerNdc.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
-      this.raycaster.setFromCamera(this.pointerNdc, this.camera);
-      const hits = this.raycaster.intersectObjects(this.nodeVisuals.map((n) => n.coreMesh));
-      const hitId = hits.length > 0 ? hits[0].object.userData.projectId : null;
-
-      if (hitId !== this.hoveredId && !e.target.closest('.constellation-pin')) {
-        this.hoveredId = hitId;
-        this.viewport.style.cursor = hitId ? 'pointer' : 'grab';
-        this.updateFilterUI();
-        this.updateEdgeBadge();
-      }
+    if (e.target.closest('.constellation-header, .constellation-bottom-hud')) {
+      this.viewport.style.cursor = 'default';
+      return;
     }
+
+    const hitId = this.getRaycastHit(e.clientX, e.clientY);
+    if (hitId !== this.hoveredId) {
+      this.hoveredId = hitId;
+    }
+    this.viewport.style.cursor = hitId ? 'pointer' : 'grab';
   }
 
   onPointerUp(e) {
@@ -693,25 +877,26 @@ class ProjectConstellationEngine {
     this.autoOrbit = true;
     this.viewport.classList.remove('is-grabbing');
 
-    if (!this.hasMoved && !this.useCanvas2D && this.raycaster && this.camera && this.renderer) {
-      const rect = this.renderer.domElement.getBoundingClientRect();
-      this.pointerNdc.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
-      this.pointerNdc.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
-      this.raycaster.setFromCamera(this.pointerNdc, this.camera);
-      const hits = this.raycaster.intersectObjects(this.nodeVisuals.map((n) => n.coreMesh));
-      if (hits.length > 0) {
-        this.selectProject(hits[0].object.userData.projectId, true);
+    if (!this.hasMoved) {
+      const hitId = this.getRaycastHit(e.clientX, e.clientY);
+      if (hitId) {
+        if (hitId === this.activeId) {
+          this.openDetails();
+        } else {
+          this.selectProject(hitId, true);
+        }
         return;
       }
     }
 
-    this.targetYaw += this.yawVel * 5.5;
-    this.targetPitch = Math.max(-0.75, Math.min(0.75, this.targetPitch + this.pitchVel * 4.5));
+    this.targetTheta += this.thetaVel * 5.0;
+    this.targetPhi = Math.max(0.75, Math.min(2.25, this.targetPhi + this.phiVel * 4.0));
   }
 
   onResize() {
-    const width = Math.max(280, this.viewport.clientWidth || 800);
-    const height = Math.max(240, this.viewport.clientHeight || 540);
+    const width = Math.max(280, this.viewport.clientWidth || window.innerWidth || 1280);
+    const height = Math.max(240, this.viewport.clientHeight || window.innerHeight || 720);
+
     if (this.useCanvas2D && this.canvas2d && this.ctx2d) {
       const dpr = Math.min(window.devicePixelRatio || 1, 2);
       this.canvas2d.width = Math.round(width * dpr);
@@ -719,8 +904,9 @@ class ProjectConstellationEngine {
       this.ctx2d.setTransform(dpr, 0, 0, dpr, 0, 0);
       return;
     }
+
     if (this.renderer && this.camera) {
-      this.updateCameraDistance(width, height);
+      this.updateCameraRadius(width, height);
       this.renderer.setSize(width, height);
       this.renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
     }
@@ -754,104 +940,93 @@ class ProjectConstellationEngine {
 
     this.time += 0.016;
     if (this.autoOrbit && !this.isDragging && !this.hoveredId) {
-      this.targetYaw += 0.0014;
+      this.targetTheta += 0.0012;
     }
 
-    this.yaw += (this.targetYaw - this.yaw) * 0.085;
-    this.pitch += (this.targetPitch - this.pitch) * 0.085;
+    this.camTheta += (this.targetTheta - this.camTheta) * 0.075;
+    this.camPhi += (this.targetPhi - this.camPhi) * 0.075;
+    this.camRadius += (this.targetRadius - this.camRadius) * 0.075;
 
     const focusId = this.hoveredId || this.activeId;
     const connectedMap = this.getConnectedProjectIds(focusId);
 
     if (this.useCanvas2D) {
       this.renderCanvas2D(focusId, connectedMap);
-    } else if (this.renderer && this.scene && this.camera && this.clusterGroup) {
+    } else if (this.renderer && this.scene && this.camera) {
       this.renderThree(focusId, connectedMap);
     }
   }
 
   renderThree(focusId, connectedMap) {
-    this.clusterGroup.rotation.y = this.yaw;
-    this.clusterGroup.rotation.x = this.pitch;
+    // Update spherical Three.js camera orbit & smooth lookAt flight
+    this.camera.position.set(
+      this.camRadius * Math.sin(this.camPhi) * Math.sin(this.camTheta),
+      this.camRadius * Math.cos(this.camPhi),
+      this.camRadius * Math.sin(this.camPhi) * Math.cos(this.camTheta)
+    );
+    if (this.lookAtCurrent && this.lookAtTarget) {
+      this.lookAtCurrent.lerp(this.lookAtTarget, 0.075);
+      this.camera.lookAt(this.lookAtCurrent);
+    } else {
+      this.camera.lookAt(0, -0.25, 0);
+    }
 
-    const width = this.viewport.clientWidth || 800;
-    const height = this.viewport.clientHeight || 540;
-    const projVec = new window.THREE.Vector3();
+    if (this.starField) {
+      this.starField.rotation.y += 0.0004;
+    }
 
-    // Update 3D crystal cores & project screen pins
-    this.nodeVisuals.forEach((n, idx) => {
-      const proj = this.projects[idx];
+    // Update 3D crystal cores & billboarded 3D plaques inside Three.js
+    this.nodeVisuals.forEach((n) => {
       const inFilter = this.isProjectVisibleInFilter(n.id);
       const isFocus = n.id === focusId;
       const isConnected = connectedMap.has(n.id);
 
-      const bob = Math.sin(this.time * 1.4 + n.phase) * 0.08;
+      const bob = Math.sin(this.time * 1.4 + n.phase) * 0.09;
       n.group.position.set(n.basePos.x, n.basePos.y + bob, n.basePos.z);
 
-      const targetScale = !inFilter ? 0.58 : isFocus ? 1.38 : isConnected ? 1.12 : 0.92;
+      const targetScale = !inFilter ? 0.52 : isFocus ? 1.32 : isConnected ? 1.08 : 0.9;
       const curScale = n.group.scale.x + (targetScale - n.group.scale.x) * 0.12;
       n.group.scale.setScalar(curScale);
 
-      const rotBoost = isFocus ? 2.1 : 1.0;
+      const rotBoost = isFocus ? 2.2 : 1.0;
       n.coreMesh.rotation.y += n.spinSpeed * rotBoost;
       n.coreMesh.rotation.x += n.spinSpeed * 0.65 * rotBoost;
       n.cageMesh.rotation.y -= n.spinSpeed * 1.3;
       n.cageMesh.rotation.z += n.spinSpeed * 0.8;
       n.focusRing.rotation.z += 0.018;
 
-      n.coreMat.opacity = inFilter ? (isFocus || isConnected ? 1.0 : 0.78) : 0.22;
-      n.coreMat.emissiveIntensity = isFocus ? 0.85 : isConnected ? 0.55 : 0.32;
-      n.cageMat.opacity = inFilter ? (isFocus ? 0.72 : 0.34) : 0.08;
-      n.ringMat.opacity = isFocus && inFilter ? 0.85 : 0;
-      n.haloMat.opacity = inFilter ? (isFocus ? 0.78 : isConnected ? 0.45 : 0.26) : 0.06;
+      n.coreMat.opacity = inFilter ? (isFocus || isConnected ? 1.0 : 0.78) : 0.16;
+      n.coreMat.emissiveIntensity = isFocus ? 0.9 : isConnected ? 0.58 : 0.34;
+      n.cageMat.opacity = inFilter ? (isFocus ? 0.76 : 0.34) : 0.06;
+      n.ringMat.opacity = isFocus && inFilter ? 0.88 : 0;
+      n.haloMat.opacity = inFilter ? (isFocus ? 0.82 : isConnected ? 0.45 : 0.25) : 0.04;
 
-      // Project world position into 2D pin coordinates
-      n.group.getWorldPosition(projVec);
-      const camZ = projVec.z;
-      projVec.project(this.camera);
-
-      const sx = (projVec.x * 0.5 + 0.5) * width;
-      const sy = (-projVec.y * 0.5 + 0.5) * height;
-      const depthNorm = Math.max(0.55, Math.min(1.12, (camZ + 4.0) / 7.2));
-
-      const pin = this.pinElements.get(proj.id);
-      if (pin) {
-        const pinScale = isFocus ? Math.max(1.0, depthNorm) : depthNorm * 0.92;
-        const depthAlpha = !inFilter ? 0.24 : isFocus ? 1.0 : Math.max(0.45, Math.min(0.95, (camZ + 4.4) / 6.8));
-        pin.style.transform = `translate3d(${sx.toFixed(1)}px, ${(sy + 26 * pinScale).toFixed(1)}px, 0) translate(-50%, 0) scale(${pinScale.toFixed(3)})`;
-        pin.style.opacity = depthAlpha.toFixed(2);
-        pin.style.zIndex = String(Math.round((camZ + 10) * 10) + (isFocus ? 200 : 0));
-      }
+      // Billboard 3D plaque toward camera and offset slightly forward so node edges pass behind it
+      const dirToCam = this.camera.position.clone().sub(n.group.position).normalize();
+      n.plaqueMesh.position.set(dirToCam.x * 0.38, -0.74 + dirToCam.y * 0.1, dirToCam.z * 0.38);
+      n.plaqueMesh.quaternion.copy(this.camera.quaternion);
+      n.plaqueMat.opacity = inFilter ? (isFocus ? 1.0 : isConnected ? 0.94 : 0.74) : 0.14;
     });
 
-    // Update synaptic edges & travelling data pulses
+    // Update 3D curved synaptic tubes, shared-tech sprites & energy pulses
     const focusColor = new window.THREE.Color(this.projects.find((p) => p.id === focusId)?.color || '#D2FF00');
     const dimColor = new window.THREE.Color(0x4b5748);
 
-    this.edgeVisuals.forEach(({ edge, lineGeo, lineMat }) => {
-      const posA = this.nodeVisuals[edge.aIndex].group.position;
-      const posB = this.nodeVisuals[edge.bIndex].group.position;
-      const attr = lineGeo.attributes.position;
-      attr.setXYZ(0, posA.x, posA.y, posA.z);
-      attr.setXYZ(1, posB.x, posB.y, posB.z);
-      attr.needsUpdate = true;
-
-      const touchesFocus = edge.aId === focusId || edge.bId === focusId;
-      const bothVisible = this.isProjectVisibleInFilter(edge.aId) && this.isProjectVisibleInFilter(edge.bId);
-      lineMat.color.copy(touchesFocus ? focusColor : dimColor);
-      lineMat.opacity = !bothVisible ? 0.05 : touchesFocus ? 0.72 : 0.16;
+    this.edgeVisuals.forEach((ev) => {
+      const touchesFocus = ev.edge.aId === focusId || ev.edge.bId === focusId;
+      const bothVisible = this.isProjectVisibleInFilter(ev.edge.aId) && this.isProjectVisibleInFilter(ev.edge.bId);
+      ev.tubeMat.color.copy(touchesFocus ? focusColor : dimColor);
+      ev.tubeMat.opacity = !bothVisible ? 0.04 : touchesFocus ? 0.68 : 0.14;
+      ev.labelMat.opacity = bothVisible && touchesFocus ? 0.95 : 0;
     });
 
     this.pulseVisuals.forEach((p) => {
       p.t = (p.t + p.speed) % 1;
-      const posA = this.nodeVisuals[p.edge.aIndex].group.position;
-      const posB = this.nodeVisuals[p.edge.bIndex].group.position;
-      p.sprite.position.lerpVectors(posA, posB, p.t);
-
+      p.curve.getPointAt(p.t, p.sprite.position);
       const touchesFocus = p.edge.aId === focusId || p.edge.bId === focusId;
       const bothVisible = this.isProjectVisibleInFilter(p.edge.aId) && this.isProjectVisibleInFilter(p.edge.bId);
       p.pulseMat.color.copy(touchesFocus ? focusColor : dimColor);
-      p.pulseMat.opacity = !bothVisible ? 0 : touchesFocus ? 0.92 : 0.25;
+      p.pulseMat.opacity = !bothVisible ? 0 : touchesFocus ? 0.95 : 0.2;
     });
 
     this.renderer.render(this.scene, this.camera);
@@ -863,36 +1038,30 @@ class ProjectConstellationEngine {
   renderCanvas2D(focusId, connectedMap) {
     const ctx = this.ctx2d;
     if (!ctx) return;
-    const width = this.viewport.clientWidth || 800;
-    const height = this.viewport.clientHeight || 540;
+    const width = this.viewport.clientWidth || window.innerWidth || 1280;
+    const height = this.viewport.clientHeight || window.innerHeight || 720;
     ctx.clearRect(0, 0, width, height);
 
-    const cosY = Math.cos(this.yaw);
-    const sinY = Math.sin(this.yaw);
-    const cosX = Math.cos(this.pitch);
-    const sinX = Math.sin(this.pitch);
-    const fov = Math.min(width, height) * 0.95;
-    const camDist = 8.8;
+    const cosY = Math.cos(this.camTheta);
+    const sinY = Math.sin(this.camTheta);
+    const pitch = this.camPhi - Math.PI / 2;
+    const cosX = Math.cos(pitch);
+    const sinX = Math.sin(pitch);
+    const fov = Math.min(width, height) * 0.85;
+    const camDist = this.camRadius;
 
     const projected = this.projects.map((proj, idx) => {
       const [bx, by, bz] = GRAPH_META[proj.id].pos;
       const bobY = by + Math.sin(this.time * 1.4 + idx * 0.9) * 0.08;
-      const x1 = bx * cosY + bz * sinY;
-      const z1 = -bx * sinY + bz * cosY;
+      const x1 = bx * cosY - bz * sinY;
+      const z1 = bx * sinY + bz * cosY;
       const y2 = bobY * cosX - z1 * sinX;
       const z2 = bobY * sinX + z1 * cosX;
-      const scale = fov / Math.max(1.5, camDist - z2);
-      return {
-        proj,
-        sx: width / 2 + x1 * scale,
-        sy: height / 2 - y2 * scale,
-        z: z2,
-        scale,
-      };
+      const scale = fov / Math.max(2, camDist - z2);
+      return { proj, sx: width / 2 + x1 * scale, sy: height / 2 - y2 * scale, z: z2, scale };
     });
 
-    // Draw synaptic edges
-    this.edges.forEach((edge, idx) => {
+    this.edges.forEach((edge) => {
       const a = projected[edge.aIndex];
       const b = projected[edge.bIndex];
       const touchesFocus = edge.aId === focusId || edge.bId === focusId;
@@ -902,59 +1071,32 @@ class ProjectConstellationEngine {
       ctx.moveTo(a.sx, a.sy);
       ctx.lineTo(b.sx, b.sy);
       ctx.strokeStyle = touchesFocus ? (this.projects.find((p) => p.id === focusId)?.color || '#D2FF00') : '#5d6b58';
-      ctx.globalAlpha = !bothVisible ? 0.06 : touchesFocus ? 0.72 : 0.2;
+      ctx.globalAlpha = !bothVisible ? 0.05 : touchesFocus ? 0.72 : 0.18;
       ctx.lineWidth = touchesFocus ? 1.6 : 1;
       ctx.stroke();
-
-      if (bothVisible && touchesFocus) {
-        const pt = ((this.time * 0.45 + idx * 0.27) % 1);
-        const px = a.sx + (b.sx - a.sx) * pt;
-        const py = a.sy + (b.sy - a.sy) * pt;
-        ctx.fillStyle = '#D2FF00';
-        ctx.globalAlpha = 0.9;
-        ctx.beginPath();
-        ctx.arc(px, py, 3, 0, Math.PI * 2);
-        ctx.fill();
-      }
       ctx.restore();
     });
 
-    // Draw crystal cores back-to-front & sync HTML pins
     projected
       .slice()
       .sort((a, b) => a.z - b.z)
       .forEach(({ proj, sx, sy, z }) => {
         const inFilter = this.isProjectVisibleInFilter(proj.id);
         const isFocus = proj.id === focusId;
-        const isConnected = connectedMap.has(proj.id);
-        const depthNorm = Math.max(0.55, Math.min(1.12, (z + 4.0) / 7.2));
-        const r = (isFocus ? 17 : isConnected ? 13 : 11) * depthNorm;
+        const depth = Math.max(0.6, Math.min(1.15, (z + 5) / 8));
+        const r = (isFocus ? 18 : 12) * depth;
 
         ctx.save();
-        ctx.globalAlpha = inFilter ? (isFocus ? 1 : 0.8) : 0.22;
+        ctx.globalAlpha = inFilter ? (isFocus ? 1 : 0.8) : 0.2;
         ctx.fillStyle = proj.color;
-        ctx.shadowColor = proj.color;
-        ctx.shadowBlur = isFocus ? 22 : 10;
         ctx.beginPath();
         ctx.arc(sx, sy, r, 0, Math.PI * 2);
         ctx.fill();
-        if (isFocus) {
-          ctx.strokeStyle = '#D2FF00';
-          ctx.lineWidth = 1.6;
-          ctx.beginPath();
-          ctx.arc(sx, sy, r + 7, 0, Math.PI * 2);
-          ctx.stroke();
-        }
+        ctx.font = '700 12px "Syne", sans-serif';
+        ctx.fillStyle = '#FFFFFF';
+        ctx.textAlign = 'center';
+        ctx.fillText(proj.name, sx, sy + r + 18);
         ctx.restore();
-
-        const pin = this.pinElements.get(proj.id);
-        if (pin) {
-          const pinScale = isFocus ? Math.max(1.0, depthNorm) : depthNorm * 0.92;
-          const depthAlpha = !inFilter ? 0.24 : isFocus ? 1.0 : Math.max(0.45, Math.min(0.95, (z + 4.4) / 6.8));
-          pin.style.transform = `translate3d(${sx.toFixed(1)}px, ${(sy + r + 14).toFixed(1)}px, 0) translate(-50%, 0) scale(${pinScale.toFixed(3)})`;
-          pin.style.opacity = depthAlpha.toFixed(2);
-          pin.style.zIndex = String(Math.round((z + 10) * 10) + (isFocus ? 200 : 0));
-        }
       });
   }
 
@@ -967,6 +1109,21 @@ class ProjectConstellationEngine {
     window.removeEventListener('pointercancel', this.onPointerUp);
     window.removeEventListener('resize', this.onResize);
     this.resizeObserver?.disconnect();
+
+    this.nodeVisuals.forEach((n) => {
+      n.defPlaqueTex?.dispose();
+      n.actPlaqueTex?.dispose();
+      n.plaqueMat?.dispose();
+      n.coreMat?.dispose();
+      n.cageMat?.dispose();
+      n.ringMat?.dispose();
+      n.haloMat?.dispose();
+    });
+    this.edgeVisuals.forEach((ev) => {
+      ev.labelTex?.dispose();
+      ev.labelMat?.dispose();
+      ev.tubeMat?.dispose();
+    });
 
     if (this.renderer) {
       this.renderer.dispose();
