@@ -87,16 +87,16 @@ export function initMouseTracking() {
   requestAnimationFrame(updateMouseCoords);
 }
 
-import { initQuantumPreloader } from './loader.js?v=89';
-import { initHeroAsciiBurst } from './ascii-burst.js?v=89';
-import { initStickyBrandLogo } from './sticky-logo.js?v=89';
-import { initTechSolarSystem } from './tech-solar.js?v=89';
-import { initProjectShowcase } from './project-showcase.js?v=89';
-import { initTopoBackground } from './topo-background.js?v=89';
-import { LightPillar, initLightPillar } from './light-pillar.js?v=89';
-import { initCredentialsStones } from './credentials-stones.js?v=89';
-import { initContactSection } from './contact.js?v=89';
-import { initGyroParallax } from './gyro-parallax.js?v=89';
+import { initQuantumPreloader } from './loader.js?v=90';
+import { initHeroAsciiBurst } from './ascii-burst.js?v=90';
+import { initStickyBrandLogo } from './sticky-logo.js?v=90';
+import { initTechSolarSystem } from './tech-solar.js?v=90';
+import { initProjectShowcase } from './project-showcase.js?v=90';
+import { initTopoBackground } from './topo-background.js?v=90';
+import { LightPillar, initLightPillar } from './light-pillar.js?v=90';
+import { initCredentialsStones } from './credentials-stones.js?v=90';
+import { initContactSection } from './contact.js?v=90';
+import { initGyroParallax } from './gyro-parallax.js?v=90';
 
 /**
  * Main System Bootstrap

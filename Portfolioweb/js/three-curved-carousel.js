@@ -104,7 +104,7 @@ export class ThreeCurvedCarousel {
       captionWrap.className = 'circular-carousel__caption';
       captionWrap.setAttribute('aria-hidden', 'true');
       captionWrap.style.position = 'absolute';
-      captionWrap.style.bottom = '1.8rem';
+      captionWrap.style.bottom = '2.4rem';
       captionWrap.style.left = '50%';
       captionWrap.style.transform = 'translateX(-50%)';
       captionWrap.style.pointerEvents = 'none';
@@ -215,6 +215,7 @@ export class ThreeCurvedCarousel {
     this.ringGroup = new THREE.Group();
     const tiltDeg = Math.abs(this.options.tilt || 13);
     this.ringGroup.rotation.x = THREE.MathUtils.degToRad(tiltDeg);
+    this.ringGroup.position.y = 0.58;
     this.scene.add(this.ringGroup);
 
     this.raycaster = new THREE.Raycaster();
