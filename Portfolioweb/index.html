@@ -116,8 +116,8 @@
   </style>
 
   <!-- Design System Stylesheet -->
-  <link rel="stylesheet" href="style.css?v=90">
-  <link rel="stylesheet" href="projects.css?v=90">
+  <link rel="stylesheet" href="style.css?v=91">
+  <link rel="stylesheet" href="projects.css?v=91">
   <link rel="icon" type="image/png" href="assets/me.png">
 </head>
 <body>
@@ -265,33 +265,44 @@
             </section>
           </div>
 
-          <!-- Selected work: accessible project index and feature panel -->
+          <!-- Selected work: 3D Interactive Neural Constellation -->
           <div id="projects-space-layer" class="projects-space-layer">
-            <section id="projects" class="work-explorer" aria-labelledby="work-title" data-lenis-prevent>
-              <div class="work-heading">
-                <div><span class="work-eyebrow">Selected work / Sam Sunny</span><h2 id="work-title">Built to <em>do something.</em></h2></div>
-                <p>A collection of useful software.<br>From applied AI to everyday tools.</p>
-              </div>
-              <div id="project-explorer" style="display: contents;">
-                <div class="work-toolbar">
-                  <div class="work-filters" role="group" aria-label="Filter projects">
-                    <button type="button" data-work-filter="All work" aria-pressed="true">All work</button>
-                    <button type="button" data-work-filter="AI &amp; vision" aria-pressed="false">AI &amp; vision</button>
-                    <button type="button" data-work-filter="Web" aria-pressed="false">Web</button>
-                    <button type="button" data-work-filter="Systems" aria-pressed="false">Systems</button>
+            <section id="projects" class="constellation-section" aria-labelledby="work-title">
+              <div id="project-explorer" class="constellation-shell">
+                <header class="constellation-header">
+                  <div class="constellation-title-wrap">
+                    <span class="work-eyebrow">// 09 NEURAL NODES · INTERACTIVE ARCHITECTURE GRAPH</span>
+                    <h2 id="work-title">Selected <em>work.</em></h2>
                   </div>
-                  <span class="work-count">09 projects</span>
+                  <div class="constellation-controls">
+                    <div class="work-filters" role="group" aria-label="Filter projects">
+                      <button type="button" data-work-filter="All work" aria-pressed="true">All</button>
+                      <button type="button" data-work-filter="AI &amp; vision" aria-pressed="false">AI &amp; Vision</button>
+                      <button type="button" data-work-filter="Web" aria-pressed="false">Web</button>
+                      <button type="button" data-work-filter="Systems" aria-pressed="false">Systems</button>
+                    </div>
+                    <span class="work-count font-mono">09 NODES</span>
+                  </div>
+                </header>
+
+                <div class="constellation-stage-grid">
+                  <div class="constellation-viewport" id="constellation-viewport" role="region" aria-label="3D Project Constellation Graph">
+                    <div class="constellation-canvas-host" id="constellation-canvas-host"></div>
+                    <div class="constellation-pins-layer" id="constellation-pins-layer"></div>
+                    <div class="constellation-edge-badge font-mono" id="constellation-edge-badge" aria-hidden="true"></div>
+                    <div class="constellation-hint font-mono">DRAG TO ORBIT · CLICK NODE TO INSPECT SYNAPSES</div>
+                  </div>
+
+                  <aside id="work-feature" class="constellation-dossier" aria-label="Selected project details" data-lenis-prevent></aside>
                 </div>
-                <div class="work-layout">
-                  <nav class="work-index" aria-label="Choose a project"></nav>
-                  <article id="work-feature" class="work-feature" aria-label="Selected project"></article>
-                </div>
+
                 <span class="work-announcement" role="status" aria-live="polite"></span>
                 <noscript><p>Explore my projects on <a href="https://github.com/SamSunny4">GitHub</a>.</p></noscript>
-              </div>
-              <div class="work-footer">
-                <button type="button" id="return-tech-btn">← Tech stack</button>
-                <button type="button" id="projects-to-contact-btn">Have something in mind? Let’s talk ↗</button>
+
+                <footer class="work-footer">
+                  <button type="button" id="return-tech-btn">← Tech stack</button>
+                  <button type="button" id="projects-to-contact-btn">Have something in mind? Let’s talk ↗</button>
+                </footer>
               </div>
             </section>
           </div>
@@ -465,6 +476,6 @@
   <!-- Lenis Momentum Smooth Scroll Library -->
   <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.9/dist/lenis.min.js"></script>
   <!-- Main ES6 Module Entry -->
-  <script type="module" src="js/main.js?v=90"></script>
+  <script type="module" src="js/main.js?v=91"></script>
 </body>
 </html>
