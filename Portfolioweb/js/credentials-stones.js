@@ -10,8 +10,8 @@
  *   - Real-time preset switching & click-to-inspect lightbox
  */
 
-import { CircularCarousel, PRESETS } from './circular-carousel.js?v=92';
-import { ThreeCurvedCarousel } from './three-curved-carousel.js?v=92';
+import { CircularCarousel, PRESETS } from './circular-carousel.js?v=93';
+import { ThreeCurvedCarousel } from './three-curved-carousel.js?v=93';
 
 // ── Verified Certificates with Authentic Analyzed Logos & Telemetry ──
 export const CERTIFICATES = [
